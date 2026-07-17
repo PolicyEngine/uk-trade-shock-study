@@ -1,0 +1,108 @@
+{
+  "seed0": {
+    "displaced_weighted": 35003.789123535156,
+    "share_positive_uc": 0.33316966115768987,
+    "share_zero_uc": 0.6668303388423101,
+    "share_zero_uc_capital_over_16k": 0.0,
+    "share_zero_uc_income_tapered": 0.11729535990994948,
+    "share_zero_uc_non_takeup": 0.5495349789323607,
+    "share_zero_uc_other": 0.0,
+    "mean_uc_award_displaced": 2535.786297967175,
+    "mean_uc_award_if_positive": 7611.096067858899,
+    "mean_jsa_contrib_displaced": 0.0,
+    "mean_jsa_income_displaced": 0.0
+  },
+  "seeds_0_4_summary": {
+    "share_positive_uc": {
+      "mean": 0.2922622512066455,
+      "sd": 0.16319432100197287
+    },
+    "share_zero_uc": {
+      "mean": 0.7077377487933545,
+      "sd": 0.16319432100197287
+    },
+    "share_zero_uc_capital_over_16k": {
+      "mean": 0.0,
+      "sd": 0.0
+    },
+    "share_zero_uc_income_tapered": {
+      "mean": 0.1764579137330027,
+      "sd": 0.09291816825275936
+    },
+    "share_zero_uc_non_takeup": {
+      "mean": 0.5312798350603518,
+      "sd": 0.12189040908417764
+    },
+    "share_zero_uc_other": {
+      "mean": 0.0,
+      "sd": 0.0
+    }
+  },
+  "per_seed": {
+    "0": {
+      "displaced_weighted": 35003.789123535156,
+      "share_positive_uc": 0.33316966115768987,
+      "share_zero_uc": 0.6668303388423101,
+      "share_zero_uc_capital_over_16k": 0.0,
+      "share_zero_uc_income_tapered": 0.11729535990994948,
+      "share_zero_uc_non_takeup": 0.5495349789323607,
+      "share_zero_uc_other": 0.0,
+      "mean_uc_award_displaced": 2535.786297967175,
+      "mean_uc_award_if_positive": 7611.096067858899,
+      "mean_jsa_contrib_displaced": 0.0,
+      "mean_jsa_income_displaced": 0.0
+    },
+    "1": {
+      "displaced_weighted": 31450.028106689453,
+      "share_positive_uc": 0.08387179740488471,
+      "share_zero_uc": 0.9161282025951153,
+      "share_zero_uc_capital_over_16k": 0.0,
+      "share_zero_uc_income_tapered": 0.23464172256054758,
+      "share_zero_uc_non_takeup": 0.6814864800345677,
+      "share_zero_uc_other": 0.0,
+      "mean_uc_award_displaced": 427.6455042268157,
+      "mean_uc_award_if_positive": 5098.7998046875,
+      "mean_jsa_contrib_displaced": 0.0,
+      "mean_jsa_income_displaced": 0.0
+    },
+    "2": {
+      "displaced_weighted": 31046.62808227539,
+      "share_positive_uc": 0.2807086100801343,
+      "share_zero_uc": 0.7192913899198657,
+      "share_zero_uc_capital_over_16k": 0.0,
+      "share_zero_uc_income_tapered": 0.3020059896460413,
+      "share_zero_uc_non_takeup": 0.4172854002738244,
+      "share_zero_uc_other": 0.0,
+      "mean_uc_award_displaced": 2537.5280552255344,
+      "mean_uc_award_if_positive": 9039.722915877579,
+      "mean_jsa_contrib_displaced": 0.0,
+      "mean_jsa_income_displaced": 0.0
+    },
+    "3": {
+      "displaced_weighted": 32813.903900146484,
+      "share_positive_uc": 0.5322282495385384,
+      "share_zero_uc": 0.46777175046146163,
+      "share_zero_uc_capital_over_16k": 0.0,
+      "share_zero_uc_income_tapered": 0.06873921855443531,
+      "share_zero_uc_non_takeup": 0.3990325319070263,
+      "share_zero_uc_other": 0.0,
+      "mean_uc_award_displaced": 3533.830571373384,
+      "mean_uc_award_if_positive": 6639.6899721826985,
+      "mean_jsa_contrib_displaced": 0.0,
+      "mean_jsa_income_displaced": 0.0
+    },
+    "4": {
+      "displaced_weighted": 35732.740295410156,
+      "share_positive_uc": 0.23133293785198009,
+      "share_zero_uc": 0.7686670621480199,
+      "share_zero_uc_capital_over_16k": 0.0,
+      "share_zero_uc_income_tapered": 0.15960727799403987,
+      "share_zero_uc_non_takeup": 0.60905978415398,
+      "share_zero_uc_other": 0.0,
+      "mean_uc_award_displaced": 2301.780344404676,
+      "mean_uc_award_if_positive": 9950.076136055839,
+      "mean_jsa_contrib_displaced": 0.0,
+      "mean_jsa_income_displaced": 0.0
+    }
+  }
+}

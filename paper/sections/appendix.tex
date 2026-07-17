@@ -1,0 +1,137 @@
+\appendix
+
+\section{Data appendix: the trade-by-SIC build}\label{app:data}
+
+The US-export intensity table $x_j$ (Table~\ref{tab:shocks}) is built by \texttt{analysis/build\_trade\_by\_sic.py} from public sources, with all raw API pulls cached in the repository.
+
+\paragraph{Numerator.} UK goods exports to the United States, calendar 2024, in pounds, from the HMRC \texttt{uktradeinfo} OData API---the machine-readable publication of HMRC Overseas Trade Statistics (OTS) and Regional Trade Statistics (RTS). The RTS endpoint is queried for CountryId 400 (United States), non-EU export flows, months 202401--202412, summed over all Government Office Regions, keyed by 2-digit SITC (rev.\ 4) chapter. Nine chapters that straddle SIC divisions (SITC 33, 66, 68, 71, 77, 78, 79, 87, 89) are refetched from the OTS endpoint at 3-digit SITC and split---for example, 714 aero engines map to SIC 30 (other transport) rather than SIC 28 (machinery)---with the build asserting that each OTS split reproduces its RTS chapter total to within rounding.
+
+\paragraph{Crosswalk.} SITC (rev.\ 4) to SIC 2007 division, coded explicitly in the build script. It is the standard manufacturing concordance plus documented judgement calls: SITC 681 (silver and platinum) and 896 (works of art) are excluded as London bullion- and art-market re-exports rather than UK production employment; 891 arms and ammunition maps to SIC 25; 872 medical instruments to SIC 32 with 871/873/874 to SIC 26; 776 semiconductors to SIC 26 with the rest of chapter 77 to SIC 27; 333 crude oil is dropped (extraction, negligible FRS employment) while 334/335 refined products map to SIC 19. Excluded chapters (91, 93, 96, 97 and non-goods special transactions) total under \pounds 0.3 billion.
+
+\paragraph{Validation.} The 2024 all-commodity total on the RTS/OTS customs basis is \pounds 55.6 billion, of which \pounds 52.5 billion maps to SIC divisions after the documented exclusions; the ONS balance-of-payments basis is about \pounds 59.3 billion, the difference being BoP coverage and valuation adjustments. Sector cross-checks pass: SITC 78 road vehicles \pounds 9.0 billion against SMMT's \pounds 8--9 billion; SITC 54 medicinal and pharmaceutical products \pounds 6.0 billion against ABPI's \pounds 6.6 billion (BoP basis). The US share of UK goods exports implied by these totals (roughly a fifth) matches the survey-based figure in \citet{cepdmp2025}.
+
+\paragraph{Denominator.} Division total turnover from the ONS Annual Business Survey (non-financial business economy, Section C sheet), taken at each division's latest non-suppressed year (2023 for most divisions; beverages fall back to 2022 owing to confidentiality suppression). Turnover proxies gross output at basic prices; the intensity is US exports over turnover. Divisions with no US exports or suppressed turnover are omitted and take a zero shock.
+
+\section{Shock mechanics}\label{app:mechanics}
+
+\paragraph{Displacement draw.} For each exposed division $j$, the head-count quota is $s_j \times W_j$, where $W_j$ is the division's weighted employee count. Division members are ordered by uniform random keys---so a represented worker's inclusion probability does not depend on their record's grossing weight---and survey weights are consumed against the quota in that order. The quota-crossing record is included with probability equal to the remaining quota fraction of its weight, so the expected displaced weight equals the quota exactly. Displaced workers move to employment status \textsc{unemployed} with employment income, hours, employee and salary-sacrifice pension contributions, and statutory maternity, paternity and sick pay all zeroed---without which a displaced worker would remain classified in-work (retaining, for example, childcare entitlements) or keep deducting pension contributions from zero earnings. The pipeline verifies that every displaced person's employment status actually changed in the shocked simulation and raises a hard error otherwise: a silently rejected input would alter entitlements in every downstream result.
+
+\paragraph{Wage-cut earnings-equivalence.} The displacement quota removes fraction $s_j$ of division $j$'s weighted head count with ordering keys independent of earnings, so the expected earnings removed is $s_j B_j$, with $B_j$ the division wage bill, up to within-draw selection covariance. The wage-cut family cuts every employee in division $j$ by exactly $s_j$, removing $\sum_j s_j B_j$ identically---the same expected aggregate loss, delivered on the intensive margin, with conservation asserted at run time rather than assumed. The margin comparison therefore holds the aggregate gross earnings loss fixed by construction.
+
+\paragraph{Inactivity margin.} The displacement draw, with displaced workers aged 50 and over (the threshold is a scenario parameter) transitioned to \textsc{other\_inactive} rather than \textsc{unemployed}, verified with the same hard-error contract. As discussed in Section~\ref{sec:results-margins}, in policyengine-uk 2.89.2 this status distinction does not yet change computed entitlements---no UC health element or conditionality modelling---so inactivity results equal displacement results; the transition machinery is in place for the health-element extension. At seed 0 under the full schedule, 33 per cent of the displaced are 50 or over, so the margin's eventual scope is roughly a third of the displaced population.
+
+\section{Monte Carlo details and manual measures}\label{app:mc}
+
+\paragraph{Draws and seeds.} Each displacement scenario is run for 50 draws with seeds $0, \dots, 49$; reported values are means with sample standard deviations ($n{-}1$). Per-draw decile and regional profiles are stored for every draw, and the decile, regional and age-band numbers in the text are Monte Carlo means with SDs across the 50 draws. The wage-cut margin is deterministic and collapses to a single run; the inactivity margin duplicates displacement in the current model version (Appendix~\ref{app:mechanics}), so its results reuse the displacement draws rather than recomputing them. Draw-to-draw dispersion is substantial---the Exchequer-cost SD is about \pounds 0.30 billion against means of \pounds 0.7--0.9 billion---because with roughly 30{,}000 displaced workers nationally, single high-weight, high-earnings FRS records move aggregate outcomes; the text applies the discipline of narrating only orderings that survive the SD. Full and EPD displacement scenarios share seeds, so paired-draw differences partially difference out the draw noise (the full$-$EPD Exchequer difference is \pounds 0.19 billion $\pm$ 0.38 and positive in 36 of 50 paired draws; the deterministic wage-cut Exchequer cost exceeds the displacement draw's in 37 of 50 draws under each schedule).
+
+\paragraph{Absolute poverty with a fixed line.} The installed model version exposes relative BHC and AHC poverty but no absolute-poverty variable. Absolute poverty changes are therefore computed manually: the baseline BHC poverty line (60 per cent of the \emph{baseline} equivalised median) is held fixed, and the shocked population is evaluated against it, so the measure captures absolute impoverishment rather than movement of the line itself. At seed 0 the fixed-line changes are $+0.058$ percentage points (full displacement/inactivity), $+0.029$ (EPD displacement/inactivity) and zero on the wage-cut margin under either schedule---close to the relative-line changes, confirming the shock is too small to move the national median materially.
+
+\paragraph{Cushioning accounting.} The cushioning rate of Section~\ref{sec:results-cushioning} is $1 - \Delta Y / \Delta E$, where $\Delta E$ is the weighted gross employment-earnings loss and $\Delta Y$ the weighted aggregate fall in HBAI household disposable income, both at seed 0. Because it is a ratio taken within a draw, draw noise in the numerator and denominator largely cancels---which record is drawn moves gross and net losses together---so the 33-versus-41 per cent displacement/wage-cut comparison is far less draw-sensitive than the Exchequer-cost levels; the same ordering holds under both tariff scenarios (32.8 vs 41.0 full; 35.1 vs 40.8 EPD).
+
+\section{Sensitivity grid: elasticity and pass-through}\label{app:grid}
+
+The derived shock (Equation~\ref{eq:shock}) depends on the elasticity $\varepsilon$ and the pass-through $\pi$ only through their product $\varepsilon\pi$, so the grid in Table~\ref{tab:grid}---$\varepsilon \in \{1.0, 1.5, 2.0, 3.0\} \times \pi \in \{0.5, 0.75, 1.0\}$, full schedule, displacement (10 draws per cell, seeds 0--9) and the deterministic wage cut---has a predicted structure, which the computed cells confirm. First, \emph{levels are linear in $\varepsilon\pi$}: the wage-cut gross earnings loss per unit of $\varepsilon\pi$ is \pounds 0.886 billion in every cell to machine precision (no cell's sector shock reaches the clip at 100 per cent of the wage bill), and cells with equal products are identical---for example $(\varepsilon, \pi) = (2.0, 0.5)$ reproduces $(1.0, 1.0)$ exactly. The displacement gross loss per unit of $\varepsilon\pi$ varies only within 13 per cent across cells, which is quota rounding and draw noise, not curvature. Second, \emph{rates are invariant}: the displacement cushioning rate stays within $32.9$--$33.9$ per cent and the wage-cut rate within $40.6$--$41.5$ per cent across a six-fold range of shock sizes, and the wage-cut rate exceeds the displacement rate in all twelve cells. The paper's structural claims---the cushioning gap, its decomposition, and every ordering---are therefore properties of the tax--benefit rules, not of the calibrated $\varepsilon = 2.0$; only the pound-denominated levels (and the near-proportional poverty effect) move with $\varepsilon\pi$, and they move linearly, so readers preferring a different anchor can rescale directly.
+
+\begin{table}[htbp]
+\centering
+\caption{Sensitivity grid over $\varepsilon \times \pi$, full tariff schedule}
+\label{tab:grid}
+\small
+\begin{tabular}{ccc ccccc cc}
+\toprule
+& & & \multicolumn{5}{c}{Displacement (10 draws, mean $\pm$ SD)} & \multicolumn{2}{c}{Wage cut} \\
+\cmidrule(lr){4-8}\cmidrule(lr){9-10}
+$\varepsilon$ & $\pi$ & $\varepsilon\pi$ & Gross loss & Exchequer & Cushion & Displaced & Poverty & Gross loss & Cushion \\
+& & & (\pounds bn) & (\pounds bn) & (\%) & (000s) & (pp) & (\pounds bn) & (\%) \\
+\midrule
+1.0 & 0.50 & 0.50 & 0.40 & $0.16 \pm 0.10$ & $32.9 \pm 5.2$ & 7.9 & $+0.014$ & 0.44 & 41.0 \\
+1.0 & 0.75 & 0.75 & 0.69 & $0.29 \pm 0.09$ & $33.9 \pm 4.4$ & 13.2 & $+0.022$ & 0.66 & 41.5 \\
+1.0 & 1.00 & 1.00 & 0.87 & $0.37 \pm 0.11$ & $33.9 \pm 3.5$ & 17.2 & $+0.030$ & 0.89 & 41.3 \\
+1.5 & 0.50 & 0.75 & 0.69 & $0.29 \pm 0.09$ & $33.9 \pm 4.4$ & 13.2 & $+0.022$ & 0.66 & 41.5 \\
+1.5 & 0.75 & 1.13 & 0.94 & $0.40 \pm 0.11$ & $33.9 \pm 3.3$ & 18.6 & $+0.031$ & 1.00 & 41.3 \\
+1.5 & 1.00 & 1.50 & 1.32 & $0.55 \pm 0.14$ & $33.0 \pm 2.8$ & 26.5 & $+0.044$ & 1.33 & 41.3 \\
+2.0 & 0.50 & 1.00 & 0.87 & $0.37 \pm 0.11$ & $33.9 \pm 3.5$ & 17.2 & $+0.030$ & 0.89 & 41.3 \\
+2.0 & 0.75 & 1.50 & 1.32 & $0.55 \pm 0.14$ & $33.0 \pm 2.8$ & 26.5 & $+0.044$ & 1.33 & 41.3 \\
+\textbf{2.0} & \textbf{1.00} & \textbf{2.00} & 1.68 & $0.70 \pm 0.16$ & $32.9 \pm 2.6$ & 32.9 & $+0.056$ & 1.77 & 41.0 \\
+3.0 & 0.50 & 1.50 & 1.32 & $0.55 \pm 0.14$ & $33.0 \pm 2.8$ & 26.5 & $+0.044$ & 1.33 & 41.3 \\
+3.0 & 0.75 & 2.25 & 2.04 & $0.87 \pm 0.23$ & $33.5 \pm 4.6$ & 40.4 & $+0.063$ & 1.99 & 40.9 \\
+3.0 & 1.00 & 3.00 & 2.62 & $1.10 \pm 0.26$ & $33.1 \pm 4.3$ & 52.1 & $+0.084$ & 2.66 & 40.6 \\
+\bottomrule
+\end{tabular}
+\begin{minipage}{0.95\textwidth}
+\vspace{0.2em}
+{\footnotesize Notes: full tariff schedule, period 2026. Displacement cells are means $\pm$ SD over 10 Monte Carlo draws (seeds 0--9); the central calibration ($\varepsilon = 2.0$, $\pi = 1.0$, bold) differs slightly from the 50-draw headline numbers because of the smaller draw count. The wage-cut margin is deterministic; its small cushioning-rate variation (40.6--41.5 per cent) reflects the sector composition of the marginal shock, not $\varepsilon\pi$. Cells with equal $\varepsilon\pi$ are identical by construction. Poverty is the relative BHC rate change in percentage points. Displaced counts are weighted workers in thousands.}
+\end{minipage}
+\end{table}
+
+\section{Duration and take-up sensitivities}\label{app:durationtakeup}
+
+Table~\ref{tab:durationtakeup} reports two sensitivities on the full-schedule displacement margin, each over the same 10 draws (seeds 0--9) so columns are directly comparable to the recomputed central case.
+
+\paragraph{Out-of-work duration.} The central results annualise a twelve-month spell. Under a six-month expected duration, displaced workers keep 50 per cent of baseline annual earnings, evaluated \emph{in-model} so taxes and means-tested benefits respond to the actual annual income (a documented hybrid, following the sister study's convention: the annual model has no intra-year timing, so the displacement transition---hours zeroed, status unemployed---is unchanged while half a year's earnings are retained). The gross loss halves by construction; the annualised Exchequer cost falls roughly pro rata, in fact slightly more than half (\pounds 0.70 to \pounds 0.41 billion, 59 per cent of the full-year figure) because the retained earnings slice is taxed above the displaced worker's average rate; the cushioning rate rises from 33 to 42 per cent for the same marginal-versus-average-rate reason that drives the paper's headline gap; and the poverty effect nearly vanishes---half a year of earnings keeps most displaced households above the line.
+
+\paragraph{UC take-up.} PolicyEngine models UC take-up stochastically through the benunit-level \texttt{would\_claim\_uc} dataset input (the mechanism decomposition of Section~\ref{sec:results-mechanism} found 55 per cent of zero-UC displaced workers are in families modelled as not taking up). Forcing 100 per cent take-up in \emph{both} the baseline and the shocked simulation---so the deltas are shock effects under full take-up, not take-up effects---more than doubles the UC response (\pounds 0.16 versus \pounds 0.07 billion) and raises the displacement cushioning rate to $38.6 \pm 2.5$ per cent, closing about seventy per cent of the displacement--wage-cut gap. Modelled non-take-up is thus the single largest reason UC fails to reach the displaced; the remainder is chiefly the joint partner-income taper.
+
+\begin{table}[htbp]
+\centering
+\caption{Duration and take-up sensitivities, full-tariff displacement (10 draws)}
+\label{tab:durationtakeup}
+\small
+\begin{tabular}{lccc}
+\toprule
+& Central & Duration & Take-up \\
+& (12-month, modelled take-up) & 6 months & 100 per cent \\
+\midrule
+Gross earnings loss (\pounds bn/yr) & $1.68 \pm 0.32$ & $0.84 \pm 0.16$ & $1.68 \pm 0.32$ \\
+Exchequer cost (\pounds bn/yr) & $0.70 \pm 0.16$ & $0.41 \pm 0.09$ & $0.79 \pm 0.16$ \\
+Cushioning rate (\%) & $32.9 \pm 2.6$ & $42.2 \pm 3.3$ & $38.6 \pm 2.5$ \\
+UC response (\pounds bn/yr) & $0.07 \pm 0.03$ & $0.01 \pm 0.01$ & $0.16 \pm 0.06$ \\
+Poverty change, BHC (pp) & $+0.056 \pm 0.014$ & $+0.013 \pm 0.010$ & $+0.048 \pm 0.019$ \\
+\bottomrule
+\end{tabular}
+\begin{minipage}{0.92\textwidth}
+\vspace{0.2em}
+{\footnotesize Notes: means $\pm$ SD over 10 Monte Carlo draws (seeds 0--9), shared across columns. The take-up column compares a forced-take-up shocked simulation against a forced-take-up baseline (person-weighted modelled take-up in the dataset: 55 per cent). The duration column's cushioning rate is computed against its own halved gross loss.}
+\end{minipage}
+\end{table}
+
+\section{Regional incidence table}\label{app:regions}
+
+Table~\ref{tab:regions} reports the full three-scenario regional profile; Figure~\ref{fig:regionmaps} maps its two displacement columns at ITL1/government office region level (the constituency-level counterpart is Figure~\ref{fig:constmaps} in Section~\ref{sec:results-regions}).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.95\textwidth]{../results/figures/map_region_income_change.png}
+\caption{Regional choropleth maps of the mean disposable-income change per person per year (\pounds, Monte Carlo mean over 50 displacement draws), by ITL1/government office region: full-tariff displacement (left) and EPD displacement (right), on a shared diverging scale (losses in grey). The diverging scale is clipped at the 95th percentile of the absolute change (caps show clipping). Region-level draw-to-draw SDs are comparable to the means (Table~\ref{tab:regions}), so the map shows the average geography, not a sharply identified ranking.}
+\label{fig:regionmaps}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\caption{Mean fall in household disposable income per person per year by region (\pounds, Monte Carlo means $\pm$ SD over 50 draws)}
+\label{tab:regions}
+\begin{tabular}{lccc}
+\toprule
+& \multicolumn{2}{c}{Full tariffs} & EPD \\
+\cmidrule(lr){2-3}
+Region & Displacement & Wage cut & Displacement \\
+\midrule
+Wales & $108 \pm 234$ & 65 & $75 \pm 181$ \\
+East of England & $74 \pm 76$ & 61 & $51 \pm 59$ \\
+East Midlands & $72 \pm 73$ & 51 & $70 \pm 93$ \\
+West Midlands & $64 \pm 56$ & 55 & $40 \pm 54$ \\
+Scotland & $62 \pm 50$ & 39 & $45 \pm 37$ \\
+Northern Ireland & $61 \pm 46$ & 49 & $63 \pm 52$ \\
+Yorkshire and the Humber & $60 \pm 48$ & 47 & $34 \pm 37$ \\
+London & $48 \pm 53$ & 52 & $46 \pm 49$ \\
+South East & $47 \pm 40$ & 42 & $41 \pm 37$ \\
+North West & $32 \pm 34$ & 27 & $10 \pm 13$ \\
+South West & $31 \pm 31$ & 36 & $31 \pm 28$ \\
+North East & $22 \pm 47$ & 18 & $23 \pm 46$ \\
+\bottomrule
+\end{tabular}
+\begin{minipage}{0.85\textwidth}
+\vspace{0.2em}
+{\footnotesize Notes: absolute values of the per-person disposable income change; displacement columns are Monte Carlo means $\pm$ draw-to-draw SD over 50 draws, the wage-cut column is the deterministic run. SDs are comparable to or larger than the means---no pairwise regional ordering survives one SD; the Wales mean is dominated by a single high-weight FRS record (Appendix~\ref{app:mc}).}
+\end{minipage}
+\end{table}

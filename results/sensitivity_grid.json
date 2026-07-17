@@ -1,0 +1,434 @@
+{
+  "n_draws_displacement": 10,
+  "cells": [
+    {
+      "elasticity": 1.0,
+      "passthrough": 0.5,
+      "eps_x_pi": 0.5,
+      "displacement": {
+        "gross_earnings_loss": {
+          "mean": 402058493.87983,
+          "sd": 210564641.295757
+        },
+        "exchequer_cost": {
+          "mean": 163936665.6,
+          "sd": 97011248.59770586
+        },
+        "cushioning_rate": {
+          "mean": 0.3293421761994832,
+          "sd": 0.052279642475544515
+        },
+        "displaced_weighted": {
+          "mean": 7935.654840087891,
+          "sd": 2887.8265801581524
+        },
+        "poverty_change_bhc_pp": {
+          "mean": 0.013722040414889114,
+          "sd": 0.00809376173860949
+        }
+      },
+      "wage_cut": {
+        "gross_earnings_loss": 442874662.6249752,
+        "exchequer_cost": 245710848.0,
+        "cushioning_rate": 0.4098610960245501,
+        "displaced_weighted": 0.0,
+        "poverty_change_bhc_pp": 0.0
+      }
+    },
+    {
+      "elasticity": 1.0,
+      "passthrough": 0.75,
+      "eps_x_pi": 0.75,
+      "displacement": {
+        "gross_earnings_loss": {
+          "mean": 689987670.7765157,
+          "sd": 160726489.29168856
+        },
+        "exchequer_cost": {
+          "mean": 290403123.2,
+          "sd": 90641275.26190421
+        },
+        "cushioning_rate": {
+          "mean": 0.3392563997366099,
+          "sd": 0.04378482397010907
+        },
+        "displaced_weighted": {
+          "mean": 13201.186474609374,
+          "sd": 1891.2468795029567
+        },
+        "poverty_change_bhc_pp": {
+          "mean": 0.022359618629165245,
+          "sd": 0.010492948333778474
+        }
+      },
+      "wage_cut": {
+        "gross_earnings_loss": 664311993.9374623,
+        "exchequer_cost": 371982336.0,
+        "cushioning_rate": 0.4147937180905431,
+        "displaced_weighted": 0.0,
+        "poverty_change_bhc_pp": 0.0
+      }
+    },
+    {
+      "elasticity": 1.0,
+      "passthrough": 1.0,
+      "eps_x_pi": 1.0,
+      "displacement": {
+        "gross_earnings_loss": {
+          "mean": 867335523.2019374,
+          "sd": 213015094.14116833
+        },
+        "exchequer_cost": {
+          "mean": 365355008.0,
+          "sd": 108882786.40475377
+        },
+        "cushioning_rate": {
+          "mean": 0.33925510545131105,
+          "sd": 0.03508650615802744
+        },
+        "displaced_weighted": {
+          "mean": 17207.989031982423,
+          "sd": 3657.6150808979723
+        },
+        "poverty_change_bhc_pp": {
+          "mean": 0.030453623781963868,
+          "sd": 0.013604971556289421
+        }
+      },
+      "wage_cut": {
+        "gross_earnings_loss": 885749325.2499483,
+        "exchequer_cost": 494665728.0,
+        "cushioning_rate": 0.4132646052500841,
+        "displaced_weighted": 0.0,
+        "poverty_change_bhc_pp": 0.0
+      }
+    },
+    {
+      "elasticity": 1.5,
+      "passthrough": 0.5,
+      "eps_x_pi": 0.75,
+      "displacement": {
+        "gross_earnings_loss": {
+          "mean": 689987670.7765157,
+          "sd": 160726489.29168856
+        },
+        "exchequer_cost": {
+          "mean": 290403123.2,
+          "sd": 90641275.26190421
+        },
+        "cushioning_rate": {
+          "mean": 0.3392563997366099,
+          "sd": 0.04378482397010907
+        },
+        "displaced_weighted": {
+          "mean": 13201.186474609374,
+          "sd": 1891.2468795029567
+        },
+        "poverty_change_bhc_pp": {
+          "mean": 0.022359618629165245,
+          "sd": 0.010492948333778474
+        }
+      },
+      "wage_cut": {
+        "gross_earnings_loss": 664311993.9374623,
+        "exchequer_cost": 371982336.0,
+        "cushioning_rate": 0.4147937180905431,
+        "displaced_weighted": 0.0,
+        "poverty_change_bhc_pp": 0.0
+      }
+    },
+    {
+      "elasticity": 1.5,
+      "passthrough": 0.75,
+      "eps_x_pi": 1.125,
+      "displacement": {
+        "gross_earnings_loss": {
+          "mean": 938780447.8014915,
+          "sd": 217993667.23451275
+        },
+        "exchequer_cost": {
+          "mean": 396407603.2,
+          "sd": 112017596.594371
+        },
+        "cushioning_rate": {
+          "mean": 0.3392641814085923,
+          "sd": 0.03315702741147181
+        },
+        "displaced_weighted": {
+          "mean": 18633.23427734375,
+          "sd": 3871.950795879772
+        },
+        "poverty_change_bhc_pp": {
+          "mean": 0.031412406234220536,
+          "sd": 0.012967862092522514
+        }
+      },
+      "wage_cut": {
+        "gross_earnings_loss": 996467990.9061939,
+        "exchequer_cost": 556040192.0,
+        "cushioning_rate": 0.41282066926414596,
+        "displaced_weighted": 0.0,
+        "poverty_change_bhc_pp": 0.0
+      }
+    },
+    {
+      "elasticity": 1.5,
+      "passthrough": 1.0,
+      "eps_x_pi": 1.5,
+      "displacement": {
+        "gross_earnings_loss": {
+          "mean": 1319015252.1226962,
+          "sd": 245559545.03667617
+        },
+        "exchequer_cost": {
+          "mean": 550079692.8,
+          "sd": 136652629.00054678
+        },
+        "cushioning_rate": {
+          "mean": 0.32956429920716845,
+          "sd": 0.027944095317720262
+        },
+        "displaced_weighted": {
+          "mean": 26532.997616577148,
+          "sd": 1884.774785432279
+        },
+        "poverty_change_bhc_pp": {
+          "mean": 0.04364819684778948,
+          "sd": 0.016941270499124646
+        }
+      },
+      "wage_cut": {
+        "gross_earnings_loss": 1328623987.874923,
+        "exchequer_cost": 742309888.0,
+        "cushioning_rate": 0.41272201682282517,
+        "displaced_weighted": 0.0,
+        "poverty_change_bhc_pp": 0.0
+      }
+    },
+    {
+      "elasticity": 2.0,
+      "passthrough": 0.5,
+      "eps_x_pi": 1.0,
+      "displacement": {
+        "gross_earnings_loss": {
+          "mean": 867335523.2019374,
+          "sd": 213015094.14116833
+        },
+        "exchequer_cost": {
+          "mean": 365355008.0,
+          "sd": 108882786.40475377
+        },
+        "cushioning_rate": {
+          "mean": 0.33925510545131105,
+          "sd": 0.03508650615802744
+        },
+        "displaced_weighted": {
+          "mean": 17207.989031982423,
+          "sd": 3657.6150808979723
+        },
+        "poverty_change_bhc_pp": {
+          "mean": 0.030453623781963868,
+          "sd": 0.013604971556289421
+        }
+      },
+      "wage_cut": {
+        "gross_earnings_loss": 885749325.2499483,
+        "exchequer_cost": 494665728.0,
+        "cushioning_rate": 0.4132646052500841,
+        "displaced_weighted": 0.0,
+        "poverty_change_bhc_pp": 0.0
+      }
+    },
+    {
+      "elasticity": 2.0,
+      "passthrough": 0.75,
+      "eps_x_pi": 1.5,
+      "displacement": {
+        "gross_earnings_loss": {
+          "mean": 1319015252.1226962,
+          "sd": 245559545.03667617
+        },
+        "exchequer_cost": {
+          "mean": 550079692.8,
+          "sd": 136652629.00054678
+        },
+        "cushioning_rate": {
+          "mean": 0.32956429920716845,
+          "sd": 0.027944095317720262
+        },
+        "displaced_weighted": {
+          "mean": 26532.997616577148,
+          "sd": 1884.774785432279
+        },
+        "poverty_change_bhc_pp": {
+          "mean": 0.04364819684778948,
+          "sd": 0.016941270499124646
+        }
+      },
+      "wage_cut": {
+        "gross_earnings_loss": 1328623987.874923,
+        "exchequer_cost": 742309888.0,
+        "cushioning_rate": 0.41272201682282517,
+        "displaced_weighted": 0.0,
+        "poverty_change_bhc_pp": 0.0
+      }
+    },
+    {
+      "elasticity": 2.0,
+      "passthrough": 1.0,
+      "eps_x_pi": 2.0,
+      "displacement": {
+        "gross_earnings_loss": {
+          "mean": 1681346057.1251473,
+          "sd": 320819990.09336334
+        },
+        "exchequer_cost": {
+          "mean": 703732121.6,
+          "sd": 163705186.1714175
+        },
+        "cushioning_rate": {
+          "mean": 0.3291180898516143,
+          "sd": 0.026345064191344872
+        },
+        "displaced_weighted": {
+          "mean": 32868.39832458496,
+          "sd": 2458.0437363216265
+        },
+        "poverty_change_bhc_pp": {
+          "mean": 0.0563802092707702,
+          "sd": 0.014100665806458194
+        }
+      },
+      "wage_cut": {
+        "gross_earnings_loss": 1771498650.499899,
+        "exchequer_cost": 984825856.0,
+        "cushioning_rate": 0.41023104267949895,
+        "displaced_weighted": 0.0,
+        "poverty_change_bhc_pp": 0.0
+      }
+    },
+    {
+      "elasticity": 3.0,
+      "passthrough": 0.5,
+      "eps_x_pi": 1.5,
+      "displacement": {
+        "gross_earnings_loss": {
+          "mean": 1319015252.1226962,
+          "sd": 245559545.03667617
+        },
+        "exchequer_cost": {
+          "mean": 550079692.8,
+          "sd": 136652629.00054678
+        },
+        "cushioning_rate": {
+          "mean": 0.32956429920716845,
+          "sd": 0.027944095317720262
+        },
+        "displaced_weighted": {
+          "mean": 26532.997616577148,
+          "sd": 1884.774785432279
+        },
+        "poverty_change_bhc_pp": {
+          "mean": 0.04364819684778948,
+          "sd": 0.016941270499124646
+        }
+      },
+      "wage_cut": {
+        "gross_earnings_loss": 1328623987.874923,
+        "exchequer_cost": 742309888.0,
+        "cushioning_rate": 0.41272201682282517,
+        "displaced_weighted": 0.0,
+        "poverty_change_bhc_pp": 0.0
+      }
+    },
+    {
+      "elasticity": 3.0,
+      "passthrough": 0.75,
+      "eps_x_pi": 2.25,
+      "displacement": {
+        "gross_earnings_loss": {
+          "mean": 2038345224.0736823,
+          "sd": 367262028.4373025
+        },
+        "exchequer_cost": {
+          "mean": 869136793.6,
+          "sd": 226327550.39322343
+        },
+        "cushioning_rate": {
+          "mean": 0.33549240299964617,
+          "sd": 0.046139620255815715
+        },
+        "displaced_weighted": {
+          "mean": 40441.4987487793,
+          "sd": 4917.243924829231
+        },
+        "poverty_change_bhc_pp": {
+          "mean": 0.0628671705199993,
+          "sd": 0.017517046559282972
+        }
+      },
+      "wage_cut": {
+        "gross_earnings_loss": 1992935981.812387,
+        "exchequer_cost": 1105330176.0,
+        "cushioning_rate": 0.4089403399055642,
+        "displaced_weighted": 0.0,
+        "poverty_change_bhc_pp": 0.0
+      }
+    },
+    {
+      "elasticity": 3.0,
+      "passthrough": 1.0,
+      "eps_x_pi": 3.0,
+      "displacement": {
+        "gross_earnings_loss": {
+          "mean": 2618670402.2877316,
+          "sd": 384522700.43337756
+        },
+        "exchequer_cost": {
+          "mean": 1103693414.4,
+          "sd": 255716437.67159104
+        },
+        "cushioning_rate": {
+          "mean": 0.33088780745254853,
+          "sd": 0.04274102910045627
+        },
+        "displaced_weighted": {
+          "mean": 52125.84086914062,
+          "sd": 3311.9882537003145
+        },
+        "poverty_change_bhc_pp": {
+          "mean": 0.08383073204132008,
+          "sd": 0.01900121848967592
+        }
+      },
+      "wage_cut": {
+        "gross_earnings_loss": 2657247975.749849,
+        "exchequer_cost": 1466253312.0,
+        "cushioning_rate": 0.4062109556957145,
+        "displaced_weighted": 0.0,
+        "poverty_change_bhc_pp": 0.0
+      }
+    }
+  ],
+  "invariance_check": {
+    "wage_cut_cushioning_rate_range": [
+      0.4062109556957145,
+      0.4147937180905431
+    ],
+    "displacement_cushioning_rate_mean_range": [
+      0.3291180898516143,
+      0.3392641814085923
+    ],
+    "wage_cut_gross_loss_per_unit_eps_pi_bn": {
+      "min": 0.8857493252499483,
+      "max": 0.8857493252499504,
+      "max_rel_deviation": 2.422544562829386e-15
+    },
+    "displacement_gross_loss_per_unit_eps_pi_bn": {
+      "min": 0.80411698775966,
+      "max": 0.9199835610353543,
+      "max_rel_deviation": 0.1327888331223554
+    },
+    "wage_cut_above_displacement_cushioning_in_all_cells": true
+  }
+}

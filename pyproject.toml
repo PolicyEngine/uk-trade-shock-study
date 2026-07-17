@@ -1,0 +1,22 @@
+[project]
+name = "uk-trade-shock-study"
+version = "0.1.0"
+description = "Who bears the tariff? The 2025 US-UK trade shock: tariff schedule x trade-by-SIC -> sector earnings shocks -> PolicyEngine UK microsimulation"
+requires-python = ">=3.13"
+dependencies = [
+    "policyengine-uk==2.89.2",
+    "huggingface_hub",
+    "pandas",
+    "numpy",
+    "matplotlib",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["uk_trade_shock_study"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"uk_trade_shock_study/data" = "uk_trade_shock_study/data"

@@ -1,0 +1,166 @@
+{
+  "method": "route B: SIC-division imputation on enhanced FRS 2023-24",
+  "period": 2025,
+  "seed": 0,
+  "scenarios": [
+    "full_tariff_displacement",
+    "epd_displacement"
+  ],
+  "plain_frs_employees": 12800,
+  "plain_frs_employee_sic_observed_share": 0.984077220865573,
+  "imputation_tier_shares_weighted": {
+    "full_cell": 0.9941180911525956,
+    "age_gender_decile": 0.005533474183236705,
+    "age_gender": 0.0,
+    "marginal": 0.00034843466416771194
+  },
+  "enhanced_frs_employees": 53566,
+  "full_tariff_displacement_national_income_change_pp": -52.2850651966327,
+  "full_tariff_displacement_displaced_weighted": 42442.12109375,
+  "epd_displacement_national_income_change_pp": -24.53620813762849,
+  "epd_displacement_displaced_weighted": 34236.578125,
+  "top10_hardest_hit_full": [
+    {
+      "code": "S14000106",
+      "name": "West Dunbartonshire",
+      "region": "Scotland",
+      "income_change_pp_full": -389.6025731163169,
+      "income_change_pp_epd": -13.31963143007957
+    },
+    {
+      "code": "S14000088",
+      "name": "Glasgow South West",
+      "region": "Scotland",
+      "income_change_pp_full": -362.23514220544035,
+      "income_change_pp_epd": -21.02348401236832
+    },
+    {
+      "code": "S14000073",
+      "name": "Dumfries and Galloway",
+      "region": "Scotland",
+      "income_change_pp_full": -321.82956791631415,
+      "income_change_pp_epd": -37.05235044167336
+    },
+    {
+      "code": "N05000001",
+      "name": "Belfast East",
+      "region": "Northern Ireland",
+      "income_change_pp_full": -300.8533780344808,
+      "income_change_pp_epd": -498.1446787982218
+    },
+    {
+      "code": "S14000096",
+      "name": "Lothian East",
+      "region": "Scotland",
+      "income_change_pp_full": -283.444938333798,
+      "income_change_pp_epd": -17.701091160966467
+    },
+    {
+      "code": "N05000003",
+      "name": "Belfast South and Mid Down",
+      "region": "Northern Ireland",
+      "income_change_pp_full": -239.44698918137846,
+      "income_change_pp_epd": -351.2446968191154
+    },
+    {
+      "code": "S14000100",
+      "name": "North East Fife",
+      "region": "Scotland",
+      "income_change_pp_full": -233.35101151020154,
+      "income_change_pp_epd": -13.471222291359053
+    },
+    {
+      "code": "S14000102",
+      "name": "Paisley and Renfrewshire South",
+      "region": "Scotland",
+      "income_change_pp_full": -228.60816431768765,
+      "income_change_pp_epd": -12.949523673192502
+    },
+    {
+      "code": "S14000069",
+      "name": "Caithness, Sutherland and Easter Ross",
+      "region": "Scotland",
+      "income_change_pp_full": -227.43083753282812,
+      "income_change_pp_epd": -21.154075387238606
+    },
+    {
+      "code": "S14000101",
+      "name": "Paisley and Renfrewshire North",
+      "region": "Scotland",
+      "income_change_pp_full": -222.6646846273175,
+      "income_change_pp_epd": -18.105356217663466
+    }
+  ],
+  "top10_hardest_hit_epd": [
+    {
+      "code": "N05000001",
+      "name": "Belfast East",
+      "region": "Northern Ireland",
+      "income_change_pp_full": -300.8533780344808,
+      "income_change_pp_epd": -498.1446787982218
+    },
+    {
+      "code": "N05000003",
+      "name": "Belfast South and Mid Down",
+      "region": "Northern Ireland",
+      "income_change_pp_full": -239.44698918137846,
+      "income_change_pp_epd": -351.2446968191154
+    },
+    {
+      "code": "N05000004",
+      "name": "Belfast West",
+      "region": "Northern Ireland",
+      "income_change_pp_full": -191.2072572740903,
+      "income_change_pp_epd": -302.0012732377732
+    },
+    {
+      "code": "N05000017",
+      "name": "Upper Bann",
+      "region": "Northern Ireland",
+      "income_change_pp_full": -65.63497549000923,
+      "income_change_pp_epd": -284.870026003554
+    },
+    {
+      "code": "N05000009",
+      "name": "Lagan Valley",
+      "region": "Northern Ireland",
+      "income_change_pp_full": -126.79837376819441,
+      "income_change_pp_epd": -271.1001307263141
+    },
+    {
+      "code": "N05000002",
+      "name": "Belfast North",
+      "region": "Northern Ireland",
+      "income_change_pp_full": -187.77477965179105,
+      "income_change_pp_epd": -208.3310496371316
+    },
+    {
+      "code": "N05000013",
+      "name": "North Down",
+      "region": "Northern Ireland",
+      "income_change_pp_full": -147.65929083142717,
+      "income_change_pp_epd": -189.95733718371213
+    },
+    {
+      "code": "N05000008",
+      "name": "Foyle",
+      "region": "Northern Ireland",
+      "income_change_pp_full": -130.5357169643299,
+      "income_change_pp_epd": -120.27655939931313
+    },
+    {
+      "code": "N05000005",
+      "name": "East Antrim",
+      "region": "Northern Ireland",
+      "income_change_pp_full": -185.85557401842647,
+      "income_change_pp_epd": -106.94775788400837
+    },
+    {
+      "code": "E14001467",
+      "name": "Sheffield Central",
+      "region": "Yorkshire and the Humber",
+      "income_change_pp_full": -31.148771386704844,
+      "income_change_pp_epd": -102.52876338400843
+    }
+  ]
+}

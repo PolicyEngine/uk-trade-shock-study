@@ -24,7 +24,12 @@ generously than in-work wage cuts:
 
 - ``inactivity`` (Beatty-Fothergill UK history): the displacement draw, but
   displaced workers aged >= ``inactivity_age_threshold`` exit to economic
-  INACTIVITY (UC health element route) rather than unemployment.
+  INACTIVITY *and* are flagged as having limited capability for
+  work-related activity (uc_limited_capability_for_WRA = True), so their
+  Universal Credit includes the LCWRA health element — the benefit-financed
+  inactivity route. ``lcwra_takeup`` (default 1.0) thins the flag for the
+  sensitivity variant in which only a share of the older displaced pass the
+  Work Capability Assessment.
 
 Hard-error contract: build_shocked_simulation verifies that every displaced
 person's employment_status actually changed in the shocked simulation and
@@ -56,6 +61,9 @@ class TradeShockScenario:
     elasticity: float = DEFAULT_ELASTICITY
     passthrough: float = DEFAULT_PASSTHROUGH
     inactivity_age_threshold: int = 50
+    #: share of inactive (older displaced) workers flagged LCWRA; 1.0 is the
+    #: paper's upper-bound assumption, 0.5 the sensitivity variant.
+    lcwra_takeup: float = 1.0
 
     def __post_init__(self):
         if self.margin not in MARGINS:
@@ -122,17 +130,29 @@ def apply_displacement(
 ) -> pd.DataFrame:
     """Displacement (or inactivity) margin: shocked copy of the person table.
 
-    Adds boolean columns ``displaced`` (out of work) and ``inactive`` (subset
-    of displaced who flow to inactivity — empty under pure displacement).
+    Adds boolean columns ``displaced`` (out of work), ``inactive`` (subset
+    of displaced who flow to inactivity — empty under pure displacement) and
+    ``lcwra`` (subset of inactive flagged limited-capability-for-WRA; equals
+    ``inactive`` when lcwra_takeup is 1.0, an independent thinning otherwise,
+    drawn from a separate stream so the displacement draw is unchanged).
     """
     shocked = persons.copy()
     displaced = draw_displaced(persons, scenario, seed=seed)
     shocked["displaced"] = displaced
     age = persons["age"].to_numpy(dtype=float)
     if scenario.margin == "inactivity":
-        shocked["inactive"] = displaced & (age >= scenario.inactivity_age_threshold)
+        inactive = displaced & (age >= scenario.inactivity_age_threshold)
+        shocked["inactive"] = inactive
+        if scenario.lcwra_takeup >= 1.0:
+            shocked["lcwra"] = inactive
+        else:
+            thin_rng = np.random.default_rng((seed, 7_002_026))
+            shocked["lcwra"] = inactive & (
+                thin_rng.random(len(persons)) < scenario.lcwra_takeup
+            )
     else:
         shocked["inactive"] = np.zeros(len(persons), dtype=bool)
+        shocked["lcwra"] = np.zeros(len(persons), dtype=bool)
     earnings = shocked["employment_income"].to_numpy(dtype=float)
     shocked["employment_income"] = np.where(displaced, 0.0, earnings)
     return shocked
@@ -174,6 +194,7 @@ def apply_wage_cut(persons: pd.DataFrame, scenario: TradeShockScenario) -> pd.Da
     shocked["employment_income"] = new
     shocked["displaced"] = np.zeros(len(persons), dtype=bool)
     shocked["inactive"] = np.zeros(len(persons), dtype=bool)
+    shocked["lcwra"] = np.zeros(len(persons), dtype=bool)
     return shocked
 
 
@@ -211,8 +232,9 @@ def build_shocked_simulation(dataset, baseline_sim, shocked_table, period):
     """One shared constructor for the shocked simulation (every pipeline).
 
     Displaced-not-inactive workers become UNEMPLOYED; inactive workers become
-    INACTIVE (the UC-health-element route is a downstream TODO: flag limited
-    capability for work once the modelling decision on WCA status is taken).
+    OTHER_INACTIVE and (per the shocked table's ``lcwra`` column) are flagged
+    uc_limited_capability_for_WRA = True on top of any baseline flag, so
+    their Universal Credit includes the LCWRA health element.
     A rejected set_input would silently leave displaced workers EMPLOYED with
     zero hours, changing entitlements in every result — we verify and FAIL
     HARD (do not replicate the template's silent-failure bug).
@@ -232,6 +254,43 @@ def build_shocked_simulation(dataset, baseline_sim, shocked_table, period):
     status[displaced] = "UNEMPLOYED"
     status[inactive] = "OTHER_INACTIVE"
     sim.set_input("employment_status", period, status)
+    lcwra = (
+        shocked_table["lcwra"].to_numpy()
+        if "lcwra" in shocked_table
+        else np.zeros(len(status), dtype=bool)
+    )
+    if lcwra.any():
+        # uc_LCWRA_element is a STORED INPUT in the FRS h5 (imputed survey
+        # receipt), so setting uc_limited_capability_for_WRA alone never
+        # reaches UC: the element's formula is shadowed by the stored array.
+        # We therefore (a) flag the person for consistency and (b) override
+        # the benunit element with baseline + one annual LCWRA amount per
+        # newly flagged person, leaving everyone else's stored element
+        # untouched (recomputing from the formula would repriced the whole
+        # population off is_disabled_for_benefits and break comparability
+        # with the baseline simulation).
+        flag = baseline_sim.calculate(
+            "uc_limited_capability_for_WRA", period=period, map_to="person"
+        ).values.astype(bool)
+        sim.set_input("uc_limited_capability_for_WRA", period, flag | lcwra)
+        base_element = baseline_sim.calculate(
+            "uc_LCWRA_element", period=period, map_to="benunit"
+        ).values.astype(float)
+        monthly = float(
+            sim.tax_benefit_system.parameters(
+                f"{period}-01-01"
+            ).gov.dwp.universal_credit.elements.disabled.amount
+        )
+        addon = sim.map_result(lcwra.astype(float) * monthly * 12.0, "person", "benunit")
+        sim.set_input("uc_LCWRA_element", period, base_element + addon)
+        applied_element = sim.calculate(
+            "uc_LCWRA_element", period=period, map_to="person"
+        ).values.astype(float)
+        if not (applied_element[lcwra] >= monthly * 12.0 - 1e-6).all():
+            raise RuntimeError(
+                "LCWRA element not applied: some inactive persons' benefit "
+                "units lack the UC health element in the shocked simulation."
+            )
     applied = sim.calculate("employment_status", period=period, map_to="person").values.astype(str)
     if not (applied[displaced & ~inactive] == "UNEMPLOYED").all():
         raise RuntimeError(

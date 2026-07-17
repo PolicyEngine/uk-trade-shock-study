@@ -136,6 +136,38 @@ def test_inactivity_margin_age_split():
     # same draw as pure displacement (same seed): identical displaced mask
     pure = apply_shocks(persons, PRESETS["full_tariff_displacement"], seed=0)
     np.testing.assert_array_equal(displaced, pure["displaced"].to_numpy())
+    # under the default upper-bound assumption every inactive worker is
+    # flagged LCWRA; pure displacement flags nobody
+    np.testing.assert_array_equal(shocked["lcwra"].to_numpy(), inactive)
+    assert not pure["lcwra"].to_numpy().any()
+
+
+def test_inactivity_lcwra_takeup_thinning():
+    """lcwra_takeup < 1 thins the LCWRA flag within the inactive set without
+    changing the displacement draw."""
+    persons = make_persons()
+    full = PRESETS["full_tariff_inactivity"]
+    half = TradeShockScenario(
+        "t", "full_tariff", "inactivity", lcwra_takeup=0.5
+    )
+    shocked_full = apply_shocks(persons, full, seed=0)
+    shocked_half = apply_shocks(persons, half, seed=0)
+    np.testing.assert_array_equal(
+        shocked_full["displaced"].to_numpy(), shocked_half["displaced"].to_numpy()
+    )
+    np.testing.assert_array_equal(
+        shocked_full["inactive"].to_numpy(), shocked_half["inactive"].to_numpy()
+    )
+    lcwra = shocked_half["lcwra"].to_numpy()
+    inactive = shocked_half["inactive"].to_numpy()
+    assert (lcwra <= inactive).all()
+    # thinned strictly below the full-takeup count, at roughly half in
+    # expectation across seeds
+    shares = []
+    for s in range(50):
+        t = apply_shocks(persons, half, seed=s)
+        shares.append(t["lcwra"].to_numpy().sum() / max(t["inactive"].to_numpy().sum(), 1))
+    assert np.mean(shares) == pytest.approx(0.5, abs=0.1)
 
 
 def test_epd_displaces_fewer_than_full_tariff():

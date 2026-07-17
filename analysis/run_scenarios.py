@@ -8,7 +8,17 @@ import argparse
 from pathlib import Path
 
 from uk_trade_shock_study.runner import run_monte_carlo, write_result
-from uk_trade_shock_study.shocks import PRESETS
+from uk_trade_shock_study.shocks import PRESETS, TradeShockScenario
+
+#: The MEASURED family: per-division shocks from the realised HMRC OTS
+#: outturn (exposure.MEASURED_SCENARIO; built by build_measured_shocks.py)
+#: rather than elasticity x tariff. One tariff scenario (the outturn embeds
+#: the EPD), run under the displacement and wage-cut margins.
+MEASURED_PRESETS = {
+    f"measured_{margin}": TradeShockScenario(f"measured_{margin}", "measured", margin)
+    for margin in ("displacement", "wage_cut")
+}
+ALL_PRESETS = {**PRESETS, **MEASURED_PRESETS}
 
 
 def main() -> None:
@@ -16,7 +26,7 @@ def main() -> None:
     parser.add_argument("--data-dir", default="data")
     parser.add_argument("--period", type=int, default=2026)
     parser.add_argument("--n-draws", type=int, default=20)
-    parser.add_argument("--scenarios", nargs="*", default=list(PRESETS))
+    parser.add_argument("--scenarios", nargs="*", default=list(ALL_PRESETS))
     args = parser.parse_args()
 
     data = Path(args.data_dir)
@@ -41,14 +51,14 @@ def main() -> None:
     sic = simulation_sic_division(sim, args.period)
     emp = sim.calculate("employment_income", period=args.period, map_to="person").values
     w = sim.calculate("person_weight", period=args.period, map_to="person").values
-    for tariff in ("full_tariff", "epd"):
+    for tariff in ("full_tariff", "epd", "measured"):
         shock = pd.Series(sic).map(sector_earnings_shocks(tariff)).fillna(0.0).to_numpy()
         loss = float((shock * emp * w).sum())
         print(f"[calibration] {tariff}: aggregate gross earnings loss £{loss / 1e9:.2f}bn/yr")
 
     for name in args.scenarios:
         result = run_monte_carlo(
-            dataset, name, period=args.period, n_draws=args.n_draws
+            dataset, ALL_PRESETS[name], period=args.period, n_draws=args.n_draws
         )
         write_result(result, results / f"{name}.json")
         print(

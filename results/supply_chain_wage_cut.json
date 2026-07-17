@@ -1,0 +1,47 @@
+{
+  "scenario": "supply_chain_wage_cut",
+  "n_draws": 1,
+  "exchequer_cost_mean": 1904181248.0,
+  "exchequer_cost_sd": 0.0,
+  "poverty_rate_change_bhc_mean": 0.00031440268676927174,
+  "poverty_rate_change_bhc_sd": 0.0,
+  "gini_change_mean": -0.00021951404881115355,
+  "gini_change_sd": 0.0,
+  "displaced_weighted_mean": 0.0,
+  "lcwra_weighted_mean": 0.0,
+  "cushioning_rate_mean": NaN,
+  "cushioning_rate_sd": 0.0,
+  "draws": [
+    {
+      "scenario": "supply_chain_wage_cut",
+      "tariff_scenario": "full_tariff",
+      "margin": "wage_cut",
+      "exchequer_cost": 1904181248.0,
+      "poverty_rate_change_bhc": 0.00031440268676927174,
+      "poverty_rate_change_ahc": 0.00017627874535844357,
+      "absolute_poverty_rate_change_bhc": NaN,
+      "gini_baseline": 0.30908967456288927,
+      "gini_shocked": 0.3088701605140781,
+      "displaced_weighted": 0.0,
+      "inactive_weighted": 0.0,
+      "lcwra_weighted": 0.0,
+      "gross_earnings_loss": NaN,
+      "net_disposable_loss": NaN,
+      "cushioning_rate": NaN,
+      "decile_income_change": {
+        "1": -10.373122215270996,
+        "2": -16.583059310913086,
+        "3": -34.028411865234375,
+        "4": -44.793697357177734,
+        "5": -57.58913040161133,
+        "6": -91.85569763183594,
+        "7": -124.50618743896484,
+        "8": -130.84767150878906,
+        "9": -141.81649780273438,
+        "10": -252.18019104003906
+      },
+      "region_income_change": {},
+      "age_band_displacement_share": {}
+    }
+  ]
+}

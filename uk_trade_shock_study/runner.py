@@ -42,6 +42,10 @@ class ScenarioResult:
     gini_shocked: float
     displaced_weighted: float
     inactive_weighted: float
+    lcwra_weighted: float = 0.0
+    gross_earnings_loss: float = float("nan")
+    net_disposable_loss: float = float("nan")
+    cushioning_rate: float = float("nan")
     decile_income_change: dict = field(default_factory=dict)
     region_income_change: dict = field(default_factory=dict)
     age_band_displacement_share: dict = field(default_factory=dict)
@@ -58,6 +62,9 @@ class MonteCarloResult:
     gini_change_mean: float
     gini_change_sd: float
     displaced_weighted_mean: float
+    lcwra_weighted_mean: float = 0.0
+    cushioning_rate_mean: float = float("nan")
+    cushioning_rate_sd: float = 0.0
     draws: list = field(default_factory=list)
 
 
@@ -96,6 +103,9 @@ def _metrics(sim, period: int) -> dict:
         )),
         "gini": gini(equiv, hh_w * hh_count),
         "hni": sim.calculate("hbai_household_net_income", period=period, map_to="person").values,
+        "hni_total": float(
+            (sim.calculate("hbai_household_net_income", period=period, map_to="household").values * hh_w).sum()
+        ),
     }
     # absolute BHC poverty (fixed 2010-11 line, HBAI); tolerate model
     # versions that expose only the relative measures
@@ -131,12 +141,21 @@ def _one_draw(dataset, baseline, persons, scenario, period, seed) -> ScenarioRes
     shocked = build_shocked_simulation(dataset, baseline, shocked_table, period)
     displaced = shocked_table["displaced"].to_numpy()
     inactive = shocked_table["inactive"].to_numpy()
+    lcwra = (
+        shocked_table["lcwra"].to_numpy()
+        if "lcwra" in shocked_table
+        else np.zeros(len(displaced), dtype=bool)
+    )
 
     base, shock = _metrics(baseline, period), _metrics(shocked, period)
 
     weight = persons["weight"].to_numpy()
     age = persons["age"].to_numpy()
     income_delta = shock["hni"] - base["hni"]
+    base_earnings = persons["employment_income"].to_numpy(dtype=float)
+    shocked_earnings = shocked_table["employment_income"].to_numpy(dtype=float)
+    gross_loss = float(((base_earnings - shocked_earnings) * weight).sum())
+    net_loss = base["hni_total"] - shock["hni_total"]
     equiv = baseline.calculate(
         "equiv_hbai_household_net_income", period=period, map_to="person"
     ).values
@@ -173,6 +192,10 @@ def _one_draw(dataset, baseline, persons, scenario, period, seed) -> ScenarioRes
         gini_shocked=shock["gini"],
         displaced_weighted=displaced_w,
         inactive_weighted=float(weight[inactive].sum()),
+        lcwra_weighted=float(weight[lcwra].sum()),
+        gross_earnings_loss=gross_loss,
+        net_disposable_loss=net_loss,
+        cushioning_rate=(1.0 - net_loss / gross_loss) if gross_loss else float("nan"),
         decile_income_change=decile_change,
         region_income_change=region_change,
         age_band_displacement_share=band_share,
@@ -226,6 +249,9 @@ def run_monte_carlo(
         gini_change_mean=float(gini_change.mean()),
         gini_change_sd=float(gini_change.std(ddof=1)) if n_draws > 1 else 0.0,
         displaced_weighted_mean=float(np.mean([d.displaced_weighted for d in draws])),
+        lcwra_weighted_mean=float(np.mean([d.lcwra_weighted for d in draws])),
+        cushioning_rate_mean=float(np.mean([d.cushioning_rate for d in draws])),
+        cushioning_rate_sd=float(np.std([d.cushioning_rate for d in draws], ddof=1)) if n_draws > 1 else 0.0,
         draws=[asdict(d) for d in draws],
     )
 

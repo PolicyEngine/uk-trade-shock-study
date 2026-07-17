@@ -75,7 +75,17 @@ DEFAULT_PASSTHROUGH = 1.0
 
 TARIFF_SCENARIOS = ("full_tariff", "epd")
 
+#: The MEASURED scenario replaces elasticity x tariff with the realised
+#: per-division export fall (HMRC OTS outturn, May 2025 - Feb 2026 vs the
+#: 2023-24 two-year same-month baseline; analysis/build_measured_shocks.py):
+#:     s_j^measured = max(realised_export_fall_j, 0) x us_export_share_j
+#: No elasticity and no tariff rate enter - the outturn IS the demand
+#: response, EPD mitigation included - so this family has a single scenario.
+#: Divisions whose US exports rose take a zero shock.
+MEASURED_SCENARIO = "measured"
+
 US_EXPORT_INTENSITY_CSV = "us_export_intensity_by_sic.csv"
+MEASURED_EXPORT_FALLS_CSV = "measured_export_falls_by_sic.csv"
 
 
 def tariff_rates(scenario: str) -> pd.Series:
@@ -110,21 +120,46 @@ def load_us_export_intensity() -> pd.DataFrame:
     return table
 
 
+def load_measured_export_falls() -> pd.Series:
+    """Realised per-division export falls (fractions; may be negative).
+
+    Written by analysis/build_measured_shocks.py from the HMRC OTS monthly
+    outturn; see that script for the window and baseline choices.
+    """
+    path = resources.files("uk_trade_shock_study") / "data" / MEASURED_EXPORT_FALLS_CSV
+    table = pd.read_csv(str(path), comment="#").set_index("sic_division")
+    return table["export_fall"]
+
+
 def sector_earnings_shocks(
     scenario: str,
     elasticity: float = DEFAULT_ELASTICITY,
     passthrough: float = DEFAULT_PASSTHROUGH,
     intensity: pd.DataFrame | None = None,
+    export_falls: pd.Series | None = None,
 ) -> pd.Series:
     """Per-SIC-division earnings-shock size (fraction of the sector wage bill).
 
     shock_j = elasticity * tariff_j * us_export_share_j * passthrough,
     clipped to [0, 1].
+
+    For ``scenario == "measured"`` the elasticity-tariff product is replaced
+    by the realised export fall (see MEASURED_SCENARIO):
+    shock_j = max(realised_fall_j, 0) * us_export_share_j * passthrough.
+    ``export_falls`` allows supplying the per-division falls externally
+    (fractions, indexed by SIC division); by default the packaged outturn
+    CSV is used.
     """
     if intensity is None:
         intensity = load_us_export_intensity()
-    rates = tariff_rates(scenario).reindex(intensity.index).fillna(BASELINE_TARIFF)
-    shock = elasticity * rates * intensity["us_export_share"] * passthrough
+    if scenario == MEASURED_SCENARIO:
+        if export_falls is None:
+            export_falls = load_measured_export_falls()
+        falls = export_falls.reindex(intensity.index).fillna(0.0).clip(lower=0.0)
+        shock = falls * intensity["us_export_share"] * passthrough
+    else:
+        rates = tariff_rates(scenario).reindex(intensity.index).fillna(BASELINE_TARIFF)
+        shock = elasticity * rates * intensity["us_export_share"] * passthrough
     return shock.clip(0.0, 1.0).rename("earnings_shock")
 
 
@@ -181,12 +216,15 @@ def person_earnings_shock(
     scenario: str,
     elasticity: float = DEFAULT_ELASTICITY,
     passthrough: float = DEFAULT_PASSTHROUGH,
+    export_falls: pd.Series | None = None,
 ) -> np.ndarray:
     """Per-person earnings-shock size from SIC division codes.
 
     Divisions absent from the intensity table (services, unmatched, NaN)
     take a ZERO shock: only US-goods-exporting sectors are exposed.
     """
-    shocks = sector_earnings_shocks(scenario, elasticity, passthrough)
+    shocks = sector_earnings_shocks(
+        scenario, elasticity, passthrough, export_falls=export_falls
+    )
     codes = pd.to_numeric(pd.Series(np.asarray(sic_division)), errors="coerce")
     return codes.map(shocks).fillna(0.0).to_numpy(dtype=float)

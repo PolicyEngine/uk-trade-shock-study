@@ -1,0 +1,32 @@
+# Realised UK-to-US export falls by SIC 2007 division - MEASURED scenario input.
+# Post window: May 2025 - Feb 2026 (Apr 2025 excluded: front-running unwind +
+# the epsilon-calibration month). Baseline: mean of the same calendar months
+# one and two years earlier (2-yr average, diluting Q4-24/Q1-25 front-running
+# in the 1-yr base; the pure 1-yr YoY fall is kept as a sensitivity column).
+# Source: HMRC uktradeinfo OTS API, SITC->SIC crosswalk of
+# analysis/build_trade_by_sic.py; written by analysis/build_measured_shocks.py.
+# export_fall may be negative (US exports rose); exposure.py clips at zero.
+sic_division,description,export_fall,export_fall_yoy1
+10,Food products,-0.0661,0.0709
+11,Beverages,0.0965,0.1245
+12,Tobacco,-1.5748,-1.1022
+13,Textiles,-0.0477,-0.0422
+14,Wearing apparel,0.2886,0.2422
+15,Leather,0.2419,0.1885
+16,Wood products,-0.2348,-0.3479
+17,Paper,-0.0255,-0.0132
+18,Printing,0.0698,0.0316
+19,Coke and refined petroleum,0.2942,0.1804
+20,Chemicals,0.1454,0.1061
+21,Pharmaceuticals,0.3075,0.2251
+22,Rubber and plastic products,-0.0507,0.0129
+23,Other non-metallic mineral products,0.0646,0.0593
+24,Basic metals (incl. steel),-0.1116,-0.0434
+25,Fabricated metal products,0.1334,0.2116
+26,Computer electronic and optical products,0.0482,0.0479
+27,Electrical equipment,-0.0173,-0.0118
+28,Machinery and equipment n.e.c.,0.1131,0.0917
+29,Motor vehicles trailers and semi-trailers,0.3201,0.3773
+30,Other transport equipment (incl. aerospace),-0.0981,-0.1194
+31,Furniture,-0.2312,-0.1717
+32,Other manufacturing,0.1563,0.1912

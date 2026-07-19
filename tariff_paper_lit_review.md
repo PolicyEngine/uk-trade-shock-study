@@ -1,4 +1,4 @@
-# Literature review: "Who bears the tariff?" — the 2025 US–UK trade shock through the tax–benefit system
+# Literature review: "Tariffs Abroad, Transfers at Home" — how Britain absorbs the 2025 US–UK trade shock
 
 Working notes for the tariff-incidence companion paper. Compiled July 2026.
 

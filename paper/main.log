@@ -1,8 +1,8 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2024.1.12)  19 JUL 2026 11:42
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2024.1.12)  19 JUL 2026 11:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**main
+**main.tex
 (./main.tex
 LaTeX2e <2022-11-01> patch level 1
 L3 programming layer <2023-02-22>
@@ -496,7 +496,7 @@ Here is how much of TeX's memory you used:
  31198 multiletter control sequences out of 15000+600000
  528258 words of font info for 85 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,11n,76p,5202b,687s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,11n,76p,5206b,687s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 pdfTeX warning (dest): name{Hfootnote.2} has been referenced but does not exist
 , replaced by a fixed one
@@ -532,7 +532,7 @@ ts/type1/public/cm-super/sfrm1000.pfb></usr/local/texlive/2023/texmf-dist/fonts
 /type1/public/cm-super/sfrm1095.pfb></usr/local/texlive/2023/texmf-dist/fonts/t
 ype1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/typ
 e1/public/cm-super/sfti1000.pfb>
-Output written on main.pdf (47 pages, 1069203 bytes).
+Output written on main.pdf (47 pages, 1069303 bytes).
 PDF statistics:
  1138 PDF objects out of 1200 (max. 8388607)
  1013 compressed objects within 11 object streams

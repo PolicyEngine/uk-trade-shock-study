@@ -70,6 +70,7 @@ from uk_trade_shock_study.exposure import (
     sector_earnings_shocks,
     tariff_rates,
 )
+from uk_trade_shock_study.shocks import DEFAULT_UC_TAKEUP
 
 ROOT = Path(__file__).resolve().parent.parent
 IOT_XLSX = ROOT / "data" / "iot2022revisedproduct.xlsx"
@@ -410,7 +411,10 @@ def draw_displaced_with_shock(
 
 
 def apply_displacement_with_shock(
-    persons: pd.DataFrame, shock: np.ndarray, seed: int = 0
+    persons: pd.DataFrame,
+    shock: np.ndarray,
+    seed: int = 0,
+    uc_takeup: float = DEFAULT_UC_TAKEUP,
 ) -> pd.DataFrame:
     """Displacement margin on an explicit shock vector (no inactivity flow)."""
     shocked = persons.copy()
@@ -419,6 +423,11 @@ def apply_displacement_with_shock(
     shocked["inactive"] = np.zeros(len(persons), dtype=bool)
     earnings = shocked["employment_income"].to_numpy(dtype=float)
     shocked["employment_income"] = np.where(displaced, 0.0, earnings)
+    # carried to build_shocked_simulation for the post-shock UC take-up
+    # re-draw (see shocks.DEFAULT_UC_TAKEUP); seed must vary across draws so
+    # the take-up stream is not frozen at seed 0.
+    shocked.attrs["uc_takeup"] = float(uc_takeup)
+    shocked.attrs["seed"] = int(seed)
     return shocked
 
 
@@ -439,4 +448,7 @@ def apply_wage_cut_with_shock(persons: pd.DataFrame, shock: np.ndarray) -> pd.Da
     shocked["employment_income"] = new
     shocked["displaced"] = np.zeros(len(persons), dtype=bool)
     shocked["inactive"] = np.zeros(len(persons), dtype=bool)
+    # no new claimants on the wage-cut margin: nothing is re-drawn
+    shocked.attrs["uc_takeup"] = float(DEFAULT_UC_TAKEUP)
+    shocked.attrs["seed"] = 0
     return shocked

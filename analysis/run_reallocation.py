@@ -30,7 +30,7 @@ from uk_trade_shock_study.shocks import (
 )
 
 PERIOD = 2026
-N_DRAWS = 20
+N_DRAWS = 20  # reallocation family + paired comparison runs
 DATASET = Path("data/frs_2024_25.h5")
 RESULTS = Path("results")
 

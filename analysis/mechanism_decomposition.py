@@ -44,6 +44,7 @@ from uk_trade_shock_study.shocks import (
     PRESETS,
     TRANSITION_ZEROED_VARIABLES,
     apply_shocks,
+    redraw_uc_takeup,
 )
 
 PERIOD = 2026
@@ -99,6 +100,10 @@ def build_shocked_sim(dataset, baseline_sim, shocked_table, period, reform=None)
         "employment_income", period, shocked_table["employment_income"].to_numpy(float)
     )
     displaced = shocked_table["displaced"].to_numpy()
+    # Same post-shock UC take-up re-draw as build_shocked_simulation: the
+    # baseline would_claim_uc flag is a stored draw conditioned on pre-shock
+    # circumstances and is uninformative for newly displaced families.
+    redraw_uc_takeup(sim, baseline_sim, shocked_table, period)
     for var in TRANSITION_ZEROED_VARIABLES:
         values = baseline_sim.calculate(var, period=period, map_to="person").values.astype(float)
         values[displaced] = 0.0

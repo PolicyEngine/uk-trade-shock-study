@@ -89,6 +89,32 @@ DEFAULT_REALLOCATION_PENALTY = 0.283
 #: Hours/age-controlled lower bound (see above).
 HOURLY_REALLOCATION_PENALTY = 0.140
 
+#: POST-SHOCK UNIVERSAL CREDIT TAKE-UP among benefit units containing a newly
+#: displaced / inactive / reallocated worker.
+#:
+#: WHY THIS PARAMETER EXISTS. ``would_claim_uc`` is a STORED BOOLEAN INPUT in
+#: the FRS microdata, not a behavioural formula: policyengine-uk-data draws it
+#: once at dataset build time, anchoring reported UC recipients to True and
+#: filling the remainder so that the flag rate over ALL benefit units hits the
+#: calibration target (0.55). It is therefore (i) a population-wide flag share,
+#: NOT a take-up rate among the entitled — and so not comparable to the ~80 per
+#: cent take-up-among-entitled assumed in Resolution Foundation / IFS work —
+#: and (ii) conditioned entirely on PRE-SHOCK circumstances. Most exposed
+#: workers were employed and non-entitled when the draw was made, so their
+#: stored flag carries no information about whether their family would claim
+#: once the earner loses their job. Carrying the baseline draw through the
+#: shock (measured take-up among the displaced post-shock was 0.469, BELOW the
+#: population flag rate) models a newly unemployed family as not claiming
+#: precisely because it was not claiming while in work. We therefore RE-DRAW
+#: the flag post-shock for AFFECTED benefit units at ``uc_takeup``, from an
+#: independent RNG stream (seeded UC_TAKEUP_SEED_OFFSET + seed) so that the
+#: displacement draw is bit-identical across take-up values. Unaffected benefit
+#: units keep their baseline draw untouched.
+DEFAULT_UC_TAKEUP = 0.80
+#: RNG stream offset for the post-shock take-up re-draw (independent of the
+#: displacement, destination and LCWRA streams).
+UC_TAKEUP_SEED_OFFSET = 900_000
+
 
 @dataclass(frozen=True)
 class TradeShockScenario:
@@ -106,8 +132,13 @@ class TradeShockScenario:
     reallocation_penalty: float = DEFAULT_REALLOCATION_PENALTY
     #: months out of work before the services job starts (0 = instant).
     reallocation_lag_months: float = 0.0
+    #: post-shock UC take-up among AFFECTED benefit units (see
+    #: DEFAULT_UC_TAKEUP for why the baseline stored flag is not usable).
+    uc_takeup: float = DEFAULT_UC_TAKEUP
 
     def __post_init__(self):
+        if not 0.0 <= self.uc_takeup <= 1.0:
+            raise ValueError("uc_takeup must lie in [0, 1]")
         if self.margin not in MARGINS:
             raise ValueError(f"unknown margin {self.margin!r}; use one of {MARGINS}")
         if not 0.0 <= self.reallocation_penalty < 1.0:
@@ -320,10 +351,16 @@ def apply_shocks(
     Expects columns: employment_income, sic_division, age, weight.
     """
     if scenario.margin == "wage_cut":
-        return _blank_reallocation(apply_wage_cut(persons, scenario))
-    if scenario.margin == "reallocation":
-        return apply_reallocation(persons, scenario, seed=seed)
-    return _blank_reallocation(apply_displacement(persons, scenario, seed=seed))
+        shocked = _blank_reallocation(apply_wage_cut(persons, scenario))
+    elif scenario.margin == "reallocation":
+        shocked = apply_reallocation(persons, scenario, seed=seed)
+    else:
+        shocked = _blank_reallocation(apply_displacement(persons, scenario, seed=seed))
+    # Carried to build_shocked_simulation, which needs the take-up rate and
+    # the draw seed to re-draw would_claim_uc for affected benefit units.
+    shocked.attrs["uc_takeup"] = float(scenario.uc_takeup)
+    shocked.attrs["seed"] = int(seed)
+    return shocked
 
 
 #: Person-level inputs zeroed for displaced workers so they do not remain
@@ -361,6 +398,81 @@ def lcwra_benunit_addon(sim, lcwra, monthly: float) -> np.ndarray:
             "unit (flagged members double-counted)."
         )
     return addon
+
+
+def affected_mask(shocked_table) -> np.ndarray:
+    """Persons whose labour-market circumstances changed in this draw.
+
+    Displaced (incl. those routed to inactivity) and reallocated workers: the
+    people for whom the baseline, pre-shock ``would_claim_uc`` draw is
+    uninformative.
+    """
+    n = len(shocked_table)
+    out = np.zeros(n, dtype=bool)
+    for column in ("displaced", "inactive", "reallocated"):
+        if column in shocked_table:
+            out |= shocked_table[column].to_numpy(dtype=bool)
+    return out
+
+
+def redraw_uc_takeup(
+    sim,
+    baseline_sim,
+    shocked_table,
+    period,
+    uc_takeup: float | None = None,
+    seed: int | None = None,
+) -> np.ndarray:
+    """Re-draw ``would_claim_uc`` post-shock for AFFECTED benefit units.
+
+    See DEFAULT_UC_TAKEUP for the full justification: the baseline flag is a
+    stored draw conditioned on PRE-SHOCK circumstances (and calibrated as a
+    population-wide share, not take-up among the entitled), so it says nothing
+    about whether a newly displaced family would claim. Every benefit unit
+    containing at least one affected person gets a fresh Bernoulli(``uc_takeup``)
+    draw from an INDEPENDENT stream (UC_TAKEUP_SEED_OFFSET + seed), leaving the
+    displacement draw and all unaffected benefit units untouched.
+
+    Returns the benunit-level boolean flag actually applied. Hard-error
+    contract: a silently-rejected ``set_input`` would leave the stale flags in
+    place and change every downstream result, so the applied array is read back
+    and verified.
+    """
+    if uc_takeup is None:
+        uc_takeup = float(shocked_table.attrs.get("uc_takeup", DEFAULT_UC_TAKEUP))
+    if seed is None:
+        seed = int(shocked_table.attrs.get("seed", 0))
+    if not 0.0 <= uc_takeup <= 1.0:
+        raise ValueError("uc_takeup must lie in [0, 1]")
+
+    baseline_flag = np.asarray(
+        baseline_sim.calculate("would_claim_uc", period=period, map_to="benunit").values,
+        dtype=bool,
+    )
+    affected = affected_mask(shocked_table)
+    if not affected.any():
+        # No new claimants (e.g. the wage-cut margin): nothing to re-draw, and
+        # the family is by construction invariant to uc_takeup.
+        return baseline_flag
+    affected_bu = (
+        np.asarray(
+            sim.map_result(affected.astype(float), "person", "benunit"), dtype=float
+        )
+        > 0
+    )
+    rng = np.random.default_rng(UC_TAKEUP_SEED_OFFSET + int(seed))
+    draw = rng.random(baseline_flag.size) < uc_takeup
+    new_flag = np.where(affected_bu, draw, baseline_flag)
+    sim.set_input("would_claim_uc", period, new_flag)
+    applied = np.asarray(
+        sim.calculate("would_claim_uc", period=period, map_to="benunit").values, dtype=bool
+    )
+    if not np.array_equal(applied, new_flag):
+        raise RuntimeError(
+            "post-shock UC take-up re-draw not applied: would_claim_uc in the "
+            "shocked simulation does not match the re-drawn flag."
+        )
+    return new_flag
 
 
 def build_shocked_simulation(dataset, baseline_sim, shocked_table, period):
@@ -482,4 +594,14 @@ def build_shocked_simulation(dataset, baseline_sim, shocked_table, period):
                 "reallocated persons' employment_status changed: they switch "
                 "sector, they do not lose their job."
             )
+    # Post-shock UC take-up. The baseline would_claim_uc flag is a STORED draw
+    # conditioned on PRE-SHOCK circumstances (and calibrated as a
+    # population-wide share, not take-up among the entitled), so it is not
+    # informative about whether a newly displaced family would claim; carrying
+    # it through models the newly unemployed as not claiming because they were
+    # not claiming while in work. Re-drawn here for affected benefit units only,
+    # from an independent RNG stream, so the displacement draw is unchanged.
+    # Applied LAST so that it is never shadowed by an earlier cached value; it
+    # has its own hard-error check inside redraw_uc_takeup.
+    redraw_uc_takeup(sim, baseline_sim, shocked_table, period)
     return sim

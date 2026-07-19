@@ -1,32 +1,42 @@
 {
   "full_tariff_displacement": {
     "gross_earnings_loss": 1701060773.6415339,
-    "net_disposable_loss": 1142632960.0,
-    "cushioning_rate": 0.3282821062566057
+    "net_disposable_loss": 1025245184.0,
+    "cushioning_rate": 0.39729067891841774
   },
   "full_tariff_wage_cut": {
     "gross_earnings_loss": 1771498650.499899,
-    "net_disposable_loss": 1044848128.0,
-    "cushioning_rate": 0.4101897127016414
+    "net_disposable_loss": 1044774912.0,
+    "cushioning_rate": 0.41023104267949895
   },
   "full_tariff_inactivity": {
     "gross_earnings_loss": 1701060773.6415339,
-    "net_disposable_loss": 1142632960.0,
-    "cushioning_rate": 0.3282821062566057
+    "net_disposable_loss": 1004535808.0,
+    "cushioning_rate": 0.4094650681706409
+  },
+  "full_tariff_reallocation": {
+    "gross_earnings_loss": 481400198.9405539,
+    "net_disposable_loss": 258342912.0,
+    "cushioning_rate": 0.46335104852771014
   },
   "epd_displacement": {
     "gross_earnings_loss": 908957259.136178,
-    "net_disposable_loss": 590269824.0,
-    "cushioning_rate": 0.35060772322676725
+    "net_disposable_loss": 589824000.0,
+    "cushioning_rate": 0.3510982017344406
   },
   "epd_wage_cut": {
     "gross_earnings_loss": 1385522770.8442326,
-    "net_disposable_loss": 820449024.0,
-    "cushioning_rate": 0.4078415445311804
+    "net_disposable_loss": 820379648.0,
+    "cushioning_rate": 0.4078916166061112
   },
   "epd_inactivity": {
     "gross_earnings_loss": 908957259.136178,
-    "net_disposable_loss": 590269824.0,
-    "cushioning_rate": 0.35060772322676725
+    "net_disposable_loss": 574226432.0,
+    "cushioning_rate": 0.3682580492885743
+  },
+  "epd_reallocation": {
+    "gross_earnings_loss": 257234904.3355383,
+    "net_disposable_loss": 164757504.0,
+    "cushioning_rate": 0.3595056455282226
   }
 }

@@ -2,9 +2,9 @@
   "scenario": "full_tariff_displacement",
   "n_draws": 10,
   "modelled_baseline_uc_takeup_person_weighted": 0.5477457313882192,
+  "central_post_shock_uc_takeup": 0.8,
   "notes": {
-    "duration_6m": "displaced keep 50% of baseline annual earnings (6-month spell), in-model hybrid: transition (hours/status) unchanged.",
-    "takeup_100": "would_claim_uc forced True for all benunits in baseline AND shocked simulations."
+    "duration_6m": "displaced keep 50% of baseline annual earnings (6-month spell), in-model hybrid: transition (hours/status) unchanged."
   },
   "duration_12m_central": {
     "gross_earnings_loss_bn": {
@@ -12,20 +12,20 @@
       "sd": 0.32081999009336337
     },
     "exchequer_cost_bn": {
-      "mean": 0.7037321216,
-      "sd": 0.16370518617141752
+      "mean": 0.7991263232,
+      "sd": 0.17189715707766343
     },
     "cushioning_rate": {
-      "mean": 0.3291180898516143,
-      "sd": 0.026345064191344872
+      "mean": 0.38804443561739066,
+      "sd": 0.027599875591885335
     },
     "uc_change_bn": {
-      "mean": 0.0725112451332184,
-      "sd": 0.03224788406329829
+      "mean": 0.16790149671049043,
+      "sd": 0.04765195788807734
     },
     "poverty_change_bhc_pp": {
-      "mean": 0.0563802092707702,
-      "sd": 0.014100665806458194
+      "mean": 0.04740134766267057,
+      "sd": 0.014319854832938789
     },
     "displaced_weighted": {
       "mean": 32868.39832458496,
@@ -38,46 +38,20 @@
       "sd": 0.16040999504668169
     },
     "exchequer_cost_bn": {
-      "mean": 0.41383854080000004,
-      "sd": 0.09235116509180184
+      "mean": 0.45898301440000006,
+      "sd": 0.10484123191715251
     },
     "cushioning_rate": {
-      "mean": 0.422102042586732,
-      "sd": 0.032691937173942365
+      "mean": 0.47697386517076656,
+      "sd": 0.050260278632236595
     },
     "uc_change_bn": {
-      "mean": 0.013171829951228332,
-      "sd": 0.010108452738699128
+      "mean": 0.05885959627145463,
+      "sd": 0.03098169069725655
     },
     "poverty_change_bhc_pp": {
-      "mean": 0.013092139741752995,
-      "sd": 0.009586972000938545
-    },
-    "displaced_weighted": {
-      "mean": 32868.39832458496,
-      "sd": 2458.0437363216265
-    }
-  },
-  "takeup_100": {
-    "gross_earnings_loss_bn": {
-      "mean": 1.6813460571251473,
-      "sd": 0.32081999009336337
-    },
-    "exchequer_cost_bn": {
-      "mean": 0.7930036224,
-      "sd": 0.15989073836945214
-    },
-    "cushioning_rate": {
-      "mean": 0.38580067290059555,
-      "sd": 0.024999109543520023
-    },
-    "uc_change_bn": {
-      "mean": 0.16118390714904324,
-      "sd": 0.05546819755319899
-    },
-    "poverty_change_bhc_pp": {
-      "mean": 0.04763955353834379,
-      "sd": 0.019281164591901764
+      "mean": 0.00627098148634736,
+      "sd": 0.010459012685237419
     },
     "displaced_weighted": {
       "mean": 32868.39832458496,

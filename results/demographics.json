@@ -9,13 +9,13 @@
           "n_draws_present": 20
         },
         "mean_income_change_per_affected": {
-          "mean": -28575.825493153105,
-          "sd": 9783.922888869904,
+          "mean": -26961.839362948795,
+          "sd": 9972.423056057045,
           "n_draws_present": 20
         },
         "cushioning_rate": {
-          "mean": 0.2803840661484977,
-          "sd": 0.07218353926152793,
+          "mean": 0.3250662258342353,
+          "sd": 0.07142635966257094,
           "n_draws_present": 20
         }
       },
@@ -26,13 +26,13 @@
           "n_draws_present": 20
         },
         "mean_income_change_per_affected": {
-          "mean": -37857.26265787804,
-          "sd": 8797.547676040627,
+          "mean": -35230.53211399795,
+          "sd": 9224.440191646574,
           "n_draws_present": 20
         },
         "cushioning_rate": {
-          "mean": 0.3538012126961774,
-          "sd": 0.044536502170083495,
+          "mean": 0.4019649605780088,
+          "sd": 0.046645611654578166,
           "n_draws_present": 20
         }
       }
@@ -45,13 +45,13 @@
           "n_draws_present": 12
         },
         "mean_income_change_per_affected": {
-          "mean": -27154.848028232544,
-          "sd": 9833.483298705492,
+          "mean": -26491.54535086163,
+          "sd": 8965.926452906811,
           "n_draws_present": 12
         },
         "cushioning_rate": {
-          "mean": 0.2857893820369433,
-          "sd": 0.043833775447350155,
+          "mean": 0.290102127591598,
+          "sd": 0.0871256387661534,
           "n_draws_present": 12
         }
       },
@@ -62,13 +62,13 @@
           "n_draws_present": 20
         },
         "mean_income_change_per_affected": {
-          "mean": -26804.209970687913,
-          "sd": 7485.559331399214,
+          "mean": -24804.608114220708,
+          "sd": 9636.209032749903,
           "n_draws_present": 20
         },
         "cushioning_rate": {
-          "mean": 0.2993388075559692,
-          "sd": 0.08147790516715367,
+          "mean": 0.3787193846676385,
+          "sd": 0.11696050023744405,
           "n_draws_present": 20
         }
       },
@@ -79,13 +79,13 @@
           "n_draws_present": 20
         },
         "mean_income_change_per_affected": {
-          "mean": -43057.69546898411,
-          "sd": 22374.61577400717,
+          "mean": -39388.53637618018,
+          "sd": 22417.224922085905,
           "n_draws_present": 20
         },
         "cushioning_rate": {
-          "mean": 0.33481795852672935,
-          "sd": 0.06584764971633685,
+          "mean": 0.40303378961530445,
+          "sd": 0.0656556363752762,
           "n_draws_present": 20
         }
       },
@@ -96,13 +96,13 @@
           "n_draws_present": 20
         },
         "mean_income_change_per_affected": {
-          "mean": -34001.512022025214,
-          "sd": 8704.697284570459,
+          "mean": -31745.337421093856,
+          "sd": 8724.271222041041,
           "n_draws_present": 20
         },
         "cushioning_rate": {
-          "mean": 0.341157951527821,
-          "sd": 0.060249575355886986,
+          "mean": 0.3877955864920367,
+          "sd": 0.06517366123065683,
           "n_draws_present": 20
         }
       },
@@ -113,13 +113,13 @@
           "n_draws_present": 20
         },
         "mean_income_change_per_affected": {
-          "mean": -31082.404948922987,
-          "sd": 11966.421097124668,
+          "mean": -30623.682718779495,
+          "sd": 12534.406370780145,
           "n_draws_present": 20
         },
         "cushioning_rate": {
-          "mean": 0.3329851102902376,
-          "sd": 0.10235502923604589,
+          "mean": 0.3545768826496615,
+          "sd": 0.06130961050678405,
           "n_draws_present": 20
         }
       },
@@ -130,13 +130,13 @@
           "n_draws_present": 13
         },
         "mean_income_change_per_affected": {
-          "mean": -41214.996863040804,
-          "sd": 66021.32127669733,
+          "mean": -41320.718464841324,
+          "sd": 65964.73932721911,
           "n_draws_present": 13
         },
         "cushioning_rate": {
-          "mean": 0.2668020641948684,
-          "sd": 0.12093097827606172,
+          "mean": 0.26128877173131065,
+          "sd": 0.11559028325587783,
           "n_draws_present": 13
         }
       }
@@ -149,13 +149,13 @@
           "n_draws_present": 20
         },
         "mean_income_change_per_affected": {
-          "mean": -35197.655960983066,
-          "sd": 9497.982315460287,
+          "mean": -34903.35476010358,
+          "sd": 9511.598638388485,
           "n_draws_present": 20
         },
         "cushioning_rate": {
-          "mean": 0.2911237526698168,
-          "sd": 0.06272998262730842,
+          "mean": 0.2982337845763814,
+          "sd": 0.05924417580001428,
           "n_draws_present": 20
         }
       },
@@ -166,13 +166,13 @@
           "n_draws_present": 20
         },
         "mean_income_change_per_affected": {
-          "mean": -36258.56380181174,
-          "sd": 23789.518698413045,
+          "mean": -36489.621301172476,
+          "sd": 23937.34273438263,
           "n_draws_present": 20
         },
         "cushioning_rate": {
-          "mean": 0.33916209816089044,
-          "sd": 0.09514877855292614,
+          "mean": 0.3414546004877995,
+          "sd": 0.08458134947264133,
           "n_draws_present": 20
         }
       },
@@ -183,13 +183,13 @@
           "n_draws_present": 20
         },
         "mean_income_change_per_affected": {
-          "mean": -35480.466172971275,
-          "sd": 9191.775016775808,
+          "mean": -32759.170527062233,
+          "sd": 10447.955914038557,
           "n_draws_present": 20
         },
         "cushioning_rate": {
-          "mean": 0.33961135443988133,
-          "sd": 0.059296255072681305,
+          "mean": 0.39797177362074004,
+          "sd": 0.08012229202990964,
           "n_draws_present": 20
         }
       },
@@ -200,13 +200,13 @@
           "n_draws_present": 18
         },
         "mean_income_change_per_affected": {
-          "mean": -49043.3444612991,
-          "sd": 43920.116497384515,
+          "mean": -40464.61316420416,
+          "sd": 43269.416743418136,
           "n_draws_present": 18
         },
         "cushioning_rate": {
-          "mean": 0.33560390308273,
-          "sd": 0.09471413674992607,
+          "mean": 0.48169889015517975,
+          "sd": 0.14697696858137463,
           "n_draws_present": 18
         }
       },
@@ -217,13 +217,13 @@
           "n_draws_present": 20
         },
         "mean_income_change_per_affected": {
-          "mean": -28652.280293923024,
-          "sd": 6143.165805873717,
+          "mean": -26555.87556486597,
+          "sd": 5178.870896889195,
           "n_draws_present": 20
         },
         "cushioning_rate": {
-          "mean": 0.3282195564169578,
-          "sd": 0.04641912879894737,
+          "mean": 0.3746341246419246,
+          "sd": 0.05769091135851637,
           "n_draws_present": 20
         }
       },
@@ -234,13 +234,13 @@
           "n_draws_present": 14
         },
         "mean_income_change_per_affected": {
-          "mean": -30949.377365017248,
-          "sd": 20610.502258174412,
+          "mean": -28865.48433444088,
+          "sd": 22514.801400658464,
           "n_draws_present": 14
         },
         "cushioning_rate": {
-          "mean": 0.32551362156684965,
-          "sd": 0.13914943163388446,
+          "mean": 0.3854800711208672,
+          "sd": 0.25070938587622504,
           "n_draws_present": 14
         }
       }
@@ -253,13 +253,13 @@
           "n_draws_present": 20
         },
         "mean_income_change_per_affected": {
-          "mean": -34853.204406918456,
-          "sd": 6195.42829811403,
+          "mean": -33387.26933642936,
+          "sd": 7146.254997205937,
           "n_draws_present": 20
         },
         "cushioning_rate": {
-          "mean": 0.3254280647483539,
-          "sd": 0.04917563764376881,
+          "mean": 0.35869692568508105,
+          "sd": 0.052528770484307104,
           "n_draws_present": 20
         }
       },
@@ -270,13 +270,13 @@
           "n_draws_present": 20
         },
         "mean_income_change_per_affected": {
-          "mean": -43469.207770220724,
-          "sd": 27029.664291400783,
+          "mean": -40140.24036909883,
+          "sd": 26570.607769408252,
           "n_draws_present": 20
         },
         "cushioning_rate": {
-          "mean": 0.3641637698144373,
-          "sd": 0.07579337172545832,
+          "mean": 0.42318794894722017,
+          "sd": 0.06668666730084306,
           "n_draws_present": 20
         }
       },
@@ -287,13 +287,13 @@
           "n_draws_present": 20
         },
         "mean_income_change_per_affected": {
-          "mean": -30077.778517137845,
-          "sd": 5487.070116634091,
+          "mean": -28173.773952992575,
+          "sd": 5811.173444421224,
           "n_draws_present": 20
         },
         "cushioning_rate": {
-          "mean": 0.33407524017286183,
-          "sd": 0.062300301749537816,
+          "mean": 0.3786703426533852,
+          "sd": 0.05497728779968646,
           "n_draws_present": 20
         }
       }
@@ -302,7 +302,7 @@
   },
   "full_tariff_displacement_per_draw": [
     {
-      "attribution_coverage_of_net_loss": 1.0,
+      "attribution_coverage_of_net_loss": 1.0000000000000002,
       "by_gender": {
         "FEMALE": {
           "share_of_affected": 0.24302466306133597,
@@ -311,8 +311,8 @@
         },
         "MALE": {
           "share_of_affected": 0.756975336938664,
-          "mean_income_change_per_affected": -34242.33989885015,
-          "cushioning_rate": 0.34894094113402685
+          "mean_income_change_per_affected": -29809.00559660269,
+          "cushioning_rate": 0.43323314975603133
         }
       },
       "by_age_band": {
@@ -323,18 +323,18 @@
         },
         "35-44": {
           "share_of_affected": 0.2598347851505006,
-          "mean_income_change_per_affected": -42847.92598165279,
-          "cushioning_rate": 0.3794585818239947
+          "mean_income_change_per_affected": -39292.5444323024,
+          "cushioning_rate": 0.43094909059997155
         },
         "45-54": {
           "share_of_affected": 0.178441455385059,
-          "mean_income_change_per_affected": -27688.68867909399,
-          "cushioning_rate": 0.3497419865136848
+          "mean_income_change_per_affected": -20593.787579560194,
+          "cushioning_rate": 0.5163629611771797
         },
         "55-64": {
           "share_of_affected": 0.29160649026485397,
-          "mean_income_change_per_affected": -26057.006314949824,
-          "cushioning_rate": 0.2690669952024626
+          "mean_income_change_per_affected": -22058.163740736127,
+          "cushioning_rate": 0.3812397437965853
         },
         "65-+": {
           "share_of_affected": 0.04052336821424716,
@@ -350,8 +350,8 @@
         },
         "couple_no_children_single_earner": {
           "share_of_affected": 0.23066258237343693,
-          "mean_income_change_per_affected": -28888.105902032057,
-          "cushioning_rate": 0.3019455178222469
+          "mean_income_change_per_affected": -24394.570889351744,
+          "cushioning_rate": 0.41052765425797333
         },
         "couple_with_children_dual_earner": {
           "share_of_affected": 0.12792443903965536,
@@ -360,13 +360,13 @@
         },
         "couple_with_children_single_earner": {
           "share_of_affected": 0.11151868863053001,
-          "mean_income_change_per_affected": -60216.618303546995,
-          "cushioning_rate": 0.3771257227790934
+          "mean_income_change_per_affected": -39153.884645880455,
+          "cushioning_rate": 0.5949963932505158
         },
         "single_no_children": {
           "share_of_affected": 0.25171856351119326,
-          "mean_income_change_per_affected": -30232.13550026981,
-          "cushioning_rate": 0.35561651267365046
+          "mean_income_change_per_affected": -30349.147526999328,
+          "cushioning_rate": 0.3531224573713906
         }
       },
       "by_couple_earners": {
@@ -377,13 +377,13 @@
         },
         "couple_single_earner": {
           "share_of_affected": 0.34218127100396695,
-          "mean_income_change_per_affected": -39098.234029476356,
-          "cushioning_rate": 0.3418202920436675
+          "mean_income_change_per_affected": -29204.709417347163,
+          "cushioning_rate": 0.5083678945507466
         },
         "not_couple": {
           "share_of_affected": 0.25171856351119326,
-          "mean_income_change_per_affected": -30232.13550026981,
-          "cushioning_rate": 0.35561651267365046
+          "mean_income_change_per_affected": -30349.147526999328,
+          "cushioning_rate": 0.3531224573713906
         }
       }
     },
@@ -392,20 +392,20 @@
       "by_gender": {
         "FEMALE": {
           "share_of_affected": 0.21387468737328455,
-          "mean_income_change_per_affected": -48580.90850352742,
-          "cushioning_rate": 0.2880917466901429
+          "mean_income_change_per_affected": -47257.494630937574,
+          "cushioning_rate": 0.3074851521957863
         },
         "MALE": {
           "share_of_affected": 0.7861253126267155,
-          "mean_income_change_per_affected": -35975.4474839429,
-          "cushioning_rate": 0.28769874310651056
+          "mean_income_change_per_affected": -33565.46049612403,
+          "cushioning_rate": 0.33541564117390865
         }
       },
       "by_age_band": {
         "25-34": {
           "share_of_affected": 0.21477481054105238,
-          "mean_income_change_per_affected": -37693.18867329251,
-          "cushioning_rate": 0.3147213697940807
+          "mean_income_change_per_affected": -35195.1302942009,
+          "cushioning_rate": 0.3601371619955842
         },
         "35-44": {
           "share_of_affected": 0.0641977679509884,
@@ -414,13 +414,13 @@
         },
         "45-54": {
           "share_of_affected": 0.3109589492548546,
-          "mean_income_change_per_affected": -45040.98930980939,
-          "cushioning_rate": 0.2838873130868377
+          "mean_income_change_per_affected": -40109.012192809205,
+          "cushioning_rate": 0.36230147403600765
         },
         "55-64": {
           "share_of_affected": 0.34538849788811904,
-          "mean_income_change_per_affected": -33489.148759699514,
-          "cushioning_rate": 0.29571266628890547
+          "mean_income_change_per_affected": -33178.09594234543,
+          "cushioning_rate": 0.30225420489144084
         },
         "65-+": {
           "share_of_affected": 0.06467997436498558,
@@ -431,65 +431,65 @@
       "by_household_type": {
         "couple_no_children_dual_earner": {
           "share_of_affected": 0.36123701697874555,
-          "mean_income_change_per_affected": -52688.63264433131,
-          "cushioning_rate": 0.3414588253209323
+          "mean_income_change_per_affected": -52632.38755632986,
+          "cushioning_rate": 0.34216181768310716
         },
         "couple_no_children_single_earner": {
           "share_of_affected": 0.07548140191992811,
-          "mean_income_change_per_affected": -29775.21286504732,
-          "cushioning_rate": 0.16473510438731753
+          "mean_income_change_per_affected": -28631.426163020144,
+          "cushioning_rate": 0.19682101707590127
         },
         "couple_with_children_dual_earner": {
           "share_of_affected": 0.16845082958983013,
-          "mean_income_change_per_affected": -33423.64544310997,
-          "cushioning_rate": 0.24003761815918057
+          "mean_income_change_per_affected": -32918.23431485499,
+          "cushioning_rate": 0.2515292864001948
         },
         "couple_with_children_single_earner": {
           "share_of_affected": 0.02963963126410854,
-          "mean_income_change_per_affected": -43786.14904785156,
-          "cushioning_rate": 0.3056592255813648
+          "mean_income_change_per_affected": -31611.0126953125,
+          "cushioning_rate": 0.49872698302301277
         },
         "single_no_children": {
           "share_of_affected": 0.2956569281791545,
-          "mean_income_change_per_affected": -28442.49494485793,
-          "cushioning_rate": 0.22497159354168406
+          "mean_income_change_per_affected": -25887.076183818037,
+          "cushioning_rate": 0.2946040970911129
         },
         "single_with_children": {
           "share_of_affected": 0.06953419206823314,
-          "mean_income_change_per_affected": -29533.8216029399,
-          "cushioning_rate": 0.2035229211430981
+          "mean_income_change_per_affected": -17030.428552169327,
+          "cushioning_rate": 0.540718225792941
         }
       },
       "by_couple_earners": {
         "couple_dual_earner": {
           "share_of_affected": 0.5296878465685757,
-          "mean_income_change_per_affected": -46561.99957712716,
-          "cushioning_rate": 0.3207654277366133
+          "mean_income_change_per_affected": -46362.91112846633,
+          "cushioning_rate": 0.3236696792399175
         },
         "couple_single_earner": {
           "share_of_affected": 0.10512103318403665,
-          "mean_income_change_per_affected": -33725.69707876543,
-          "cushioning_rate": 0.22250099822412417
+          "mean_income_change_per_affected": -29471.54201292848,
+          "cushioning_rate": 0.32057462170959883
         },
         "not_couple": {
           "share_of_affected": 0.36519112024738765,
-          "mean_income_change_per_affected": -28650.288927912192,
-          "cushioning_rate": 0.22085331986956513
+          "mean_income_change_per_affected": -24200.726753737308,
+          "cushioning_rate": 0.3418594851045961
         }
       }
     },
     {
-      "attribution_coverage_of_net_loss": 0.9999999999999999,
+      "attribution_coverage_of_net_loss": 1.0,
       "by_gender": {
         "FEMALE": {
           "share_of_affected": 0.21815161937825592,
-          "mean_income_change_per_affected": -17056.039425855393,
-          "cushioning_rate": 0.12514691219629603
+          "mean_income_change_per_affected": -14740.014853630833,
+          "cushioning_rate": 0.24394244249792074
         },
         "MALE": {
           "share_of_affected": 0.7818483806217441,
-          "mean_income_change_per_affected": -26900.94094669756,
-          "cushioning_rate": 0.30798945734124195
+          "mean_income_change_per_affected": -23581.72833458557,
+          "cushioning_rate": 0.3933742074679616
         }
       },
       "by_age_band": {
@@ -500,13 +500,13 @@
         },
         "25-34": {
           "share_of_affected": 0.1208479863065563,
-          "mean_income_change_per_affected": -26036.43841396038,
-          "cushioning_rate": 0.34027004176942965
+          "mean_income_change_per_affected": -23767.320051812447,
+          "cushioning_rate": 0.39776659097016065
         },
         "35-44": {
           "share_of_affected": 0.32174026602652833,
-          "mean_income_change_per_affected": -29460.84390800584,
-          "cushioning_rate": 0.23800477772778794
+          "mean_income_change_per_affected": -19178.529288398066,
+          "cushioning_rate": 0.503953527821525
         },
         "45-54": {
           "share_of_affected": 0.30448091457273035,
@@ -515,8 +515,8 @@
         },
         "55-64": {
           "share_of_affected": 0.10899440196600786,
-          "mean_income_change_per_affected": -25196.692825792605,
-          "cushioning_rate": 0.3894959902718259
+          "mean_income_change_per_affected": -29619.741170225698,
+          "cushioning_rate": 0.2823276103511956
         }
       },
       "by_household_type": {
@@ -527,45 +527,45 @@
         },
         "couple_no_children_single_earner": {
           "share_of_affected": 0.06666015265956762,
-          "mean_income_change_per_affected": -27926.678938343208,
-          "cushioning_rate": 0.3774987835518948
+          "mean_income_change_per_affected": -26393.983691888065,
+          "cushioning_rate": 0.4116634136344419
         },
         "couple_with_children_dual_earner": {
           "share_of_affected": 0.22997264711708904,
-          "mean_income_change_per_affected": -32385.076943398148,
-          "cushioning_rate": 0.25487155692544516
+          "mean_income_change_per_affected": -19966.75110615018,
+          "cushioning_rate": 0.5405972265872372
         },
         "couple_with_children_single_earner": {
           "share_of_affected": 0.08655725136701137,
-          "mean_income_change_per_affected": -20591.866673632252,
-          "cushioning_rate": 0.30769615329487976
+          "mean_income_change_per_affected": -14754.753052633203,
+          "cushioning_rate": 0.5039414125285674
         },
         "single_no_children": {
           "share_of_affected": 0.1719095988383125,
-          "mean_income_change_per_affected": -23921.735353604545,
-          "cushioning_rate": 0.35997052454195
+          "mean_income_change_per_affected": -22634.23744290922,
+          "cushioning_rate": 0.39441771661455594
         },
         "single_with_children": {
           "share_of_affected": 0.0977269780025036,
-          "mean_income_change_per_affected": -19823.094003165097,
-          "cushioning_rate": 0.35986754644561714
+          "mean_income_change_per_affected": -25801.557885088794,
+          "cushioning_rate": 0.16680945205273223
         }
       },
       "by_couple_earners": {
         "couple_dual_earner": {
           "share_of_affected": 0.5771460191326049,
-          "mean_income_change_per_affected": -26093.328511744807,
-          "cushioning_rate": 0.232809897465603
+          "mean_income_change_per_affected": -21145.056894370467,
+          "cushioning_rate": 0.3782978526642944
         },
         "couple_single_earner": {
           "share_of_affected": 0.153217404026579,
-          "mean_income_change_per_affected": -23783.01658510108,
-          "cushioning_rate": 0.3452061260311451
+          "mean_income_change_per_affected": -19818.62224022271,
+          "cushioning_rate": 0.45435380802239045
         },
         "not_couple": {
           "share_of_affected": 0.2696365768408161,
-          "mean_income_change_per_affected": -22436.225346811152,
-          "cushioning_rate": 0.3599375518296467
+          "mean_income_change_per_affected": -23782.199855154577,
+          "cushioning_rate": 0.32153948238310204
         }
       }
     },
@@ -574,13 +574,13 @@
       "by_gender": {
         "FEMALE": {
           "share_of_affected": 0.22864802037306434,
-          "mean_income_change_per_affected": -30357.357556176703,
-          "cushioning_rate": 0.2402945334791139
+          "mean_income_change_per_affected": -23723.381205889622,
+          "cushioning_rate": 0.4063125437343552
         },
         "MALE": {
           "share_of_affected": 0.7713519796269357,
-          "mean_income_change_per_affected": -42281.83249056044,
-          "cushioning_rate": 0.3823571332455722
+          "mean_income_change_per_affected": -39394.07830696488,
+          "cushioning_rate": 0.42454075366543564
         }
       },
       "by_age_band": {
@@ -591,18 +591,18 @@
         },
         "25-34": {
           "share_of_affected": 0.23129775912312783,
-          "mean_income_change_per_affected": -32909.693139835246,
-          "cushioning_rate": 0.34464182403890564
+          "mean_income_change_per_affected": -34867.78829183777,
+          "cushioning_rate": 0.30564864164361505
         },
         "35-44": {
           "share_of_affected": 0.421062360368523,
-          "mean_income_change_per_affected": -43386.29851028527,
-          "cushioning_rate": 0.35119251135782004
+          "mean_income_change_per_affected": -35238.614008584904,
+          "cushioning_rate": 0.47303463436224846
         },
         "45-54": {
           "share_of_affected": 0.20236628212790483,
-          "mean_income_change_per_affected": -24775.18722461386,
-          "cushioning_rate": 0.31454142528287443
+          "mean_income_change_per_affected": -20987.302153983197,
+          "cushioning_rate": 0.4193413720266569
         },
         "55-64": {
           "share_of_affected": 0.09190904381348348,
@@ -613,45 +613,45 @@
       "by_household_type": {
         "couple_no_children_dual_earner": {
           "share_of_affected": 0.07909169414508394,
-          "mean_income_change_per_affected": -29174.502031002674,
-          "cushioning_rate": 0.20138840990365814
+          "mean_income_change_per_affected": -29215.047965352875,
+          "cushioning_rate": 0.20027852110182198
         },
         "couple_no_children_single_earner": {
           "share_of_affected": 0.11797510304253603,
-          "mean_income_change_per_affected": -60866.45145636785,
-          "cushioning_rate": 0.42534771712577535
+          "mean_income_change_per_affected": -59236.55766515068,
+          "cushioning_rate": 0.4407358688177939
         },
         "couple_with_children_dual_earner": {
           "share_of_affected": 0.3350998301734677,
-          "mean_income_change_per_affected": -37118.32777301348,
-          "cushioning_rate": 0.35793704702805984
+          "mean_income_change_per_affected": -39034.12421434411,
+          "cushioning_rate": 0.32479811016818916
         },
         "couple_with_children_single_earner": {
           "share_of_affected": 0.16915208193524436,
-          "mean_income_change_per_affected": -46375.35567568679,
-          "cushioning_rate": 0.3659150931064795
+          "mean_income_change_per_affected": -26093.70599940707,
+          "cushioning_rate": 0.6432237575739974
         },
         "single_no_children": {
           "share_of_affected": 0.29868129070366795,
-          "mean_income_change_per_affected": -32758.3455589564,
-          "cushioning_rate": 0.3394319061260209
+          "mean_income_change_per_affected": -30191.930310564312,
+          "cushioning_rate": 0.391183360596406
         }
       },
       "by_couple_earners": {
         "couple_dual_earner": {
           "share_of_affected": 0.41419152431855166,
-          "mean_income_change_per_affected": -35601.419292178056,
-          "cushioning_rate": 0.33761873945340093
+          "mean_income_change_per_affected": -37159.128397493,
+          "cushioning_rate": 0.30863682408998394
         },
         "couple_single_earner": {
           "share_of_affected": 0.2871271849777804,
-          "mean_income_change_per_affected": -52329.471507865506,
-          "cushioning_rate": 0.395780090876407
+          "mean_income_change_per_affected": -39711.473821329506,
+          "cushioning_rate": 0.5414732384621712
         },
         "not_couple": {
           "share_of_affected": 0.29868129070366795,
-          "mean_income_change_per_affected": -32758.3455589564,
-          "cushioning_rate": 0.3394319061260209
+          "mean_income_change_per_affected": -30191.930310564312,
+          "cushioning_rate": 0.391183360596406
         }
       }
     },
@@ -660,30 +660,30 @@
       "by_gender": {
         "FEMALE": {
           "share_of_affected": 0.3872902714311525,
-          "mean_income_change_per_affected": -29053.39077849965,
-          "cushioning_rate": 0.3643986039001058
+          "mean_income_change_per_affected": -22098.237131193193,
+          "cushioning_rate": 0.5165565878690099
         },
         "MALE": {
           "share_of_affected": 0.6127097285688474,
-          "mean_income_change_per_affected": -41151.141593823864,
-          "cushioning_rate": 0.3546961462587588
+          "mean_income_change_per_affected": -40171.83400083702,
+          "cushioning_rate": 0.37005297329383946
         }
       },
       "by_age_band": {
         "25-34": {
           "share_of_affected": 0.21200803832000562,
-          "mean_income_change_per_affected": -16050.879220465327,
-          "cushioning_rate": 0.07777734536331882
+          "mean_income_change_per_affected": -3811.9051355181396,
+          "cushioning_rate": 0.7809823857612442
         },
         "35-44": {
           "share_of_affected": 0.23068216902009467,
-          "mean_income_change_per_affected": -39905.51152786591,
-          "cushioning_rate": 0.34589176894122875
+          "mean_income_change_per_affected": -38909.49061491135,
+          "cushioning_rate": 0.3622179718271459
         },
         "45-54": {
           "share_of_affected": 0.35268652899422354,
-          "mean_income_change_per_affected": -46654.62964145035,
-          "cushioning_rate": 0.4061503024224734
+          "mean_income_change_per_affected": -45324.35631532061,
+          "cushioning_rate": 0.4230828644959217
         },
         "55-64": {
           "share_of_affected": 0.17777211936808768,
@@ -709,8 +709,8 @@
         },
         "couple_with_children_dual_earner": {
           "share_of_affected": 0.05327787740727242,
-          "mean_income_change_per_affected": -31423.921348217285,
-          "cushioning_rate": 0.3861880090321056
+          "mean_income_change_per_affected": -27111.357188925736,
+          "cushioning_rate": 0.4704264961215503
         },
         "couple_with_children_single_earner": {
           "share_of_affected": 0.10389610203272016,
@@ -719,20 +719,20 @@
         },
         "single_no_children": {
           "share_of_affected": 0.3710777220338961,
-          "mean_income_change_per_affected": -33886.56740812424,
-          "cushioning_rate": 0.34335923456805495
+          "mean_income_change_per_affected": -25896.25234571032,
+          "cushioning_rate": 0.49819246200695966
         },
         "single_with_children": {
           "share_of_affected": 0.04122457114548431,
-          "mean_income_change_per_affected": -19040.041578906326,
-          "cushioning_rate": 0.4916977171396043
+          "mean_income_change_per_affected": -16640.92730400903,
+          "cushioning_rate": 0.555745647797711
         }
       },
       "by_couple_earners": {
         "couple_dual_earner": {
           "share_of_affected": 0.3619387149250551,
-          "mean_income_change_per_affected": -39298.669556868655,
-          "cushioning_rate": 0.3106084423315759
+          "mean_income_change_per_affected": -38663.85417206709,
+          "cushioning_rate": 0.3217446047486504
         },
         "couple_single_earner": {
           "share_of_affected": 0.2257589918955645,
@@ -741,8 +741,8 @@
         },
         "not_couple": {
           "share_of_affected": 0.41230229317938044,
-          "mean_income_change_per_affected": -32402.118569408754,
-          "cushioning_rate": 0.3544283045805158
+          "mean_income_change_per_affected": -24970.846855689924,
+          "cushioning_rate": 0.50248710107778
         }
       }
     },
@@ -751,13 +751,13 @@
       "by_gender": {
         "FEMALE": {
           "share_of_affected": 0.16054121158471132,
-          "mean_income_change_per_affected": -24295.21874452149,
-          "cushioning_rate": 0.1961330178681191
+          "mean_income_change_per_affected": -21009.972799480172,
+          "cushioning_rate": 0.30483344864719486
         },
         "MALE": {
           "share_of_affected": 0.8394587884152886,
-          "mean_income_change_per_affected": -33551.187867157954,
-          "cushioning_rate": 0.36712601005485423
+          "mean_income_change_per_affected": -30500.379869550092,
+          "cushioning_rate": 0.42467321338033215
         }
       },
       "by_age_band": {
@@ -773,18 +773,18 @@
         },
         "35-44": {
           "share_of_affected": 0.3581230260830058,
-          "mean_income_change_per_affected": -37073.16278216708,
-          "cushioning_rate": 0.3227359176899023
+          "mean_income_change_per_affected": -30758.316910501617,
+          "cushioning_rate": 0.43809748852033736
         },
         "45-54": {
           "share_of_affected": 0.2601477806955805,
-          "mean_income_change_per_affected": -46683.111645452314,
-          "cushioning_rate": 0.372114111517419
+          "mean_income_change_per_affected": -43870.94226398352,
+          "cushioning_rate": 0.4099376714389876
         },
         "55-64": {
           "share_of_affected": 0.10232543200634496,
-          "mean_income_change_per_affected": -18694.42701393378,
-          "cushioning_rate": 0.3641640162297636
+          "mean_income_change_per_affected": -17762.365340482294,
+          "cushioning_rate": 0.395865354314736
         }
       },
       "by_household_type": {
@@ -800,40 +800,40 @@
         },
         "couple_with_children_dual_earner": {
           "share_of_affected": 0.3317020157247824,
-          "mean_income_change_per_affected": -42717.55123236021,
-          "cushioning_rate": 0.4198438067326856
+          "mean_income_change_per_affected": -40233.58726918347,
+          "cushioning_rate": 0.45357905221178807
         },
         "couple_with_children_single_earner": {
           "share_of_affected": 0.07152224866815775,
-          "mean_income_change_per_affected": -49648.01471357545,
-          "cushioning_rate": 0.2988546230715794
+          "mean_income_change_per_affected": -39419.31473346877,
+          "cushioning_rate": 0.443307643890529
         },
         "single_no_children": {
           "share_of_affected": 0.17698237688415697,
-          "mean_income_change_per_affected": -27837.93252410392,
-          "cushioning_rate": 0.2524776201548471
+          "mean_income_change_per_affected": -22156.50748077824,
+          "cushioning_rate": 0.4050389630498821
         },
         "single_with_children": {
           "share_of_affected": 0.056712408057665295,
-          "mean_income_change_per_affected": -42049.8408203125,
-          "cushioning_rate": 0.2576168388266318
+          "mean_income_change_per_affected": -32749.982421875,
+          "cushioning_rate": 0.421804339697305
         }
       },
       "by_couple_earners": {
         "couple_dual_earner": {
           "share_of_affected": 0.6863064928519433,
-          "mean_income_change_per_affected": -30492.28012751859,
-          "cushioning_rate": 0.38689740191747346
+          "mean_income_change_per_affected": -29291.743833377495,
+          "cushioning_rate": 0.41103636161324264
         },
         "couple_single_earner": {
           "share_of_affected": 0.0799987222062344,
-          "mean_income_change_per_affected": -47833.29325635893,
-          "cushioning_rate": 0.29384335355939517
+          "mean_income_change_per_affected": -38688.401896179705,
+          "cushioning_rate": 0.4288481875430835
         },
         "not_couple": {
           "share_of_affected": 0.23369478494182225,
-          "mean_income_change_per_affected": -31286.839365449778,
-          "cushioning_rate": 0.25416163313931417
+          "mean_income_change_per_affected": -24727.302861418393,
+          "cushioning_rate": 0.4105326214767451
         }
       }
     },
@@ -842,35 +842,35 @@
       "by_gender": {
         "FEMALE": {
           "share_of_affected": 0.24231872626866777,
-          "mean_income_change_per_affected": -24399.05679619146,
-          "cushioning_rate": 0.22726037974503677
+          "mean_income_change_per_affected": -23397.47056840513,
+          "cushioning_rate": 0.25898149781026547
         },
         "MALE": {
           "share_of_affected": 0.7576812737313322,
-          "mean_income_change_per_affected": -34879.63790040193,
-          "cushioning_rate": 0.35737724410338956
+          "mean_income_change_per_affected": -31794.181127798776,
+          "cushioning_rate": 0.4142237268585116
         }
       },
       "by_age_band": {
         "25-34": {
           "share_of_affected": 0.2997298004650236,
-          "mean_income_change_per_affected": -26066.733926293644,
-          "cushioning_rate": 0.3300834284640939
+          "mean_income_change_per_affected": -22506.926064404022,
+          "cushioning_rate": 0.4215706966775513
         },
         "35-44": {
           "share_of_affected": 0.38023343103255985,
-          "mean_income_change_per_affected": -37490.88571731768,
-          "cushioning_rate": 0.31435872121053055
+          "mean_income_change_per_affected": -35651.85207542138,
+          "cushioning_rate": 0.34799135895278055
         },
         "45-54": {
           "share_of_affected": 0.1643499815977804,
-          "mean_income_change_per_affected": -20267.1126393952,
-          "cushioning_rate": 0.3680997776904762
+          "mean_income_change_per_affected": -17521.44435161561,
+          "cushioning_rate": 0.4537058742423681
         },
         "55-64": {
           "share_of_affected": 0.12688375548862316,
-          "mean_income_change_per_affected": -49258.33382586853,
-          "cushioning_rate": 0.3792700648318391
+          "mean_income_change_per_affected": -46397.425343725,
+          "cushioning_rate": 0.4153218635573249
         },
         "65-+": {
           "share_of_affected": 0.028803031416012995,
@@ -881,8 +881,8 @@
       "by_household_type": {
         "couple_no_children_dual_earner": {
           "share_of_affected": 0.12036546773914066,
-          "mean_income_change_per_affected": -57611.99560633253,
-          "cushioning_rate": 0.3550937230547161
+          "mean_income_change_per_affected": -55483.27473715542,
+          "cushioning_rate": 0.3789225357168805
         },
         "couple_no_children_single_earner": {
           "share_of_affected": 0.021281930554682464,
@@ -891,40 +891,40 @@
         },
         "couple_with_children_dual_earner": {
           "share_of_affected": 0.5135797671957845,
-          "mean_income_change_per_affected": -30634.74181868341,
-          "cushioning_rate": 0.32087239858305594
+          "mean_income_change_per_affected": -27674.160858523475,
+          "cushioning_rate": 0.38650416588092373
         },
         "couple_with_children_single_earner": {
           "share_of_affected": 0.13067216282002264,
-          "mean_income_change_per_affected": -29829.140698988056,
-          "cushioning_rate": 0.38197689276940383
+          "mean_income_change_per_affected": -23959.01472780977,
+          "cushioning_rate": 0.5035986829896532
         },
         "single_no_children": {
           "share_of_affected": 0.19025599707706906,
-          "mean_income_change_per_affected": -27811.797961089764,
-          "cushioning_rate": 0.3315091415373844
+          "mean_income_change_per_affected": -26522.680488949725,
+          "cushioning_rate": 0.3624946695789626
         },
         "single_with_children": {
           "share_of_affected": 0.023844674613300698,
-          "mean_income_change_per_affected": -10168.267578125,
-          "cushioning_rate": 0.2604108917561607
+          "mean_income_change_per_affected": -18914.34765625,
+          "cushioning_rate": -0.3757353854646883
         }
       },
       "by_couple_earners": {
         "couple_dual_earner": {
           "share_of_affected": 0.6339452349349252,
-          "mean_income_change_per_affected": -35756.84005608275,
-          "cushioning_rate": 0.3317207105386816
+          "mean_income_change_per_affected": -32954.20212227106,
+          "cushioning_rate": 0.38410075542204924
         },
         "couple_single_earner": {
           "share_of_affected": 0.1519540933747051,
-          "mean_income_change_per_affected": -27233.87038486089,
-          "cushioning_rate": 0.37420270618838847
+          "mean_income_change_per_affected": -22185.8849068498,
+          "cushioning_rate": 0.49019854543919616
         },
         "not_couple": {
           "share_of_affected": 0.21410067169036975,
-          "mean_income_change_per_affected": -25846.814676870566,
-          "cushioning_rate": 0.3286815917082726
+          "mean_income_change_per_affected": -25675.330411469433,
+          "cushioning_rate": 0.3331355465005891
         }
       }
     },
@@ -933,13 +933,13 @@
       "by_gender": {
         "FEMALE": {
           "share_of_affected": 0.103660281011546,
-          "mean_income_change_per_affected": -23646.190758141,
-          "cushioning_rate": 0.18277649793081863
+          "mean_income_change_per_affected": -20610.096865349307,
+          "cushioning_rate": 0.28770533442106216
         },
         "MALE": {
           "share_of_affected": 0.896339718988454,
-          "mean_income_change_per_affected": -30788.12696319812,
-          "cushioning_rate": 0.32715873156518616
+          "mean_income_change_per_affected": -27435.679498755584,
+          "cushioning_rate": 0.40042285078337847
         }
       },
       "by_age_band": {
@@ -955,13 +955,13 @@
         },
         "35-44": {
           "share_of_affected": 0.3880111487182439,
-          "mean_income_change_per_affected": -36162.62072791138,
-          "cushioning_rate": 0.2941887718909434
+          "mean_income_change_per_affected": -28418.17362084122,
+          "cushioning_rate": 0.4453425769426861
         },
         "45-54": {
           "share_of_affected": 0.1663568755104623,
-          "mean_income_change_per_affected": -31781.806445275444,
-          "cushioning_rate": 0.25528184455017566
+          "mean_income_change_per_affected": -29889.955897238237,
+          "cushioning_rate": 0.2996120953478125
         },
         "55-64": {
           "share_of_affected": 0.13136259722833316,
@@ -987,8 +987,8 @@
         },
         "couple_with_children_dual_earner": {
           "share_of_affected": 0.3196311088820089,
-          "mean_income_change_per_affected": -30275.963931710434,
-          "cushioning_rate": 0.2971329404419085
+          "mean_income_change_per_affected": -20874.714382777325,
+          "cushioning_rate": 0.5153862268289207
         },
         "couple_with_children_single_earner": {
           "share_of_affected": 0.12246211196126468,
@@ -997,15 +997,15 @@
         },
         "single_no_children": {
           "share_of_affected": 0.2663711754893373,
-          "mean_income_change_per_affected": -28664.57412390885,
-          "cushioning_rate": 0.31872663828969017
+          "mean_income_change_per_affected": -27483.05609544325,
+          "cushioning_rate": 0.3468078773722798
         }
       },
       "by_couple_earners": {
         "couple_dual_earner": {
           "share_of_affected": 0.45288818357364613,
-          "mean_income_change_per_affected": -33516.01147573562,
-          "cushioning_rate": 0.2885457460794614
+          "mean_income_change_per_affected": -26880.97014060807,
+          "cushioning_rate": 0.42938972407584663
         },
         "couple_single_earner": {
           "share_of_affected": 0.28074064093701656,
@@ -1014,50 +1014,50 @@
         },
         "not_couple": {
           "share_of_affected": 0.2663711754893373,
-          "mean_income_change_per_affected": -28664.57412390885,
-          "cushioning_rate": 0.31872663828969017
+          "mean_income_change_per_affected": -27483.05609544325,
+          "cushioning_rate": 0.3468078773722798
         }
       }
     },
     {
-      "attribution_coverage_of_net_loss": 0.9999999999999998,
+      "attribution_coverage_of_net_loss": 1.0,
       "by_gender": {
         "FEMALE": {
           "share_of_affected": 0.3291816604813919,
-          "mean_income_change_per_affected": -27120.195562717203,
-          "cushioning_rate": 0.26344521801862897
+          "mean_income_change_per_affected": -23528.03403376339,
+          "cushioning_rate": 0.36100438737202867
         },
         "MALE": {
           "share_of_affected": 0.6708183395186081,
-          "mean_income_change_per_affected": -47581.231670038025,
-          "cushioning_rate": 0.35861237002393587
+          "mean_income_change_per_affected": -46112.3184644865,
+          "cushioning_rate": 0.37841309241974774
         }
       },
       "by_age_band": {
         "16-24": {
           "share_of_affected": 0.05564074627314202,
-          "mean_income_change_per_affected": -13678.02276554939,
-          "cushioning_rate": 0.2771665293237353
+          "mean_income_change_per_affected": -17135.424318611043,
+          "cushioning_rate": 0.09445550398346703
         },
         "25-34": {
           "share_of_affected": 0.180472540017595,
-          "mean_income_change_per_affected": -33238.81211465705,
-          "cushioning_rate": 0.2767262379391814
+          "mean_income_change_per_affected": -29105.58557280886,
+          "cushioning_rate": 0.36666490061040025
         },
         "35-44": {
           "share_of_affected": 0.12486309120468331,
-          "mean_income_change_per_affected": -26554.82610542483,
-          "cushioning_rate": 0.2216137386999294
+          "mean_income_change_per_affected": -20397.717339591825,
+          "cushioning_rate": 0.4020935073727724
         },
         "45-54": {
           "share_of_affected": 0.21555311723846862,
-          "mean_income_change_per_affected": -35843.19740809541,
-          "cushioning_rate": 0.2890516058311938
+          "mean_income_change_per_affected": -33839.92121761426,
+          "cushioning_rate": 0.32878650934673515
         },
         "55-64": {
           "share_of_affected": 0.19095603111410187,
-          "mean_income_change_per_affected": -35237.35299013639,
-          "cushioning_rate": 0.30452411305409843
+          "mean_income_change_per_affected": -33071.000552774276,
+          "cushioning_rate": 0.3472811806247973
         },
         "65-+": {
           "share_of_affected": 0.23251447415200918,
@@ -1073,8 +1073,8 @@
         },
         "couple_no_children_single_earner": {
           "share_of_affected": 0.2558910962945177,
-          "mean_income_change_per_affected": -63105.63173792243,
-          "cushioning_rate": 0.4124264727154563
+          "mean_income_change_per_affected": -61489.014085243696,
+          "cushioning_rate": 0.42747872257486275
         },
         "couple_with_children_dual_earner": {
           "share_of_affected": 0.009106555871711573,
@@ -1083,18 +1083,18 @@
         },
         "couple_with_children_single_earner": {
           "share_of_affected": 0.062306369458132796,
-          "mean_income_change_per_affected": -28820.338586938477,
-          "cushioning_rate": 0.2093480682960256
+          "mean_income_change_per_affected": -21586.012651534984,
+          "cushioning_rate": 0.40781325142177793
         },
         "single_no_children": {
           "share_of_affected": 0.3223595707764684,
-          "mean_income_change_per_affected": -31108.449069586855,
-          "cushioning_rate": 0.2941852161055021
+          "mean_income_change_per_affected": -30789.498076018543,
+          "cushioning_rate": 0.30142184581001685
         },
         "single_with_children": {
           "share_of_affected": 0.12013769235117447,
-          "mean_income_change_per_affected": -30320.317182502604,
-          "cushioning_rate": 0.22570525343815884
+          "mean_income_change_per_affected": -20326.717027243423,
+          "cushioning_rate": 0.4809134048859367
         }
       },
       "by_couple_earners": {
@@ -1105,13 +1105,13 @@
         },
         "couple_single_earner": {
           "share_of_affected": 0.31819746575265045,
-          "mean_income_change_per_affected": -56392.21515871511,
-          "cushioning_rate": 0.39692527750328155
+          "mean_income_change_per_affected": -53675.591863491296,
+          "cushioning_rate": 0.42597763579926573
         },
         "not_couple": {
           "share_of_affected": 0.44249726312764287,
-          "mean_income_change_per_affected": -30894.471822556145,
-          "cushioning_rate": 0.2771508274250022
+          "mean_income_change_per_affected": -27948.86045966145,
+          "cushioning_rate": 0.34607036580148876
         }
       }
     },
@@ -1120,20 +1120,20 @@
       "by_gender": {
         "FEMALE": {
           "share_of_affected": 0.2875629231873015,
-          "mean_income_change_per_affected": -14538.079420934642,
-          "cushioning_rate": 0.2878805157382317
+          "mean_income_change_per_affected": -13176.83107568516,
+          "cushioning_rate": 0.3545586127209297
         },
         "MALE": {
           "share_of_affected": 0.7124370768126985,
-          "mean_income_change_per_affected": -41062.76247445316,
-          "cushioning_rate": 0.33088218247630496
+          "mean_income_change_per_affected": -38390.97737121581,
+          "cushioning_rate": 0.3744189274355054
         }
       },
       "by_age_band": {
         "16-24": {
           "share_of_affected": 0.05232454892537309,
-          "mean_income_change_per_affected": -29920.70703125,
-          "cushioning_rate": 0.21511101437950209
+          "mean_income_change_per_affected": -26207.125,
+          "cushioning_rate": 0.3125268150984516
         },
         "25-34": {
           "share_of_affected": 0.11527983285491222,
@@ -1142,18 +1142,18 @@
         },
         "35-44": {
           "share_of_affected": 0.49194551793270136,
-          "mean_income_change_per_affected": -35820.051055984026,
-          "cushioning_rate": 0.36072892235938403
+          "mean_income_change_per_affected": -34328.93108069903,
+          "cushioning_rate": 0.38734055035516946
         },
         "45-54": {
           "share_of_affected": 0.20586319059389263,
-          "mean_income_change_per_affected": -45846.4283879391,
-          "cushioning_rate": 0.3275366929800759
+          "mean_income_change_per_affected": -42556.52994517215,
+          "cushioning_rate": 0.37579205472521815
         },
         "55-64": {
           "share_of_affected": 0.1345869096931207,
-          "mean_income_change_per_affected": -20023.896909856547,
-          "cushioning_rate": 0.15675215878607285
+          "mean_income_change_per_affected": -14898.63591414009,
+          "cushioning_rate": 0.3725875323775366
         }
       },
       "by_household_type": {
@@ -1164,23 +1164,23 @@
         },
         "couple_no_children_single_earner": {
           "share_of_affected": 0.10453064717958986,
-          "mean_income_change_per_affected": -19210.518702068155,
-          "cushioning_rate": 0.22239822410144217
+          "mean_income_change_per_affected": -16462.247176009594,
+          "cushioning_rate": 0.3336425300183098
         },
         "couple_with_children_dual_earner": {
           "share_of_affected": 0.2346165261150059,
-          "mean_income_change_per_affected": -26157.592807319434,
-          "cushioning_rate": 0.3720650085561663
+          "mean_income_change_per_affected": -24680.129805647328,
+          "cushioning_rate": 0.4075327491906926
         },
         "couple_with_children_single_earner": {
           "share_of_affected": 0.053094463986570604,
-          "mean_income_change_per_affected": -57819.4833984375,
-          "cushioning_rate": 0.3109470424344839
+          "mean_income_change_per_affected": -45063.55859375,
+          "cushioning_rate": 0.46296340779327183
         },
         "single_no_children": {
           "share_of_affected": 0.43642286345437636,
-          "mean_income_change_per_affected": -26809.991043789345,
-          "cushioning_rate": 0.3069649487012698
+          "mean_income_change_per_affected": -24555.896274185223,
+          "cushioning_rate": 0.3652330280054841
         },
         "single_with_children": {
           "share_of_affected": 0.071246666445318,
@@ -1191,18 +1191,18 @@
       "by_couple_earners": {
         "couple_dual_earner": {
           "share_of_affected": 0.33470535893414516,
-          "mean_income_change_per_affected": -32243.40669406421,
-          "cushioning_rate": 0.37120406754767354
+          "mean_income_change_per_affected": -31207.757793731063,
+          "cushioning_rate": 0.39140081109146574
         },
         "couple_single_earner": {
           "share_of_affected": 0.15762511116616046,
-          "mean_income_change_per_affected": -32215.56764677109,
-          "cushioning_rate": 0.27845472793861936
+          "mean_income_change_per_affected": -26096.31682267336,
+          "cushioning_rate": 0.41551009660687754
         },
         "not_couple": {
           "share_of_affected": 0.5076695298996944,
-          "mean_income_change_per_affected": -34599.720097516205,
-          "cushioning_rate": 0.30821574428311393
+          "mean_income_change_per_affected": -32661.96642921444,
+          "cushioning_rate": 0.34695904843154923
         }
       }
     },
@@ -1211,40 +1211,40 @@
       "by_gender": {
         "FEMALE": {
           "share_of_affected": 0.33239015014773055,
-          "mean_income_change_per_affected": -28886.03280193865,
-          "cushioning_rate": 0.2582802812606313
+          "mean_income_change_per_affected": -27948.99867114392,
+          "cushioning_rate": 0.28234093011150463
         },
         "MALE": {
           "share_of_affected": 0.6676098498522695,
-          "mean_income_change_per_affected": -38217.45472754922,
-          "cushioning_rate": 0.29684341173490447
+          "mean_income_change_per_affected": -38875.228331547034,
+          "cushioning_rate": 0.28474114468087885
         }
       },
       "by_age_band": {
         "16-24": {
           "share_of_affected": 0.13185197688589317,
-          "mean_income_change_per_affected": -20472.95502167899,
-          "cushioning_rate": 0.3008016862708841
+          "mean_income_change_per_affected": -22838.194866856673,
+          "cushioning_rate": 0.22002332723273088
         },
         "25-34": {
           "share_of_affected": 0.17998224825625675,
-          "mean_income_change_per_affected": -40612.07582423976,
-          "cushioning_rate": 0.2687927520741823
+          "mean_income_change_per_affected": -39250.88453270828,
+          "cushioning_rate": 0.29330055961617585
         },
         "35-44": {
           "share_of_affected": 0.3519196590199775,
-          "mean_income_change_per_affected": -36708.5009201777,
-          "cushioning_rate": 0.2562965545538699
+          "mean_income_change_per_affected": -35493.76312229475,
+          "cushioning_rate": 0.2809067855072841
         },
         "45-54": {
           "share_of_affected": 0.24508988228061324,
-          "mean_income_change_per_affected": -38524.62979265328,
-          "cushioning_rate": 0.27095373408155454
+          "mean_income_change_per_affected": -37602.979168121376,
+          "cushioning_rate": 0.28839519815045844
         },
         "55-64": {
           "share_of_affected": 0.05442742797224341,
-          "mean_income_change_per_affected": -29647.01953125,
-          "cushioning_rate": 0.5172589146316471
+          "mean_income_change_per_affected": -42768.736328125,
+          "cushioning_rate": 0.3035985903031695
         },
         "65-+": {
           "share_of_affected": 0.03672880558501592,
@@ -1255,13 +1255,13 @@
       "by_household_type": {
         "couple_no_children_dual_earner": {
           "share_of_affected": 0.3995505980170987,
-          "mean_income_change_per_affected": -34420.16621571849,
-          "cushioning_rate": 0.242145200302745
+          "mean_income_change_per_affected": -34427.175163476124,
+          "cushioning_rate": 0.2419908790055827
         },
         "couple_no_children_single_earner": {
           "share_of_affected": 0.05442742797224341,
-          "mean_income_change_per_affected": -29647.01953125,
-          "cushioning_rate": 0.5172589146316471
+          "mean_income_change_per_affected": -42768.736328125,
+          "cushioning_rate": 0.3035985903031695
         },
         "couple_with_children_dual_earner": {
           "share_of_affected": 0.1782623154030575,
@@ -1270,30 +1270,30 @@
         },
         "single_no_children": {
           "share_of_affected": 0.29305370896833066,
-          "mean_income_change_per_affected": -26049.482092652786,
-          "cushioning_rate": 0.27579298990743495
+          "mean_income_change_per_affected": -25506.864962192667,
+          "cushioning_rate": 0.29087840036887236
         },
         "single_with_children": {
           "share_of_affected": 0.07470594963926974,
-          "mean_income_change_per_affected": -39474.43305047501,
-          "cushioning_rate": 0.2543238105249529
+          "mean_income_change_per_affected": -33714.64359628282,
+          "cushioning_rate": 0.3631268387252252
         }
       },
       "by_couple_earners": {
         "couple_dual_earner": {
           "share_of_affected": 0.5778129134201562,
-          "mean_income_change_per_affected": -39665.60471165107,
-          "cushioning_rate": 0.26989675405462366
+          "mean_income_change_per_affected": -39670.451313731064,
+          "cushioning_rate": 0.26980754528203243
         },
         "couple_single_earner": {
           "share_of_affected": 0.05442742797224341,
-          "mean_income_change_per_affected": -29647.01953125,
-          "cushioning_rate": 0.5172589146316471
+          "mean_income_change_per_affected": -42768.736328125,
+          "cushioning_rate": 0.3035985903031695
         },
         "not_couple": {
           "share_of_affected": 0.3677596586076004,
-          "mean_income_change_per_affected": -28776.599346247076,
-          "cushioning_rate": 0.26993573949348315
+          "mean_income_change_per_affected": -27174.176432978173,
+          "cushioning_rate": 0.3105893165585901
         }
       }
     },
@@ -1302,13 +1302,13 @@
       "by_gender": {
         "FEMALE": {
           "share_of_affected": 0.26686943859778894,
-          "mean_income_change_per_affected": -33263.598616379524,
-          "cushioning_rate": 0.28205934331801386
+          "mean_income_change_per_affected": -32576.62050926116,
+          "cushioning_rate": 0.2968866480555067
         },
         "MALE": {
           "share_of_affected": 0.7331305614022111,
-          "mean_income_change_per_affected": -38363.92447030093,
-          "cushioning_rate": 0.3298557457172604
+          "mean_income_change_per_affected": -35091.2607948889,
+          "cushioning_rate": 0.3870229096234197
         }
       },
       "by_age_band": {
@@ -1319,40 +1319,40 @@
         },
         "25-34": {
           "share_of_affected": 0.07403965399214642,
-          "mean_income_change_per_affected": -34373.00794340803,
-          "cushioning_rate": 0.36718504361179405
+          "mean_income_change_per_affected": -40602.951519370676,
+          "cushioning_rate": 0.2524903541387463
         },
         "35-44": {
           "share_of_affected": 0.36521347014106986,
-          "mean_income_change_per_affected": -38261.866484468104,
-          "cushioning_rate": 0.2683893439244016
+          "mean_income_change_per_affected": -34259.276917370255,
+          "cushioning_rate": 0.3449234351291399
         },
         "45-54": {
           "share_of_affected": 0.3658048868094793,
-          "mean_income_change_per_affected": -42541.43214563127,
-          "cushioning_rate": 0.37547413253126527
+          "mean_income_change_per_affected": -40713.89481462037,
+          "cushioning_rate": 0.40230313850064436
         },
         "55-64": {
           "share_of_affected": 0.15047313618250305,
-          "mean_income_change_per_affected": -29414.617462123246,
-          "cushioning_rate": 0.20568531137340884
+          "mean_income_change_per_affected": -23343.33857818246,
+          "cushioning_rate": 0.3696346131949433
         }
       },
       "by_household_type": {
         "couple_no_children_dual_earner": {
           "share_of_affected": 0.36842401655517487,
-          "mean_income_change_per_affected": -35393.627355035096,
-          "cushioning_rate": 0.2459535008701722
+          "mean_income_change_per_affected": -33411.587966405365,
+          "cushioning_rate": 0.28818002507301166
         },
         "couple_no_children_single_earner": {
           "share_of_affected": 0.05469190113478559,
-          "mean_income_change_per_affected": -26198.865051641333,
-          "cushioning_rate": 0.4531710743420958
+          "mean_income_change_per_affected": -34632.70730587399,
+          "cushioning_rate": 0.27713791832714285
         },
         "couple_with_children_dual_earner": {
           "share_of_affected": 0.2327362834815911,
-          "mean_income_change_per_affected": -39088.645650762206,
-          "cushioning_rate": 0.2878024572175424
+          "mean_income_change_per_affected": -32807.71857105368,
+          "cushioning_rate": 0.4022413373089786
         },
         "couple_with_children_single_earner": {
           "share_of_affected": 0.07629266776683574,
@@ -1361,25 +1361,25 @@
         },
         "single_no_children": {
           "share_of_affected": 0.2678551310616127,
-          "mean_income_change_per_affected": -41083.85791168071,
-          "cushioning_rate": 0.3682441393948488
+          "mean_income_change_per_affected": -37903.57331190486,
+          "cushioning_rate": 0.4171481015938191
         }
       },
       "by_couple_earners": {
         "couple_dual_earner": {
           "share_of_affected": 0.601160300036766,
-          "mean_income_change_per_affected": -36824.135699467384,
-          "cushioning_rate": 0.26373267371580755
+          "mean_income_change_per_affected": -33177.80286986151,
+          "cushioning_rate": 0.3366380025769279
         },
         "couple_single_earner": {
           "share_of_affected": 0.13098456890162133,
-          "mean_income_change_per_affected": -29477.310146073527,
-          "cushioning_rate": 0.43622015493331234
+          "mean_income_change_per_affected": -32998.81554646394,
+          "cushioning_rate": 0.3688682235937405
         },
         "not_couple": {
           "share_of_affected": 0.2678551310616127,
-          "mean_income_change_per_affected": -41083.85791168071,
-          "cushioning_rate": 0.3682441393948488
+          "mean_income_change_per_affected": -37903.57331190486,
+          "cushioning_rate": 0.4171481015938191
         }
       }
     },
@@ -1388,40 +1388,40 @@
       "by_gender": {
         "FEMALE": {
           "share_of_affected": 0.4755986273232932,
-          "mean_income_change_per_affected": -38125.629331620265,
-          "cushioning_rate": 0.3172869542198704
+          "mean_income_change_per_affected": -37579.72866573472,
+          "cushioning_rate": 0.32706236023503144
         },
         "MALE": {
           "share_of_affected": 0.5244013726767067,
-          "mean_income_change_per_affected": -36206.419060028464,
-          "cushioning_rate": 0.32173580102545085
+          "mean_income_change_per_affected": -29597.29991481132,
+          "cushioning_rate": 0.4455461368536342
         }
       },
       "by_age_band": {
         "25-34": {
           "share_of_affected": 0.3844182291505657,
-          "mean_income_change_per_affected": -28782.838922185263,
-          "cushioning_rate": 0.28978948795055004
+          "mean_income_change_per_affected": -23595.944082161717,
+          "cushioning_rate": 0.4177750299687969
         },
         "35-44": {
           "share_of_affected": 0.3319991535730471,
-          "mean_income_change_per_affected": -51945.15399767169,
-          "cushioning_rate": 0.3624287465109033
+          "mean_income_change_per_affected": -48478.44869214067,
+          "cushioning_rate": 0.40497884939872575
         },
         "45-54": {
           "share_of_affected": 0.18639842925845365,
-          "mean_income_change_per_affected": -33715.234416887855,
-          "cushioning_rate": 0.2859441258092297
+          "mean_income_change_per_affected": -32322.359979142228,
+          "cushioning_rate": 0.31544385171901734
         },
         "55-64": {
           "share_of_affected": 0.055754511554324565,
-          "mean_income_change_per_affected": -28149.854578792172,
-          "cushioning_rate": 0.191560033067682
+          "mean_income_change_per_affected": -26174.14480655909,
+          "cushioning_rate": 0.24830074334244545
         },
         "65-+": {
           "share_of_affected": 0.04142967646360895,
-          "mean_income_change_per_affected": -23047.478393554688,
-          "cushioning_rate": 0.19187490266798946
+          "mean_income_change_per_affected": -17959.428466796875,
+          "cushioning_rate": 0.37027970566115165
         }
       },
       "by_household_type": {
@@ -1432,23 +1432,23 @@
         },
         "couple_no_children_single_earner": {
           "share_of_affected": 0.09897479094707226,
-          "mean_income_change_per_affected": -29952.706635895323,
-          "cushioning_rate": 0.26532030003787566
+          "mean_income_change_per_affected": -28839.749161876836,
+          "cushioning_rate": 0.2926189102443607
         },
         "couple_with_children_dual_earner": {
           "share_of_affected": 0.42704164125352795,
-          "mean_income_change_per_affected": -41320.515681017285,
-          "cushioning_rate": 0.3529855847913117
+          "mean_income_change_per_affected": -39757.86424035267,
+          "cushioning_rate": 0.3774542534754519
         },
         "couple_with_children_single_earner": {
           "share_of_affected": 0.07330945933413303,
-          "mean_income_change_per_affected": -24135.58203125,
-          "cushioning_rate": 0.15708039770380555
+          "mean_income_change_per_affected": -3149.8671875,
+          "cushioning_rate": 0.8899929244078054
         },
         "single_no_children": {
           "share_of_affected": 0.169931886411809,
-          "mean_income_change_per_affected": -43216.03161495563,
-          "cushioning_rate": 0.327239800267896
+          "mean_income_change_per_affected": -34921.3118253936,
+          "cushioning_rate": 0.4563668194275269
         },
         "single_with_children": {
           "share_of_affected": 0.011059617111877161,
@@ -1459,18 +1459,18 @@
       "by_couple_earners": {
         "couple_dual_earner": {
           "share_of_affected": 0.6467242461951085,
-          "mean_income_change_per_affected": -38587.17042866432,
-          "cushioning_rate": 0.3318257945340489
+          "mean_income_change_per_affected": -37555.328434406874,
+          "cushioning_rate": 0.34969313741045793
         },
         "couple_single_earner": {
           "share_of_affected": 0.17228425028120528,
-          "mean_income_change_per_affected": -27477.43533889765,
-          "cushioning_rate": 0.22828156607660688
+          "mean_income_change_per_affected": -17908.32998208946,
+          "cushioning_rate": 0.4970349962611951
         },
         "not_couple": {
           "share_of_affected": 0.18099150352368618,
-          "mean_income_change_per_affected": -41051.677182611704,
-          "cushioning_rate": 0.3288062824348994
+          "mean_income_change_per_affected": -33263.81226268094,
+          "cushioning_rate": 0.4561376453960512
         }
       }
     },
@@ -1479,13 +1479,13 @@
       "by_gender": {
         "FEMALE": {
           "share_of_affected": 0.22271555597631051,
-          "mean_income_change_per_affected": -18704.27494676759,
-          "cushioning_rate": 0.36825395539583694
+          "mean_income_change_per_affected": -22108.375432383265,
+          "cushioning_rate": 0.25327879472571113
         },
         "MALE": {
           "share_of_affected": 0.7772844440236895,
-          "mean_income_change_per_affected": -34439.91627234285,
-          "cushioning_rate": 0.410742932027944
+          "mean_income_change_per_affected": -33017.33798727094,
+          "cushioning_rate": 0.43508283757804433
         }
       },
       "by_age_band": {
@@ -1496,18 +1496,18 @@
         },
         "35-44": {
           "share_of_affected": 0.17106846068413345,
-          "mean_income_change_per_affected": -25810.764547498886,
-          "cushioning_rate": 0.33002774537484536
+          "mean_income_change_per_affected": -22985.01318552738,
+          "cushioning_rate": 0.40337601863138484
         },
         "45-54": {
           "share_of_affected": 0.3046118586904426,
-          "mean_income_change_per_affected": -34445.66794800019,
-          "cushioning_rate": 0.4249408152548959
+          "mean_income_change_per_affected": -36934.56032242209,
+          "cushioning_rate": 0.3833895693358439
         },
         "55-64": {
           "share_of_affected": 0.3181896281962677,
-          "mean_income_change_per_affected": -35334.0026617703,
-          "cushioning_rate": 0.4475060408583944
+          "mean_income_change_per_affected": -33378.090273451184,
+          "cushioning_rate": 0.47808932318563924
         }
       },
       "by_household_type": {
@@ -1523,8 +1523,8 @@
         },
         "couple_with_children_dual_earner": {
           "share_of_affected": 0.20581495628433646,
-          "mean_income_change_per_affected": -38147.953671437106,
-          "cushioning_rate": 0.34736837866873393
+          "mean_income_change_per_affected": -35799.25683960561,
+          "cushioning_rate": 0.3875496642647026
         },
         "couple_with_children_single_earner": {
           "share_of_affected": 0.13955886090110375,
@@ -1533,15 +1533,15 @@
         },
         "single_no_children": {
           "share_of_affected": 0.18487539542437853,
-          "mean_income_change_per_affected": -22672.752782949952,
-          "cushioning_rate": 0.34618915184913623
+          "mean_income_change_per_affected": -23407.27506114536,
+          "cushioning_rate": 0.32500784059460763
         }
       },
       "by_couple_earners": {
         "couple_dual_earner": {
           "share_of_affected": 0.5832426268502505,
-          "mean_income_change_per_affected": -31937.251764579545,
-          "cushioning_rate": 0.4014733481147843
+          "mean_income_change_per_affected": -31108.44242603874,
+          "cushioning_rate": 0.4170058204171819
         },
         "couple_single_earner": {
           "share_of_affected": 0.23188197772537095,
@@ -1550,8 +1550,8 @@
         },
         "not_couple": {
           "share_of_affected": 0.18487539542437853,
-          "mean_income_change_per_affected": -22672.752782949952,
-          "cushioning_rate": 0.34618915184913623
+          "mean_income_change_per_affected": -23407.27506114536,
+          "cushioning_rate": 0.32500784059460763
         }
       }
     },
@@ -1560,13 +1560,13 @@
       "by_gender": {
         "FEMALE": {
           "share_of_affected": 0.20520520508778273,
-          "mean_income_change_per_affected": -17961.6639136223,
-          "cushioning_rate": 0.40370435849332553
+          "mean_income_change_per_affected": -18574.472833907374,
+          "cushioning_rate": 0.3833601804706387
         },
         "MALE": {
           "share_of_affected": 0.7947947949122173,
-          "mean_income_change_per_affected": -40711.49970286044,
-          "cushioning_rate": 0.3403884969813379
+          "mean_income_change_per_affected": -38483.888138618946,
+          "cushioning_rate": 0.37648046663992185
         }
       },
       "by_age_band": {
@@ -1577,45 +1577,45 @@
         },
         "25-34": {
           "share_of_affected": 0.13013012897191764,
-          "mean_income_change_per_affected": -26613.211081736412,
-          "cushioning_rate": 0.21969580666757005
+          "mean_income_change_per_affected": -23133.963651405214,
+          "cushioning_rate": 0.3217079746540038
         },
         "35-44": {
           "share_of_affected": 0.4569864003998609,
-          "mean_income_change_per_affected": -48548.76551212984,
-          "cushioning_rate": 0.3412519554206149
+          "mean_income_change_per_affected": -46498.75945810463,
+          "cushioning_rate": 0.36906805878018645
         },
         "45-54": {
           "share_of_affected": 0.23962197490290607,
-          "mean_income_change_per_affected": -27223.392846486448,
-          "cushioning_rate": 0.39756606964366714
+          "mean_income_change_per_affected": -24479.634689977607,
+          "cushioning_rate": 0.4582834467719997
         },
         "55-64": {
           "share_of_affected": 0.06759700940391869,
-          "mean_income_change_per_affected": -19556.134264855762,
-          "cushioning_rate": 0.4884499657514172
+          "mean_income_change_per_affected": -21416.44704016372,
+          "cushioning_rate": 0.4397878400453131
         },
         "65-+": {
           "share_of_affected": 0.06686097713749604,
-          "mean_income_change_per_affected": -15088.294227150525,
-          "cushioning_rate": 0.3932891875507081
+          "mean_income_change_per_affected": -19224.495758659807,
+          "cushioning_rate": 0.2269696451387938
         }
       },
       "by_household_type": {
         "couple_no_children_dual_earner": {
           "share_of_affected": 0.23285049333702026,
-          "mean_income_change_per_affected": -35233.29420011506,
-          "cushioning_rate": 0.3555516374511244
+          "mean_income_change_per_affected": -35139.388670573586,
+          "cushioning_rate": 0.35726925330627446
         },
         "couple_no_children_single_earner": {
           "share_of_affected": 0.15447801157857644,
-          "mean_income_change_per_affected": -49425.79501767329,
-          "cushioning_rate": 0.3416116368035078
+          "mean_income_change_per_affected": -51216.02052102041,
+          "cushioning_rate": 0.3177645011432748
         },
         "couple_with_children_dual_earner": {
           "share_of_affected": 0.2843137262220457,
-          "mean_income_change_per_affected": -36265.79649584722,
-          "cushioning_rate": 0.2848262953803644
+          "mean_income_change_per_affected": -29142.754529462265,
+          "cushioning_rate": 0.425295078737818
         },
         "couple_with_children_single_earner": {
           "share_of_affected": 0.039892832246004456,
@@ -1624,8 +1624,8 @@
         },
         "single_no_children": {
           "share_of_affected": 0.2219278102635727,
-          "mean_income_change_per_affected": -25028.555161921555,
-          "cushioning_rate": 0.38233575185694313
+          "mean_income_change_per_affected": -25595.1879783197,
+          "cushioning_rate": 0.368352170693368
         },
         "single_with_children": {
           "share_of_affected": 0.06653712635278042,
@@ -1636,18 +1636,18 @@
       "by_couple_earners": {
         "couple_dual_earner": {
           "share_of_affected": 0.517164219559066,
-          "mean_income_change_per_affected": -35800.91772071111,
-          "cushioning_rate": 0.3179916326341963
+          "mean_income_change_per_affected": -31842.70778475493,
+          "cushioning_rate": 0.39339562973762465
         },
         "couple_single_earner": {
           "share_of_affected": 0.1943708438245809,
-          "mean_income_change_per_affected": -43917.53784159114,
-          "cushioning_rate": 0.32462559309207184
+          "mean_income_change_per_affected": -45340.33598658404,
+          "cushioning_rate": 0.3027454627261509
         },
         "not_couple": {
           "share_of_affected": 0.2884649366163531,
-          "mean_income_change_per_affected": -31171.457189881447,
-          "cushioning_rate": 0.41797317800864087
+          "mean_income_change_per_affected": -31607.39086570967,
+          "cushioning_rate": 0.40983351708757
         }
       }
     },
@@ -1661,79 +1661,79 @@
         },
         "MALE": {
           "share_of_affected": 0.6658655069435315,
-          "mean_income_change_per_affected": -35070.092965269425,
-          "cushioning_rate": 0.45077337925285865
+          "mean_income_change_per_affected": -30816.061010853235,
+          "cushioning_rate": 0.5173950331272344
         }
       },
       "by_age_band": {
         "16-24": {
           "share_of_affected": 0.03774730633081989,
-          "mean_income_change_per_affected": -35082.91664858074,
-          "cushioning_rate": 0.22966968043320235
+          "mean_income_change_per_affected": -24680.11649804721,
+          "cushioning_rate": 0.45808832773726593
         },
         "25-34": {
           "share_of_affected": 0.08080757095590894,
-          "mean_income_change_per_affected": -17145.788749003357,
-          "cushioning_rate": 0.41688423556085974
+          "mean_income_change_per_affected": -15017.829669259047,
+          "cushioning_rate": 0.48925457113684423
         },
         "35-44": {
           "share_of_affected": 0.415144458801622,
-          "mean_income_change_per_affected": -38712.3490437621,
-          "cushioning_rate": 0.48748821533757636
+          "mean_income_change_per_affected": -36265.92405299229,
+          "cushioning_rate": 0.519876372321923
         },
         "45-54": {
           "share_of_affected": 0.3011182540824168,
-          "mean_income_change_per_affected": -26672.208715677316,
-          "cushioning_rate": 0.3443496430967308
+          "mean_income_change_per_affected": -23378.915190756532,
+          "cushioning_rate": 0.42530465878436596
         },
         "55-64": {
           "share_of_affected": 0.1651824098292324,
-          "mean_income_change_per_affected": -32272.195815532905,
-          "cushioning_rate": 0.2630445324154772
+          "mean_income_change_per_affected": -30694.003073063188,
+          "cushioning_rate": 0.29908353568359325
         }
       },
       "by_household_type": {
         "couple_no_children_dual_earner": {
           "share_of_affected": 0.18501745351690332,
-          "mean_income_change_per_affected": -31212.72334270307,
-          "cushioning_rate": 0.2701335303488068
+          "mean_income_change_per_affected": -29803.72286506794,
+          "cushioning_rate": 0.30308106245157074
         },
         "couple_no_children_single_earner": {
           "share_of_affected": 0.0919900835243806,
-          "mean_income_change_per_affected": -33527.65093155681,
-          "cushioning_rate": 0.2838171063892301
+          "mean_income_change_per_affected": -29541.193971809735,
+          "cushioning_rate": 0.3689716639368109
         },
         "couple_with_children_dual_earner": {
           "share_of_affected": 0.5301067671040289,
-          "mean_income_change_per_affected": -33830.84679948184,
-          "cushioning_rate": 0.4801569720543405
+          "mean_income_change_per_affected": -31914.96901444578,
+          "cushioning_rate": 0.5095962502033646
         },
         "single_no_children": {
           "share_of_affected": 0.11787177979059599,
-          "mean_income_change_per_affected": -23294.27683951273,
-          "cushioning_rate": 0.4375693570279854
+          "mean_income_change_per_affected": -21615.17790704285,
+          "cushioning_rate": 0.4781105036241642
         },
         "single_with_children": {
           "share_of_affected": 0.07501391606409122,
-          "mean_income_change_per_affected": -34720.112923697845,
-          "cushioning_rate": 0.21943317711185872
+          "mean_income_change_per_affected": -21500.28854394143,
+          "cushioning_rate": 0.5166371734791217
         }
       },
       "by_couple_earners": {
         "couple_dual_earner": {
           "share_of_affected": 0.7151242206209322,
-          "mean_income_change_per_affected": -33153.484012712455,
-          "cushioning_rate": 0.44097470902167923
+          "mean_income_change_per_affected": -31368.745889789076,
+          "cushioning_rate": 0.4710684918682958
         },
         "couple_single_earner": {
           "share_of_affected": 0.0919900835243806,
-          "mean_income_change_per_affected": -33527.65093155681,
-          "cushioning_rate": 0.2838171063892301
+          "mean_income_change_per_affected": -29541.193971809735,
+          "cushioning_rate": 0.3689716639368109
         },
         "not_couple": {
           "share_of_affected": 0.1928856958546872,
-          "mean_income_change_per_affected": -27737.82411855426,
-          "cushioning_rate": 0.34900810405003624
+          "mean_income_change_per_affected": -21570.497035285312,
+          "cushioning_rate": 0.4937519719800083
         }
       }
     },
@@ -1742,35 +1742,35 @@
       "by_gender": {
         "FEMALE": {
           "share_of_affected": 0.3299895340939278,
-          "mean_income_change_per_affected": -48387.068452660744,
-          "cushioning_rate": 0.40155967715890506
+          "mean_income_change_per_affected": -48534.58635639716,
+          "cushioning_rate": 0.3997352090776607
         },
         "MALE": {
           "share_of_affected": 0.6700104659060722,
-          "mean_income_change_per_affected": -26065.881139017125,
-          "cushioning_rate": 0.2942562523988109
+          "mean_income_change_per_affected": -21998.190343664864,
+          "cushioning_rate": 0.4043905436849645
         }
       },
       "by_age_band": {
         "16-24": {
           "share_of_affected": 0.156785624899399,
-          "mean_income_change_per_affected": -21909.300175820805,
-          "cushioning_rate": 0.3054179618936985
+          "mean_income_change_per_affected": -22243.408830914042,
+          "cushioning_rate": 0.2948258449049631
         },
         "25-34": {
           "share_of_affected": 0.030527189713039554,
-          "mean_income_change_per_affected": -22731.5595703125,
-          "cushioning_rate": 0.178402343848168
+          "mean_income_change_per_affected": -15354.65283203125,
+          "cushioning_rate": 0.4450294209334562
         },
         "35-44": {
           "share_of_affected": 0.27770360182676884,
-          "mean_income_change_per_affected": -45264.98909750707,
-          "cushioning_rate": 0.3550321767231376
+          "mean_income_change_per_affected": -43982.13416823232,
+          "cushioning_rate": 0.3733112079967781
         },
         "45-54": {
           "share_of_affected": 0.3108649396196189,
-          "mean_income_change_per_affected": -41113.527089556126,
-          "cushioning_rate": 0.3753191990826513
+          "mean_income_change_per_affected": -34204.900431443486,
+          "cushioning_rate": 0.4802891868102439
         },
         "55-64": {
           "share_of_affected": 0.11593836728687018,
@@ -1791,82 +1791,82 @@
         },
         "couple_no_children_single_earner": {
           "share_of_affected": 0.21199437107088148,
-          "mean_income_change_per_affected": -19568.33715974046,
-          "cushioning_rate": 0.3078398299820905
+          "mean_income_change_per_affected": -18506.062579725236,
+          "cushioning_rate": 0.34541400646458476
         },
         "couple_with_children_dual_earner": {
           "share_of_affected": 0.18110633818530153,
-          "mean_income_change_per_affected": -53972.89007899613,
-          "cushioning_rate": 0.3587058863055703
+          "mean_income_change_per_affected": -52824.28511931446,
+          "cushioning_rate": 0.3723533600377714
         },
         "couple_with_children_single_earner": {
           "share_of_affected": 0.14552737019725423,
-          "mean_income_change_per_affected": -63449.7331093575,
-          "cushioning_rate": 0.41702004143528637
+          "mean_income_change_per_affected": -53444.67790638298,
+          "cushioning_rate": 0.5089470895383075
         },
         "single_no_children": {
           "share_of_affected": 0.2928950313163503,
-          "mean_income_change_per_affected": -23139.79673165044,
-          "cushioning_rate": 0.3288658336317427
+          "mean_income_change_per_affected": -23318.643856634655,
+          "cushioning_rate": 0.32367864821582837
         },
         "single_with_children": {
           "share_of_affected": 0.09010212030062735,
-          "mean_income_change_per_affected": -14011.658081054688,
-          "cushioning_rate": 0.062237866800207486
+          "mean_income_change_per_affected": -4690.298828125,
+          "cushioning_rate": 0.6860910672410647
         }
       },
       "by_couple_earners": {
         "couple_dual_earner": {
           "share_of_affected": 0.25948110711488664,
-          "mean_income_change_per_affected": -46283.052188252776,
-          "cushioning_rate": 0.3383332616788074
+          "mean_income_change_per_affected": -45481.376719150816,
+          "cushioning_rate": 0.34979408735372775
         },
         "couple_single_earner": {
           "share_of_affected": 0.35752174126813574,
-          "mean_income_change_per_affected": -37430.03175342071,
-          "cushioning_rate": 0.3870477773407702
+          "mean_income_change_per_affected": -32727.64471005131,
+          "cushioning_rate": 0.4640538191476631
         },
         "not_couple": {
           "share_of_affected": 0.3829971516169776,
-          "mean_income_change_per_affected": -20992.35348476357,
-          "cushioning_rate": 0.297502239872072
+          "mean_income_change_per_affected": -18936.22644785211,
+          "cushioning_rate": 0.366309419544287
         }
       }
     },
     {
-      "attribution_coverage_of_net_loss": 1.0,
+      "attribution_coverage_of_net_loss": 0.9999999999999998,
       "by_gender": {
         "FEMALE": {
           "share_of_affected": 0.17308674542396077,
-          "mean_income_change_per_affected": -44488.978712440134,
-          "cushioning_rate": 0.3235389927362168
+          "mean_income_change_per_affected": -42436.0073735787,
+          "cushioning_rate": 0.3547547027831087
         },
         "MALE": {
           "share_of_affected": 0.8269132545760393,
-          "mean_income_change_per_affected": -26662.581683525408,
-          "cushioning_rate": 0.4097794874945325
+          "mean_income_change_per_affected": -27678.6892483015,
+          "cushioning_rate": 0.38728625954078955
         }
       },
       "by_age_band": {
         "25-34": {
           "share_of_affected": 0.2295368388060782,
-          "mean_income_change_per_affected": -24281.079058696087,
-          "cushioning_rate": 0.353167536592948
+          "mean_income_change_per_affected": -22601.37419627892,
+          "cushioning_rate": 0.3979138030717839
         },
         "35-44": {
           "share_of_affected": 0.17026424322961087,
-          "mean_income_change_per_affected": -51261.08788526373,
-          "cushioning_rate": 0.35938381669968067
+          "mean_income_change_per_affected": -48717.79239664526,
+          "cushioning_rate": 0.39116769636627013
         },
         "45-54": {
           "share_of_affected": 0.1384371401263615,
-          "mean_income_change_per_affected": -28006.186962205273,
-          "cushioning_rate": 0.4838349421248619
+          "mean_income_change_per_affected": -34268.921557385256,
+          "cushioning_rate": 0.3684102765272155
         },
         "55-64": {
           "share_of_affected": 0.41321469595522137,
-          "mean_income_change_per_affected": -26877.82225128585,
-          "cushioning_rate": 0.39662867392728984
+          "mean_income_change_per_affected": -27934.130386903653,
+          "cushioning_rate": 0.3729159625859304
         },
         "65-+": {
           "share_of_affected": 0.04854708188272807,
@@ -1877,50 +1877,50 @@
       "by_household_type": {
         "couple_no_children_dual_earner": {
           "share_of_affected": 0.17225343585504643,
-          "mean_income_change_per_affected": -38664.00459031757,
-          "cushioning_rate": 0.3207850851647952
+          "mean_income_change_per_affected": -41160.18864452027,
+          "cushioning_rate": 0.27693433929009437
         },
         "couple_no_children_single_earner": {
           "share_of_affected": 0.2991854995501762,
-          "mean_income_change_per_affected": -20158.179067377885,
-          "cushioning_rate": 0.3669956801919223
+          "mean_income_change_per_affected": -18053.806497833677,
+          "cushioning_rate": 0.4330768933091734
         },
         "couple_with_children_dual_earner": {
           "share_of_affected": 0.18577457670463388,
-          "mean_income_change_per_affected": -32305.09155972227,
-          "cushioning_rate": 0.3892636784068684
+          "mean_income_change_per_affected": -32932.687374309935,
+          "cushioning_rate": 0.37739881312580525
         },
         "couple_with_children_single_earner": {
           "share_of_affected": 0.2146178876241483,
-          "mean_income_change_per_affected": -31584.226301728606,
-          "cushioning_rate": 0.3657621655584665
+          "mean_income_change_per_affected": -28758.253596247578,
+          "cushioning_rate": 0.42251007484054615
         },
         "single_no_children": {
           "share_of_affected": 0.0564232142866387,
-          "mean_income_change_per_affected": -19115.711544025893,
-          "cushioning_rate": 0.3041873132447873
+          "mean_income_change_per_affected": -16281.986574391905,
+          "cushioning_rate": 0.4073350187385215
         },
         "single_with_children": {
           "share_of_affected": 0.07174538597935651,
-          "mean_income_change_per_affected": -44580.953125,
-          "cushioning_rate": 0.5642929826987337
+          "mean_income_change_per_affected": -63178.845703125,
+          "cushioning_rate": 0.38252853543391974
         }
       },
       "by_couple_earners": {
         "couple_dual_earner": {
           "share_of_affected": 0.3580280125596803,
-          "mean_income_change_per_affected": -35364.47400857711,
-          "cushioning_rate": 0.35506127816142374
+          "mean_income_change_per_affected": -36891.07976981907,
+          "cushioning_rate": 0.32722070662717706
         },
         "couple_single_earner": {
           "share_of_affected": 0.5138033871743245,
-          "mean_income_change_per_affected": -24930.88820582133,
-          "cushioning_rate": 0.36634353022232635
+          "mean_income_change_per_affected": -22525.10015177485,
+          "cushioning_rate": 0.42749029534256944
         },
         "not_couple": {
           "share_of_affected": 0.12816860026599522,
-          "mean_income_change_per_affected": -33370.47895580106,
-          "cushioning_rate": 0.5189451791040223
+          "mean_income_change_per_affected": -42533.60555460749,
+          "cushioning_rate": 0.3868533913093576
         }
       }
     },
@@ -1929,13 +1929,13 @@
       "by_gender": {
         "FEMALE": {
           "share_of_affected": 0.2753942961437323,
-          "mean_income_change_per_affected": -26817.91238237634,
-          "cushioning_rate": 0.23816006909524978
+          "mean_income_change_per_affected": -26672.73479678236,
+          "cushioning_rate": 0.24228425595218517
         },
         "MALE": {
           "share_of_affected": 0.7246057038562677,
-          "mean_income_change_per_affected": -64600.52192634064,
-          "cushioning_rate": 0.41388944685438167
+          "mean_income_change_per_affected": -62975.958220683,
+          "cushioning_rate": 0.4286288623227117
         }
       },
       "by_age_band": {
@@ -1946,18 +1946,18 @@
         },
         "25-34": {
           "share_of_affected": 0.21936204210530966,
-          "mean_income_change_per_affected": -31362.791147926804,
-          "cushioning_rate": 0.3267776783922346
+          "mean_income_change_per_affected": -34214.41174283296,
+          "cushioning_rate": 0.2655658229743808
         },
         "35-44": {
           "share_of_affected": 0.2610389262257196,
-          "mean_income_change_per_affected": -131148.74468195246,
-          "cushioning_rate": 0.43272193497732825
+          "mean_income_change_per_affected": -125809.995238618,
+          "cushioning_rate": 0.455814458365182
         },
         "45-54": {
           "share_of_affected": 0.180681540121971,
-          "mean_income_change_per_affected": -31754.404729378526,
-          "cushioning_rate": 0.29024038266349206
+          "mean_income_change_per_affected": -27852.860571695313,
+          "cushioning_rate": 0.3774458746882491
         },
         "55-64": {
           "share_of_affected": 0.14028492853366387,
@@ -1966,8 +1966,8 @@
         },
         "65-+": {
           "share_of_affected": 0.10999427910294428,
-          "mean_income_change_per_affected": -18297.507600505574,
-          "cushioning_rate": 0.34118109476320835
+          "mean_income_change_per_affected": -20623.73681916089,
+          "cushioning_rate": 0.2574230321557094
         }
       },
       "by_household_type": {
@@ -1978,77 +1978,77 @@
         },
         "couple_no_children_single_earner": {
           "share_of_affected": 0.09454931568054205,
-          "mean_income_change_per_affected": -26215.059362452233,
-          "cushioning_rate": 0.29057418721088113
+          "mean_income_change_per_affected": -28921.286309654293,
+          "cushioning_rate": 0.21733890572376546
         },
         "couple_with_children_dual_earner": {
           "share_of_affected": 0.2533845428752046,
-          "mean_income_change_per_affected": -30175.325126295298,
-          "cushioning_rate": 0.2877933083295553
+          "mean_income_change_per_affected": -30017.536973368413,
+          "cushioning_rate": 0.2915174696405106
         },
         "couple_with_children_single_earner": {
           "share_of_affected": 0.12993380668647297,
-          "mean_income_change_per_affected": -217118.00456965185,
-          "cushioning_rate": 0.45317695239250044
+          "mean_income_change_per_affected": -207796.08644956627,
+          "cushioning_rate": 0.47665469062096466
         },
         "single_no_children": {
           "share_of_affected": 0.2040805239574797,
-          "mean_income_change_per_affected": -23307.199002024438,
-          "cushioning_rate": 0.31714654532230335
+          "mean_income_change_per_affected": -22220.33523830986,
+          "cushioning_rate": 0.3489894396894917
         }
       },
       "by_couple_earners": {
         "couple_dual_earner": {
           "share_of_affected": 0.5714363536755053,
-          "mean_income_change_per_affected": -32810.78724243912,
-          "cushioning_rate": 0.3184415146942762
+          "mean_income_change_per_affected": -32740.821307049566,
+          "cushioning_rate": 0.3198948744260849
         },
         "couple_single_earner": {
           "share_of_affected": 0.224483122367015,
-          "mean_income_change_per_affected": -136712.2144130511,
-          "cushioning_rate": 0.44286357967867795
+          "mean_income_change_per_affected": -132456.3915656382,
+          "cushioning_rate": 0.460207120758084
         },
         "not_couple": {
           "share_of_affected": 0.2040805239574797,
-          "mean_income_change_per_affected": -23307.199002024438,
-          "cushioning_rate": 0.31714654532230335
+          "mean_income_change_per_affected": -22220.33523830986,
+          "cushioning_rate": 0.3489894396894917
         }
       }
     },
     {
-      "attribution_coverage_of_net_loss": 1.0000000000000002,
+      "attribution_coverage_of_net_loss": 1.0,
       "by_gender": {
         "FEMALE": {
           "share_of_affected": 0.35918961781248826,
-          "mean_income_change_per_affected": -21862.288543580933,
-          "cushioning_rate": 0.31270792093185396
+          "mean_income_change_per_affected": -19291.10484034213,
+          "cushioning_rate": 0.3935390832112482
         },
         "MALE": {
           "share_of_affected": 0.6408103821875117,
-          "mean_income_change_per_affected": -48392.311921202236,
-          "cushioning_rate": 0.3849203411262867
+          "mean_income_change_per_affected": -45321.08522239821,
+          "cushioning_rate": 0.42395648127392394
         }
       },
       "by_age_band": {
         "25-34": {
           "share_of_affected": 0.1803580113267969,
-          "mean_income_change_per_affected": -22158.28221822495,
-          "cushioning_rate": 0.23528906320351328
+          "mean_income_change_per_affected": -17037.67523826305,
+          "cushioning_rate": 0.412007823351473
         },
         "35-44": {
           "share_of_affected": 0.1980850642170708,
-          "mean_income_change_per_affected": -19560.79464336376,
-          "cushioning_rate": 0.4068584066644929
+          "mean_income_change_per_affected": -17876.68467115436,
+          "cushioning_rate": 0.45792564040836314
         },
         "45-54": {
           "share_of_affected": 0.37629223359619696,
-          "mean_income_change_per_affected": -33235.267702442434,
-          "cushioning_rate": 0.3393517801092423
+          "mean_income_change_per_affected": -30237.333068555476,
+          "cushioning_rate": 0.3989445054321894
         },
         "55-64": {
           "share_of_affected": 0.1903489903719465,
-          "mean_income_change_per_affected": -23762.563333921007,
-          "cushioning_rate": 0.1722602072293593
+          "mean_income_change_per_affected": -21102.305446021524,
+          "cushioning_rate": 0.2649270328534715
         },
         "65-+": {
           "share_of_affected": 0.054915700487988786,
@@ -2059,8 +2059,8 @@
       "by_household_type": {
         "couple_no_children_dual_earner": {
           "share_of_affected": 0.19142440768080857,
-          "mean_income_change_per_affected": -25688.635184800452,
-          "cushioning_rate": 0.2005181524710794
+          "mean_income_change_per_affected": -22928.78358388512,
+          "cushioning_rate": 0.2864102693909756
         },
         "couple_no_children_single_earner": {
           "share_of_affected": 0.1282522710119724,
@@ -2069,18 +2069,18 @@
         },
         "couple_with_children_dual_earner": {
           "share_of_affected": 0.3215499900124765,
-          "mean_income_change_per_affected": -16293.714469277227,
-          "cushioning_rate": 0.3685978373236355
+          "mean_income_change_per_affected": -13421.556110148651,
+          "cushioning_rate": 0.47989762736980446
         },
         "couple_with_children_single_earner": {
           "share_of_affected": 0.07756886286168181,
-          "mean_income_change_per_affected": -49648.01471357545,
-          "cushioning_rate": 0.2988546230715794
+          "mean_income_change_per_affected": -33815.22223701811,
+          "cushioning_rate": 0.5224504569200947
         },
         "single_no_children": {
           "share_of_affected": 0.27027683320449575,
-          "mean_income_change_per_affected": -34663.918708794656,
-          "cushioning_rate": 0.3496069095960248
+          "mean_income_change_per_affected": -33880.872356607746,
+          "cushioning_rate": 0.36429907239524073
         },
         "single_with_children": {
           "share_of_affected": 0.010927635228564998,
@@ -2091,18 +2091,18 @@
       "by_couple_earners": {
         "couple_dual_earner": {
           "share_of_affected": 0.512974397693285,
-          "mean_income_change_per_affected": -19799.575855857558,
-          "cushioning_rate": 0.2970460917083848
+          "mean_income_change_per_affected": -16969.32651746412,
+          "cushioning_rate": 0.3975298014780987
         },
         "couple_single_earner": {
           "share_of_affected": 0.2058211338736542,
-          "mean_income_change_per_affected": -93538.88439157764,
-          "cushioning_rate": 0.41369650959084636
+          "mean_income_change_per_affected": -87571.89895515767,
+          "cushioning_rate": 0.4510976867734623
         },
         "not_couple": {
           "share_of_affected": 0.28120446843306074,
-          "mean_income_change_per_affected": -33619.8363785828,
-          "cushioning_rate": 0.35055021400300257
+          "mean_income_change_per_affected": -32867.219290025445,
+          "cushioning_rate": 0.36508886319799483
         }
       }
     }

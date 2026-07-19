@@ -6,16 +6,16 @@
       "sd": 0.0
     },
     "national_gap_shocked_bn": {
-      "mean": 36.482635331263864,
-      "sd": 0.052697435417762596
+      "mean": 36.42212002656551,
+      "sd": 0.03701885327880007
     },
     "affected_hh_gap_baseline_bn": {
       "mean": 0.008660335385380444,
       "sd": 0.009980107263422064
     },
     "affected_hh_gap_shocked_bn": {
-      "mean": 0.19433195718812107,
-      "sd": 0.05893945165822506
+      "mean": 0.1338166524897831,
+      "sd": 0.04030158170382495
     },
     "affected_people_weighted": {
       "mean": 94073.2144454956,
@@ -26,262 +26,262 @@
       "sd": 0.05664319271923228
     },
     "affected_pov_rate_shocked": {
-      "mean": 0.42993176520292636,
-      "sd": 0.1323680899721967
+      "mean": 0.37970688824420357,
+      "sd": 0.1385544658133048
     },
     "affected_pov_rate_change_pp": {
-      "mean": 38.60737342166505,
-      "sd": 12.26399445687856
+      "mean": 33.58488572579277,
+      "sd": 12.162057308282058
     },
     "national_gap_change_bn": {
-      "mean": 0.18567162180274224,
-      "sd": 0.0526974354177626
+      "mean": 0.1251563171044033,
+      "sd": 0.03701885327880007
     },
     "affected_hh_gap_change_bn": {
-      "mean": 0.1856716218027406,
-      "sd": 0.052697435417763415
+      "mean": 0.12515631710440267,
+      "sd": 0.03701885327879988
     }
   },
   "full_tariff_displacement_per_draw": [
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.558489234659284,
+      "national_gap_shocked_bn": 36.458323130838416,
       "affected_hh_gap_baseline_bn": 0.01510504833080864,
-      "affected_hh_gap_shocked_bn": 0.27663057352897696,
+      "affected_hh_gap_shocked_bn": 0.17646446970810825,
       "affected_people_weighted": 91361.48706054688,
       "affected_pov_rate_baseline": 0.137774585556857,
-      "affected_pov_rate_shocked": 0.5338460741021382,
-      "affected_pov_rate_change_pp": 39.60714885452813,
-      "national_gap_change_bn": 0.2615255251981665,
-      "affected_hh_gap_change_bn": 0.2615255251981683
+      "affected_pov_rate_shocked": 0.49761523305386,
+      "affected_pov_rate_change_pp": 35.9840647497003,
+      "national_gap_change_bn": 0.16135942137729842,
+      "affected_hh_gap_change_bn": 0.1613594213772996
     },
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.45597860592646,
+      "national_gap_shocked_bn": 36.412171636014726,
       "affected_hh_gap_baseline_bn": 0.0031760505471909047,
-      "affected_hh_gap_shocked_bn": 0.162190947012533,
+      "affected_hh_gap_shocked_bn": 0.11838397710079515,
       "affected_people_weighted": 70024.7661743164,
       "affected_pov_rate_baseline": 0.009702430118785863,
-      "affected_pov_rate_shocked": 0.2863516291031411,
-      "affected_pov_rate_change_pp": 27.664919898435524,
-      "national_gap_change_bn": 0.15901489646534372,
-      "affected_hh_gap_change_bn": 0.1590148964653421
+      "affected_pov_rate_shocked": 0.2269819952765404,
+      "affected_pov_rate_change_pp": 21.727956515775453,
+      "national_gap_change_bn": 0.11520792655360879,
+      "affected_hh_gap_change_bn": 0.11520792655360425
     },
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.49047805060879,
+      "national_gap_shocked_bn": 36.41827901055789,
       "affected_hh_gap_baseline_bn": 0.01659881966113448,
-      "affected_hh_gap_shocked_bn": 0.21011316080881398,
+      "affected_hh_gap_shocked_bn": 0.13791412075790851,
       "affected_people_weighted": 96985.83264160156,
       "affected_pov_rate_baseline": 0.05291468823720668,
-      "affected_pov_rate_shocked": 0.5260924884198231,
-      "affected_pov_rate_change_pp": 47.317780018261644,
-      "national_gap_change_bn": 0.19351434114767585,
-      "affected_hh_gap_change_bn": 0.19351434114767951
+      "affected_pov_rate_shocked": 0.35896714435734006,
+      "affected_pov_rate_change_pp": 30.605245612013338,
+      "national_gap_change_bn": 0.12131530109677158,
+      "affected_hh_gap_change_bn": 0.12131530109677403
     },
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.577586091876285,
+      "national_gap_shocked_bn": 36.45141120436722,
       "affected_hh_gap_baseline_bn": 0.027781211152365447,
-      "affected_hh_gap_shocked_bn": 0.30840359356752994,
+      "affected_hh_gap_shocked_bn": 0.18222870605845987,
       "affected_people_weighted": 98852.18887329102,
       "affected_pov_rate_baseline": 0.14599995534375387,
-      "affected_pov_rate_shocked": 0.586331741219045,
-      "affected_pov_rate_change_pp": 44.03317858752911,
-      "national_gap_change_bn": 0.28062238241516724,
-      "affected_hh_gap_change_bn": 0.2806223824151645
+      "affected_pov_rate_shocked": 0.5820974856657964,
+      "affected_pov_rate_change_pp": 43.60975303220426,
+      "national_gap_change_bn": 0.1544474949061012,
+      "affected_hh_gap_change_bn": 0.1544474949060944
     },
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.574756206697614,
+      "national_gap_shocked_bn": 36.45706347000527,
       "affected_hh_gap_baseline_bn": 0.02566232547862482,
-      "affected_hh_gap_shocked_bn": 0.3034548227151219,
+      "affected_hh_gap_shocked_bn": 0.18576208602276825,
       "affected_people_weighted": 73108.39993286133,
       "affected_pov_rate_baseline": 0.07474658223079887,
       "affected_pov_rate_shocked": 0.6308445419001282,
       "affected_pov_rate_change_pp": 55.60979596693293,
-      "national_gap_change_bn": 0.2777924972364971,
-      "affected_hh_gap_change_bn": 0.2777924972364971
+      "national_gap_change_bn": 0.1600997605441492,
+      "affected_hh_gap_change_bn": 0.16009976054414343
     },
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.48963185553247,
+      "national_gap_shocked_bn": 36.40691935004729,
       "affected_hh_gap_baseline_bn": 0.020748345174051584,
-      "affected_hh_gap_shocked_bn": 0.2134164912454015,
+      "affected_hh_gap_shocked_bn": 0.13070398576021575,
       "affected_people_weighted": 84808.00790405273,
       "affected_pov_rate_baseline": 0.053014317956573645,
-      "affected_pov_rate_shocked": 0.4852592347778524,
-      "affected_pov_rate_change_pp": 43.224491682127876,
-      "national_gap_change_bn": 0.1926681460713553,
-      "affected_hh_gap_change_bn": 0.1926681460713499
+      "affected_pov_rate_shocked": 0.4452749700409642,
+      "affected_pov_rate_change_pp": 39.22606520843906,
+      "national_gap_change_bn": 0.10995564058617191,
+      "affected_hh_gap_change_bn": 0.10995564058616417
     },
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.44882338197876,
+      "national_gap_shocked_bn": 36.393588635211046,
       "affected_hh_gap_baseline_bn": 0.0,
-      "affected_hh_gap_shocked_bn": 0.15185967251764382,
+      "affected_hh_gap_shocked_bn": 0.09662492574992979,
       "affected_people_weighted": 113052.06829833984,
       "affected_pov_rate_baseline": 0.0,
-      "affected_pov_rate_shocked": 0.3347999902131742,
-      "affected_pov_rate_change_pp": 33.47999902131742,
-      "national_gap_change_bn": 0.1518596725176451,
-      "affected_hh_gap_change_bn": 0.15185967251764382
+      "affected_pov_rate_shocked": 0.2358096566515552,
+      "affected_pov_rate_change_pp": 23.58096566515552,
+      "national_gap_change_bn": 0.09662492574992854,
+      "affected_hh_gap_change_bn": 0.09662492574992979
     },
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.486678809276604,
+      "national_gap_shocked_bn": 36.44120434858486,
       "affected_hh_gap_baseline_bn": 0.0,
-      "affected_hh_gap_shocked_bn": 0.18971509981548906,
+      "affected_hh_gap_shocked_bn": 0.14424063912374283,
       "affected_people_weighted": 84188.24829101562,
       "affected_pov_rate_baseline": 0.0,
-      "affected_pov_rate_shocked": 0.40052840333972417,
-      "affected_pov_rate_change_pp": 40.05284033397242,
-      "national_gap_change_bn": 0.18971509981548706,
-      "affected_hh_gap_change_bn": 0.18971509981548906
+      "affected_pov_rate_shocked": 0.247003726259683,
+      "affected_pov_rate_change_pp": 24.7003726259683,
+      "national_gap_change_bn": 0.14424063912374407,
+      "affected_hh_gap_change_bn": 0.14424063912374283
     },
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.42787721843068,
+      "national_gap_shocked_bn": 36.3884770690708,
       "affected_hh_gap_baseline_bn": 0.0,
-      "affected_hh_gap_shocked_bn": 0.13091350896955442,
+      "affected_hh_gap_shocked_bn": 0.09151335960968102,
       "affected_people_weighted": 77621.6252746582,
       "affected_pov_rate_baseline": 0.0,
       "affected_pov_rate_shocked": 0.2660892229583956,
       "affected_pov_rate_change_pp": 26.60892229583956,
-      "national_gap_change_bn": 0.130913508969563,
-      "affected_hh_gap_change_bn": 0.13091350896955442
+      "national_gap_change_bn": 0.0915133596096851,
+      "affected_hh_gap_change_bn": 0.09151335960968102
     },
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.56858207862065,
+      "national_gap_shocked_bn": 36.511343866765735,
       "affected_hh_gap_baseline_bn": 0.0,
-      "affected_hh_gap_shocked_bn": 0.2716183691595322,
+      "affected_hh_gap_shocked_bn": 0.21438015730462062,
       "affected_people_weighted": 101335.27166748047,
       "affected_pov_rate_baseline": 0.0,
-      "affected_pov_rate_shocked": 0.3888656119510355,
-      "affected_pov_rate_change_pp": 38.886561195103546,
-      "national_gap_change_bn": 0.2716183691595333,
-      "affected_hh_gap_change_bn": 0.2716183691595322
+      "affected_pov_rate_shocked": 0.3418736939013754,
+      "affected_pov_rate_change_pp": 34.18736939013754,
+      "national_gap_change_bn": 0.21438015730461757,
+      "affected_hh_gap_change_bn": 0.21438015730462062
     },
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.40604682453487,
+      "national_gap_shocked_bn": 36.3963221325855,
       "affected_hh_gap_baseline_bn": 0.0,
-      "affected_hh_gap_shocked_bn": 0.10908311507374752,
+      "affected_hh_gap_shocked_bn": 0.09935842312438405,
       "affected_people_weighted": 91287.6831665039,
       "affected_pov_rate_baseline": 0.0,
-      "affected_pov_rate_shocked": 0.15788774410644593,
-      "affected_pov_rate_change_pp": 15.788774410644594,
-      "national_gap_change_bn": 0.10908311507375146,
-      "affected_hh_gap_change_bn": 0.10908311507374752
+      "affected_pov_rate_shocked": 0.2448057401081252,
+      "affected_pov_rate_change_pp": 24.48057401081252,
+      "national_gap_change_bn": 0.09935842312438581,
+      "affected_hh_gap_change_bn": 0.09935842312438405
     },
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.465976903433166,
+      "national_gap_shocked_bn": 36.4441143028062,
       "affected_hh_gap_baseline_bn": 0.001124037905551076,
-      "affected_hh_gap_shocked_bn": 0.17013723187759697,
+      "affected_hh_gap_shocked_bn": 0.1482746312506354,
       "affected_people_weighted": 91691.0824584961,
       "affected_pov_rate_baseline": 0.017410768731713114,
-      "affected_pov_rate_shocked": 0.4483024820037031,
-      "affected_pov_rate_change_pp": 43.089171327199,
-      "national_gap_change_bn": 0.16901319397204873,
-      "affected_hh_gap_change_bn": 0.1690131939720459
+      "affected_pov_rate_shocked": 0.3062707450889737,
+      "affected_pov_rate_change_pp": 28.885997635726056,
+      "national_gap_change_bn": 0.1471505933450814,
+      "affected_hh_gap_change_bn": 0.14715059334508432
     },
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.49616251576347,
+      "national_gap_shocked_bn": 36.39920517336419,
       "affected_hh_gap_baseline_bn": 0.0,
-      "affected_hh_gap_shocked_bn": 0.1991988063023535,
+      "affected_hh_gap_shocked_bn": 0.1022414639030715,
       "affected_people_weighted": 94698.88864135742,
       "affected_pov_rate_baseline": 0.0,
-      "affected_pov_rate_shocked": 0.5589648362809091,
-      "affected_pov_rate_change_pp": 55.89648362809091,
-      "national_gap_change_bn": 0.19919880630235554,
-      "affected_hh_gap_change_bn": 0.1991988063023535
+      "affected_pov_rate_shocked": 0.44172912644370305,
+      "affected_pov_rate_change_pp": 44.17291264437031,
+      "national_gap_change_bn": 0.10224146390306998,
+      "affected_hh_gap_change_bn": 0.1022414639030715
     },
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.46197983574498,
+      "national_gap_shocked_bn": 36.44971124169595,
       "affected_hh_gap_baseline_bn": 0.0,
-      "affected_hh_gap_shocked_bn": 0.16501612628386153,
+      "affected_hh_gap_shocked_bn": 0.152747532234833,
       "affected_people_weighted": 102434.2583618164,
       "affected_pov_rate_baseline": 0.0,
       "affected_pov_rate_shocked": 0.6223338585203201,
       "affected_pov_rate_change_pp": 62.23338585203201,
-      "national_gap_change_bn": 0.16501612628385942,
-      "affected_hh_gap_change_bn": 0.16501612628386153
+      "national_gap_change_bn": 0.15274753223483373,
+      "affected_hh_gap_change_bn": 0.152747532234833
     },
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.496350634700256,
+      "national_gap_shocked_bn": 36.4495734658698,
       "affected_hh_gap_baseline_bn": 0.011921371887534856,
-      "affected_hh_gap_shocked_bn": 0.21130829712667024,
+      "affected_hh_gap_shocked_bn": 0.1645311282962141,
       "affected_people_weighted": 90193.75091552734,
       "affected_pov_rate_baseline": 0.07594439762709324,
-      "affected_pov_rate_shocked": 0.5505885020617862,
-      "affected_pov_rate_change_pp": 47.4644104434693,
-      "national_gap_change_bn": 0.19938692523913915,
-      "affected_hh_gap_change_bn": 0.19938692523913537
+      "affected_pov_rate_shocked": 0.38746777241430086,
+      "affected_pov_rate_change_pp": 31.15233747872076,
+      "national_gap_change_bn": 0.1526097564086797,
+      "affected_hh_gap_change_bn": 0.15260975640867924
     },
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.408046817628126,
+      "national_gap_shocked_bn": 36.33767747561779,
       "affected_hh_gap_baseline_bn": 0.0,
-      "affected_hh_gap_shocked_bn": 0.11108310816700763,
+      "affected_hh_gap_shocked_bn": 0.040713766156674054,
       "affected_people_weighted": 128049.64834594727,
       "affected_pov_rate_baseline": 0.0,
-      "affected_pov_rate_shocked": 0.293913288171644,
-      "affected_pov_rate_change_pp": 29.391328817164403,
-      "national_gap_change_bn": 0.1110831081670085,
-      "affected_hh_gap_change_bn": 0.11108310816700763
+      "affected_pov_rate_shocked": 0.1459973333588355,
+      "affected_pov_rate_change_pp": 14.599733335883549,
+      "national_gap_change_bn": 0.04071376615667077,
+      "affected_hh_gap_change_bn": 0.040713766156674054
     },
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.48963954885602,
+      "national_gap_shocked_bn": 36.40743872424848,
       "affected_hh_gap_baseline_bn": 0.025193560210423946,
-      "affected_hh_gap_shocked_bn": 0.21786939960532545,
+      "affected_hh_gap_shocked_bn": 0.135668574997795,
       "affected_people_weighted": 92301.74383544922,
       "affected_pov_rate_baseline": 0.1910728994226528,
-      "affected_pov_rate_shocked": 0.377545322837346,
-      "affected_pov_rate_change_pp": 18.64724234146932,
-      "national_gap_change_bn": 0.19267583939490152,
-      "affected_hh_gap_change_bn": 0.19267583939490152
+      "affected_pov_rate_shocked": 0.3869653333626896,
+      "affected_pov_rate_change_pp": 19.589243394003685,
+      "national_gap_change_bn": 0.11047501478736166,
+      "affected_hh_gap_change_bn": 0.11047501478737105
     },
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.42201667553177,
+      "national_gap_shocked_bn": 36.41467453288486,
       "affected_hh_gap_baseline_bn": 0.011921371887534856,
-      "affected_hh_gap_shocked_bn": 0.13697433795818872,
+      "affected_hh_gap_shocked_bn": 0.12963219531127113,
       "affected_people_weighted": 117056.74801635742,
       "affected_pov_rate_baseline": 0.05851614878324348,
-      "affected_pov_rate_shocked": 0.40389531531365896,
-      "affected_pov_rate_change_pp": 34.53791665304155,
-      "national_gap_change_bn": 0.12505296607065475,
-      "affected_hh_gap_change_bn": 0.12505296607065386
+      "affected_pov_rate_shocked": 0.4798151687432271,
+      "affected_pov_rate_change_pp": 42.12990199599837,
+      "national_gap_change_bn": 0.11771082342374228,
+      "affected_hh_gap_change_bn": 0.11771082342373627
     },
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.47390743978847,
+      "national_gap_shocked_bn": 36.42071897397514,
       "affected_hh_gap_baseline_bn": 0.0069872827361941335,
-      "affected_hh_gap_shocked_bn": 0.18393101306354295,
+      "affected_hh_gap_shocked_bn": 0.13074254725022066,
       "affected_people_weighted": 103747.5830078125,
       "affected_pov_rate_baseline": 0.025902394186988073,
       "affected_pov_rate_shocked": 0.2866219704384115,
       "affected_pov_rate_change_pp": 26.07195762514234,
-      "national_gap_change_bn": 0.176943730327352,
-      "affected_hh_gap_change_bn": 0.1769437303273488
+      "national_gap_change_bn": 0.12375526451402408,
+      "affected_hh_gap_change_bn": 0.12375526451402653
     },
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.45369789568846,
+      "national_gap_shocked_bn": 36.38418278679926,
       "affected_hh_gap_baseline_bn": 0.0069872827361941335,
-      "affected_hh_gap_shocked_bn": 0.16372146896352982,
+      "affected_hh_gap_shocked_bn": 0.09420636007433313,
       "affected_people_weighted": 78665.00604248047,
       "affected_pov_rate_baseline": 0.0341614515298509,
       "affected_pov_rate_shocked": 0.4595730463398462,
       "affected_pov_rate_change_pp": 42.54115948099953,
-      "national_gap_change_bn": 0.15673418622733948,
-      "affected_hh_gap_change_bn": 0.15673418622733568
+      "national_gap_change_bn": 0.0872190773381405,
+      "affected_hh_gap_change_bn": 0.087219077338139
     }
   ],
   "epd_displacement": {
@@ -290,16 +290,16 @@
       "sd": 0.0
     },
     "national_gap_shocked_bn": {
-      "mean": 36.435941363480126,
-      "sd": 0.06332572578951583
+      "mean": 36.39955483688944,
+      "sd": 0.05556703653106423
     },
     "affected_hh_gap_baseline_bn": {
       "mean": 0.007268067276824627,
       "sd": 0.007828614903656314
     },
     "affected_hh_gap_shocked_bn": {
-      "mean": 0.1462457212958322,
-      "sd": 0.06336572162833201
+      "mean": 0.10985919470515237,
+      "sd": 0.054821087608490554
     },
     "affected_people_weighted": {
       "mean": 72117.49164581299,
@@ -310,262 +310,262 @@
       "sd": 0.04630041287440097
     },
     "affected_pov_rate_shocked": {
-      "mean": 0.38221581858647136,
-      "sd": 0.11745217833798537
+      "mean": 0.3327204860980426,
+      "sd": 0.10181180700708964
     },
     "affected_pov_rate_change_pp": {
-      "mean": 33.58076415373655,
-      "sd": 12.94093842882831
+      "mean": 28.631230904893677,
+      "sd": 11.37328522074169
     },
     "national_gap_change_bn": {
-      "mean": 0.1389776540190077,
-      "sd": 0.06332572578951583
+      "mean": 0.10259112742832847,
+      "sd": 0.05556703653106423
     },
     "affected_hh_gap_change_bn": {
-      "mean": 0.13897765401900758,
-      "sd": 0.0633257257895161
+      "mean": 0.10259112742832774,
+      "sd": 0.05556703653106468
     }
   },
   "epd_displacement_per_draw": [
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.38022848477587,
+      "national_gap_shocked_bn": 36.374579039505115,
       "affected_hh_gap_baseline_bn": 0.0,
-      "affected_hh_gap_shocked_bn": 0.08326477531475072,
+      "affected_hh_gap_shocked_bn": 0.07761533004399615,
       "affected_people_weighted": 55094.924072265625,
       "affected_pov_rate_baseline": 0.0,
-      "affected_pov_rate_shocked": 0.33535801795276016,
-      "affected_pov_rate_change_pp": 33.535801795276015,
-      "national_gap_change_bn": 0.08326477531475263,
-      "affected_hh_gap_change_bn": 0.08326477531475072
+      "affected_pov_rate_shocked": 0.3256321767533235,
+      "affected_pov_rate_change_pp": 32.56321767533235,
+      "national_gap_change_bn": 0.07761533004399723,
+      "affected_hh_gap_change_bn": 0.07761533004399615
     },
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.541830593952774,
+      "national_gap_shocked_bn": 36.48249283689864,
       "affected_hh_gap_baseline_bn": 0.016438099163051903,
-      "affected_hh_gap_shocked_bn": 0.2613049836547108,
+      "affected_hh_gap_shocked_bn": 0.20196722660057925,
       "affected_people_weighted": 62059.89321899414,
       "affected_pov_rate_baseline": 0.07635664412025985,
-      "affected_pov_rate_shocked": 0.4358535717681224,
-      "affected_pov_rate_change_pp": 35.949692764786256,
-      "national_gap_change_bn": 0.24486688449165683,
-      "affected_hh_gap_change_bn": 0.2448668844916589
+      "affected_pov_rate_shocked": 0.3762279437580288,
+      "affected_pov_rate_change_pp": 29.987129963776898,
+      "national_gap_change_bn": 0.18552912743752614,
+      "affected_hh_gap_change_bn": 0.18552912743752736
     },
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.37294866923201,
+      "national_gap_shocked_bn": 36.31642611001874,
       "affected_hh_gap_baseline_bn": 0.020954310092657805,
-      "affected_hh_gap_shocked_bn": 0.09693926986354595,
+      "affected_hh_gap_shocked_bn": 0.040416710650280234,
       "affected_people_weighted": 74924.20428466797,
       "affected_pov_rate_baseline": 0.11105563394799405,
-      "affected_pov_rate_shocked": 0.3042492561714976,
-      "affected_pov_rate_change_pp": 19.319362222350357,
-      "national_gap_change_bn": 0.07598495977089215,
-      "affected_hh_gap_change_bn": 0.07598495977088815
+      "affected_pov_rate_shocked": 0.28854223830370146,
+      "affected_pov_rate_change_pp": 17.74866043557074,
+      "national_gap_change_bn": 0.019462400557621606,
+      "affected_hh_gap_change_bn": 0.01946240055762243
     },
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.452629520132255,
+      "national_gap_shocked_bn": 36.368213268287185,
       "affected_hh_gap_baseline_bn": 0.006826901059707641,
-      "affected_hh_gap_shocked_bn": 0.1624927117308482,
+      "affected_hh_gap_shocked_bn": 0.07807645988577676,
       "affected_people_weighted": 75486.33520507812,
       "affected_pov_rate_baseline": 0.08096379483314559,
-      "affected_pov_rate_shocked": 0.4726705357595102,
-      "affected_pov_rate_change_pp": 39.17067409263646,
-      "national_gap_change_bn": 0.15566581067113816,
-      "affected_hh_gap_change_bn": 0.15566581067114055
+      "affected_pov_rate_shocked": 0.29785837719639274,
+      "affected_pov_rate_change_pp": 21.689458236324715,
+      "national_gap_change_bn": 0.07124955882606798,
+      "affected_hh_gap_change_bn": 0.07124955882606912
     },
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.40168508114099,
+      "national_gap_shocked_bn": 36.368115209930544,
       "affected_hh_gap_baseline_bn": 0.0,
-      "affected_hh_gap_shocked_bn": 0.10472137167987644,
+      "affected_hh_gap_shocked_bn": 0.07115150046942162,
       "affected_people_weighted": 72775.77160644531,
       "affected_pov_rate_baseline": 0.0,
-      "affected_pov_rate_shocked": 0.2073990762920394,
-      "affected_pov_rate_change_pp": 20.73990762920394,
-      "national_gap_change_bn": 0.10472137167987228,
-      "affected_hh_gap_change_bn": 0.10472137167987644
+      "affected_pov_rate_shocked": 0.2537717821218365,
+      "affected_pov_rate_change_pp": 25.377178212183647,
+      "national_gap_change_bn": 0.07115150046942631,
+      "affected_hh_gap_change_bn": 0.07115150046942162
     },
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.47212371703406,
+      "national_gap_shocked_bn": 36.39509751538512,
       "affected_hh_gap_baseline_bn": 0.0069872827361941335,
-      "affected_hh_gap_shocked_bn": 0.18214729030913793,
+      "affected_hh_gap_shocked_bn": 0.10512108866018832,
       "affected_people_weighted": 87127.3056640625,
       "affected_pov_rate_baseline": 0.03084349700169901,
-      "affected_pov_rate_shocked": 0.3929470722960266,
-      "affected_pov_rate_change_pp": 36.210357529432756,
-      "national_gap_change_bn": 0.17516000757294137,
-      "affected_hh_gap_change_bn": 0.17516000757294378
+      "affected_pov_rate_shocked": 0.3435835519888109,
+      "affected_pov_rate_change_pp": 31.274005498711187,
+      "national_gap_change_bn": 0.09813380592400023,
+      "affected_hh_gap_change_bn": 0.09813380592399419
     },
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.34560541725435,
+      "national_gap_shocked_bn": 36.36502332229127,
       "affected_hh_gap_baseline_bn": 0.0,
-      "affected_hh_gap_shocked_bn": 0.04864170779322505,
+      "affected_hh_gap_shocked_bn": 0.06805961283015752,
       "affected_people_weighted": 72259.13684082031,
       "affected_pov_rate_baseline": 0.0,
-      "affected_pov_rate_shocked": 0.22841432339476817,
-      "affected_pov_rate_change_pp": 22.841432339476818,
-      "national_gap_change_bn": 0.04864170779323018,
-      "affected_hh_gap_change_bn": 0.04864170779322505
+      "affected_pov_rate_shocked": 0.2752584987575464,
+      "affected_pov_rate_change_pp": 27.525849875754638,
+      "national_gap_change_bn": 0.06805961283015449,
+      "affected_hh_gap_change_bn": 0.06805961283015752
     },
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.38875297805084,
+      "national_gap_shocked_bn": 36.38595148223677,
       "affected_hh_gap_baseline_bn": 0.011921371887534856,
-      "affected_hh_gap_shocked_bn": 0.10371064047725344,
+      "affected_hh_gap_shocked_bn": 0.10090914466318845,
       "affected_people_weighted": 55314.318359375,
       "affected_pov_rate_baseline": 0.1238324955666182,
-      "affected_pov_rate_shocked": 0.32770374409654823,
-      "affected_pov_rate_change_pp": 20.387124852993004,
-      "national_gap_change_bn": 0.09178926858972147,
-      "affected_hh_gap_change_bn": 0.09178926858971859
+      "affected_pov_rate_shocked": 0.2369541718102417,
+      "affected_pov_rate_change_pp": 11.31216762436235,
+      "national_gap_change_bn": 0.08898777277565273,
+      "affected_hh_gap_change_bn": 0.0889877727756536
     },
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.352536893793975,
+      "national_gap_shocked_bn": 36.327723503636285,
       "affected_hh_gap_baseline_bn": 0.0,
-      "affected_hh_gap_shocked_bn": 0.05557318433285618,
+      "affected_hh_gap_shocked_bn": 0.030759794175169112,
       "affected_people_weighted": 52532.98162841797,
       "affected_pov_rate_baseline": 0.0,
-      "affected_pov_rate_shocked": 0.22965742395386976,
-      "affected_pov_rate_change_pp": 22.965742395386975,
-      "national_gap_change_bn": 0.055573184332857295,
-      "affected_hh_gap_change_bn": 0.05557318433285618
+      "affected_pov_rate_shocked": 0.12696304739945324,
+      "affected_pov_rate_change_pp": 12.696304739945324,
+      "national_gap_change_bn": 0.030759794175168054,
+      "affected_hh_gap_change_bn": 0.030759794175169112
     },
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.54549904129558,
+      "national_gap_shocked_bn": 36.48460508788295,
       "affected_hh_gap_baseline_bn": 0.001124037905551076,
-      "affected_hh_gap_shocked_bn": 0.24965936974000763,
+      "affected_hh_gap_shocked_bn": 0.1887654163273828,
       "affected_people_weighted": 69729.5456237793,
       "affected_pov_rate_baseline": 0.022894344386791776,
-      "affected_pov_rate_shocked": 0.41836187093345345,
-      "affected_pov_rate_change_pp": 39.546752654666165,
-      "national_gap_change_bn": 0.24853533183446075,
-      "affected_hh_gap_change_bn": 0.24853533183445656
+      "affected_pov_rate_shocked": 0.45246415405132934,
+      "affected_pov_rate_change_pp": 42.956980966453756,
+      "national_gap_change_bn": 0.18764137842183004,
+      "affected_hh_gap_change_bn": 0.18764137842183173
     },
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.411710884387055,
+      "national_gap_shocked_bn": 36.3647744658347,
       "affected_hh_gap_baseline_bn": 0.02052197881661749,
-      "affected_hh_gap_shocked_bn": 0.1352691537425542,
+      "affected_hh_gap_shocked_bn": 0.08833273519020367,
       "affected_people_weighted": 68030.00903320312,
       "affected_pov_rate_baseline": 0.11383902246408183,
       "affected_pov_rate_shocked": 0.36068838775793444,
       "affected_pov_rate_change_pp": 24.68493652938526,
-      "national_gap_change_bn": 0.11474717492593811,
-      "affected_hh_gap_change_bn": 0.1147471749259367
+      "national_gap_change_bn": 0.06781075637358214,
+      "affected_hh_gap_change_bn": 0.06781075637358618
     },
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.40495405899696,
+      "national_gap_shocked_bn": 36.372426880887616,
       "affected_hh_gap_baseline_bn": 0.021646016722168565,
-      "affected_hh_gap_shocked_bn": 0.12963636625801206,
+      "affected_hh_gap_shocked_bn": 0.09710918814866698,
       "affected_people_weighted": 96579.39959716797,
       "affected_pov_rate_baseline": 0.09671712598099148,
-      "affected_pov_rate_shocked": 0.17832841568901622,
-      "affected_pov_rate_change_pp": 8.161128970802475,
-      "national_gap_change_bn": 0.10799034953583941,
-      "affected_hh_gap_change_bn": 0.1079903495358435
+      "affected_pov_rate_shocked": 0.15150849127377292,
+      "affected_pov_rate_change_pp": 5.4791365292781435,
+      "national_gap_change_bn": 0.07546317142649883,
+      "affected_hh_gap_change_bn": 0.07546317142649842
     },
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.39732234996036,
+      "national_gap_shocked_bn": 36.33179530258156,
       "affected_hh_gap_baseline_bn": 0.011921371887534856,
-      "affected_hh_gap_shocked_bn": 0.11228001238678467,
+      "affected_hh_gap_shocked_bn": 0.04675296500797328,
       "affected_people_weighted": 79441.47442626953,
       "affected_pov_rate_baseline": 0.0862233503654958,
-      "affected_pov_rate_shocked": 0.34017180933158236,
-      "affected_pov_rate_change_pp": 25.394845896608654,
-      "national_gap_change_bn": 0.1003586404992447,
-      "affected_hh_gap_change_bn": 0.10035864049924982
+      "affected_pov_rate_shocked": 0.3324085258700864,
+      "affected_pov_rate_change_pp": 24.61851755045906,
+      "national_gap_change_bn": 0.03483159312044393,
+      "affected_hh_gap_change_bn": 0.034831593120438424
     },
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.4970108910018,
+      "national_gap_shocked_bn": 36.484823905330686,
       "affected_hh_gap_baseline_bn": 0.011921371887534856,
-      "affected_hh_gap_shocked_bn": 0.21196855342821902,
+      "affected_hh_gap_shocked_bn": 0.1997815677571084,
       "affected_people_weighted": 68685.15493774414,
       "affected_pov_rate_baseline": 0.09972620851210648,
       "affected_pov_rate_shocked": 0.5233307798047553,
       "affected_pov_rate_change_pp": 42.36045712926489,
-      "national_gap_change_bn": 0.20004718154068257,
-      "affected_hh_gap_change_bn": 0.20004718154068415
+      "national_gap_change_bn": 0.18786019586956826,
+      "affected_hh_gap_change_bn": 0.18786019586957353
     },
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.383152280548174,
+      "national_gap_shocked_bn": 36.3775617321956,
       "affected_hh_gap_baseline_bn": 0.0,
-      "affected_hh_gap_shocked_bn": 0.08618857108705544,
+      "affected_hh_gap_shocked_bn": 0.08059802273447823,
       "affected_people_weighted": 67448.66918945312,
       "affected_pov_rate_baseline": 0.0,
-      "affected_pov_rate_shocked": 0.37937133772109083,
-      "affected_pov_rate_change_pp": 37.937133772109085,
-      "national_gap_change_bn": 0.08618857108705669,
-      "affected_hh_gap_change_bn": 0.08618857108705544
+      "affected_pov_rate_shocked": 0.31245784441640045,
+      "affected_pov_rate_change_pp": 31.245784441640044,
+      "national_gap_change_bn": 0.08059802273448469,
+      "affected_hh_gap_change_bn": 0.08059802273447823
     },
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.50255366076873,
+      "national_gap_shocked_bn": 36.45213477619618,
       "affected_hh_gap_baseline_bn": 0.001124037905551076,
-      "affected_hh_gap_shocked_bn": 0.20671398921316564,
+      "affected_hh_gap_shocked_bn": 0.15629510464061092,
       "affected_people_weighted": 83463.34097290039,
       "affected_pov_rate_baseline": 0.019127106737359695,
-      "affected_pov_rate_shocked": 0.5634562026408226,
-      "affected_pov_rate_change_pp": 54.43290959034629,
-      "national_gap_change_bn": 0.2055899513076156,
-      "affected_hh_gap_change_bn": 0.20558995130761457
+      "affected_pov_rate_shocked": 0.3808583613195459,
+      "affected_pov_rate_change_pp": 36.17312545821862,
+      "national_gap_change_bn": 0.15517106673506476,
+      "affected_hh_gap_change_bn": 0.15517106673505984
     },
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.492782276661394,
+      "national_gap_shocked_bn": 36.408404372003076,
       "affected_hh_gap_baseline_bn": 0.0,
-      "affected_hh_gap_shocked_bn": 0.19581856720027876,
+      "affected_hh_gap_shocked_bn": 0.11144066254195725,
       "affected_people_weighted": 69918.60852050781,
       "affected_pov_rate_baseline": 0.0,
-      "affected_pov_rate_shocked": 0.5997744192801773,
-      "affected_pov_rate_change_pp": 59.977441928017726,
-      "national_gap_change_bn": 0.19581856720027702,
-      "affected_hh_gap_change_bn": 0.19581856720027876
+      "affected_pov_rate_shocked": 0.31622708086671947,
+      "affected_pov_rate_change_pp": 31.622708086671945,
+      "national_gap_change_bn": 0.11144066254195906,
+      "affected_hh_gap_change_bn": 0.11144066254195725
     },
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.51171645579135,
+      "national_gap_shocked_bn": 36.480476014084765,
       "affected_hh_gap_baseline_bn": 0.0,
-      "affected_hh_gap_shocked_bn": 0.21475274633022773,
+      "affected_hh_gap_shocked_bn": 0.1835123046236434,
       "affected_people_weighted": 70001.51229858398,
       "affected_pov_rate_baseline": 0.0,
-      "affected_pov_rate_shocked": 0.478638895546845,
-      "affected_pov_rate_change_pp": 47.863889554684505,
-      "national_gap_change_bn": 0.2147527463302339,
-      "affected_hh_gap_change_bn": 0.21475274633022773
+      "affected_pov_rate_shocked": 0.5264161278637625,
+      "affected_pov_rate_change_pp": 52.64161278637624,
+      "national_gap_change_bn": 0.18351230462364754,
+      "affected_hh_gap_change_bn": 0.1835123046236434
     },
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.469328112367144,
+      "national_gap_shocked_bn": 36.46701063371427,
       "affected_hh_gap_baseline_bn": 0.0069872827361941335,
-      "affected_hh_gap_shocked_bn": 0.17935168564222384,
+      "affected_hh_gap_shocked_bn": 0.1770342069893453,
       "affected_people_weighted": 81996.34161376953,
       "affected_pov_rate_baseline": 0.032773544991479824,
-      "affected_pov_rate_shocked": 0.4681142237954191,
-      "affected_pov_rate_change_pp": 43.53406788039393,
-      "national_gap_change_bn": 0.17236440290602673,
-      "affected_hh_gap_change_bn": 0.1723644029060297
+      "affected_pov_rate_shocked": 0.3919138860387404,
+      "affected_pov_rate_change_pp": 35.914034104726056,
+      "national_gap_change_bn": 0.1700469242531497,
+      "affected_hh_gap_change_bn": 0.17004692425315115
     },
     {
       "national_gap_baseline_bn": 36.29696370946112,
-      "national_gap_shocked_bn": 36.39445590245683,
+      "national_gap_shocked_bn": 36.38346127888784,
       "affected_hh_gap_baseline_bn": 0.0069872827361941335,
-      "affected_hh_gap_shocked_bn": 0.10447947573191017,
+      "affected_hh_gap_shocked_bn": 0.09348485216291993,
       "affected_people_weighted": 79480.9058227539,
       "affected_pov_rate_baseline": 0.03381077207409352,
-      "affected_pov_rate_shocked": 0.3998270075431874,
-      "affected_pov_rate_change_pp": 36.60162354690939,
-      "national_gap_change_bn": 0.09749219299571621,
-      "affected_hh_gap_change_bn": 0.09749219299571604
+      "affected_pov_rate_shocked": 0.38134429460846986,
+      "affected_pov_rate_change_pp": 34.75335225343763,
+      "national_gap_change_bn": 0.08649756942672582,
+      "affected_hh_gap_change_bn": 0.0864975694267258
     }
   ],
   "full_tariff_wage_cut": {

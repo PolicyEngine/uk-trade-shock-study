@@ -9,6 +9,7 @@
   "gini_change_sd": 0.0,
   "displaced_weighted_mean": 0.0,
   "lcwra_weighted_mean": 0.0,
+  "reallocated_weighted_mean": 0.0,
   "cushioning_rate_mean": 0.41584097278786003,
   "cushioning_rate_sd": 0.0,
   "draws": [
@@ -25,6 +26,7 @@
       "displaced_weighted": 0.0,
       "inactive_weighted": 0.0,
       "lcwra_weighted": 0.0,
+      "reallocated_weighted": 0.0,
       "gross_earnings_loss": 946647645.999962,
       "net_disposable_loss": 552992768.0,
       "cushioning_rate": 0.41584097278786003,

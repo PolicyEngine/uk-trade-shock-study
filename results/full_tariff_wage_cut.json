@@ -8,6 +8,10 @@
   "gini_change_mean": -0.00010610633883778586,
   "gini_change_sd": 0.0,
   "displaced_weighted_mean": 0.0,
+  "lcwra_weighted_mean": 0.0,
+  "reallocated_weighted_mean": 0.0,
+  "cushioning_rate_mean": 0.41023104267949895,
+  "cushioning_rate_sd": 0.0,
   "draws": [
     {
       "scenario": "full_tariff_wage_cut",
@@ -21,6 +25,11 @@
       "gini_shocked": 0.3089835682240515,
       "displaced_weighted": 0.0,
       "inactive_weighted": 0.0,
+      "lcwra_weighted": 0.0,
+      "reallocated_weighted": 0.0,
+      "gross_earnings_loss": 1771498650.499899,
+      "net_disposable_loss": 1044774912.0,
+      "cushioning_rate": 0.41023104267949895,
       "decile_income_change": {
         "1": -6.06687068939209,
         "2": -4.455807685852051,

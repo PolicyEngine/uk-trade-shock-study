@@ -363,3 +363,164 @@ def test_reallocation_hard_error_when_sector_switch_is_dropped():
     with mock.patch.dict("sys.modules", {"policyengine_uk": fake_pe}):
         with pytest.raises(RuntimeError, match="sector reallocation not applied"):
             shocks_module.build_shocked_simulation(None, stub, table, 2026)
+
+
+# ---------------------------------------------------------------------------
+# Post-shock Universal Credit take-up re-draw
+# ---------------------------------------------------------------------------
+
+
+class _TakeupSim:
+    """Minimal sim stub: persons map to benunits in fixed-size blocks."""
+
+    def __init__(self, n_persons, per_benunit=2, baseline_flag=None):
+        self.n = n_persons
+        self.k = per_benunit
+        self.n_bu = (n_persons + per_benunit - 1) // per_benunit
+        self.flag = (
+            np.zeros(self.n_bu, dtype=bool) if baseline_flag is None else baseline_flag
+        )
+        self.stored = {}
+
+    def calculate(self, var, period=None, map_to=None):
+        import types
+
+        if var == "would_claim_uc":
+            values = self.stored.get(var, self.flag)
+        else:
+            values = np.zeros(self.n)
+        return types.SimpleNamespace(values=np.asarray(values))
+
+    def set_input(self, var, period, values):
+        self.stored[var] = np.asarray(values)
+
+    def map_result(self, values, source, target):
+        assert (source, target) == ("person", "benunit")
+        out = np.zeros(self.n_bu, dtype=float)
+        for i, v in enumerate(np.asarray(values, dtype=float)):
+            out[i // self.k] += v
+        return out
+
+
+def _takeup_table(n, affected_idx, uc_takeup=0.8, seed=0):
+    table = pd.DataFrame(
+        {
+            "displaced": np.zeros(n, dtype=bool),
+            "inactive": np.zeros(n, dtype=bool),
+            "reallocated": np.zeros(n, dtype=bool),
+        }
+    )
+    table.loc[list(affected_idx), "displaced"] = True
+    table.attrs["uc_takeup"] = uc_takeup
+    table.attrs["seed"] = seed
+    return table
+
+
+def test_uc_takeup_redrawn_only_for_affected_benunits():
+    """Affected benunits get a fresh draw; every other benunit is untouched."""
+    from uk_trade_shock_study.shocks import redraw_uc_takeup
+
+    n = 200
+    rng = np.random.default_rng(3)
+    baseline = rng.random(n // 2) < 0.55
+    sim = _TakeupSim(n, per_benunit=2, baseline_flag=baseline.copy())
+    base_sim = _TakeupSim(n, per_benunit=2, baseline_flag=baseline.copy())
+    affected_persons = [0, 5, 6, 41]
+    table = _takeup_table(n, affected_persons)
+
+    new = redraw_uc_takeup(sim, base_sim, table, 2026)
+    affected_bu = np.zeros(len(baseline), dtype=bool)
+    affected_bu[[i // 2 for i in affected_persons]] = True
+    # unaffected benefit units keep the baseline draw exactly
+    np.testing.assert_array_equal(new[~affected_bu], baseline[~affected_bu])
+    # the flag actually reached the simulation
+    np.testing.assert_array_equal(sim.stored["would_claim_uc"], new)
+
+
+def test_uc_takeup_rate_approximately_honoured_among_affected():
+    from uk_trade_shock_study.shocks import redraw_uc_takeup
+
+    n = 4000
+    baseline = np.zeros(n // 2, dtype=bool)  # baseline all False
+    affected_persons = list(range(0, n, 2))  # every benunit affected
+    rates = []
+    for seed in range(20):
+        sim = _TakeupSim(n, 2, baseline.copy())
+        base_sim = _TakeupSim(n, 2, baseline.copy())
+        table = _takeup_table(n, affected_persons, uc_takeup=0.8, seed=seed)
+        rates.append(redraw_uc_takeup(sim, base_sim, table, 2026).mean())
+    assert np.mean(rates) == pytest.approx(0.8, abs=0.02)
+
+    rates0 = []
+    for seed in range(5):
+        sim = _TakeupSim(n, 2, baseline.copy())
+        base_sim = _TakeupSim(n, 2, baseline.copy())
+        table = _takeup_table(n, affected_persons, uc_takeup=1.0, seed=seed)
+        rates0.append(redraw_uc_takeup(sim, base_sim, table, 2026).mean())
+    assert min(rates0) == 1.0
+
+
+def test_uc_takeup_no_redraw_when_nothing_affected():
+    """Wage-cut margin: no new claimants, baseline flags survive untouched."""
+    from uk_trade_shock_study.shocks import redraw_uc_takeup
+
+    n = 100
+    baseline = np.random.default_rng(1).random(n // 2) < 0.5
+    sim = _TakeupSim(n, 2, baseline.copy())
+    base_sim = _TakeupSim(n, 2, baseline.copy())
+    table = _takeup_table(n, [])
+    out = redraw_uc_takeup(sim, base_sim, table, 2026)
+    np.testing.assert_array_equal(out, baseline)
+    assert "would_claim_uc" not in sim.stored
+
+
+def test_wage_cut_table_has_no_affected_persons():
+    from uk_trade_shock_study.shocks import affected_mask
+
+    persons = make_persons()
+    table = apply_shocks(persons, PRESETS["full_tariff_wage_cut"], seed=0)
+    assert not affected_mask(table).any()
+
+
+def test_displacement_draw_invariant_to_uc_takeup():
+    """uc_takeup must not perturb the displacement/reallocation draw."""
+    persons = make_persons()
+    for margin in ("displacement", "inactivity", "reallocation"):
+        a = apply_shocks(
+            persons,
+            TradeShockScenario("a", "full_tariff", margin, uc_takeup=0.55),
+            seed=3,
+        )
+        b = apply_shocks(
+            persons,
+            TradeShockScenario("b", "full_tariff", margin, uc_takeup=1.0),
+            seed=3,
+        )
+        for col in ("displaced", "inactive", "lcwra", "reallocated", "employment_income"):
+            np.testing.assert_array_equal(a[col].to_numpy(), b[col].to_numpy())
+
+
+def test_uc_takeup_scenario_validation_and_attrs():
+    with pytest.raises(ValueError):
+        TradeShockScenario("t", "epd", "displacement", uc_takeup=1.5)
+    persons = make_persons()
+    table = apply_shocks(
+        persons, TradeShockScenario("t", "epd", "displacement", uc_takeup=0.7), seed=4
+    )
+    assert table.attrs["uc_takeup"] == 0.7
+    assert table.attrs["seed"] == 4
+
+
+def test_uc_takeup_hard_error_when_flag_is_dropped():
+    from uk_trade_shock_study.shocks import redraw_uc_takeup
+
+    class SilentSim(_TakeupSim):
+        def set_input(self, var, period, values):
+            return None
+
+    n = 20
+    sim = SilentSim(n, 2, np.zeros(n // 2, dtype=bool))
+    base_sim = _TakeupSim(n, 2, np.zeros(n // 2, dtype=bool))
+    table = _takeup_table(n, [0, 1, 2], uc_takeup=1.0)
+    with pytest.raises(RuntimeError, match="take-up re-draw not applied"):
+        redraw_uc_takeup(sim, base_sim, table, 2026)

@@ -1,21 +1,21 @@
 {
   "full_tariff_displacement_seed0": {
     "gross_earnings_loss": 1701060773.6415339,
-    "net_disposable_loss": 1142554624.0,
-    "cushioning_rate": 0.3283281575213305,
+    "net_disposable_loss": 1025245184.0,
+    "cushioning_rate": 0.3972906789184177,
     "components_share_of_gross_loss": {
       "income_tax": 0.1975458556371481,
       "employee_national_insurance": 0.04516744917860633,
-      "universal_credit": 0.04233300935101216,
+      "universal_credit": 0.11138996800558236,
       "other_benefits": 0.0,
-      "other_residual": 0.04328184335456391
+      "other_residual": 0.043187406097080924
     },
     "components_gbp": {
       "income_tax": 336037506.0198059,
       "employee_national_insurance": 76832576.04317474,
-      "universal_credit": 72011021.63720703,
+      "universal_credit": 189481105.15148163,
       "other_benefits": 0.0,
-      "other_residual": 73625045.94134617
+      "other_residual": 73464402.42707157
     },
     "other_benefits_detail_gbp": {}
   },

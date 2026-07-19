@@ -1,4 +1,4 @@
-"""Duration and UC take-up sensitivities, full_tariff displacement margin.
+"""Duration sensitivity, full_tariff displacement margin.
 
 Conventions mirror the sister study's analysis/sensitivity_duration_takeup.py.
 10 Monte Carlo displacement draws (seeds 0-9) per variant.
@@ -12,13 +12,10 @@ Conventions mirror the sister study's analysis/sensitivity_duration_takeup.py.
     half a year's earnings. d = 12 months is the central case, recomputed on
     the same seeds for comparability.
 
-(b) UC TAKE-UP: policyengine_uk models take-up through the benunit-level
-    dataset input would_claim_uc (the mechanism decomposition found 55% of
-    zero-UC displaced workers are in families modelled as not taking up).
-    The forced-100% variant sets would_claim_uc = True for every benunit in
-    BOTH the baseline and the shocked simulation, so the reported deltas and
-    cushioning rates are shock effects under full take-up, not take-up
-    effects.
+(b) UC TAKE-UP: superseded. The take-up sensitivity is now reported by the
+    main-text grid (analysis/takeup_sensitivity.py); the variants that once
+    lived here have been removed. All runs below use the corrected default
+    post-shock re-draw at uc_takeup = 0.80 (shocks.DEFAULT_UC_TAKEUP).
 
 Writes results/sensitivity_duration_takeup.json.
 Usage: .venv/bin/python analysis/sensitivity_duration_takeup.py
@@ -33,6 +30,7 @@ import numpy as np
 
 from uk_trade_shock_study.runner import _baseline_and_persons
 from uk_trade_shock_study.shocks import (
+    DEFAULT_UC_TAKEUP,
     PRESETS,
     apply_shocks,
     build_shocked_simulation,
@@ -42,7 +40,13 @@ PERIOD = 2026
 DATASET = Path("data/frs_2024_25.h5")
 RESULTS = Path("results")
 N_DRAWS = 10
-VARIANTS = ("duration_12m_central", "duration_6m", "takeup_100")
+# The take-up half of this script is SUPERSEDED by the main-text take-up grid
+# (analysis/takeup_sensitivity.py -> Table tab:takeupgrid). Only the duration
+# variants are run and written here.
+VARIANTS = (
+    "duration_12m_central",
+    "duration_6m",
+)
 
 
 def sim_metrics(sim):
@@ -65,21 +69,10 @@ def main() -> None:
     scen = PRESETS["full_tariff_displacement"]
     base = sim_metrics(baseline)
 
-    n_benunits = len(
-        baseline.calculate("would_claim_uc", period=PERIOD, map_to="benunit").values
-    )
     modelled_takeup = float(np.average(
         baseline.calculate("would_claim_uc", period=PERIOD, map_to="person").values,
         weights=w,
     ))
-    # baseline under forced 100% take-up (same in every draw)
-    from policyengine_uk import Microsimulation
-
-    base100_sim = Microsimulation(dataset=dataset)
-    base100_sim.set_input("would_claim_uc", PERIOD, np.ones(n_benunits, dtype=bool))
-    base100 = sim_metrics(base100_sim)
-    del base100_sim
-
     rows = {v: [] for v in VARIANTS}
     for seed in range(N_DRAWS):
         table = apply_shocks(persons, scen, seed=seed)
@@ -87,15 +80,13 @@ def main() -> None:
 
         for variant in VARIANTS:
             t = table.copy()
+            t.attrs = dict(table.attrs)
             base_row = base
             if variant == "duration_6m":
                 t["employment_income"] = np.where(
                     displaced, 0.5 * base_emp, t["employment_income"].to_numpy(float)
                 )
             sim = build_shocked_simulation(dataset, baseline, t, PERIOD)
-            if variant == "takeup_100":
-                sim.set_input("would_claim_uc", PERIOD, np.ones(n_benunits, dtype=bool))
-                base_row = base100
             m = sim_metrics(sim)
             del sim
             gross = float(((base_emp - t["employment_income"].to_numpy(float)) * w).sum())
@@ -114,12 +105,11 @@ def main() -> None:
         "scenario": "full_tariff_displacement",
         "n_draws": N_DRAWS,
         "modelled_baseline_uc_takeup_person_weighted": modelled_takeup,
+        "central_post_shock_uc_takeup": DEFAULT_UC_TAKEUP,
         "notes": {
             "duration_6m": "displaced keep 50% of baseline annual earnings "
                            "(6-month spell), in-model hybrid: transition "
                            "(hours/status) unchanged.",
-            "takeup_100": "would_claim_uc forced True for all benunits in "
-                          "baseline AND shocked simulations.",
         },
     }
     for variant in VARIANTS:

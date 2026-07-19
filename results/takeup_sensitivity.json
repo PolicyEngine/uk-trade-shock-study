@@ -1,0 +1,1081 @@
+{
+  "n_draws_displacement": 20,
+  "takeups": [
+    0.55,
+    0.7,
+    0.8,
+    0.9,
+    1.0
+  ],
+  "notes": {
+    "stale_baseline_flag": "pre-fix behaviour: post-shock would_claim_uc restored to the baseline stored draw.",
+    "wage_cut": "no affected persons -> no benunit is re-drawn; the family is invariant to uc_takeup by construction (verified).",
+    "baseline_flag_rate_all_benunits": 0.5492838196286473,
+    "full_tariff_wage_cut_invariance_max_spread": 0.0,
+    "epd_wage_cut_invariance_max_spread": 0.0
+  },
+  "full_tariff_displacement": {
+    "stale_baseline_flag": {
+      "cushioning_rate": {
+        "mean": 0.34450494956340977,
+        "sd": 0.0378529449815234
+      },
+      "exchequer_cost_bn": {
+        "mean": 0.7934418943999999,
+        "sd": 0.26112234413036267
+      },
+      "poverty_change_bhc_pp": {
+        "mean": 0.057597571468174236,
+        "sd": 0.019170574561524798
+      },
+      "poverty_change_ahc_pp": {
+        "mean": 0.061577976203111714,
+        "sd": 0.018214213878801493
+      },
+      "gini_change": {
+        "mean": 0.0002662049722293947,
+        "sd": 0.0001856542608173797
+      },
+      "gross_earnings_loss_bn": {
+        "mean": 1.8228979192593833,
+        "sd": 0.4443602286097709
+      },
+      "displaced_weighted": {
+        "mean": 33565.60283355713,
+        "sd": 3399.1008970028497
+      },
+      "components_share_of_gross_loss": {
+        "income_tax": 0.21244250142960133,
+        "employee_national_insurance": 0.04287800236245707,
+        "universal_credit": 0.050622044974624046,
+        "other_benefits": -9.831589286419177e-05,
+        "other_residual": 0.03866071668959161
+      },
+      "components_gbp": {
+        "income_tax": 400624700.3609177,
+        "employee_national_insurance": 76781787.90479088,
+        "universal_credit": 90283132.82267913,
+        "other_benefits": -111977.66068491936,
+        "other_residual": 69439802.23168083
+      }
+    },
+    "0.55": {
+      "cushioning_rate": {
+        "mean": 0.3553706316800496,
+        "sd": 0.03172923510059642
+      },
+      "exchequer_cost_bn": {
+        "mean": 0.8089133056,
+        "sd": 0.2437289830452779
+      },
+      "poverty_change_bhc_pp": {
+        "mean": 0.057708379801401935,
+        "sd": 0.020172298047186354
+      },
+      "poverty_change_ahc_pp": {
+        "mean": 0.06270965518468771,
+        "sd": 0.02229365546819161
+      },
+      "gini_change": {
+        "mean": 0.0002444831549903492,
+        "sd": 0.00018269882502452547
+      },
+      "gross_earnings_loss_bn": {
+        "mean": 1.8228979192593833,
+        "sd": 0.4443602286097709
+      },
+      "displaced_weighted": {
+        "mean": 33565.60283355713,
+        "sd": 3399.1008970028497
+      },
+      "components_share_of_gross_loss": {
+        "income_tax": 0.21244250142960133,
+        "employee_national_insurance": 0.04287800236245707,
+        "universal_credit": 0.061549966748191375,
+        "other_benefits": -0.00016542516373256328,
+        "other_residual": 0.038665586303532465
+      },
+      "components_gbp": {
+        "income_tax": 400624700.3609177,
+        "employee_national_insurance": 76781787.90479088,
+        "universal_credit": 105699229.59202652,
+        "other_benefits": -243830.21968260704,
+        "other_residual": 69451660.42133114
+      }
+    },
+    "0.7": {
+      "cushioning_rate": {
+        "mean": 0.38011962745248035,
+        "sd": 0.03790362310419302
+      },
+      "exchequer_cost_bn": {
+        "mean": 0.8535777280000001,
+        "sd": 0.2573995998468329
+      },
+      "poverty_change_bhc_pp": {
+        "mean": 0.051693078934055836,
+        "sd": 0.018768053001451453
+      },
+      "poverty_change_ahc_pp": {
+        "mean": 0.05730331723181006,
+        "sd": 0.021261348300305752
+      },
+      "gini_change": {
+        "mean": 0.00020718242930644614,
+        "sd": 0.00017897914140886675
+      },
+      "gross_earnings_loss_bn": {
+        "mean": 1.8228979192593833,
+        "sd": 0.4443602286097709
+      },
+      "displaced_weighted": {
+        "mean": 33565.60283355713,
+        "sd": 3399.1008970028497
+      },
+      "components_share_of_gross_loss": {
+        "income_tax": 0.21244250142960133,
+        "employee_national_insurance": 0.04287800236245707,
+        "universal_credit": 0.0860788509569714,
+        "other_benefits": 6.209065752618924e-05,
+        "other_residual": 0.03865818204592435
+      },
+      "components_gbp": {
+        "income_tax": 400624700.3609177,
+        "employee_national_insurance": 76781787.90479088,
+        "universal_credit": 150417209.94370803,
+        "other_benefits": 119006.82678866685,
+        "other_residual": 69433396.62317833
+      }
+    },
+    "0.8": {
+      "cushioning_rate": {
+        "mean": 0.3891547124009309,
+        "sd": 0.03736100484523967
+      },
+      "exchequer_cost_bn": {
+        "mean": 0.8692056064000001,
+        "sd": 0.25768763626328334
+      },
+      "poverty_change_bhc_pp": {
+        "mean": 0.04991515192061813,
+        "sd": 0.019023077181454715
+      },
+      "poverty_change_ahc_pp": {
+        "mean": 0.05587392124889969,
+        "sd": 0.02018154692668942
+      },
+      "gini_change": {
+        "mean": 0.00019596415852057847,
+        "sd": 0.00017733251984612745
+      },
+      "gross_earnings_loss_bn": {
+        "mean": 1.8228979192593833,
+        "sd": 0.4443602286097709
+      },
+      "displaced_weighted": {
+        "mean": 33565.60283355713,
+        "sd": 3399.1008970028497
+      },
+      "components_share_of_gross_loss": {
+        "income_tax": 0.21244250142960133,
+        "employee_national_insurance": 0.04287800236245707,
+        "universal_credit": 0.09511246919292594,
+        "other_benefits": 6.209065752618924e-05,
+        "other_residual": 0.03865964875842036
+      },
+      "components_gbp": {
+        "income_tax": 400624700.3609177,
+        "employee_national_insurance": 76781787.90479088,
+        "universal_credit": 166043639.53672868,
+        "other_benefits": 119006.82678866685,
+        "other_residual": 69437303.0301577
+      }
+    },
+    "0.9": {
+      "cushioning_rate": {
+        "mean": 0.4008314662668283,
+        "sd": 0.036480997505538695
+      },
+      "exchequer_cost_bn": {
+        "mean": 0.889982976,
+        "sd": 0.26114700887668457
+      },
+      "poverty_change_bhc_pp": {
+        "mean": 0.04554047549037016,
+        "sd": 0.020119698464871515
+      },
+      "poverty_change_ahc_pp": {
+        "mean": 0.051771111880335174,
+        "sd": 0.017588086292239853
+      },
+      "gini_change": {
+        "mean": 0.00017663197585026657,
+        "sd": 0.00017416423248827088
+      },
+      "gross_earnings_loss_bn": {
+        "mean": 1.8228979192593833,
+        "sd": 0.4443602286097709
+      },
+      "displaced_weighted": {
+        "mean": 33565.60283355713,
+        "sd": 3399.1008970028497
+      },
+      "components_share_of_gross_loss": {
+        "income_tax": 0.21244250142960133,
+        "employee_national_insurance": 0.04287800236245707,
+        "universal_credit": 0.10673832741166982,
+        "other_benefits": 0.0001181836367844839,
+        "other_residual": 0.03865445142631572
+      },
+      "components_gbp": {
+        "income_tax": 400624700.3609177,
+        "employee_national_insurance": 76781787.90479088,
+        "universal_credit": 186821988.0126068,
+        "other_benefits": 228420.53185248078,
+        "other_residual": 69429310.44921574
+      }
+    },
+    "1.0": {
+      "cushioning_rate": {
+        "mean": 0.4153311907802989,
+        "sd": 0.033842939925658816
+      },
+      "exchequer_cost_bn": {
+        "mean": 0.9142329343999999,
+        "sd": 0.25580624822353604
+      },
+      "poverty_change_bhc_pp": {
+        "mean": 0.04123271886979127,
+        "sd": 0.01806749356525947
+      },
+      "poverty_change_ahc_pp": {
+        "mean": 0.04933985022862131,
+        "sd": 0.017742085203791513
+      },
+      "gini_change": {
+        "mean": 0.00015470416388683184,
+        "sd": 0.00016598181311505255
+      },
+      "gross_earnings_loss_bn": {
+        "mean": 1.8228979192593833,
+        "sd": 0.4443602286097709
+      },
+      "displaced_weighted": {
+        "mean": 33565.60283355713,
+        "sd": 3399.1008970028497
+      },
+      "components_share_of_gross_loss": {
+        "income_tax": 0.21244250142960133,
+        "employee_national_insurance": 0.04287800236245707,
+        "universal_credit": 0.12108739123680634,
+        "other_benefits": 0.0002668212858527877,
+        "other_residual": 0.03865647446558134
+      },
+      "components_gbp": {
+        "income_tax": 400624700.3609177,
+        "employee_national_insurance": 76781787.90479088,
+        "universal_credit": 211073079.50086594,
+        "other_benefits": 511443.2547285825,
+        "other_residual": 69438428.23808052
+      }
+    }
+  },
+  "full_tariff_wage_cut": {
+    "stale_baseline_flag": {
+      "cushioning_rate": {
+        "mean": 0.410231042679499,
+        "sd": 0.0
+      },
+      "exchequer_cost_bn": {
+        "mean": 0.984825856,
+        "sd": 0.0
+      },
+      "poverty_change_bhc_pp": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "poverty_change_ahc_pp": {
+        "mean": 0.0022467689095029275,
+        "sd": 0.0
+      },
+      "gini_change": {
+        "mean": -0.00010610633883778586,
+        "sd": 0.0
+      },
+      "gross_earnings_loss_bn": {
+        "mean": 1.7714986504998989,
+        "sd": 0.0
+      },
+      "displaced_weighted": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "components_share_of_gross_loss": {
+        "income_tax": 0.3516532927453516,
+        "employee_national_insurance": 0.04269499887341217,
+        "universal_credit": 0.014810267730945442,
+        "other_benefits": 0.001031204573024335,
+        "other_residual": 4.127875676541128e-05
+      },
+      "components_gbp": {
+        "income_tax": 622953333.5422363,
+        "employee_national_insurance": 75634132.88734436,
+        "universal_credit": 26236369.29891205,
+        "other_benefits": 1826777.509501934,
+        "other_residual": 73125.26190423965
+      }
+    },
+    "0.55": {
+      "cushioning_rate": {
+        "mean": 0.410231042679499,
+        "sd": 0.0
+      },
+      "exchequer_cost_bn": {
+        "mean": 0.984825856,
+        "sd": 0.0
+      },
+      "poverty_change_bhc_pp": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "poverty_change_ahc_pp": {
+        "mean": 0.0022467689095029275,
+        "sd": 0.0
+      },
+      "gini_change": {
+        "mean": -0.00010610633883778586,
+        "sd": 0.0
+      },
+      "gross_earnings_loss_bn": {
+        "mean": 1.7714986504998989,
+        "sd": 0.0
+      },
+      "displaced_weighted": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "components_share_of_gross_loss": {
+        "income_tax": 0.3516532927453516,
+        "employee_national_insurance": 0.04269499887341217,
+        "universal_credit": 0.014810267730945442,
+        "other_benefits": 0.001031204573024335,
+        "other_residual": 4.127875676541128e-05
+      },
+      "components_gbp": {
+        "income_tax": 622953333.5422363,
+        "employee_national_insurance": 75634132.88734436,
+        "universal_credit": 26236369.29891205,
+        "other_benefits": 1826777.509501934,
+        "other_residual": 73125.26190423965
+      }
+    },
+    "0.7": {
+      "cushioning_rate": {
+        "mean": 0.410231042679499,
+        "sd": 0.0
+      },
+      "exchequer_cost_bn": {
+        "mean": 0.984825856,
+        "sd": 0.0
+      },
+      "poverty_change_bhc_pp": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "poverty_change_ahc_pp": {
+        "mean": 0.0022467689095029275,
+        "sd": 0.0
+      },
+      "gini_change": {
+        "mean": -0.00010610633883778586,
+        "sd": 0.0
+      },
+      "gross_earnings_loss_bn": {
+        "mean": 1.7714986504998989,
+        "sd": 0.0
+      },
+      "displaced_weighted": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "components_share_of_gross_loss": {
+        "income_tax": 0.3516532927453516,
+        "employee_national_insurance": 0.04269499887341217,
+        "universal_credit": 0.014810267730945442,
+        "other_benefits": 0.001031204573024335,
+        "other_residual": 4.127875676541128e-05
+      },
+      "components_gbp": {
+        "income_tax": 622953333.5422363,
+        "employee_national_insurance": 75634132.88734436,
+        "universal_credit": 26236369.29891205,
+        "other_benefits": 1826777.509501934,
+        "other_residual": 73125.26190423965
+      }
+    },
+    "0.8": {
+      "cushioning_rate": {
+        "mean": 0.410231042679499,
+        "sd": 0.0
+      },
+      "exchequer_cost_bn": {
+        "mean": 0.984825856,
+        "sd": 0.0
+      },
+      "poverty_change_bhc_pp": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "poverty_change_ahc_pp": {
+        "mean": 0.0022467689095029275,
+        "sd": 0.0
+      },
+      "gini_change": {
+        "mean": -0.00010610633883778586,
+        "sd": 0.0
+      },
+      "gross_earnings_loss_bn": {
+        "mean": 1.7714986504998989,
+        "sd": 0.0
+      },
+      "displaced_weighted": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "components_share_of_gross_loss": {
+        "income_tax": 0.3516532927453516,
+        "employee_national_insurance": 0.04269499887341217,
+        "universal_credit": 0.014810267730945442,
+        "other_benefits": 0.001031204573024335,
+        "other_residual": 4.127875676541128e-05
+      },
+      "components_gbp": {
+        "income_tax": 622953333.5422363,
+        "employee_national_insurance": 75634132.88734436,
+        "universal_credit": 26236369.29891205,
+        "other_benefits": 1826777.509501934,
+        "other_residual": 73125.26190423965
+      }
+    },
+    "0.9": {
+      "cushioning_rate": {
+        "mean": 0.410231042679499,
+        "sd": 0.0
+      },
+      "exchequer_cost_bn": {
+        "mean": 0.984825856,
+        "sd": 0.0
+      },
+      "poverty_change_bhc_pp": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "poverty_change_ahc_pp": {
+        "mean": 0.0022467689095029275,
+        "sd": 0.0
+      },
+      "gini_change": {
+        "mean": -0.00010610633883778586,
+        "sd": 0.0
+      },
+      "gross_earnings_loss_bn": {
+        "mean": 1.7714986504998989,
+        "sd": 0.0
+      },
+      "displaced_weighted": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "components_share_of_gross_loss": {
+        "income_tax": 0.3516532927453516,
+        "employee_national_insurance": 0.04269499887341217,
+        "universal_credit": 0.014810267730945442,
+        "other_benefits": 0.001031204573024335,
+        "other_residual": 4.127875676541128e-05
+      },
+      "components_gbp": {
+        "income_tax": 622953333.5422363,
+        "employee_national_insurance": 75634132.88734436,
+        "universal_credit": 26236369.29891205,
+        "other_benefits": 1826777.509501934,
+        "other_residual": 73125.26190423965
+      }
+    },
+    "1.0": {
+      "cushioning_rate": {
+        "mean": 0.410231042679499,
+        "sd": 0.0
+      },
+      "exchequer_cost_bn": {
+        "mean": 0.984825856,
+        "sd": 0.0
+      },
+      "poverty_change_bhc_pp": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "poverty_change_ahc_pp": {
+        "mean": 0.0022467689095029275,
+        "sd": 0.0
+      },
+      "gini_change": {
+        "mean": -0.00010610633883778586,
+        "sd": 0.0
+      },
+      "gross_earnings_loss_bn": {
+        "mean": 1.7714986504998989,
+        "sd": 0.0
+      },
+      "displaced_weighted": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "components_share_of_gross_loss": {
+        "income_tax": 0.3516532927453516,
+        "employee_national_insurance": 0.04269499887341217,
+        "universal_credit": 0.014810267730945442,
+        "other_benefits": 0.001031204573024335,
+        "other_residual": 4.127875676541128e-05
+      },
+      "components_gbp": {
+        "income_tax": 622953333.5422363,
+        "employee_national_insurance": 75634132.88734436,
+        "universal_credit": 26236369.29891205,
+        "other_benefits": 1826777.509501934,
+        "other_residual": 73125.26190423965
+      }
+    }
+  },
+  "epd_displacement": {
+    "stale_baseline_flag": {
+      "cushioning_rate": {
+        "mean": 0.34640359857794156,
+        "sd": 0.04381068049860787
+      },
+      "exchequer_cost_bn": {
+        "mean": 0.60588032,
+        "sd": 0.2574266914269646
+      },
+      "poverty_change_bhc_pp": {
+        "mean": 0.03855809750781966,
+        "sd": 0.016558323236531454
+      },
+      "poverty_change_ahc_pp": {
+        "mean": 0.04470578870489142,
+        "sd": 0.02191730713594061
+      },
+      "gini_change": {
+        "mean": 0.0001787166614869995,
+        "sd": 0.00013456269363768442
+      },
+      "gross_earnings_loss_bn": {
+        "mean": 1.3658456415605769,
+        "sd": 0.4413683005076471
+      },
+      "displaced_weighted": {
+        "mean": 26709.32087249756,
+        "sd": 4508.645183995816
+      },
+      "components_share_of_gross_loss": {
+        "income_tax": 0.1967147459599305,
+        "employee_national_insurance": 0.0442760142248106,
+        "universal_credit": 0.06819287650038064,
+        "other_benefits": 0.00047896559955536703,
+        "other_residual": 0.03674099629326453
+      },
+      "components_gbp": {
+        "income_tax": 284359013.10073394,
+        "employee_national_insurance": 59465908.7662941,
+        "universal_credit": 87537043.11750488,
+        "other_benefits": 540727.8261754304,
+        "other_residual": 48662999.94986876
+      }
+    },
+    "0.55": {
+      "cushioning_rate": {
+        "mean": 0.3348400483077391,
+        "sd": 0.05214030993658071
+      },
+      "exchequer_cost_bn": {
+        "mean": 0.5961146368000001,
+        "sd": 0.275905706565921
+      },
+      "poverty_change_bhc_pp": {
+        "mean": 0.03960860297970589,
+        "sd": 0.015184246547961048
+      },
+      "poverty_change_ahc_pp": {
+        "mean": 0.04467164435995333,
+        "sd": 0.01966813123389336
+      },
+      "gini_change": {
+        "mean": 0.0001790464329069541,
+        "sd": 0.0001479704159408573
+      },
+      "gross_earnings_loss_bn": {
+        "mean": 1.3658456415605769,
+        "sd": 0.4413683005076471
+      },
+      "displaced_weighted": {
+        "mean": 26709.32087249756,
+        "sd": 4508.645183995816
+      },
+      "components_share_of_gross_loss": {
+        "income_tax": 0.1967147459599305,
+        "employee_national_insurance": 0.0442760142248106,
+        "universal_credit": 0.05616499377246137,
+        "other_benefits": 0.0009466433540395258,
+        "other_residual": 0.036737650996497145
+      },
+      "components_gbp": {
+        "income_tax": 284359013.10073394,
+        "employee_national_insurance": 59465908.7662941,
+        "universal_credit": 77718016.93250465,
+        "other_benefits": 1127032.4352671443,
+        "other_residual": 48661699.125777274
+      }
+    },
+    "0.7": {
+      "cushioning_rate": {
+        "mean": 0.36562013734021287,
+        "sd": 0.0521652437354289
+      },
+      "exchequer_cost_bn": {
+        "mean": 0.6318194688000001,
+        "sd": 0.27048734284913334
+      },
+      "poverty_change_bhc_pp": {
+        "mean": 0.03502060431259724,
+        "sd": 0.014292375130201358
+      },
+      "poverty_change_ahc_pp": {
+        "mean": 0.042843708631627175,
+        "sd": 0.02068184581014864
+      },
+      "gini_change": {
+        "mean": 0.00015145631235070068,
+        "sd": 0.00013764991224102517
+      },
+      "gross_earnings_loss_bn": {
+        "mean": 1.3658456415605769,
+        "sd": 0.4413683005076471
+      },
+      "displaced_weighted": {
+        "mean": 26709.32087249756,
+        "sd": 4508.645183995816
+      },
+      "components_share_of_gross_loss": {
+        "income_tax": 0.1967147459599305,
+        "employee_national_insurance": 0.0442760142248106,
+        "universal_credit": 0.08695454834290492,
+        "other_benefits": 0.0009466433540395258,
+        "other_residual": 0.036728185458527296
+      },
+      "components_gbp": {
+        "income_tax": 284359013.10073394,
+        "employee_national_insurance": 59465908.7662941,
+        "universal_credit": 113420362.87594375,
+        "other_benefits": 1127032.4352671443,
+        "other_residual": 48650258.78233818
+      }
+    },
+    "0.8": {
+      "cushioning_rate": {
+        "mean": 0.37788242996630284,
+        "sd": 0.05127779978844738
+      },
+      "exchequer_cost_bn": {
+        "mean": 0.6479765504,
+        "sd": 0.2713003133162865
+      },
+      "poverty_change_bhc_pp": {
+        "mean": 0.03287538292081241,
+        "sd": 0.013805417870865394
+      },
+      "poverty_change_ahc_pp": {
+        "mean": 0.03956310390775486,
+        "sd": 0.020638146747669256
+      },
+      "gini_change": {
+        "mean": 0.00013778566940210734,
+        "sd": 0.00013555033223858754
+      },
+      "gross_earnings_loss_bn": {
+        "mean": 1.3658456415605769,
+        "sd": 0.4413683005076471
+      },
+      "displaced_weighted": {
+        "mean": 26709.32087249756,
+        "sd": 4508.645183995816
+      },
+      "components_share_of_gross_loss": {
+        "income_tax": 0.1967147459599305,
+        "employee_national_insurance": 0.0442760142248106,
+        "universal_credit": 0.09913828265453878,
+        "other_benefits": 0.0010150270301259234,
+        "other_residual": 0.03673836009689703
+      },
+      "components_gbp": {
+        "income_tax": 284359013.10073394,
+        "employee_national_insurance": 59465908.7662941,
+        "universal_credit": 129579540.4534668,
+        "other_benefits": 1232146.690186134,
+        "other_residual": 48658555.749896154
+      }
+    },
+    "0.9": {
+      "cushioning_rate": {
+        "mean": 0.390591335119366,
+        "sd": 0.04717775992293136
+      },
+      "exchequer_cost_bn": {
+        "mean": 0.6633029632000002,
+        "sd": 0.2675211739193999
+      },
+      "poverty_change_bhc_pp": {
+        "mean": 0.031335500638513675,
+        "sd": 0.014275322023379831
+      },
+      "poverty_change_ahc_pp": {
+        "mean": 0.03760873706422155,
+        "sd": 0.02038672981789599
+      },
+      "gini_change": {
+        "mean": 0.00012430106440647348,
+        "sd": 0.0001287345754415595
+      },
+      "gross_earnings_loss_bn": {
+        "mean": 1.3658456415605769,
+        "sd": 0.4413683005076471
+      },
+      "displaced_weighted": {
+        "mean": 26709.32087249756,
+        "sd": 4508.645183995816
+      },
+      "components_share_of_gross_loss": {
+        "income_tax": 0.1967147459599305,
+        "employee_national_insurance": 0.0442760142248106,
+        "universal_credit": 0.11182420572682177,
+        "other_benefits": 0.001031843335133955,
+        "other_residual": 0.036744525872669145
+      },
+      "components_gbp": {
+        "income_tax": 284359013.10073394,
+        "employee_national_insurance": 59465908.7662941,
+        "universal_credit": 144959816.5786232,
+        "other_benefits": 1257995.4522383003,
+        "other_residual": 48666498.06268758
+      }
+    },
+    "1.0": {
+      "cushioning_rate": {
+        "mean": 0.4029411195290201,
+        "sd": 0.04450650673203729
+      },
+      "exchequer_cost_bn": {
+        "mean": 0.6800187392000001,
+        "sd": 0.2704967989212917
+      },
+      "poverty_change_bhc_pp": {
+        "mean": 0.02990127286458033,
+        "sd": 0.01311021725382616
+      },
+      "poverty_change_ahc_pp": {
+        "mean": 0.036947591087216486,
+        "sd": 0.02012941425622659
+      },
+      "gini_change": {
+        "mean": 0.0001113852289045314,
+        "sd": 0.00012357169253946666
+      },
+      "gross_earnings_loss_bn": {
+        "mean": 1.3658456415605769,
+        "sd": 0.4413683005076471
+      },
+      "displaced_weighted": {
+        "mean": 26709.32087249756,
+        "sd": 4508.645183995816
+      },
+      "components_share_of_gross_loss": {
+        "income_tax": 0.1967147459599305,
+        "employee_national_insurance": 0.0442760142248106,
+        "universal_credit": 0.12403981503110731,
+        "other_benefits": 0.0011505102160584727,
+        "other_residual": 0.03676003409711331
+      },
+      "components_gbp": {
+        "income_tax": 284359013.10073394,
+        "employee_national_insurance": 59465908.7662941,
+        "universal_credit": 161676021.84454232,
+        "other_benefits": 1409662.4214626192,
+        "other_residual": 48687253.02754415
+      }
+    }
+  },
+  "epd_wage_cut": {
+    "stale_baseline_flag": {
+      "cushioning_rate": {
+        "mean": 0.4078916166061112,
+        "sd": 0.0
+      },
+      "exchequer_cost_bn": {
+        "mean": 0.76890112,
+        "sd": 0.0
+      },
+      "poverty_change_bhc_pp": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "poverty_change_ahc_pp": {
+        "mean": 0.0022467689095029275,
+        "sd": 0.0
+      },
+      "gini_change": {
+        "mean": -8.114033140604882e-05,
+        "sd": 0.0
+      },
+      "gross_earnings_loss_bn": {
+        "mean": 1.3855227708442326,
+        "sd": 0.0
+      },
+      "displaced_weighted": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "components_share_of_gross_loss": {
+        "income_tax": 0.3495004225640272,
+        "employee_national_insurance": 0.042928601010957614,
+        "universal_credit": 0.014094032221872018,
+        "other_benefits": 0.0013184752700880075,
+        "other_residual": 5.008553916634249e-05
+      },
+      "components_gbp": {
+        "income_tax": 484240793.8821411,
+        "employee_national_insurance": 59478554.22116852,
+        "universal_credit": 19527602.576416016,
+        "other_benefits": 1826777.509501934,
+        "other_residual": 69394.65500497818
+      }
+    },
+    "0.55": {
+      "cushioning_rate": {
+        "mean": 0.4078916166061112,
+        "sd": 0.0
+      },
+      "exchequer_cost_bn": {
+        "mean": 0.76890112,
+        "sd": 0.0
+      },
+      "poverty_change_bhc_pp": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "poverty_change_ahc_pp": {
+        "mean": 0.0022467689095029275,
+        "sd": 0.0
+      },
+      "gini_change": {
+        "mean": -8.114033140604882e-05,
+        "sd": 0.0
+      },
+      "gross_earnings_loss_bn": {
+        "mean": 1.3855227708442326,
+        "sd": 0.0
+      },
+      "displaced_weighted": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "components_share_of_gross_loss": {
+        "income_tax": 0.3495004225640272,
+        "employee_national_insurance": 0.042928601010957614,
+        "universal_credit": 0.014094032221872018,
+        "other_benefits": 0.0013184752700880075,
+        "other_residual": 5.008553916634249e-05
+      },
+      "components_gbp": {
+        "income_tax": 484240793.8821411,
+        "employee_national_insurance": 59478554.22116852,
+        "universal_credit": 19527602.576416016,
+        "other_benefits": 1826777.509501934,
+        "other_residual": 69394.65500497818
+      }
+    },
+    "0.7": {
+      "cushioning_rate": {
+        "mean": 0.4078916166061112,
+        "sd": 0.0
+      },
+      "exchequer_cost_bn": {
+        "mean": 0.76890112,
+        "sd": 0.0
+      },
+      "poverty_change_bhc_pp": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "poverty_change_ahc_pp": {
+        "mean": 0.0022467689095029275,
+        "sd": 0.0
+      },
+      "gini_change": {
+        "mean": -8.114033140604882e-05,
+        "sd": 0.0
+      },
+      "gross_earnings_loss_bn": {
+        "mean": 1.3855227708442326,
+        "sd": 0.0
+      },
+      "displaced_weighted": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "components_share_of_gross_loss": {
+        "income_tax": 0.3495004225640272,
+        "employee_national_insurance": 0.042928601010957614,
+        "universal_credit": 0.014094032221872018,
+        "other_benefits": 0.0013184752700880075,
+        "other_residual": 5.008553916634249e-05
+      },
+      "components_gbp": {
+        "income_tax": 484240793.8821411,
+        "employee_national_insurance": 59478554.22116852,
+        "universal_credit": 19527602.576416016,
+        "other_benefits": 1826777.509501934,
+        "other_residual": 69394.65500497818
+      }
+    },
+    "0.8": {
+      "cushioning_rate": {
+        "mean": 0.4078916166061112,
+        "sd": 0.0
+      },
+      "exchequer_cost_bn": {
+        "mean": 0.76890112,
+        "sd": 0.0
+      },
+      "poverty_change_bhc_pp": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "poverty_change_ahc_pp": {
+        "mean": 0.0022467689095029275,
+        "sd": 0.0
+      },
+      "gini_change": {
+        "mean": -8.114033140604882e-05,
+        "sd": 0.0
+      },
+      "gross_earnings_loss_bn": {
+        "mean": 1.3855227708442326,
+        "sd": 0.0
+      },
+      "displaced_weighted": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "components_share_of_gross_loss": {
+        "income_tax": 0.3495004225640272,
+        "employee_national_insurance": 0.042928601010957614,
+        "universal_credit": 0.014094032221872018,
+        "other_benefits": 0.0013184752700880075,
+        "other_residual": 5.008553916634249e-05
+      },
+      "components_gbp": {
+        "income_tax": 484240793.8821411,
+        "employee_national_insurance": 59478554.22116852,
+        "universal_credit": 19527602.576416016,
+        "other_benefits": 1826777.509501934,
+        "other_residual": 69394.65500497818
+      }
+    },
+    "0.9": {
+      "cushioning_rate": {
+        "mean": 0.4078916166061112,
+        "sd": 0.0
+      },
+      "exchequer_cost_bn": {
+        "mean": 0.76890112,
+        "sd": 0.0
+      },
+      "poverty_change_bhc_pp": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "poverty_change_ahc_pp": {
+        "mean": 0.0022467689095029275,
+        "sd": 0.0
+      },
+      "gini_change": {
+        "mean": -8.114033140604882e-05,
+        "sd": 0.0
+      },
+      "gross_earnings_loss_bn": {
+        "mean": 1.3855227708442326,
+        "sd": 0.0
+      },
+      "displaced_weighted": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "components_share_of_gross_loss": {
+        "income_tax": 0.3495004225640272,
+        "employee_national_insurance": 0.042928601010957614,
+        "universal_credit": 0.014094032221872018,
+        "other_benefits": 0.0013184752700880075,
+        "other_residual": 5.008553916634249e-05
+      },
+      "components_gbp": {
+        "income_tax": 484240793.8821411,
+        "employee_national_insurance": 59478554.22116852,
+        "universal_credit": 19527602.576416016,
+        "other_benefits": 1826777.509501934,
+        "other_residual": 69394.65500497818
+      }
+    },
+    "1.0": {
+      "cushioning_rate": {
+        "mean": 0.4078916166061112,
+        "sd": 0.0
+      },
+      "exchequer_cost_bn": {
+        "mean": 0.76890112,
+        "sd": 0.0
+      },
+      "poverty_change_bhc_pp": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "poverty_change_ahc_pp": {
+        "mean": 0.0022467689095029275,
+        "sd": 0.0
+      },
+      "gini_change": {
+        "mean": -8.114033140604882e-05,
+        "sd": 0.0
+      },
+      "gross_earnings_loss_bn": {
+        "mean": 1.3855227708442326,
+        "sd": 0.0
+      },
+      "displaced_weighted": {
+        "mean": 0.0,
+        "sd": 0.0
+      },
+      "components_share_of_gross_loss": {
+        "income_tax": 0.3495004225640272,
+        "employee_national_insurance": 0.042928601010957614,
+        "universal_credit": 0.014094032221872018,
+        "other_benefits": 0.0013184752700880075,
+        "other_residual": 5.008553916634249e-05
+      },
+      "components_gbp": {
+        "income_tax": 484240793.8821411,
+        "employee_national_insurance": 59478554.22116852,
+        "universal_credit": 19527602.576416016,
+        "other_benefits": 1826777.509501934,
+        "other_residual": 69394.65500497818
+      }
+    }
+  }
+}

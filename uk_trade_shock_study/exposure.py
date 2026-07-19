@@ -11,9 +11,11 @@ per-division earnings-shock size:
     earnings_shock_j = elasticity * tariff_j * us_export_share_j * passthrough
 
 - ``elasticity`` is the proportional fall in US demand per unit tariff
-  (trade elasticity; default 3.0, to be disciplined by De Lyon & Pessoa (2021)
-  UK worker-level elasticities and the OBR Mar-2025 / Ignatenko et al. (2025)
-  UK aggregate anchors — TODO before any paper-facing run).
+  (trade elasticity; ``DEFAULT_ELASTICITY = 2.0``). Calibration is COMPLETE
+  (Jul 2026): the value is anchored on the ONS realised 2025 US-export
+  outturn and cross-checked against De Lyon & Pessoa (2021) UK worker-level
+  elasticities and the OBR Mar-2025 / Ignatenko et al. (2025) UK aggregate
+  anchors — see the DEFAULT_ELASTICITY comment below.
 - ``passthrough`` is the share of the sector output loss that lands on the
   sector wage bill (default 1.0 = full pass-through; a labour-share or
   margin-absorption parameter belongs here).

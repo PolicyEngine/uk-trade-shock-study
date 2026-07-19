@@ -1,0 +1,430 @@
+{
+  "calibration": {
+    "reallocation_penalty": 0.283,
+    "reallocation_penalty_lower_bound": 0.14,
+    "source": "FRS 2024-25 weighted mean annual employee earnings, exposed goods divisions vs the four services destinations (analysis/reallocation_calibration.py); lower bound is the hours/age-controlled log gap."
+  },
+  "n_draws": 20,
+  "seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+  ],
+  "full_tariff": {
+    "reallocation": {
+      "n_draws": 20,
+      "exchequer_cost_mean": 276957593.6,
+      "exchequer_cost_sd": 77269995.37380959,
+      "poverty_bhc_mean": 5.050317753583222e-05,
+      "poverty_bhc_sd": 6.988563984519966e-05,
+      "poverty_ahc_mean": 4.94103938918869e-05,
+      "gini_change_mean": -1.3929567209230998e-05,
+      "gini_change_sd": 5.192945236069465e-05,
+      "cushioning_rate_mean": 0.391944763309559,
+      "cushioning_rate_sd": 0.028712972165473995,
+      "gross_earnings_loss_mean": 515880111.1504053,
+      "net_disposable_loss_mean": 311813734.4,
+      "affected_weighted_mean": 33565.60322265625
+    },
+    "reallocation_lag3": {
+      "n_draws": 20,
+      "exchequer_cost_mean": 442458112.0,
+      "exchequer_cost_sd": 127874244.77150644,
+      "poverty_bhc_mean": 8.758050131980056e-05,
+      "poverty_bhc_sd": 7.721796201388017e-05,
+      "poverty_ahc_mean": 0.00010501752165012341,
+      "gini_change_mean": 5.813753813149747e-06,
+      "gini_change_sd": 8.827604285200837e-05,
+      "cushioning_rate_mean": 0.37946249680569716,
+      "cushioning_rate_sd": 0.0298142243775571,
+      "gross_earnings_loss_mean": 842634563.1776499,
+      "net_disposable_loss_mean": 519189299.2,
+      "affected_weighted_mean": 33565.60322265625
+    },
+    "reallocation_lowpenalty": {
+      "n_draws": 20,
+      "exchequer_cost_mean": 139180441.6,
+      "exchequer_cost_sd": 38010322.42698132,
+      "poverty_bhc_mean": 2.1721181996803286e-05,
+      "poverty_bhc_sd": 4.720458988431184e-05,
+      "poverty_ahc_mean": 4.384823231989854e-06,
+      "gini_change_mean": -1.2855929387856069e-05,
+      "gini_change_sd": 2.4874678533781272e-05,
+      "cushioning_rate_mean": 0.40097667739889553,
+      "cushioning_rate_sd": 0.028713778112578532,
+      "gross_earnings_loss_mean": 255205708.69631377,
+      "net_disposable_loss_mean": 152082841.6,
+      "affected_weighted_mean": 33565.60322265625
+    },
+    "displacement": {
+      "n_draws": 20,
+      "exchequer_cost_mean": 793441894.4,
+      "exchequer_cost_sd": 261122344.13036266,
+      "poverty_bhc_mean": 0.0005759757146817423,
+      "poverty_bhc_sd": 0.00019170574561524798,
+      "poverty_ahc_mean": 0.000615779762031117,
+      "gini_change_mean": 0.0002662049722293947,
+      "gini_change_sd": 0.0001856542608173797,
+      "cushioning_rate_mean": 0.3445049495634098,
+      "cushioning_rate_sd": 0.037852944981523404,
+      "gross_earnings_loss_mean": 1822897919.2593834,
+      "net_disposable_loss_mean": 1185880473.6,
+      "affected_weighted_mean": 33565.60322265625
+    },
+    "inactivity": {
+      "n_draws": 20,
+      "exchequer_cost_mean": 808080998.4,
+      "exchequer_cost_sd": 264228296.0962888,
+      "poverty_bhc_mean": 0.0005505421298812541,
+      "poverty_bhc_sd": 0.00017425528462043118,
+      "poverty_ahc_mean": 0.0005801890090929906,
+      "gini_change_mean": 0.000256053755730995,
+      "gini_change_sd": 0.00018233842402613787,
+      "cushioning_rate_mean": 0.3527489383451112,
+      "cushioning_rate_sd": 0.041566882259711786,
+      "gross_earnings_loss_mean": 1822897919.2593834,
+      "net_disposable_loss_mean": 1171259392.0,
+      "affected_weighted_mean": 33565.60322265625
+    },
+    "wage_cut": {
+      "n_draws": 1,
+      "exchequer_cost_mean": 984825856.0,
+      "exchequer_cost_sd": 0.0,
+      "poverty_bhc_mean": 0.0,
+      "poverty_bhc_sd": 0.0,
+      "poverty_ahc_mean": 2.2467689095029275e-05,
+      "gini_change_mean": -0.00010610633883778586,
+      "gini_change_sd": 0.0,
+      "cushioning_rate_mean": 0.41023104267949895,
+      "cushioning_rate_sd": 0.0,
+      "gross_earnings_loss_mean": 1771498650.499899,
+      "net_disposable_loss_mean": 1044774912.0,
+      "affected_weighted_mean": 0.0
+    },
+    "paired_vs_displacement": {
+      "reallocation": {
+        "exchequer_cost": {
+          "mean_difference": -516484300.8,
+          "sd_of_paired_difference": 186083379.81915855,
+          "se_of_paired_difference": 41609508.6758551,
+          "paired": true,
+          "n_pairs": 20
+        },
+        "poverty_rate_change_bhc": {
+          "mean_difference": -0.0005254725371459101,
+          "sd_of_paired_difference": 0.00020439364008147625,
+          "se_of_paired_difference": 4.570380733908065e-05,
+          "paired": true,
+          "n_pairs": 20
+        },
+        "cushioning_rate": {
+          "mean_difference": 0.04743981374614913,
+          "sd_of_paired_difference": 0.02497630184259799,
+          "se_of_paired_difference": 0.005584870874660235,
+          "paired": true,
+          "n_pairs": 20
+        }
+      },
+      "reallocation_lag3": {
+        "exchequer_cost": {
+          "mean_difference": -350983782.4,
+          "sd_of_paired_difference": 136741242.69879326,
+          "se_of_paired_difference": 30576271.400229853,
+          "paired": true,
+          "n_pairs": 20
+        },
+        "poverty_rate_change_bhc": {
+          "mean_difference": -0.0004883952133619418,
+          "sd_of_paired_difference": 0.0002001329365512957,
+          "se_of_paired_difference": 4.4751085066534944e-05,
+          "paired": true,
+          "n_pairs": 20
+        },
+        "cushioning_rate": {
+          "mean_difference": 0.03495754724228735,
+          "sd_of_paired_difference": 0.01981682877591855,
+          "se_of_paired_difference": 0.004431177624142782,
+          "paired": true,
+          "n_pairs": 20
+        }
+      },
+      "reallocation_lowpenalty": {
+        "exchequer_cost": {
+          "mean_difference": -654261452.8,
+          "sd_of_paired_difference": 224026951.05983484,
+          "se_of_paired_difference": 50093949.13618092,
+          "paired": true,
+          "n_pairs": 20
+        },
+        "poverty_rate_change_bhc": {
+          "mean_difference": -0.000554254532684939,
+          "sd_of_paired_difference": 0.00018829151858897479,
+          "se_of_paired_difference": 4.210326351516129e-05,
+          "paired": true,
+          "n_pairs": 20
+        },
+        "cushioning_rate": {
+          "mean_difference": 0.05647172783548573,
+          "sd_of_paired_difference": 0.024246252500837267,
+          "se_of_paired_difference": 0.00542162687914964,
+          "paired": true,
+          "n_pairs": 20
+        }
+      },
+      "inactivity": {
+        "exchequer_cost": {
+          "mean_difference": 14639104.0,
+          "sd_of_paired_difference": 13914317.77261351,
+          "se_of_paired_difference": 3111336.040009727,
+          "paired": true,
+          "n_pairs": 20
+        },
+        "poverty_rate_change_bhc": {
+          "mean_difference": -2.5433584800488297e-05,
+          "sd_of_paired_difference": 4.7434481917481697e-05,
+          "se_of_paired_difference": 1.0606672604497363e-05,
+          "paired": true,
+          "n_pairs": 20
+        },
+        "cushioning_rate": {
+          "mean_difference": 0.00824398878170136,
+          "sd_of_paired_difference": 0.007651312844384954,
+          "se_of_paired_difference": 0.0017108855637162025,
+          "paired": true,
+          "n_pairs": 20
+        }
+      },
+      "wage_cut": {
+        "exchequer_cost": {
+          "mean_difference": 270286848.0,
+          "paired": false
+        },
+        "poverty_rate_change_bhc": {
+          "mean_difference": -0.000576445198832154,
+          "paired": false
+        },
+        "cushioning_rate": {
+          "mean_difference": 0.08190288515816846,
+          "paired": false
+        }
+      }
+    }
+  },
+  "epd": {
+    "reallocation": {
+      "n_draws": 20,
+      "exchequer_cost_mean": 203723571.2,
+      "exchequer_cost_sd": 75186328.13121745,
+      "poverty_bhc_mean": 5.034292382512656e-05,
+      "poverty_bhc_sd": 7.835215586436196e-05,
+      "poverty_ahc_mean": 4.1259213120194147e-05,
+      "gini_change_mean": -1.1697506831814809e-05,
+      "gini_change_sd": 4.0526113992358885e-05,
+      "cushioning_rate_mean": 0.3772215610960961,
+      "cushioning_rate_sd": 0.03981154367526351,
+      "gross_earnings_loss_mean": 386534316.56164324,
+      "net_disposable_loss_mean": 238977024.0,
+      "affected_weighted_mean": 26709.32119140625
+    },
+    "reallocation_lag3": {
+      "n_draws": 20,
+      "exchequer_cost_mean": 327007436.8,
+      "exchequer_cost_sd": 122186452.22564526,
+      "poverty_bhc_mean": 9.517764018227987e-05,
+      "poverty_bhc_sd": 8.68749535397448e-05,
+      "poverty_ahc_mean": 8.138376762359956e-05,
+      "gini_change_mean": 2.9009289297332597e-06,
+      "gini_change_sd": 6.756730087724692e-05,
+      "cushioning_rate_mean": 0.36842605429694636,
+      "cushioning_rate_sd": 0.04042963476873768,
+      "gross_earnings_loss_mean": 631362147.8113768,
+      "net_disposable_loss_mean": 395929190.4,
+      "affected_weighted_mean": 26709.32119140625
+    },
+    "reallocation_lowpenalty": {
+      "n_draws": 20,
+      "exchequer_cost_mean": 102965248.0,
+      "exchequer_cost_sd": 37863307.95472891,
+      "poverty_bhc_mean": 1.7781685989780305e-05,
+      "poverty_bhc_sd": 4.042584319233282e-05,
+      "poverty_ahc_mean": 9.44367700070753e-06,
+      "gini_change_mean": -9.835162269861143e-06,
+      "gini_change_sd": 1.9700831888847356e-05,
+      "cushioning_rate_mean": 0.38824726630635187,
+      "cushioning_rate_sd": 0.04337946706518639,
+      "gross_earnings_loss_mean": 191218389.81848082,
+      "net_disposable_loss_mean": 115992166.4,
+      "affected_weighted_mean": 26709.32119140625
+    },
+    "displacement": {
+      "n_draws": 20,
+      "exchequer_cost_mean": 605880320.0,
+      "exchequer_cost_sd": 257426691.42696467,
+      "poverty_bhc_mean": 0.00038558097507819663,
+      "poverty_bhc_sd": 0.00016558323236531456,
+      "poverty_ahc_mean": 0.0004470578870489142,
+      "gini_change_mean": 0.0001787166614869995,
+      "gini_change_sd": 0.00013456269363768442,
+      "cushioning_rate_mean": 0.34640359857794156,
+      "cushioning_rate_sd": 0.04381068049860786,
+      "gross_earnings_loss_mean": 1365845641.560577,
+      "net_disposable_loss_mean": 885279948.8,
+      "affected_weighted_mean": 26709.32119140625
+    },
+    "inactivity": {
+      "n_draws": 20,
+      "exchequer_cost_mean": 620214681.6,
+      "exchequer_cost_sd": 259267105.93984804,
+      "poverty_bhc_mean": 0.0003776568869021515,
+      "poverty_bhc_sd": 0.00016402935082528652,
+      "poverty_ahc_mean": 0.00041690769784621663,
+      "gini_change_mean": 0.00017045640283364639,
+      "gini_change_sd": 0.00013362097071281038,
+      "cushioning_rate_mean": 0.35738269158096975,
+      "cushioning_rate_sd": 0.043030823046399685,
+      "gross_earnings_loss_mean": 1365845641.560577,
+      "net_disposable_loss_mean": 870947225.6,
+      "affected_weighted_mean": 26709.32119140625
+    },
+    "wage_cut": {
+      "n_draws": 1,
+      "exchequer_cost_mean": 768901120.0,
+      "exchequer_cost_sd": 0.0,
+      "poverty_bhc_mean": 0.0,
+      "poverty_bhc_sd": 0.0,
+      "poverty_ahc_mean": 2.2467689095029275e-05,
+      "gini_change_mean": -8.114033140604882e-05,
+      "gini_change_sd": 0.0,
+      "cushioning_rate_mean": 0.4078916166061112,
+      "cushioning_rate_sd": 0.0,
+      "gross_earnings_loss_mean": 1385522770.8442326,
+      "net_disposable_loss_mean": 820379648.0,
+      "affected_weighted_mean": 0.0
+    },
+    "paired_vs_displacement": {
+      "reallocation": {
+        "exchequer_cost": {
+          "mean_difference": -402156748.8,
+          "sd_of_paired_difference": 184558114.55674765,
+          "se_of_paired_difference": 41268448.994808115,
+          "paired": true,
+          "n_pairs": 20
+        },
+        "poverty_rate_change_bhc": {
+          "mean_difference": -0.00033523805125307006,
+          "sd_of_paired_difference": 0.00014784347732093155,
+          "se_of_paired_difference": 3.305880653195514e-05,
+          "paired": true,
+          "n_pairs": 20
+        },
+        "cushioning_rate": {
+          "mean_difference": 0.03081796251815453,
+          "sd_of_paired_difference": 0.036378442320417925,
+          "se_of_paired_difference": 0.008134466994400966,
+          "paired": true,
+          "n_pairs": 20
+        }
+      },
+      "reallocation_lag3": {
+        "exchequer_cost": {
+          "mean_difference": -278872883.2,
+          "sd_of_paired_difference": 138597706.24800938,
+          "se_of_paired_difference": 30991389.26960963,
+          "paired": true,
+          "n_pairs": 20
+        },
+        "poverty_rate_change_bhc": {
+          "mean_difference": -0.0002904033348959167,
+          "sd_of_paired_difference": 0.00014298986006484814,
+          "se_of_paired_difference": 3.1973504719818294e-05,
+          "paired": true,
+          "n_pairs": 20
+        },
+        "cushioning_rate": {
+          "mean_difference": 0.022022455719004706,
+          "sd_of_paired_difference": 0.02850766804233602,
+          "se_of_paired_difference": 0.006374508362266169,
+          "paired": true,
+          "n_pairs": 20
+        }
+      },
+      "reallocation_lowpenalty": {
+        "exchequer_cost": {
+          "mean_difference": -502915072.0,
+          "sd_of_paired_difference": 221137933.966262,
+          "se_of_paired_difference": 49447945.27524215,
+          "paired": true,
+          "n_pairs": 20
+        },
+        "poverty_rate_change_bhc": {
+          "mean_difference": -0.0003677992890884163,
+          "sd_of_paired_difference": 0.0001533663500023142,
+          "se_of_paired_difference": 3.429375840661996e-05,
+          "paired": true,
+          "n_pairs": 20
+        },
+        "cushioning_rate": {
+          "mean_difference": 0.041843667728410264,
+          "sd_of_paired_difference": 0.04608387089062005,
+          "se_of_paired_difference": 0.01030466679777502,
+          "paired": true,
+          "n_pairs": 20
+        }
+      },
+      "inactivity": {
+        "exchequer_cost": {
+          "mean_difference": 14334361.6,
+          "sd_of_paired_difference": 8288328.447953037,
+          "se_of_paired_difference": 1853326.5829468318,
+          "paired": true,
+          "n_pairs": 20
+        },
+        "poverty_rate_change_bhc": {
+          "mean_difference": -7.924088176045063e-06,
+          "sd_of_paired_difference": 1.3861965348825635e-05,
+          "se_of_paired_difference": 3.0996296821720703e-06,
+          "paired": true,
+          "n_pairs": 20
+        },
+        "cushioning_rate": {
+          "mean_difference": 0.010979093003028162,
+          "sd_of_paired_difference": 0.00632243765168976,
+          "se_of_paired_difference": 0.001413740037268244,
+          "paired": true,
+          "n_pairs": 20
+        }
+      },
+      "wage_cut": {
+        "exchequer_cost": {
+          "mean_difference": 370900992.0,
+          "paired": false
+        },
+        "poverty_rate_change_bhc": {
+          "mean_difference": -0.000294334770224558,
+          "paired": false
+        },
+        "cushioning_rate": {
+          "mean_difference": 0.05722601607051425,
+          "paired": false
+        }
+      }
+    }
+  }
+}

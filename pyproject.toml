@@ -6,9 +6,11 @@ requires-python = ">=3.13"
 dependencies = [
     "policyengine-uk==2.89.2",
     "huggingface_hub",
-    "pandas",
-    "numpy",
-    "matplotlib",
+    "pandas==2.3.3",
+    "numpy==2.1.3",
+    "matplotlib==3.10.0",
+    "openpyxl==3.1.5",
+    "requests==2.34.2",
 ]
 
 [build-system]

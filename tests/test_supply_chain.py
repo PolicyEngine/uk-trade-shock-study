@@ -93,3 +93,20 @@ def test_displacement_with_shock_expected_quota():
     ]
     # quota = 20 weighted heads; integer weights -> exactly 20 each draw.
     assert np.mean(draws) == pytest.approx(20.0, abs=0.5)
+
+
+def test_per_division_upstream_levels_sum_to_aggregate():
+    """Spanning CPA groups must be SPLIT, not replicated, across divisions."""
+    table = sc.upstream_sector_shocks("full_tariff")
+    iot = sc.load_iot()
+    f = sc.direct_final_demand_falls(iot, "full_tariff")
+    dg = sc.upstream_output_falls(iot, f)
+    aggregate = float((dg * iot.coe_ratio).sum())
+    assert table["upstream_earnings_loss"].sum() == pytest.approx(aggregate, rel=1e-9)
+    assert table["upstream_output_fall"].sum() == pytest.approx(float(dg.sum()), rel=1e-9)
+
+
+def test_iot_is_domestic_use_matrix():
+    iot = sc.load_iot()
+    # Domestic intermediate use of a product never exceeds its gross output.
+    assert (iot.intermediate.sum(axis=1) <= iot.gross_output * (1 + 1e-6)).all()

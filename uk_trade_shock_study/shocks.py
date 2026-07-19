@@ -31,6 +31,17 @@ generously than in-work wage cuts:
   sensitivity variant in which only a share of the older displaced pass the
   Work Capability Assessment.
 
+- ``reallocation`` (literal sectoral reallocation, ADH/Autor-Dorn-Hanson
+  "workers go into services"): the SAME displacement draw (same seed, so the
+  two families are paired draw-for-draw), but the drawn workers do NOT become
+  unemployed. They are RE-EMPLOYED in a services division — their
+  ``sic_industry_division`` is reassigned to one of REALLOCATION_DESTINATIONS
+  in proportion to those divisions' FRS employee weight — at an earnings
+  penalty ``reallocation_penalty`` calibrated on the FRS itself
+  (DEFAULT_REALLOCATION_PENALTY). ``reallocation_lag_months`` optionally puts
+  them out of work for part of the year first, scaling annual earnings and
+  hours by (1 - lag/12) on top of the penalty.
+
 Hard-error contract: build_shocked_simulation verifies that every displaced
 person's employment_status actually changed in the shocked simulation and
 raises RuntimeError otherwise (the uk-ai-study template had a silent-failure
@@ -50,7 +61,33 @@ from uk_trade_shock_study.exposure import (
     person_earnings_shock,
 )
 
-MARGINS = ("displacement", "wage_cut", "inactivity")
+MARGINS = ("displacement", "wage_cut", "inactivity", "reallocation")
+
+#: Services destination divisions for the ``reallocation`` margin (SIC 2007):
+#: 47 retail trade, 86 human health activities, 49 land transport (incl.
+#: delivery/couriers), 56 food and beverage service activities — the sectors
+#: the China-shock literature identifies as absorbing displaced manufacturing
+#: labour.
+REALLOCATION_DESTINATIONS = (47, 86, 49, 56)
+
+#: Destination mix: each division's share of employee grossing weight WITHIN
+#: the four destinations, measured on the FRS 2024-25 employee population at
+#: period 2026 (analysis/reallocation_calibration.py). 47: 1.538m,
+#: 86: 2.389m, 49: 0.480m, 56: 0.807m of 5.214m employees.
+DESTINATION_SHARES = (0.2951, 0.4581, 0.0920, 0.1548)
+
+#: FRS-CALIBRATED services wage penalty (Jul 2026). Weighted mean annual
+#: employee earnings: exposed goods-producing divisions (the intensity
+#: table's SIC 10-32) £48,272 vs the four services destinations £34,594 — a
+#: ratio of 0.717, i.e. a 28.3% ANNUAL EARNINGS penalty. It embeds the hours
+#: fall (destination mean 1,701 vs source 2,047 annual hours), which is the
+#: economically relevant quantity for household income. Controlling crudely
+#: for hours and age (weighted OLS of log annual earnings on a destination
+#: dummy, log hours, age and age^2 over the same population) leaves a 14.0%
+#: pure hourly-wage penalty — the lower-bound sensitivity.
+DEFAULT_REALLOCATION_PENALTY = 0.283
+#: Hours/age-controlled lower bound (see above).
+HOURLY_REALLOCATION_PENALTY = 0.140
 
 
 @dataclass(frozen=True)
@@ -64,10 +101,19 @@ class TradeShockScenario:
     #: share of inactive (older displaced) workers flagged LCWRA; 1.0 is the
     #: paper's upper-bound assumption, 0.5 the sensitivity variant.
     lcwra_takeup: float = 1.0
+    #: reallocation margin: proportional cut to annual earnings on moving to
+    #: services (FRS-calibrated; see DEFAULT_REALLOCATION_PENALTY).
+    reallocation_penalty: float = DEFAULT_REALLOCATION_PENALTY
+    #: months out of work before the services job starts (0 = instant).
+    reallocation_lag_months: float = 0.0
 
     def __post_init__(self):
         if self.margin not in MARGINS:
             raise ValueError(f"unknown margin {self.margin!r}; use one of {MARGINS}")
+        if not 0.0 <= self.reallocation_penalty < 1.0:
+            raise ValueError("reallocation_penalty must lie in [0, 1)")
+        if not 0.0 <= self.reallocation_lag_months <= 12.0:
+            raise ValueError("reallocation_lag_months must lie in [0, 12]")
 
 
 #: Scenario presets: {full_tariff, epd} x {displacement, wage_cut, inactivity}.
@@ -198,6 +244,72 @@ def apply_wage_cut(persons: pd.DataFrame, scenario: TradeShockScenario) -> pd.Da
     return shocked
 
 
+def _blank_reallocation(shocked: pd.DataFrame) -> pd.DataFrame:
+    shocked["reallocated"] = np.zeros(len(shocked), dtype=bool)
+    shocked["destination_division"] = np.full(len(shocked), np.nan)
+    return shocked
+
+
+def draw_destinations(
+    reallocated: np.ndarray,
+    seed: int = 0,
+    destinations=REALLOCATION_DESTINATIONS,
+    shares=DESTINATION_SHARES,
+) -> np.ndarray:
+    """Destination SIC division per reallocated worker (NaN otherwise).
+
+    Multinomial over ``destinations`` with probabilities ``shares`` (the
+    destinations' FRS employee-weight shares), drawn from a SEPARATE random
+    stream from the displacement draw so the drawn worker set is byte-identical
+    to the displacement family's under the same seed.
+    """
+    probs = np.asarray(shares, dtype=float)
+    probs = probs / probs.sum()
+    rng = np.random.default_rng((seed, 4_010_2026))
+    out = np.full(len(reallocated), np.nan)
+    idx = np.flatnonzero(reallocated)
+    out[idx] = rng.choice(np.asarray(destinations, dtype=float), size=idx.size, p=probs)
+    return out
+
+
+def apply_reallocation(
+    persons: pd.DataFrame,
+    scenario: TradeShockScenario,
+    seed: int = 0,
+) -> pd.DataFrame:
+    """Reallocation margin: displaced workers re-employed in services.
+
+    The drawn set is EXACTLY the displacement family's (same ``draw_displaced``
+    call, same seed) — the two families are paired draw-for-draw. Instead of
+    losing their job, each drawn worker is assigned a services destination
+    division (``draw_destinations``) and keeps
+
+        earnings_new = earnings_old x (1 - penalty) x (1 - lag_months / 12)
+
+    where ``penalty`` is the FRS-calibrated services earnings penalty and the
+    lag factor represents months spent out of work before re-entry (annual
+    earnings and annual hours are both scaled by it; the worker is EMPLOYED
+    at the end of the year, which is what the annual static microsimulation
+    scores). ``displaced``/``inactive``/``lcwra`` are all False: nobody is out
+    of work at the point of measurement.
+    """
+    if scenario.margin != "reallocation":
+        raise ValueError("apply_reallocation requires a reallocation scenario")
+    shocked = persons.copy()
+    reallocated = draw_displaced(persons, scenario, seed=seed)
+    lag_factor = 1.0 - scenario.reallocation_lag_months / 12.0
+    factor = (1.0 - scenario.reallocation_penalty) * lag_factor
+    earnings = shocked["employment_income"].to_numpy(dtype=float)
+    shocked["employment_income"] = np.where(reallocated, earnings * factor, earnings)
+    shocked["reallocated"] = reallocated
+    shocked["destination_division"] = draw_destinations(reallocated, seed=seed)
+    shocked["reallocation_hours_factor"] = np.where(reallocated, lag_factor, 1.0)
+    shocked["displaced"] = np.zeros(len(persons), dtype=bool)
+    shocked["inactive"] = np.zeros(len(persons), dtype=bool)
+    shocked["lcwra"] = np.zeros(len(persons), dtype=bool)
+    return shocked
+
+
 def apply_shocks(
     persons: pd.DataFrame,
     scenario: TradeShockScenario,
@@ -208,8 +320,10 @@ def apply_shocks(
     Expects columns: employment_income, sic_division, age, weight.
     """
     if scenario.margin == "wage_cut":
-        return apply_wage_cut(persons, scenario)
-    return apply_displacement(persons, scenario, seed=seed)
+        return _blank_reallocation(apply_wage_cut(persons, scenario))
+    if scenario.margin == "reallocation":
+        return apply_reallocation(persons, scenario, seed=seed)
+    return _blank_reallocation(apply_displacement(persons, scenario, seed=seed))
 
 
 #: Person-level inputs zeroed for displaced workers so they do not remain
@@ -226,6 +340,27 @@ TRANSITION_ZEROED_VARIABLES = (
 )
 
 SHOCKED_INCOME_VARIABLES = ("employment_income",)
+
+
+def lcwra_benunit_addon(sim, lcwra, monthly: float) -> np.ndarray:
+    """Annual UC health-element addon per BENEFIT UNIT (£/year).
+
+    Universal Credit pays AT MOST ONE limited-capability-for-work-related-
+    activity element per benefit unit. The addon must therefore be a
+    benunit-level indicator — does this benunit contain ANY newly flagged
+    member — and NOT a person-level sum, which double-counts benefit units
+    with two flagged members (e.g. a displaced over-50 couple).
+    """
+    flagged_bu = np.asarray(
+        sim.map_result(np.asarray(lcwra, dtype=float), "person", "benunit"), dtype=float
+    )
+    addon = (flagged_bu > 0).astype(float) * monthly * 12.0
+    if addon.size and addon.max() > monthly * 12.0 + 1e-6:
+        raise RuntimeError(
+            "LCWRA addon exceeds one annual health element for some benefit "
+            "unit (flagged members double-counted)."
+        )
+    return addon
 
 
 def build_shocked_simulation(dataset, baseline_sim, shocked_table, period):
@@ -246,10 +381,42 @@ def build_shocked_simulation(dataset, baseline_sim, shocked_table, period):
         sim.set_input(column, period, shocked_table[column].to_numpy(dtype=float))
     displaced = shocked_table["displaced"].to_numpy()
     inactive = shocked_table["inactive"].to_numpy()
+    reallocated = (
+        shocked_table["reallocated"].to_numpy()
+        if "reallocated" in shocked_table
+        else np.zeros(len(displaced), dtype=bool)
+    )
+    hours_factor = (
+        shocked_table["reallocation_hours_factor"].to_numpy(dtype=float)
+        if "reallocation_hours_factor" in shocked_table
+        else np.ones(len(displaced), dtype=float)
+    )
     for var in TRANSITION_ZEROED_VARIABLES:
         values = baseline_sim.calculate(var, period=period, map_to="person").values.astype(float)
         values[displaced] = 0.0
+        if var == "hours_worked":
+            values = values * hours_factor
         sim.set_input(var, period, values)
+    if reallocated.any():
+        # Literal sector switch: move the reallocated workers' SIC industry
+        # division to their drawn services destination. Verified below (a
+        # silently-rejected set_input would leave them in manufacturing and
+        # make the margin indistinguishable from a plain wage cut).
+        sic = baseline_sim.calculate(
+            "sic_industry_division", period=period, map_to="person"
+        ).values.astype(float)
+        destination = shocked_table["destination_division"].to_numpy(dtype=float)
+        sic = np.where(reallocated, destination, sic)
+        sim.set_input("sic_industry_division", period, sic)
+        applied_sic = sim.calculate(
+            "sic_industry_division", period=period, map_to="person"
+        ).values.astype(float)
+        if not np.array_equal(applied_sic[reallocated], destination[reallocated]):
+            raise RuntimeError(
+                "sector reallocation not applied: reallocated persons' "
+                "sic_industry_division does not match their drawn services "
+                "destination in the shocked simulation."
+            )
     status = baseline_sim.calculate("employment_status", period=period, map_to="person").values.astype(object)
     status[displaced] = "UNEMPLOYED"
     status[inactive] = "OTHER_INACTIVE"
@@ -281,7 +448,7 @@ def build_shocked_simulation(dataset, baseline_sim, shocked_table, period):
                 f"{period}-01-01"
             ).gov.dwp.universal_credit.elements.disabled.amount
         )
-        addon = sim.map_result(lcwra.astype(float) * monthly * 12.0, "person", "benunit")
+        addon = lcwra_benunit_addon(sim, lcwra, monthly)
         sim.set_input("uc_LCWRA_element", period, base_element + addon)
         applied_element = sim.calculate(
             "uc_LCWRA_element", period=period, map_to="person"
@@ -302,4 +469,17 @@ def build_shocked_simulation(dataset, baseline_sim, shocked_table, period):
             "employment_status transition not applied: inactive persons are "
             "not all INACTIVE in the shocked simulation."
         )
+    if reallocated.any():
+        # Reallocated workers switch SECTOR, not employment state: their
+        # employment_status must be exactly their baseline one (FT_EMPLOYED,
+        # PT_EMPLOYED, ...) and in particular must never be UNEMPLOYED.
+        baseline_status = np.asarray(
+            baseline_sim.calculate("employment_status", period=period, map_to="person").values,
+            dtype=str,
+        )
+        if not (applied[reallocated] == baseline_status[reallocated]).all():
+            raise RuntimeError(
+                "reallocated persons' employment_status changed: they switch "
+                "sector, they do not lose their job."
+            )
     return sim

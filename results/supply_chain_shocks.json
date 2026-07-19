@@ -82,13 +82,13 @@
       "direct_shock": 0.0,
       "upstream_shock": 0.000173,
       "total_shock": 0.000173,
-      "upstream_earnings_loss": 0.354454
+      "upstream_earnings_loss": 0.177227
     },
     "7": {
       "direct_shock": 0.0,
       "upstream_shock": 0.000173,
       "total_shock": 0.000173,
-      "upstream_earnings_loss": 0.354454
+      "upstream_earnings_loss": 0.177227
     },
     "8": {
       "direct_shock": 0.0,
@@ -118,7 +118,7 @@
       "direct_shock": 0.00944,
       "upstream_shock": 0.000132,
       "total_shock": 0.009572,
-      "upstream_earnings_loss": 0.241592
+      "upstream_earnings_loss": 0.0
     },
     "13": {
       "direct_shock": 0.00956,
@@ -280,19 +280,19 @@
       "direct_shock": 0.0,
       "upstream_shock": 0.000448,
       "total_shock": 0.000448,
-      "upstream_earnings_loss": 25.127107
+      "upstream_earnings_loss": 8.375702
     },
     "42": {
       "direct_shock": 0.0,
       "upstream_shock": 0.000448,
       "total_shock": 0.000448,
-      "upstream_earnings_loss": 25.127107
+      "upstream_earnings_loss": 8.375702
     },
     "43": {
       "direct_shock": 0.0,
       "upstream_shock": 0.000448,
       "total_shock": 0.000448,
-      "upstream_earnings_loss": 25.127107
+      "upstream_earnings_loss": 8.375702
     },
     "45": {
       "direct_shock": 0.0,
@@ -364,13 +364,13 @@
       "direct_shock": 0.0,
       "upstream_shock": 0.000155,
       "total_shock": 0.000155,
-      "upstream_earnings_loss": 1.388355
+      "upstream_earnings_loss": 0.694178
     },
     "60": {
       "direct_shock": 0.0,
       "upstream_shock": 0.000155,
       "total_shock": 0.000155,
-      "upstream_earnings_loss": 1.388355
+      "upstream_earnings_loss": 0.694178
     },
     "61": {
       "direct_shock": 0.0,
@@ -514,13 +514,13 @@
       "direct_shock": 0.0,
       "upstream_shock": 7e-06,
       "total_shock": 7e-06,
-      "upstream_earnings_loss": 0.317488
+      "upstream_earnings_loss": 0.158744
     },
     "88": {
       "direct_shock": 0.0,
       "upstream_shock": 7e-06,
       "total_shock": 7e-06,
-      "upstream_earnings_loss": 0.317488
+      "upstream_earnings_loss": 0.158744
     },
     "90": {
       "direct_shock": 0.0,

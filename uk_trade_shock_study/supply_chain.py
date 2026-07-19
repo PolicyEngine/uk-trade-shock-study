@@ -135,6 +135,18 @@ def load_iot(path: str | Path = IOT_XLSX) -> IOTables:
 
     ws = openpyxl.load_workbook(str(path), read_only=True)[IOT_SHEET]
     rows = list(ws.iter_rows(values_only=True))
+    # The amplification factor is only meaningful on the DOMESTIC use matrix:
+    # the total (incl. imports) matrix would attribute imported intermediates
+    # to UK suppliers and inflate upstream earnings losses. The ONS workbook
+    # carries the total-vs-domestic distinction in the sheet title (and keeps
+    # the import content on separate 'Imports use ...' sheets).
+    title = " ".join(str(c) for r in rows[:3] for c in r if c).lower()
+    if "domestic use" not in title:
+        raise ValueError(
+            f"IOT sheet {IOT_SHEET!r} is not labelled a DOMESTIC use matrix "
+            f"(title: {title!r}); the upstream amplification would be "
+            "overstated by imported intermediate content."
+        )
     header = [c for c in rows[3][2:] if c]
     body = {r[0]: r for r in rows[6:] if r[0]}
     products = tuple(k for k in body if str(k).startswith("CPA_"))
@@ -144,6 +156,17 @@ def load_iot(path: str | Path = IOT_XLSX) -> IOTables:
     Z = np.array([[float(body[p][2 + j]) for j in range(n)] for p in products])
     go = np.array([float(body["P1"][2 + j]) for j in range(n)])
     coe = np.array([float(body["D1"][2 + j]) for j in range(n)])
+    # Cross-check: domestic intermediate use of each product cannot exceed
+    # that product's domestic gross output (it would under a total-use matrix,
+    # which includes imported supply of the same product).
+    row_use = Z.sum(axis=1)
+    if np.any(row_use > go * (1.0 + 1e-6)):
+        bad = [products[i] for i in np.flatnonzero(row_use > go * (1.0 + 1e-6))]
+        raise ValueError(
+            "parsed IOT matrix has intermediate use exceeding domestic gross "
+            f"output for {bad}: this indicates a TOTAL (incl. imports) use "
+            "matrix, which would inflate the upstream amplification factor."
+        )
     return IOTables(products=products, intermediate=Z, gross_output=go, compensation=coe)
 
 
@@ -220,18 +243,49 @@ def upstream_sector_shocks(
     delta_g = upstream_output_falls(iot, f)
     earnings = delta_g * iot.coe_ratio
 
+    # Two distinct accumulations.
+    #
+    # (a) RATES. A CPA group spanning several SIC divisions imposes its rate
+    #     on every member division (the uniform-rate assumption documented in
+    #     the module docstring), so the rate numerator/denominator book the
+    #     FULL delta_g/GO to each member. Unchanged.
+    #
+    # (b) LEVELS (upstream_output_fall, upstream_earnings_loss). These are
+    #     additive quantities and must SUM to the economy aggregate, so a
+    #     spanning group's level is SPLIT across its member divisions rather
+    #     than replicated. The split key is each member division's share of
+    #     the gross output of the products it holds exclusively (products
+    #     mapping to that division alone); if none of the member divisions
+    #     has an exclusive product, the group is split equally.
+    prod_divs = [_divisions_of_product(p) for p in iot.products]
+    solo_go: dict[int, float] = {}
+    for i, divs in enumerate(prod_divs):
+        if len(divs) == 1:
+            solo_go[divs[0]] = solo_go.get(divs[0], 0.0) + float(iot.gross_output[i])
+
     records: dict[int, dict[str, float]] = {}
-    for i, product in enumerate(iot.products):
-        for division in _divisions_of_product(product):
+    for i, divs in enumerate(prod_divs):
+        keys = np.array([solo_go.get(d, 0.0) for d in divs], dtype=float)
+        weights = (
+            keys / keys.sum() if keys.sum() > 0 else np.full(len(divs), 1.0 / len(divs))
+        )
+        for division, w in zip(divs, weights):
             rec = records.setdefault(
-                division, {"upstream_output_fall": 0.0, "upstream_earnings_loss": 0.0, "go": 0.0}
+                division,
+                {
+                    "upstream_output_fall": 0.0,
+                    "upstream_earnings_loss": 0.0,
+                    "rate_output_fall": 0.0,
+                    "go": 0.0,
+                },
             )
-            rec["upstream_output_fall"] += float(delta_g[i])
-            rec["upstream_earnings_loss"] += float(earnings[i])
+            rec["upstream_output_fall"] += float(delta_g[i]) * float(w)
+            rec["upstream_earnings_loss"] += float(earnings[i]) * float(w)
+            rec["rate_output_fall"] += float(delta_g[i])
             rec["go"] += float(iot.gross_output[i])
     table = pd.DataFrame.from_dict(records, orient="index").rename_axis("sic_division")
-    table["upstream_shock"] = passthrough * table["upstream_output_fall"] / table["go"]
-    return table.drop(columns="go").sort_index()
+    table["upstream_shock"] = passthrough * table["rate_output_fall"] / table["go"]
+    return table.drop(columns=["go", "rate_output_fall"]).sort_index()
 
 
 def total_sector_shocks(

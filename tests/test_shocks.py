@@ -190,3 +190,176 @@ def test_build_shocked_simulation_requires_policyengine():
 
     if not Path("data/frs_2024_25.h5").exists():
         pytest.skip("FRS dataset not downloaded (run analysis/download_data.py)")
+
+
+def test_lcwra_addon_one_element_per_benunit():
+    """A benunit with TWO flagged persons receives exactly ONE health element."""
+    from uk_trade_shock_study.shocks import lcwra_benunit_addon
+
+    class StubSim:
+        """persons 0,1 -> benunit 0; person 2 -> benunit 1; person 3 -> benunit 2."""
+
+        benunit_of_person = np.array([0, 0, 1, 2])
+
+        def map_result(self, values, source, target):
+            assert (source, target) == ("person", "benunit")
+            out = np.zeros(3)
+            np.add.at(out, self.benunit_of_person, np.asarray(values, dtype=float))
+            return out
+
+    monthly = 100.0
+    # benunit 0 has two flagged members, benunit 1 one, benunit 2 none.
+    lcwra = np.array([True, True, True, False])
+    addon = lcwra_benunit_addon(StubSim(), lcwra, monthly)
+    assert addon == pytest.approx([monthly * 12.0, monthly * 12.0, 0.0])
+
+
+# --- reallocation margin -------------------------------------------------
+
+
+def test_reallocation_quota_identical_to_displacement_under_same_seed():
+    """Paired draws: the reallocated set IS the displaced set, seed for seed."""
+    persons = make_persons()
+    for seed in range(5):
+        realloc = apply_shocks(persons, PRESETS["full_tariff_reallocation"], seed=seed)
+        displ = apply_shocks(persons, PRESETS["full_tariff_displacement"], seed=seed)
+        np.testing.assert_array_equal(
+            realloc["reallocated"].to_numpy(), displ["displaced"].to_numpy()
+        )
+    # ...and nobody is out of work under reallocation
+    assert not realloc["displaced"].to_numpy().any()
+    assert not realloc["inactive"].to_numpy().any()
+    assert not realloc["lcwra"].to_numpy().any()
+
+
+def test_reallocation_destinations_are_services_with_expected_mix():
+    from uk_trade_shock_study.shocks import DESTINATION_SHARES, REALLOCATION_DESTINATIONS
+
+    persons = make_persons()
+    dest = []
+    for seed in range(30):
+        t = apply_shocks(persons, PRESETS["full_tariff_reallocation"], seed=seed)
+        d = t["destination_division"].to_numpy()
+        moved = t["reallocated"].to_numpy()
+        # exactly the reallocated get a destination, and it is a services one
+        assert np.isnan(d[~moved]).all()
+        assert not np.isnan(d[moved]).any()
+        assert set(np.unique(d[moved])) <= set(map(float, REALLOCATION_DESTINATIONS))
+        dest.append(d[moved])
+    pooled = np.concatenate(dest)
+    for code, share in zip(REALLOCATION_DESTINATIONS, DESTINATION_SHARES):
+        assert (pooled == code).mean() == pytest.approx(share, abs=0.03)
+
+
+def test_reallocation_applies_the_wage_penalty():
+    from uk_trade_shock_study.shocks import DEFAULT_REALLOCATION_PENALTY
+
+    persons = make_persons()
+    shocked = apply_shocks(persons, PRESETS["epd_reallocation"], seed=3)
+    moved = shocked["reallocated"].to_numpy()
+    base = persons["employment_income"].to_numpy()
+    new = shocked["employment_income"].to_numpy()
+    assert moved.any()
+    np.testing.assert_allclose(
+        new[moved], base[moved] * (1 - DEFAULT_REALLOCATION_PENALTY), rtol=1e-9
+    )
+    # everyone else untouched, and no reallocated worker loses all earnings
+    np.testing.assert_array_equal(new[~moved], base[~moved])
+    assert (new[moved] > 0).all()
+
+
+def test_reallocation_lag_scales_earnings_and_hours():
+    from uk_trade_shock_study.shocks import DEFAULT_REALLOCATION_PENALTY
+
+    persons = make_persons()
+    lagged = TradeShockScenario(
+        "t", "full_tariff", "reallocation", reallocation_lag_months=3.0
+    )
+    shocked = apply_shocks(persons, lagged, seed=0)
+    moved = shocked["reallocated"].to_numpy()
+    base = persons["employment_income"].to_numpy()
+    factor = (1 - DEFAULT_REALLOCATION_PENALTY) * 0.75
+    np.testing.assert_allclose(
+        shocked["employment_income"].to_numpy()[moved], base[moved] * factor, rtol=1e-9
+    )
+    hf = shocked["reallocation_hours_factor"].to_numpy()
+    assert hf[moved] == pytest.approx(0.75)
+    assert hf[~moved] == pytest.approx(1.0)
+    # the draw is unchanged by the lag
+    instant = apply_shocks(persons, PRESETS["full_tariff_reallocation"], seed=0)
+    np.testing.assert_array_equal(moved, instant["reallocated"].to_numpy())
+    # a lagged reallocation costs the worker strictly more than an instant one
+    assert (
+        shocked["employment_income"].to_numpy()[moved].sum()
+        < instant["employment_income"].to_numpy()[moved].sum()
+    )
+
+
+def test_reallocation_loss_is_the_penalty_share_of_displacement_loss():
+    """Reallocation removes penalty x (displacement loss): the SAME workers
+    are hit, but they keep (1 - penalty) of their earnings instead of zero.
+
+    Note the resulting ordering against the earnings-equivalent wage cut:
+    the wage cut removes shock_j x the WHOLE division wage bill, whereas
+    reallocation removes only the penalty on the movers' earnings, so the
+    gross loss is SMALLER under reallocation than under the wage cut. The
+    two are not orderable by construction — only displacement dominates.
+    """
+    from uk_trade_shock_study.shocks import DEFAULT_REALLOCATION_PENALTY
+
+    persons = make_persons()
+    w = persons["weight"].to_numpy()
+    base = persons["employment_income"].to_numpy()
+
+    def loss(table):
+        return float(((base - table["employment_income"].to_numpy()) * w).sum())
+
+    d = loss(apply_shocks(persons, PRESETS["full_tariff_displacement"], seed=0))
+    r = loss(apply_shocks(persons, PRESETS["full_tariff_reallocation"], seed=0))
+    assert r == pytest.approx(DEFAULT_REALLOCATION_PENALTY * d, rel=1e-9)
+    assert 0 < r < d
+
+
+def test_reallocation_scenario_parameter_validation():
+    with pytest.raises(ValueError):
+        TradeShockScenario("t", "epd", "reallocation", reallocation_penalty=1.0)
+    with pytest.raises(ValueError):
+        TradeShockScenario("t", "epd", "reallocation", reallocation_lag_months=13.0)
+
+
+def test_reallocation_hard_error_when_sector_switch_is_dropped():
+    """build_shocked_simulation must FAIL HARD if the sector set_input is
+    silently ignored — otherwise reallocated workers would stay in
+    manufacturing and the margin would collapse into a plain wage cut."""
+    from unittest import mock
+
+    from uk_trade_shock_study import shocks as shocks_module
+
+    persons = make_persons(n=400)
+    table = apply_shocks(persons, PRESETS["full_tariff_reallocation"], seed=0)
+    assert table["reallocated"].to_numpy().any()
+    n = len(table)
+
+    class SilentSim:
+        """Accepts every set_input and forgets it (the failure mode)."""
+
+        def calculate(self, var, period=None, map_to=None):
+            import types
+
+            if var == "employment_status":
+                values = np.array(["EMPLOYED"] * n, dtype=object)
+            elif var == "sic_industry_division":
+                values = persons["sic_division"].to_numpy(dtype=float)
+            else:
+                values = np.zeros(n)
+            return types.SimpleNamespace(values=values)
+
+        def set_input(self, *args, **kwargs):
+            return None
+
+    stub = SilentSim()
+    fake_pe = mock.MagicMock()
+    fake_pe.Microsimulation.return_value = stub
+    with mock.patch.dict("sys.modules", {"policyengine_uk": fake_pe}):
+        with pytest.raises(RuntimeError, match="sector reallocation not applied"):
+            shocks_module.build_shocked_simulation(None, stub, table, 2026)

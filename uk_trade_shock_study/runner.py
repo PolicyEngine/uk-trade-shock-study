@@ -43,6 +43,7 @@ class ScenarioResult:
     displaced_weighted: float
     inactive_weighted: float
     lcwra_weighted: float = 0.0
+    reallocated_weighted: float = 0.0
     gross_earnings_loss: float = float("nan")
     net_disposable_loss: float = float("nan")
     cushioning_rate: float = float("nan")
@@ -63,6 +64,7 @@ class MonteCarloResult:
     gini_change_sd: float
     displaced_weighted_mean: float
     lcwra_weighted_mean: float = 0.0
+    reallocated_weighted_mean: float = 0.0
     cushioning_rate_mean: float = float("nan")
     cushioning_rate_sd: float = 0.0
     draws: list = field(default_factory=list)
@@ -147,6 +149,12 @@ def _one_draw(dataset, baseline, persons, scenario, period, seed) -> ScenarioRes
         else np.zeros(len(displaced), dtype=bool)
     )
 
+    reallocated = (
+        shocked_table["reallocated"].to_numpy()
+        if "reallocated" in shocked_table
+        else np.zeros(len(displaced), dtype=bool)
+    )
+
     base, shock = _metrics(baseline, period), _metrics(shocked, period)
 
     weight = persons["weight"].to_numpy()
@@ -174,11 +182,15 @@ def _one_draw(dataset, baseline, persons, scenario, period, seed) -> ScenarioRes
         for r in sorted(set(region))
     }
     displaced_w = float(weight[displaced].sum())
+    # age composition is reported over the AFFECTED set: displaced under the
+    # job-loss margins, reallocated under the reallocation margin.
+    affected = displaced | reallocated
+    affected_w = float(weight[affected].sum())
     band_share = {}
     for lo, hi in AGE_BANDS:
         mask = (age >= lo) & (age <= hi)
         label = f"{lo}-{hi if hi < 200 else '+'}"
-        band_share[label] = float(weight[mask & displaced].sum() / displaced_w) if displaced_w else 0.0
+        band_share[label] = float(weight[mask & affected].sum() / affected_w) if affected_w else 0.0
 
     return ScenarioResult(
         scenario=scenario.name,
@@ -193,6 +205,7 @@ def _one_draw(dataset, baseline, persons, scenario, period, seed) -> ScenarioRes
         displaced_weighted=displaced_w,
         inactive_weighted=float(weight[inactive].sum()),
         lcwra_weighted=float(weight[lcwra].sum()),
+        reallocated_weighted=float(weight[reallocated].sum()),
         gross_earnings_loss=gross_loss,
         net_disposable_loss=net_loss,
         cushioning_rate=(1.0 - net_loss / gross_loss) if gross_loss else float("nan"),
@@ -250,6 +263,7 @@ def run_monte_carlo(
         gini_change_sd=float(gini_change.std(ddof=1)) if n_draws > 1 else 0.0,
         displaced_weighted_mean=float(np.mean([d.displaced_weighted for d in draws])),
         lcwra_weighted_mean=float(np.mean([d.lcwra_weighted for d in draws])),
+        reallocated_weighted_mean=float(np.mean([d.reallocated_weighted for d in draws])),
         cushioning_rate_mean=float(np.mean([d.cushioning_rate for d in draws])),
         cushioning_rate_sd=float(np.std([d.cushioning_rate for d in draws], ddof=1)) if n_draws > 1 else 0.0,
         draws=[asdict(d) for d in draws],

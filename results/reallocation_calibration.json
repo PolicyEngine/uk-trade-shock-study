@@ -1,0 +1,80 @@
+{
+  "source_divisions": [
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32
+  ],
+  "destination_divisions": [
+    47,
+    86,
+    49,
+    56
+  ],
+  "source": {
+    "mean_annual_earnings": 48271.895919192786,
+    "mean_annual_hours": 2046.8152166610423,
+    "mean_hourly": 23.583905145056743,
+    "employees": 1839976.78225708
+  },
+  "destination": {
+    "mean_annual_earnings": 34593.57028402957,
+    "mean_annual_hours": 1701.0377887223724,
+    "mean_hourly": 20.33674414135876,
+    "employees": 5213766.993347168
+  },
+  "per_destination": {
+    "47": {
+      "mean_annual_earnings": 28226.613148271023,
+      "mean_annual_hours": 1563.2221588606303,
+      "mean_hourly": 18.05668694515197,
+      "employees": 1538141.6402282715
+    },
+    "86": {
+      "mean_annual_earnings": 41404.20754958376,
+      "mean_annual_hours": 1786.0374811676052,
+      "mean_hourly": 23.182160501198524,
+      "employees": 2388663.353942871
+    },
+    "49": {
+      "mean_annual_earnings": 40999.87211735421,
+      "mean_annual_hours": 2051.8357197669407,
+      "mean_hourly": 19.982044235983576,
+      "employees": 479864.92611694336
+    },
+    "56": {
+      "mean_annual_earnings": 22762.03522356187,
+      "mean_annual_hours": 1503.5506213680678,
+      "mean_hourly": 15.138855253739903,
+      "employees": 807097.073059082
+    }
+  },
+  "destination_shares": {
+    "47": 0.29501541633735445,
+    "86": 0.45814539794180204,
+    "49": 0.09203804595204523,
+    "56": 0.15480113976879825
+  },
+  "annual_earnings_penalty": 0.2833600250145706,
+  "hourly_penalty_unconditional": 0.13768546742898502,
+  "hours_age_controlled_penalty": 0.1402190645635929
+}

@@ -7,6 +7,18 @@ $apply groupby throughout), January 2023 - February 2026, keyed by SITC and
 mapped to SIC 2007 divisions with the same crosswalk as
 analysis/build_trade_by_sic.py.
 
+PRECIOUS METALS: because the crosswalk is imported from build_trade_by_sic,
+the ONS exclusion of non-monetary gold (SITC 971) and silver/platinum-group
+metals incl. palladium (SITC 681) applies here identically - see that module's
+docstring and PRECIOUS_METALS_SITC3, and the assertion in
+fetch_monthly_by_division below. The exclusion matters most for the MONTHLY
+series: non-monetary gold swung to £6.1bn in a single month (Jan 2025) against
+a ~£4bn/month non-gold total, so an all-commodity monthly series would track
+bullion flows rather than the tariff response. It is NOT, however, the source
+of the rise in SIC 24 basic metals over the post window: 681 never enters
+division 24, whose gain is copper (SITC 682) and lead (685) - see the
+diagnostic note in realised_falls.
+
 REALISED EXPORT FALL, per division j:
 
     fall_j = 1 - (exports in POST window) / (exports in BASELINE window)
@@ -57,7 +69,13 @@ import numpy as np
 import pandas as pd
 import requests
 
-from build_trade_by_sic import DIVISION_NAMES, SITC2_TO_SIC, SITC3_TO_SIC, SPLIT_CHAPTERS
+from build_trade_by_sic import (
+    DIVISION_NAMES,
+    PRECIOUS_METALS_SITC3,
+    SITC2_TO_SIC,
+    SITC3_TO_SIC,
+    SPLIT_CHAPTERS,
+)
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
@@ -110,13 +128,23 @@ def fetch_monthly_by_division() -> pd.DataFrame:
     )
     rows = _cached(f"ots_us_monthly_{FIRST_MONTH}_{LAST_MONTH}.json", url)
     records = []
+    dropped_precious = 0.0
     for row in rows:
         sitc3 = int(row["CommoditySitcId"]) // 100
         chapter = sitc3 // 10
         div = SITC3_TO_SIC.get(sitc3) if chapter in SPLIT_CHAPTERS else SITC2_TO_SIC.get(chapter)
+        if sitc3 in PRECIOUS_METALS_SITC3:
+            # Belt and braces: the crosswalk already maps these to None (ONS
+            # precious-metals convention). Assert rather than trust.
+            assert div is None, f"SITC {sitc3} leaked into SIC {div}"
+            dropped_precious += float(row["V"])
         if div is None:
             continue
         records.append((int(row["MonthId"]), div, float(row["V"])))
+    print(
+        f"excluded non-monetary precious metals (SITC {PRECIOUS_METALS_SITC3}): "
+        f"£{dropped_precious / 1e9:.1f}bn of gross {FIRST_MONTH}-{LAST_MONTH} flow"
+    )
     frame = pd.DataFrame(records, columns=["month", "division", "value"])
     return frame.groupby(["month", "division"], as_index=False)["value"].sum()
 
@@ -127,7 +155,22 @@ def _window_sum(monthly: pd.DataFrame, months: list[int]) -> pd.Series:
 
 
 def realised_falls(monthly: pd.DataFrame) -> pd.DataFrame:
-    """Per-division realised export fall: post window vs the two baselines."""
+    """Per-division realised export fall: post window vs the two baselines.
+
+    Diagnostic note on SIC 24 (basic metals), which RISES ~11% over the post
+    window despite 25%/50% US steel tariffs. This is not a precious-metals
+    artefact - SITC 681 is excluded upstream and never enters division 24.
+    Decomposing division 24 over the post window vs the 2-yr baseline:
+    the ferrous groups all fall as expected (671 -21%, 672 -20%, 673 -60%,
+    674 -5%, 677 -19%, 679 -27%), and the rise is concentrated in
+    non-ferrous groups outside the steel tariff lines - copper 682
+    (£47m -> £81m), lead 685 (£15m -> £35m), and the alloy-steel/wire groups
+    675/676. Division 24 mixes tariffed steel with untariffed (and, for
+    copper, separately front-run) non-ferrous metals, so the division-level
+    fall understates the steel shock. Flagged rather than adjusted: the
+    division is the unit at which employment and the FRS crosswalk are
+    defined, and splitting it would break that correspondence.
+    """
     post = _window_sum(monthly, POST_MONTHS)
 
     def shift(m: int, years: int) -> int:

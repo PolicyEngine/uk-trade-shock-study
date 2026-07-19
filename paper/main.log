@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2024.1.12)  19 JUL 2026 11:47
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2024.1.12)  19 JUL 2026 12:00
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -451,52 +451,53 @@ Package pdftex.def Info: ../results/figures/decile_by_margin_full_tariff.png  u
 sed on input line 115.
 (pdftex.def)             Requested size: 387.00787pt x 217.68945pt.
  [17 <../results/figures/decile_by_margin_full_tariff.png>] [18] [19] [20]
-<../results/figures/exchequer_cost_draws.png, id=690, 578.16pt x 325.215pt>
+<../results/figures/exchequer_cost_draws.png, id=691, 578.16pt x 325.215pt>
 File: ../results/figures/exchequer_cost_draws.png Graphic file (type png)
 <use ../results/figures/exchequer_cost_draws.png>
 Package pdftex.def Info: ../results/figures/exchequer_cost_draws.png  used on i
 nput line 215.
 (pdftex.def)             Requested size: 387.00787pt x 217.68945pt.
  [21 <../results/figures/exchequer_cost_draws.png>]
-<../results/figures/epd_counterfactual.png, id=702, 578.16pt x 325.215pt>
+<../results/figures/epd_counterfactual.png, id=703, 578.16pt x 325.215pt>
 File: ../results/figures/epd_counterfactual.png Graphic file (type png)
 <use ../results/figures/epd_counterfactual.png>
 Package pdftex.def Info: ../results/figures/epd_counterfactual.png  used on inp
 ut line 255.
 (pdftex.def)             Requested size: 387.00787pt x 217.68945pt.
  [22] [23 <../results/figures/epd_counterfactual.png>]
-[24] [25] [26] [27]) (./sections/policy.tex [28]) (./sections/discussion.tex
-[29] [30]) (./sections/references.tex [31] [32] [33] [34] [35])
-(./sections/appendix.tex [36] [37] [38] [39] [40] [41] [42] [43]
-<../results/figures/map_region_income_change.png, id=946, 561.5379pt x 476.2593
+[24] [25] [26] [27] [28]) (./sections/policy.tex [29])
+(./sections/discussion.tex [30] [31]) [32] (./sections/references.tex [33]
+[34] [35] [36]) (./sections/appendix.tex [37] [38] [39] [40] [41] [42] [43]
+[44] [45]
+<../results/figures/map_region_income_change.png, id=958, 561.5379pt x 476.2593
 pt>
 File: ../results/figures/map_region_income_change.png Graphic file (type png)
 <use ../results/figures/map_region_income_change.png>
 Package pdftex.def Info: ../results/figures/map_region_income_change.png  used 
-on input line 158.
+on input line 160.
 (pdftex.def)             Requested size: 432.53372pt x 366.84431pt.
- [44] [45 <../results/figures/map_region_income_change.png>]
-<../results/figures/map_constituency_income_change.png, id=966, 561.5379pt x 47
+ [46] [47 <../results/figures/map_region_income_change.png>]
+<../results/figures/map_constituency_income_change.png, id=978, 561.5379pt x 47
 6.2593pt>
 File: ../results/figures/map_constituency_income_change.png Graphic file (type 
 png)
 <use ../results/figures/map_constituency_income_change.png>
 Package pdftex.def Info: ../results/figures/map_constituency_income_change.png 
- used on input line 201.
+ used on input line 203.
 (pdftex.def)             Requested size: 432.53372pt x 366.84431pt.
-) [46] [47 <../results/figures/map_constituency_income_change.png>] (./main.aux
-)
+) [48]
+[49 <../results/figures/map_constituency_income_change.png>] (./main.aux)
 Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: EC21E0F8AFD6DAD919F7E02AB57FD961;7698.
  ) 
 Here is how much of TeX's memory you used:
- 11132 strings out of 476025
- 175110 string characters out of 5790017
- 1873388 words of memory out of 5000000
+ 11135 strings out of 476025
+ 175135 string characters out of 5790017
+ 1876388 words of memory out of 5000000
  31198 multiletter control sequences out of 15000+600000
  528258 words of font info for 85 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,11n,76p,5206b,687s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,11n,76p,5206b,681s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
 pdfTeX warning (dest): name{Hfootnote.2} has been referenced but does not exist
 , replaced by a fixed one
@@ -532,10 +533,10 @@ ts/type1/public/cm-super/sfrm1000.pfb></usr/local/texlive/2023/texmf-dist/fonts
 /type1/public/cm-super/sfrm1095.pfb></usr/local/texlive/2023/texmf-dist/fonts/t
 ype1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/typ
 e1/public/cm-super/sfti1000.pfb>
-Output written on main.pdf (47 pages, 1069303 bytes).
+Output written on main.pdf (49 pages, 1077885 bytes).
 PDF statistics:
- 1138 PDF objects out of 1200 (max. 8388607)
- 1013 compressed objects within 11 object streams
- 212 named destinations out of 1000 (max. 500000)
+ 1151 PDF objects out of 1200 (max. 8388607)
+ 1024 compressed objects within 11 object streams
+ 215 named destinations out of 1000 (max. 500000)
  322 words of extra memory for PDF output out of 10000 (max. 10000000)
 

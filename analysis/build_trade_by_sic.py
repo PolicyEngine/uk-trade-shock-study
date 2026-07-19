@@ -18,8 +18,21 @@ NUMERATOR — UK goods exports to the US, 2024 calendar year, £:
 
 CROSSWALK — SITC (rev 4) -> SIC 2007 division, coded in SITC2_TO_SIC /
   SITC3_TO_SIC below. Standard concordance for manufacturing; judgement calls:
-  - 681 (silver/platinum) and 896 (works of art) EXCLUDED: overwhelmingly
-    London bullion/art-market re-exports, not UK production employment.
+  - NON-MONETARY PRECIOUS METALS EXCLUDED, mirroring ONS's stated convention
+    for its US-tariff trade analysis (non-monetary gold, silver, platinum and
+    palladium are excluded because the movements are large and volatile and
+    distort the underlying trend). The excluded SITC rev-4 groups are 971
+    (non-monetary gold; reached via chapter 97 -> None) and 681 (silver,
+    platinum and other platinum-group metals, incl. palladium). Both are also
+    overwhelmingly London bullion-market re-exports rather than UK production
+    employment. Materiality on the 2023-26 monthly pull: 971 = £16.3bn and
+    681 = £7.9bn of gross flow, with 971 alone at £6.1bn in January 2025 -
+    more than the entire rest of UK goods exports to the US that month.
+    896 (works of art) EXCLUDED on the same re-export logic.
+    The exclusion is implemented by mapping these groups to None in the
+    crosswalk below, so it propagates automatically to
+    analysis/build_measured_shocks.py, which imports this crosswalk;
+    PRECIOUS_METALS_SITC3 below asserts the two stay in step.
   - 714 aero engines, 792 aircraft, 793 ships, 791 rail, 785 motorcycles
     -> SIC 30 (other transport, incl aerospace).
   - 891 arms & ammunition -> SIC 25 (fabricated metal, 25.4).
@@ -91,6 +104,32 @@ SITC3_TO_SIC = {
     891: 25, 892: 18, 893: 22, 894: 32, 895: 32, 896: None, 897: 32,
     898: 32, 899: 32,
 }
+
+# Non-monetary precious metals, excluded per the ONS convention documented in
+# the module docstring. 971 sits in chapter 97 (excluded wholesale at SITC2);
+# 681 is an explicit None in SITC3_TO_SIC. Both builds route every commodity
+# through these two dicts, so this set is a tripwire, not a second filter:
+# if a future crosswalk edit ever maps one of them into a SIC division, the
+# check below fails loudly rather than silently contaminating the series.
+PRECIOUS_METALS_SITC3 = (971, 681)
+
+
+def _assert_precious_metals_excluded() -> None:
+    for sitc3 in PRECIOUS_METALS_SITC3:
+        chapter = sitc3 // 10
+        div = (
+            SITC3_TO_SIC.get(sitc3)
+            if chapter in SPLIT_CHAPTERS
+            else SITC2_TO_SIC.get(chapter)
+        )
+        if div is not None:
+            raise AssertionError(
+                f"SITC {sitc3} (non-monetary precious metals) maps to SIC {div}; "
+                "it must be excluded (ONS convention, see module docstring)."
+            )
+
+
+_assert_precious_metals_excluded()
 
 DIVISION_NAMES = {
     10: "Food products", 11: "Beverages", 12: "Tobacco",

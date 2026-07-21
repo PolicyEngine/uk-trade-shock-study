@@ -15,10 +15,12 @@ mirrors. Literature and scenario design: `tariff_paper_lit_review.md`.
 
 ## Pipeline
 
-1. `analysis/build_trade_by_sic.py` — **stub**: build real US-export
-   intensity by SIC division (the packaged
-   `uk_trade_shock_study/data/us_export_intensity_by_sic.csv` is a
-   placeholder; do not publish results from it).
+1. `analysis/build_trade_by_sic.py` — rebuilds US-export intensity by SIC
+   division from HMRC uktradeinfo exports and ONS Annual Business Survey
+   turnover. The packaged
+   `uk_trade_shock_study/data/us_export_intensity_by_sic.csv` is the current
+   real-data build; provenance and judgement calls are documented in the
+   paper appendix and build script.
 2. `analysis/download_data.py` — FRS microdata from PolicyEngine's Hugging
    Face repo (needs `HUGGING_FACE_TOKEN` with access to
    `policyengine/policyengine-uk-data`); lands in `data/` (gitignored).
@@ -41,19 +43,20 @@ mirrors. Literature and scenario design: `tariff_paper_lit_review.md`.
 ## Setup
 
 ```sh
-python -m venv .venv && . .venv/bin/activate
-pip install -e . pytest
+python3.13 -m venv .venv && . .venv/bin/activate
+pip install -e '.[dev]'
 pytest            # unit tests run on synthetic tables, no FRS data needed
 ```
 
 ## Data requirements
 
 - FRS 2024-25 h5 + adult.tab (licensed; via download_data.py) — gitignored.
-- ONS UK trade country-by-commodity (US) and ONS output by SIC division for
-  the real intensity table (TODO).
+- HMRC uktradeinfo country-by-commodity exports and ONS Annual Business Survey
+  turnover are used to rebuild the packaged intensity table.
 
 ## Paper
 
 `paper/main.tex` + `paper/sections/` (LaTeX conventions from uk-ai-study).
-Literature section is drafted; results are structured placeholders pending
-real trade data.
+The paper reports a static, first-round stress test of the direct labour-income
+channel. It is not a causal estimate of the tariffs' total macroeconomic
+effect. Licensed FRS inputs are not distributed in this repository.

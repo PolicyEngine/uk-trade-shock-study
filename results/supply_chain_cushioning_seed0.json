@@ -1,12 +1,12 @@
 {
   "supply_chain_displacement": {
-    "gross_earnings_loss": 3721858223.0643196,
-    "net_disposable_loss": 2372419241.8912916,
-    "cushioning_rate": 0.36257130183266184
+    "gross_earnings_loss": 5802778218.521017,
+    "net_disposable_loss": 3638377957.0709667,
+    "cushioning_rate": 0.37299379365246565
   },
   "supply_chain_wage_cut": {
     "gross_earnings_loss": 3449635147.810768,
-    "net_disposable_loss": 2049874874.1582363,
-    "cushioning_rate": 0.4057705275124117
+    "net_disposable_loss": 2049897976.3886046,
+    "cushioning_rate": 0.40576383050551723
   }
 }

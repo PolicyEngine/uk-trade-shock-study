@@ -39,7 +39,8 @@ from uk_trade_shock_study.shocks import (
 PERIOD = 2026
 DATASET = Path("data/frs_2024_25.h5")
 RESULTS = Path("results")
-N_DRAWS = 10
+# Appendix robustness grid; headline scenarios use 50 draws.
+N_DRAWS = 5
 # The take-up half of this script is SUPERSEDED by the main-text take-up grid
 # (analysis/takeup_sensitivity.py -> Table tab:takeupgrid). Only the duration
 # variants are run and written here.

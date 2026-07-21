@@ -1,8 +1,8 @@
 {
   "full_tariff_displacement": {
-    "gross_earnings_loss": 1701060773.6415339,
-    "net_disposable_loss": 1025245184.0,
-    "cushioning_rate": 0.39729067891841774
+    "gross_earnings_loss": 4067026297.7121744,
+    "net_disposable_loss": 2545549312.0,
+    "cushioning_rate": 0.3741006018495753
   },
   "full_tariff_wage_cut": {
     "gross_earnings_loss": 1771498650.499899,
@@ -10,19 +10,19 @@
     "cushioning_rate": 0.41023104267949895
   },
   "full_tariff_inactivity": {
-    "gross_earnings_loss": 1701060773.6415339,
-    "net_disposable_loss": 1004535808.0,
-    "cushioning_rate": 0.4094650681706409
+    "gross_earnings_loss": 4067026297.7121744,
+    "net_disposable_loss": 2527461376.0,
+    "cushioning_rate": 0.37854806165827504
   },
   "full_tariff_reallocation": {
-    "gross_earnings_loss": 481400198.9405539,
-    "net_disposable_loss": 258342912.0,
-    "cushioning_rate": 0.46335104852771014
+    "gross_earnings_loss": 1150968442.2525449,
+    "net_disposable_loss": 670171136.0,
+    "cushioning_rate": 0.4177328314159361
   },
   "epd_displacement": {
-    "gross_earnings_loss": 908957259.136178,
-    "net_disposable_loss": 589824000.0,
-    "cushioning_rate": 0.3510982017344406
+    "gross_earnings_loss": 3698319113.5275526,
+    "net_disposable_loss": 2303721472.0,
+    "cushioning_rate": 0.37708959089724126
   },
   "epd_wage_cut": {
     "gross_earnings_loss": 1385522770.8442326,
@@ -30,13 +30,13 @@
     "cushioning_rate": 0.4078916166061112
   },
   "epd_inactivity": {
-    "gross_earnings_loss": 908957259.136178,
-    "net_disposable_loss": 574226432.0,
-    "cushioning_rate": 0.3682580492885743
+    "gross_earnings_loss": 3698319113.5275526,
+    "net_disposable_loss": 2286026752.0,
+    "cushioning_rate": 0.38187412123570685
   },
   "epd_reallocation": {
-    "gross_earnings_loss": 257234904.3355383,
-    "net_disposable_loss": 164757504.0,
-    "cushioning_rate": 0.3595056455282226
+    "gross_earnings_loss": 1046624309.1282969,
+    "net_disposable_loss": 609222656.0,
+    "cushioning_rate": 0.4179165812540663
   }
 }

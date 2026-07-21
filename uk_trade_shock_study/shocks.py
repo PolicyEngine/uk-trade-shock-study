@@ -6,11 +6,10 @@ paper's central axis, because Universal Credit replaces unemployment far more
 generously than in-work wage cuts:
 
 - ``displacement`` (ADH short-run): the sector earnings shock is delivered as
-  JOB LOSS. Within each exposed SIC division a weighted head-count quota of
-  ``shock_j x division employee weight`` is drawn with UNIFORM ordering keys
-  (the survey weight enters only through quota consumption, mirroring
-  uk-ai-study: a represented person's inclusion probability does not depend
-  on their record's grossing weight). Displaced workers move to
+  JOB LOSS. Each employee in division j is independently displaced with
+  probability ``shock_j``. Survey weights never enter the draw, so expected
+  weighted employment and earnings losses are both exactly proportional to
+  the sector shock. Displaced workers move to
   employment_status UNEMPLOYED with earnings, hours, pension contributions
   and statutory pay zeroed.
 
@@ -169,35 +168,16 @@ def draw_displaced(
     scenario: TradeShockScenario,
     seed: int = 0,
 ) -> np.ndarray:
-    """Boolean displaced mask: per-division weighted quotas, uniform ordering.
+    """Boolean mask from independent Bernoulli sector-shock draws.
 
-    Quota for division j = shock_j x (weighted employee count of j). Within
-    the division, members are drawn without replacement with UNIFORM ordering
-    keys; weights are consumed against the quota, and the quota-crossing
-    person is included with probability equal to the remaining quota
-    fraction, so the expected displaced weight equals the quota exactly.
+    Every employed record in division j has inclusion probability shock_j,
+    making weighted headcount and wage-bill losses unbiased regardless of
+    survey-weight dispersion.
     """
     rng = np.random.default_rng(seed)
     employed = persons["employment_income"].to_numpy(dtype=float) > 0
-    weight = persons["weight"].to_numpy(dtype=float)
     shock = _person_shock(persons, scenario)
-    division = pd.to_numeric(persons["sic_division"], errors="coerce").to_numpy(dtype=float)
-
-    displaced = np.zeros(len(persons), dtype=bool)
-    for d in np.unique(division[employed & (shock > 0)]):
-        members = np.flatnonzero(employed & (division == d))
-        quota = float(shock[members[0]]) * float(weight[members].sum())
-        if quota <= 0:
-            continue
-        chosen = rng.permutation(members)
-        cum = np.cumsum(weight[chosen])
-        displaced[chosen[cum <= quota]] = True
-        crossing = np.searchsorted(cum, quota)
-        if crossing < len(chosen) and cum[crossing] > quota:
-            shortfall = quota - (cum[crossing - 1] if crossing else 0.0)
-            if rng.random() < shortfall / weight[chosen[crossing]]:
-                displaced[chosen[crossing]] = True
-    return displaced
+    return employed & (rng.random(len(persons)) < shock)
 
 
 def apply_displacement(
@@ -400,16 +380,25 @@ def lcwra_benunit_addon(sim, lcwra, monthly: float) -> np.ndarray:
     return addon
 
 
+def merge_lcwra_element(base_element, addon) -> np.ndarray:
+    """Apply a newly triggered LCWRA element without ever stacking elements."""
+    base = np.asarray(base_element, dtype=float)
+    new = np.asarray(addon, dtype=float)
+    if base.shape != new.shape:
+        raise ValueError("baseline LCWRA element and addon must have the same shape")
+    return np.maximum(base, new)
+
+
 def affected_mask(shocked_table) -> np.ndarray:
     """Persons whose labour-market circumstances changed in this draw.
 
-    Displaced (incl. those routed to inactivity) and reallocated workers: the
-    people for whom the baseline, pre-shock ``would_claim_uc`` draw is
-    uninformative.
+    This explicit marker complements the earnings comparison in
+    ``redraw_uc_takeup``. It covers non-earnings changes such as a sector or
+    employment-status transition.
     """
     n = len(shocked_table)
     out = np.zeros(n, dtype=bool)
-    for column in ("displaced", "inactive", "reallocated"):
+    for column in ("displaced", "inactive", "reallocated", "earnings_changed"):
         if column in shocked_table:
             out |= shocked_table[column].to_numpy(dtype=bool)
     return out
@@ -422,16 +411,18 @@ def redraw_uc_takeup(
     period,
     uc_takeup: float | None = None,
     seed: int | None = None,
+    baseline_potential_award: np.ndarray | None = None,
 ) -> np.ndarray:
-    """Re-draw ``would_claim_uc`` post-shock for AFFECTED benefit units.
+    """Re-draw take-up for changed units with positive post-shock UC potential.
 
     See DEFAULT_UC_TAKEUP for the full justification: the baseline flag is a
     stored draw conditioned on PRE-SHOCK circumstances (and calibrated as a
-    population-wide share, not take-up among the entitled), so it says nothing
-    about whether a newly displaced family would claim. Every benefit unit
-    containing at least one affected person gets a fresh Bernoulli(``uc_takeup``)
-    draw from an INDEPENDENT stream (UC_TAKEUP_SEED_OFFSET + seed), leaving the
-    displacement draw and all unaffected benefit units untouched.
+    population-wide share, not take-up among the entitled). The same rule is
+    applied to every adjustment margin: a benefit unit is redrawn only if its
+    labour-market circumstances changed and its potential UC award moves from
+    zero at baseline to positive post-shock. The draw uses an independent RNG
+    stream, leaving labour-market draws, existing eligible units, and unchanged
+    or ineligible units untouched.
 
     Returns the benunit-level boolean flag actually applied. Hard-error
     contract: a silently-rejected ``set_input`` would leave the stale flags in
@@ -449,21 +440,71 @@ def redraw_uc_takeup(
         baseline_sim.calculate("would_claim_uc", period=period, map_to="benunit").values,
         dtype=bool,
     )
-    affected = affected_mask(shocked_table)
-    if not affected.any():
-        # No new claimants (e.g. the wage-cut margin): nothing to re-draw, and
-        # the family is by construction invariant to uc_takeup.
+    # Use the economic change, rather than the scenario label, to identify the
+    # population whose pre-shock claiming draw is stale.  This deliberately
+    # includes wage cuts and reallocation as well as job loss.
+    baseline_earnings = np.asarray(
+        baseline_sim.calculate("employment_income", period=period, map_to="person").values,
+        dtype=float,
+    )
+    shocked_earnings = shocked_table["employment_income"].to_numpy(dtype=float)
+    changed = ~np.isclose(shocked_earnings, baseline_earnings, rtol=0.0, atol=1e-8)
+    changed |= affected_mask(shocked_table)
+    if not changed.any():
         return baseline_flag
-    affected_bu = (
+    changed_bu = (
         np.asarray(
-            sim.map_result(affected.astype(float), "person", "benunit"), dtype=float
+            sim.map_result(changed.astype(float), "person", "benunit"), dtype=float
         )
         > 0
     )
+
+    # Measure post-shock potential UC with claiming switched on.  The stored
+    # would_claim_uc input gates the award, so the observed award cannot be
+    # used to determine entitlement without this temporary all-True override.
+    sim.set_input("would_claim_uc", period, np.ones(baseline_flag.size, dtype=bool))
+    enabled = np.asarray(
+        sim.calculate("would_claim_uc", period=period, map_to="benunit").values,
+        dtype=bool,
+    )
+    if not enabled.all():
+        raise RuntimeError(
+            "post-shock UC take-up re-draw not applied: temporary entitlement "
+            "calculation could not enable would_claim_uc."
+        )
+    potential_award = np.asarray(
+        sim.calculate("universal_credit", period=period, map_to="benunit").values,
+        dtype=float,
+    )
+    if baseline_potential_award is None:
+        # Unit-level callers without a full dataset treat the baseline as not
+        # entitled. Production callers provide the all-claim baseline award.
+        baseline_potential_award = np.zeros_like(potential_award)
+    baseline_potential_award = np.asarray(baseline_potential_award, dtype=float)
+    if baseline_potential_award.shape != potential_award.shape:
+        raise ValueError("baseline and post-shock potential UC awards must align")
+
+    # Apply the take-up draw only to benefit units that become newly entitled.
+    # Existing claimants and existing eligible non-claimants retain their
+    # baseline claiming state; otherwise a small wage cut would inadvertently
+    # impose a population-wide take-up reform on all already-entitled workers.
+    redraw_bu = (
+        changed_bu
+        & (baseline_potential_award <= 1e-8)
+        & (potential_award > 1e-8)
+    )
+    if not redraw_bu.any():
+        sim.set_input("would_claim_uc", period, baseline_flag)
+        sim._invalidate_all_caches()
+        return baseline_flag
     rng = np.random.default_rng(UC_TAKEUP_SEED_OFFSET + int(seed))
     draw = rng.random(baseline_flag.size) < uc_takeup
-    new_flag = np.where(affected_bu, draw, baseline_flag)
+    new_flag = np.where(redraw_bu, draw, baseline_flag)
     sim.set_input("would_claim_uc", period, new_flag)
+    # universal_credit was evaluated under the temporary all-claim input.
+    # Clear formula outputs while preserving the final user inputs so all
+    # downstream metrics recompute under new_flag rather than using that cache.
+    sim._invalidate_all_caches()
     applied = np.asarray(
         sim.calculate("would_claim_uc", period=period, map_to="benunit").values, dtype=bool
     )
@@ -542,9 +583,8 @@ def build_shocked_simulation(dataset, baseline_sim, shocked_table, period):
         # uc_LCWRA_element is a STORED INPUT in the FRS h5 (imputed survey
         # receipt), so setting uc_limited_capability_for_WRA alone never
         # reaches UC: the element's formula is shadowed by the stored array.
-        # We therefore (a) flag the person for consistency and (b) override
-        # the benunit element with baseline + one annual LCWRA amount per
-        # newly flagged person, leaving everyone else's stored element
+        # We therefore (a) flag the person for consistency and (b) ensure the
+        # benunit has one annual LCWRA amount, leaving everyone else's element
         # untouched (recomputing from the formula would repriced the whole
         # population off is_disabled_for_benefits and break comparability
         # with the baseline simulation).
@@ -561,7 +601,9 @@ def build_shocked_simulation(dataset, baseline_sim, shocked_table, period):
             ).gov.dwp.universal_credit.elements.disabled.amount
         )
         addon = lcwra_benunit_addon(sim, lcwra, monthly)
-        sim.set_input("uc_LCWRA_element", period, base_element + addon)
+        # UC pays at most one LCWRA element per benefit unit.  A unit already
+        # receiving the stored element must not receive a second full element.
+        sim.set_input("uc_LCWRA_element", period, merge_lcwra_element(base_element, addon))
         applied_element = sim.calculate(
             "uc_LCWRA_element", period=period, map_to="person"
         ).values.astype(float)
@@ -603,5 +645,32 @@ def build_shocked_simulation(dataset, baseline_sim, shocked_table, period):
     # from an independent RNG stream, so the displacement draw is unchanged.
     # Applied LAST so that it is never shadowed by an earlier cached value; it
     # has its own hard-error check inside redraw_uc_takeup.
-    redraw_uc_takeup(sim, baseline_sim, shocked_table, period)
+    baseline_potential_award = getattr(
+        baseline_sim, "_trade_shock_uc_potential_award", None
+    )
+    if baseline_potential_award is None:
+        potential_sim = Microsimulation(dataset=dataset)
+        baseline_flag = np.asarray(
+            baseline_sim.calculate(
+                "would_claim_uc", period=period, map_to="benunit"
+            ).values,
+            dtype=bool,
+        )
+        potential_sim.set_input(
+            "would_claim_uc", period, np.ones(baseline_flag.size, dtype=bool)
+        )
+        baseline_potential_award = np.asarray(
+            potential_sim.calculate(
+                "universal_credit", period=period, map_to="benunit"
+            ).values,
+            dtype=float,
+        )
+        baseline_sim._trade_shock_uc_potential_award = baseline_potential_award
+    redraw_uc_takeup(
+        sim,
+        baseline_sim,
+        shocked_table,
+        period,
+        baseline_potential_award=baseline_potential_award,
+    )
     return sim

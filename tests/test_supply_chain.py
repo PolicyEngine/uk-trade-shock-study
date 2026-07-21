@@ -91,8 +91,8 @@ def test_displacement_with_shock_expected_quota():
     draws = [
         sc.draw_displaced_with_shock(rng_persons, shock, seed=s).sum() for s in range(50)
     ]
-    # quota = 20 weighted heads; integer weights -> exactly 20 each draw.
-    assert np.mean(draws) == pytest.approx(20.0, abs=0.5)
+    # Bernoulli expectation = 20; finite draws fluctuate around it.
+    assert np.mean(draws) == pytest.approx(20.0, abs=1.0)
 
 
 def test_per_division_upstream_levels_sum_to_aggregate():

@@ -103,7 +103,10 @@ def constituency_map():
         print(f"warning: {missing} constituencies did not join to a boundary")
     merged = merged.set_crs(27700, allow_override=True)
 
-    cols = [("income_change_pp_full", "Full tariff"), ("income_change_pp_epd", "EPD")]
+    cols = [
+        ("income_change_gbp_per_person_full", "Full tariff"),
+        ("income_change_gbp_per_person_epd", "EPD"),
+    ]
     allv = np.concatenate([merged[c].to_numpy() for c, _ in cols])
     vmax = float(np.nanpercentile(np.abs(allv), 95)) or float(np.abs(allv).max())
     norm = TwoSlopeNorm(vcenter=0.0, vmin=-vmax, vmax=vmax)

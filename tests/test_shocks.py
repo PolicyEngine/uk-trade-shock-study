@@ -9,6 +9,7 @@ from uk_trade_shock_study.shocks import (
     MARGINS,
     PRESETS,
     TradeShockScenario,
+    apply_mixed_margin,
     apply_shocks,
     apply_wage_cut,
     draw_displaced,
@@ -139,6 +140,43 @@ def test_wage_cut_gradient_matches_sector_shock():
     np.testing.assert_allclose(
         (base - new)[employed] / base[employed], shock[employed], rtol=1e-9
     )
+
+
+@pytest.mark.parametrize("share", [0.0, 0.25, 0.5, 0.75, 1.0])
+def test_mixed_margin_preserves_expected_worker_loss(share):
+    """For each worker, E[loss/base] equals the original sector shock."""
+    persons = make_persons(n=1200)
+    scenario = TradeShockScenario(
+        "mixed", "full_tariff", "mixed", displacement_share=share
+    )
+    base = persons["employment_income"].to_numpy(float)
+    expected = person_earnings_shock(persons["sic_division"], "full_tariff")
+    realised = np.zeros(len(persons))
+    for seed in range(500):
+        shocked = apply_mixed_margin(persons, scenario, seed=seed)
+        realised += (base - shocked["employment_income"].to_numpy(float)) / base
+    np.testing.assert_allclose(realised / 500, expected, atol=0.035)
+
+
+def test_mixed_margin_endpoints_match_pure_margins():
+    persons = make_persons()
+    wage = apply_mixed_margin(
+        persons,
+        TradeShockScenario("mixed_wage", "epd", "mixed", displacement_share=0.0),
+        seed=3,
+    )
+    pure_wage = apply_wage_cut(persons, PRESETS["epd_wage_cut"])
+    np.testing.assert_allclose(wage["employment_income"], pure_wage["employment_income"])
+    assert not wage["displaced"].any()
+
+    job = apply_mixed_margin(
+        persons,
+        TradeShockScenario("mixed_job", "epd", "mixed", displacement_share=1.0),
+        seed=3,
+    )
+    pure_job = apply_shocks(persons, PRESETS["epd_displacement"], seed=3)
+    np.testing.assert_array_equal(job["displaced"], pure_job["displaced"])
+    np.testing.assert_allclose(job["employment_income"], pure_job["employment_income"])
 
 
 def test_inactivity_margin_age_split():

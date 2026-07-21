@@ -1,12 +1,13 @@
 # uk-trade-shock-study
 
-Who bears the 2025 US tariffs on UK goods after the tax-benefit system
-responds? A PolicyEngine research project passing the tariff shock — entered
-through **primitives** (tariff schedule × ONS/HMRC trade-by-SIC → sector-level
-earnings shocks) — through PolicyEngine UK on FRS 2024-25 microdata, under
-three adjustment-margin families: **displacement** (job loss), **wage cuts
-with sectoral reallocation**, and **exit into inactivity** (older workers,
-the Beatty–Fothergill UK margin). An Economic Prosperity Deal counterfactual
+How does the UK tax-benefit system respond to labour-income stress scenarios
+calibrated to the 2025 US tariffs on UK goods? The project imposes a
+reduced-form tariff-exposure-to-wage-bill bridge on FRS 2024-25 microdata and
+runs it through PolicyEngine UK. It does not model the intervening effects on
+prices, quantities, production, value added, productivity or labour demand.
+Adjustment scenarios include **displacement**, **wage cuts**, **inactivity**,
+**reallocation**, and a factorial **mixed wage/job-loss** family. An Economic
+Prosperity Deal counterfactual
 (full tariffs vs deal-mitigated: autos 25%→10% in-quota, conditional steel
 relief, pharma exempt) prices the deal for households and the Exchequer.
 
@@ -29,12 +30,15 @@ mirrors. Literature and scenario design: `tariff_paper_lit_review.md`.
    (mean ± SD) and writes `results/*.json`.
 4. `analysis/figures.py` — paper figures (PolicyEngine house style,
    `analysis/figstyle.py`).
+5. `analysis/scenario_testing.py` — crosses export-demand calibration with
+   the wage-cut/displacement mixture on common seeds and writes the scenario
+   surface, cell data and draw-level artifact.
 
 ## Package
 
 - `uk_trade_shock_study/exposure.py` — tariff schedule (both scenarios),
   US-export intensity, derived per-SIC earnings shocks, FRS SIC join.
-- `uk_trade_shock_study/shocks.py` — the three adjustment-margin families;
+- `uk_trade_shock_study/shocks.py` — pure and mixed adjustment-margin families;
   hard-errors if the employment_status transition fails to apply.
 - `uk_trade_shock_study/runner.py` — PolicyEngine UK runs: disposable income,
   relative/absolute BHC + AHC poverty, Gini, decile/region breakdowns,
@@ -57,6 +61,7 @@ pytest            # unit tests run on synthetic tables, no FRS data needed
 ## Paper
 
 `paper/main.tex` + `paper/sections/` (LaTeX conventions from uk-ai-study).
-The paper reports a static, first-round stress test of the direct labour-income
-channel. It is not a causal estimate of the tariffs' total macroeconomic
-effect. Licensed FRS inputs are not distributed in this repository.
+The paper reports a static, partial-equilibrium, first-round fiscal-incidence
+stress test conditional on imposed labour-income changes. It is not a causal
+estimate of the tariffs' production, productivity, employment, macroeconomic
+or total household-welfare effects. Licensed FRS inputs are not distributed.

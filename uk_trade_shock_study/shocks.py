@@ -60,7 +60,7 @@ from uk_trade_shock_study.exposure import (
     person_earnings_shock,
 )
 
-MARGINS = ("displacement", "wage_cut", "inactivity", "reallocation")
+MARGINS = ("displacement", "wage_cut", "inactivity", "reallocation", "mixed")
 
 #: Services destination divisions for the ``reallocation`` margin (SIC 2007):
 #: 47 retail trade, 86 human health activities, 49 land transport (incl.
@@ -134,6 +134,9 @@ class TradeShockScenario:
     #: post-shock UC take-up among AFFECTED benefit units (see
     #: DEFAULT_UC_TAKEUP for why the baseline stored flag is not usable).
     uc_takeup: float = DEFAULT_UC_TAKEUP
+    #: Mixed margin: share of each sector's expected earnings loss delivered
+    #: through Bernoulli displacement; the remainder is a survivor wage cut.
+    displacement_share: float = 0.5
 
     def __post_init__(self):
         if not 0.0 <= self.uc_takeup <= 1.0:
@@ -144,6 +147,8 @@ class TradeShockScenario:
             raise ValueError("reallocation_penalty must lie in [0, 1)")
         if not 0.0 <= self.reallocation_lag_months <= 12.0:
             raise ValueError("reallocation_lag_months must lie in [0, 12]")
+        if not 0.0 <= self.displacement_share <= 1.0:
+            raise ValueError("displacement_share must lie in [0, 1]")
 
 
 #: Scenario presets: {full_tariff, epd} x {displacement, wage_cut, inactivity}.
@@ -255,6 +260,50 @@ def apply_wage_cut(persons: pd.DataFrame, scenario: TradeShockScenario) -> pd.Da
     return shocked
 
 
+def apply_mixed_margin(
+    persons: pd.DataFrame,
+    scenario: TradeShockScenario,
+    seed: int = 0,
+) -> pd.DataFrame:
+    """Deliver one sector shock through a mix of job loss and wage cuts.
+
+    Let ``s`` be a worker's sector shock and ``lambda`` the displacement
+    share. Displacement probability is ``p = lambda * s``. A survivor takes
+    wage cut ``c = (s - p) / (1 - p)``. Therefore the expected earnings loss
+    is exactly ``p + (1-p)c = s`` for every worker, at every mixture. The
+    endpoints reproduce the pure wage-cut and displacement margins.
+    """
+    if scenario.margin != "mixed":
+        raise ValueError("apply_mixed_margin requires a mixed scenario")
+    shocked = persons.copy()
+    earnings = persons["employment_income"].to_numpy(dtype=float)
+    employed = earnings > 0
+    sector_shock = _person_shock(persons, scenario)
+    lam = float(scenario.displacement_share)
+    p = lam * sector_shock
+    if (p[employed] >= 1.0).any():
+        raise ValueError("mixed-margin displacement probability must be below one")
+    rng = np.random.default_rng(seed)
+    displaced = employed & (rng.random(len(persons)) < p)
+    survivor_cut = np.divide(
+        sector_shock - p,
+        1.0 - p,
+        out=np.zeros_like(sector_shock),
+        where=(1.0 - p) > 0,
+    )
+    new_earnings = np.where(
+        displaced,
+        0.0,
+        np.where(employed, earnings * (1.0 - survivor_cut), earnings),
+    )
+    shocked["employment_income"] = new_earnings
+    shocked["displaced"] = displaced
+    shocked["inactive"] = np.zeros(len(persons), dtype=bool)
+    shocked["lcwra"] = np.zeros(len(persons), dtype=bool)
+    shocked["earnings_changed"] = employed & ~np.isclose(new_earnings, earnings)
+    return shocked
+
+
 def _blank_reallocation(shocked: pd.DataFrame) -> pd.DataFrame:
     shocked["reallocated"] = np.zeros(len(shocked), dtype=bool)
     shocked["destination_division"] = np.full(len(shocked), np.nan)
@@ -332,6 +381,8 @@ def apply_shocks(
     """
     if scenario.margin == "wage_cut":
         shocked = _blank_reallocation(apply_wage_cut(persons, scenario))
+    elif scenario.margin == "mixed":
+        shocked = _blank_reallocation(apply_mixed_margin(persons, scenario, seed=seed))
     elif scenario.margin == "reallocation":
         shocked = apply_reallocation(persons, scenario, seed=seed)
     else:

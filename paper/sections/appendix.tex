@@ -28,15 +28,6 @@ The duration exercise uses five assignments. Its six-month construction retains 
 
 The input--output scenario adds upstream requirements using the ONS domestic Leontief inverse. The accounting shock has a 1.95 direct-plus-upstream factor. It is not a lower bound and is not multiplied by local-employment multipliers. In the exploratory five-assignment microsimulation, displacement affects 69,255 weighted workers on average, costs the Exchequer \pounds $1.801\pm0.544$ billion and raises relative BHC poverty by $0.073\pm0.011$ percentage points. The wage-cut variant costs \pounds 1.904 billion and raises poverty by 0.031 points. These figures are accounting sensitivities, not all-channel causal estimates.
 
-\section{Regional incidence}
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=.95\textwidth]{../results/figures/map_region_income_change.png}
-\caption{Regenerated regional mean disposable-income changes under full and EPD displacement. Rankings are illustrative and the underlying spread is assignment dispersion.}
-\label{fig:region-maps}
-\end{figure}
-
 \section{Constituency illustration}\label{app:constituency}
 
 The enhanced-FRS constituency layer uses imputed industries rather than observed local industry structure. On the regenerated CSV's \texttt{income\_change\_gbp\_per\_person\_full} field, the ten largest simulated losses are Ealing Central and Acton (\pounds 770), Henley and Thame (\pounds 764), Godalming and Ash (\pounds 598), Sevenoaks (\pounds 579), Orpington (\pounds 540), Chesham and Amersham (\pounds 535), Mid Buckinghamshire (\pounds 525), Hitchin (\pounds 513), Twickenham (\pounds 490) and North East Hampshire (\pounds 483) per person annually. The EPD field gives the same ordering with slightly smaller losses. These are imputation-driven illustrations, not constituency exposure estimates.
@@ -44,6 +35,6 @@ The enhanced-FRS constituency layer uses imputed industries rather than observed
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=.95\textwidth]{../results/figures/map_constituency_income_change.png}
-\caption{Regenerated constituency illustration using the current per-person income-change fields. The map does not use observed constituency industry mix.}
+\caption{Regenerated constituency illustration using annual disposable-income loss per person. A shared sequential scale is clipped at the 95th percentile; its light-blue floor keeps small non-zero losses visible. The map does not use observed constituency industry mix.}
 \label{fig:constituency-map}
 \end{figure}

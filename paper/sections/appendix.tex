@@ -31,11 +31,11 @@ The input--output scenario adds upstream requirements using the ONS domestic Leo
 
 \section{Constituency illustration}\label{app:constituency}
 
-The enhanced-FRS constituency layer uses imputed industries rather than observed local industry structure. On the regenerated CSV's \texttt{income\_change\_gbp\_per\_person\_full} field, the ten largest simulated losses are Ealing Central and Acton (\pounds 770), Henley and Thame (\pounds 764), Godalming and Ash (\pounds 598), Sevenoaks (\pounds 579), Orpington (\pounds 540), Chesham and Amersham (\pounds 535), Mid Buckinghamshire (\pounds 525), Hitchin (\pounds 513), Twickenham (\pounds 490) and North East Hampshire (\pounds 483) per person annually. The EPD field gives the same ordering with slightly smaller losses. These are imputation-driven illustrations, not constituency exposure estimates.
+The enhanced-FRS constituency layer uses imputed industries rather than observed local industry structure. It is averaged over 20 paired worker-assignment draws (seeds 0--19), replacing the unstable single-seed surface used in an earlier draft. The mapping now divides each household's disposable-income change by household size before constructing constituency means. The CSV reports both the draw mean and assignment-draw standard deviation. Because the constituency weights contain no observed local industry mix and the SIC imputation is held fixed, these remain synthetic demographic and income projections, not constituency exposure estimates; individual seat rankings are therefore deliberately not reported.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=.95\textwidth]{../results/figures/map_constituency_income_change.png}
-\caption{Regenerated constituency illustration using annual disposable-income loss per person. A shared sequential scale is clipped at the 95th percentile; its light-blue floor keeps small non-zero losses visible. The map does not use observed constituency industry mix.}
+\caption{Synthetic constituency illustration of annual per-capita disposable-income loss, averaged over 20 paired worker-assignment draws. A shared sequential scale is clipped at the 95th percentile. The map uses imputed SIC and no observed constituency industry mix; it is not a map of local tariff exposure.}
 \label{fig:constituency-map}
 \end{figure}

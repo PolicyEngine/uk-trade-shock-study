@@ -53,8 +53,7 @@ def fig_decile_by_margin(tariff: str = "full_tariff") -> None:
 
 
 def fig_exchequer_draws() -> None:
-    """Draw-distribution of the Exchequer cost: box plots over the Monte
-    Carlo displacement draws with the deterministic wage-cut cost overlaid."""
+    """Draw-distribution of displacement costs with wage-cut mean and SD."""
     figstyle.apply_style()
     fig, ax = plt.subplots(figsize=figstyle.SINGLE)
     labels, data = [], []
@@ -76,9 +75,14 @@ def fig_exchequer_draws() -> None:
             s=10, color=figstyle.BLUE, alpha=0.45, zorder=3,
         )
     for i, tariff in enumerate(("full_tariff", "epd"), start=1):
-        wc = load(f"{tariff}_wage_cut")["exchequer_cost_mean"] / 1e9
-        ax.hlines(wc, i - 0.3, i + 0.3, color=figstyle.TEAL_PRESSED, lw=1.6,
-                  label="wage-cut margin (deterministic)" if i == 1 else None)
+        wc_result = load(f"{tariff}_wage_cut")
+        wc = wc_result["exchequer_cost_mean"] / 1e9
+        wc_sd = wc_result["exchequer_cost_sd"] / 1e9
+        ax.errorbar(
+            i, wc, yerr=wc_sd, fmt="D", color=figstyle.TEAL_PRESSED,
+            capsize=4, zorder=4,
+            label="wage-cut margin (mean ± assignment SD)" if i == 1 else None,
+        )
     ax.set_ylabel("Exchequer cost (£bn/year)")
     ax.set_xlabel("Displacement-margin Monte Carlo draws")
     figstyle.legend_below(ax, ncol=1)

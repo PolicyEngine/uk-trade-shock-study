@@ -1,6 +1,6 @@
 """Seed-0 cushioning accounting and fixed-line absolute poverty, all families.
 
-Regenerates two legacy artefacts that previously had no committed generator:
+Regenerates two seed-0 diagnostic artefacts:
   results/cushioning_seed0.json               gross/net loss and 1 - net/gross
   results/absolute_poverty_fixed_line_seed0.json   BHC absolute poverty change
 

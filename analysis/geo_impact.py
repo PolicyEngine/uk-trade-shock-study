@@ -195,9 +195,11 @@ def main():
         # household income change (household value broadcast to members, as in
         # the runner's regional profile) = W @ (n_h * delta_h) / W @ n_h.
         col = "full" if name.startswith("full") else "epd"
-        df[f"income_change_pp_{col}"] = (W @ (hh_people * hh_delta)) / people
+        df[f"income_change_gbp_per_person_{col}"] = (
+            W @ (hh_people * hh_delta)
+        ) / people
         df[f"displaced_per_1000_workers_{col}"] = 1000 * (W @ hh_displaced) / workers
-        notes[f"{name}_national_income_change_pp"] = float(
+        notes[f"{name}_national_income_change_gbp_per_person"] = float(
             (W @ (hh_people * hh_delta)).sum() / people.sum()
         )
         notes[f"{name}_displaced_weighted"] = float(
@@ -208,11 +210,11 @@ def main():
     df["workers"] = workers
     df.to_csv(OUT / "constituency_impacts.csv", index=False)
 
-    top_full = df.nsmallest(10, "income_change_pp_full")[
-        ["code", "name", "region", "income_change_pp_full", "income_change_pp_epd"]
+    top_full = df.nsmallest(10, "income_change_gbp_per_person_full")[
+        ["code", "name", "region", "income_change_gbp_per_person_full", "income_change_gbp_per_person_epd"]
     ]
-    top_epd = df.nsmallest(10, "income_change_pp_epd")[
-        ["code", "name", "region", "income_change_pp_full", "income_change_pp_epd"]
+    top_epd = df.nsmallest(10, "income_change_gbp_per_person_epd")[
+        ["code", "name", "region", "income_change_gbp_per_person_full", "income_change_gbp_per_person_epd"]
     ]
     notes["top10_hardest_hit_full"] = top_full.to_dict("records")
     notes["top10_hardest_hit_epd"] = top_epd.to_dict("records")

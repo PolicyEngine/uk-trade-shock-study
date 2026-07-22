@@ -381,33 +381,15 @@ def person_total_shock(
 def draw_displaced_with_shock(
     persons: pd.DataFrame, shock: np.ndarray, seed: int = 0
 ) -> np.ndarray:
-    """Displacement mask for a per-person shock vector (uniform ordering keys).
-
-    Same contract as shocks.draw_displaced: per-division weighted quota
-    shock_j x weighted employee count, weights consumed in uniform random
-    order, quota-crossing record included with the fractional probability.
-    """
+    """Independent Bernoulli displacement mask for a per-person shock vector."""
     rng = np.random.default_rng(seed)
     employed = persons["employment_income"].to_numpy(dtype=float) > 0
-    weight = persons["weight"].to_numpy(dtype=float)
-    division = pd.to_numeric(persons["sic_division"], errors="coerce").to_numpy(dtype=float)
     shock = np.asarray(shock, dtype=float)
-
-    displaced = np.zeros(len(persons), dtype=bool)
-    for d in np.unique(division[employed & (shock > 0)]):
-        members = np.flatnonzero(employed & (division == d))
-        quota = float(shock[members[0]]) * float(weight[members].sum())
-        if quota <= 0:
-            continue
-        chosen = rng.permutation(members)
-        cum = np.cumsum(weight[chosen])
-        displaced[chosen[cum <= quota]] = True
-        crossing = np.searchsorted(cum, quota)
-        if crossing < len(chosen) and cum[crossing] > quota:
-            shortfall = quota - (cum[crossing - 1] if crossing else 0.0)
-            if rng.random() < shortfall / weight[chosen[crossing]]:
-                displaced[chosen[crossing]] = True
-    return displaced
+    if shock.shape != (len(persons),):
+        raise ValueError("shock must contain one value per person")
+    if ((shock < 0) | (shock > 1)).any():
+        raise ValueError("shock probabilities must lie in [0, 1]")
+    return employed & (rng.random(len(persons)) < shock)
 
 
 def apply_displacement_with_shock(

@@ -3,3 +3,5 @@ __pycache__/
 *.egg-info/
 .cache/
 .DS_Store
+paper/*.fdb_latexmk
+paper/*.fls

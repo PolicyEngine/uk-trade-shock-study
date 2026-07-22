@@ -1,47 +1,47 @@
 {
-  "baseline_rules": 0.3972906789184177,
+  "baseline_rules": 0.3741006018495753,
   "capital_limit_off": {
-    "cushioning_rate": 0.3972906789184177,
+    "cushioning_rate": 0.3741006018495753,
     "components_share_of_gross_loss": {
-      "income_tax": 0.1975458556371481,
-      "employee_national_insurance": 0.04516744917860633,
-      "universal_credit": 0.11138996800558236,
-      "other_benefits": 0.0,
-      "other_residual": 0.043187406097080924
+      "income_tax": 0.26447368878588845,
+      "employee_national_insurance": 0.04124926496034643,
+      "universal_credit": 0.04016503406321104,
+      "other_benefits": -0.0006334948587926085,
+      "other_residual": 0.028846108898921956
     },
     "zero_uc_decomposition": {
-      "displaced_weighted": 35003.789123535156,
-      "share_positive_uc": 0.4861937510563279,
-      "share_zero_uc": 0.5138062489436721,
+      "displaced_weighted": 53015.241760253906,
+      "share_positive_uc": 0.33934054454861023,
+      "share_zero_uc": 0.6606594554513898,
       "share_zero_uc_capital_over_16k": 0.0,
-      "share_zero_uc_income_tapered": 0.2636473903221983,
-      "share_zero_uc_non_takeup": 0.25015885862147375,
+      "share_zero_uc_income_tapered": 0.2798787132497519,
+      "share_zero_uc_non_takeup": 0.3807807422016379,
       "share_zero_uc_other": 0.0,
-      "mean_uc_award_displaced": 5891.711083700997,
-      "mean_uc_award_if_positive": 12118.031280534526,
+      "mean_uc_award_displaced": 3423.2132557311756,
+      "mean_uc_award_if_positive": 10087.840403169988,
       "mean_jsa_contrib_displaced": 0.0,
       "mean_jsa_income_displaced": 0.0
     }
   },
   "capital_rules_off": {
-    "cushioning_rate": 0.3972906789184177,
+    "cushioning_rate": 0.3741006018495753,
     "components_share_of_gross_loss": {
-      "income_tax": 0.1975458556371481,
-      "employee_national_insurance": 0.04516744917860633,
-      "universal_credit": 0.11138996800558236,
-      "other_benefits": 0.0,
-      "other_residual": 0.043187406097080924
+      "income_tax": 0.26447368878588845,
+      "employee_national_insurance": 0.04124926496034643,
+      "universal_credit": 0.04016503406321104,
+      "other_benefits": -0.0006334948587926085,
+      "other_residual": 0.028846108898921956
     },
     "zero_uc_decomposition": {
-      "displaced_weighted": 35003.789123535156,
-      "share_positive_uc": 0.4861937510563279,
-      "share_zero_uc": 0.5138062489436721,
+      "displaced_weighted": 53015.241760253906,
+      "share_positive_uc": 0.33934054454861023,
+      "share_zero_uc": 0.6606594554513898,
       "share_zero_uc_capital_over_16k": 0.0,
-      "share_zero_uc_income_tapered": 0.2636473903221983,
-      "share_zero_uc_non_takeup": 0.25015885862147375,
+      "share_zero_uc_income_tapered": 0.2798787132497519,
+      "share_zero_uc_non_takeup": 0.3807807422016379,
       "share_zero_uc_other": 0.0,
-      "mean_uc_award_displaced": 5891.711083700997,
-      "mean_uc_award_if_positive": 12118.031280534526,
+      "mean_uc_award_displaced": 3423.2132557311756,
+      "mean_uc_award_if_positive": 10087.840403169988,
       "mean_jsa_contrib_displaced": 0.0,
       "mean_jsa_income_displaced": 0.0
     }

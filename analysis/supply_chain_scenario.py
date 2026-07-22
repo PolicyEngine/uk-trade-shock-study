@@ -9,7 +9,7 @@ wage-cut margins are rerun on the TOTAL shock. Writes:
   results/supply_chain_shocks.json        amplification factor, top upstream
                                           divisions, per-division shock table
   results/supply_chain_displacement.json  Monte Carlo displacement results
-  results/supply_chain_wage_cut.json      deterministic wage-cut results
+  results/supply_chain_wage_cut.json      wage cut with seeded UC take-up draws
   results/supply_chain_cushioning_seed0.json  seed-0 cushioning accounting
                                           (household-weighted net loss)
 
@@ -162,7 +162,7 @@ def main() -> None:
         )
 
     for margin in ("displacement", "wage_cut"):
-        n = 1 if margin == "wage_cut" else args.n_draws
+        n = args.n_draws
         draws = [
             _one_draw(dataset, baseline, persons, shock, args.period, seed, margin)
             for seed in range(n)

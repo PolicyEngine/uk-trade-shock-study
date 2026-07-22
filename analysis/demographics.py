@@ -32,7 +32,8 @@ from uk_trade_shock_study.shocks import PRESETS, apply_shocks, build_shocked_sim
 PERIOD = 2026
 DATASET = Path("data/frs_2024_25.h5")
 RESULTS = Path("results")
-N_DRAWS = 20
+# Descriptive assignment profile; headline aggregate scenarios use 50 draws.
+N_DRAWS = 5
 
 
 def hh_arrays(sim):

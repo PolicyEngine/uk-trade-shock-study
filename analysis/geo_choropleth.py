@@ -25,8 +25,7 @@ def constituency_map():
 
     Reads the cached per-constituency results from analysis/geo_impact.py
     (results/geo/constituency_impacts.csv, enhanced FRS 2023-24, imputed SIC,
-    seed-0 draw, period 2025) and joins on GSS code, mirroring the sister
-    study's constituency choropleth.
+    mean over 20 paired assignment draws, period 2025) and joins on GSS code.
     """
     import pandas as pd
 
@@ -71,7 +70,7 @@ def constituency_map():
     cbar = fig.colorbar(sm, ax=list(axes), orientation="horizontal",
                         fraction=0.045, pad=0.02, extend="both")
     cbar.outline.set_visible(False)
-    cbar.set_label("Mean disposable-income loss per person (£/year)")
+    cbar.set_label("Mean per-capita disposable-income loss (£/year)")
 
     FIGDIR.mkdir(parents=True, exist_ok=True)
     path = FIGDIR / "map_constituency_income_change.png"

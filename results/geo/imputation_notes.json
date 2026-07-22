@@ -1,7 +1,30 @@
 {
   "method": "route B: SIC-division imputation on enhanced FRS 2023-24",
   "period": 2025,
-  "seed": 0,
+  "imputation_seed": 0,
+  "assignment_seeds": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19
+  ],
+  "n_assignment_draws": 20,
   "scenarios": [
     "full_tariff_displacement",
     "epd_displacement"
@@ -15,152 +38,156 @@
     "marginal": 0.00034843466416771194
   },
   "enhanced_frs_employees": 53566,
-  "full_tariff_displacement_national_income_change_gbp_per_person": -109.234722241569,
-  "full_tariff_displacement_displaced_weighted": 93260.640625,
-  "epd_displacement_national_income_change_gbp_per_person": -108.19819182442403,
-  "epd_displacement_displaced_weighted": 92242.5,
+  "full_tariff_displacement_national_income_change_gbp_per_person_mean": -24.137277795970263,
+  "full_tariff_displacement_national_income_change_gbp_per_person_sd": 21.922444797311368,
+  "full_tariff_displacement_displaced_weighted_mean": 48032.6154296875,
+  "full_tariff_displacement_displaced_weighted_sd": 29142.355407272884,
+  "epd_displacement_national_income_change_gbp_per_person_mean": -21.254206755834737,
+  "epd_displacement_national_income_change_gbp_per_person_sd": 22.89939553265391,
+  "epd_displacement_displaced_weighted_mean": 39263.229736328125,
+  "epd_displacement_displaced_weighted_sd": 31824.81400088591,
   "top10_hardest_hit_full": [
-    {
-      "code": "E14001207",
-      "name": "Ealing Central and Acton",
-      "region": "London",
-      "income_change_gbp_per_person_full": -769.5108175001096,
-      "income_change_gbp_per_person_epd": -767.1106644338652
-    },
     {
       "code": "E14001280",
       "name": "Henley and Thame",
       "region": "South East",
-      "income_change_gbp_per_person_full": -764.0844227030691,
-      "income_change_gbp_per_person_epd": -762.3242205365169
+      "income_change_gbp_per_person_full": -110.18867688478308,
+      "income_change_gbp_per_person_epd": -103.9282271237013
     },
     {
-      "code": "E14001249",
-      "name": "Godalming and Ash",
-      "region": "South East",
-      "income_change_gbp_per_person_full": -598.1826342132065,
-      "income_change_gbp_per_person_epd": -596.6367758545858
+      "code": "E14001207",
+      "name": "Ealing Central and Acton",
+      "region": "London",
+      "income_change_gbp_per_person_full": -102.23432088391553,
+      "income_change_gbp_per_person_epd": -99.01102969337423
+    },
+    {
+      "code": "E14001586",
+      "name": "Wimbledon",
+      "region": "London",
+      "income_change_gbp_per_person_full": -84.27178784037304,
+      "income_change_gbp_per_person_epd": -80.47909969658944
     },
     {
       "code": "E14001465",
       "name": "Sevenoaks",
       "region": "South East",
-      "income_change_gbp_per_person_full": -578.911149252706,
-      "income_change_gbp_per_person_epd": -577.337612991982
+      "income_change_gbp_per_person_full": -82.46691762446794,
+      "income_change_gbp_per_person_epd": -74.7213476677654
     },
     {
       "code": "E14001417",
       "name": "Orpington",
       "region": "London",
-      "income_change_gbp_per_person_full": -539.4557712887681,
-      "income_change_gbp_per_person_epd": -537.6934575054491
+      "income_change_gbp_per_person_full": -80.79297174473814,
+      "income_change_gbp_per_person_epd": -76.02905750137568
     },
     {
       "code": "E14001162",
       "name": "Chesham and Amersham",
       "region": "South East",
-      "income_change_gbp_per_person_full": -535.1919883000921,
-      "income_change_gbp_per_person_epd": -533.6963816328681
-    },
-    {
-      "code": "E14001360",
-      "name": "Mid Buckinghamshire",
-      "region": "South East",
-      "income_change_gbp_per_person_full": -525.1285311418172,
-      "income_change_gbp_per_person_epd": -523.434466973716
-    },
-    {
-      "code": "E14001289",
-      "name": "Hitchin",
-      "region": "Eastern",
-      "income_change_gbp_per_person_full": -512.9495157337312,
-      "income_change_gbp_per_person_epd": -511.03818253168663
+      "income_change_gbp_per_person_full": -80.58579316540724,
+      "income_change_gbp_per_person_epd": -73.82308046302657
     },
     {
       "code": "E14001556",
       "name": "Twickenham",
       "region": "London",
-      "income_change_gbp_per_person_full": -490.1579659201443,
-      "income_change_gbp_per_person_epd": -487.456272722438
+      "income_change_gbp_per_person_full": -80.23244159864235,
+      "income_change_gbp_per_person_epd": -74.6110201834625
     },
     {
-      "code": "E14001392",
-      "name": "North East Hampshire",
+      "code": "E14001249",
+      "name": "Godalming and Ash",
       "region": "South East",
-      "income_change_gbp_per_person_full": -483.4370224043629,
-      "income_change_gbp_per_person_epd": -481.39593340930816
+      "income_change_gbp_per_person_full": -79.85073257982467,
+      "income_change_gbp_per_person_epd": -75.36991718717783
+    },
+    {
+      "code": "E14001289",
+      "name": "Hitchin",
+      "region": "Eastern",
+      "income_change_gbp_per_person_full": -77.78617554021955,
+      "income_change_gbp_per_person_epd": -70.31641399968028
+    },
+    {
+      "code": "E14001507",
+      "name": "St Albans",
+      "region": "Eastern",
+      "income_change_gbp_per_person_full": -76.5610714758681,
+      "income_change_gbp_per_person_epd": -69.9062094122369
     }
   ],
   "top10_hardest_hit_epd": [
     {
-      "code": "E14001207",
-      "name": "Ealing Central and Acton",
-      "region": "London",
-      "income_change_gbp_per_person_full": -769.5108175001096,
-      "income_change_gbp_per_person_epd": -767.1106644338652
-    },
-    {
       "code": "E14001280",
       "name": "Henley and Thame",
       "region": "South East",
-      "income_change_gbp_per_person_full": -764.0844227030691,
-      "income_change_gbp_per_person_epd": -762.3242205365169
+      "income_change_gbp_per_person_full": -110.18867688478308,
+      "income_change_gbp_per_person_epd": -103.9282271237013
     },
     {
-      "code": "E14001249",
-      "name": "Godalming and Ash",
-      "region": "South East",
-      "income_change_gbp_per_person_full": -598.1826342132065,
-      "income_change_gbp_per_person_epd": -596.6367758545858
+      "code": "E14001207",
+      "name": "Ealing Central and Acton",
+      "region": "London",
+      "income_change_gbp_per_person_full": -102.23432088391553,
+      "income_change_gbp_per_person_epd": -99.01102969337423
     },
     {
-      "code": "E14001465",
-      "name": "Sevenoaks",
-      "region": "South East",
-      "income_change_gbp_per_person_full": -578.911149252706,
-      "income_change_gbp_per_person_epd": -577.337612991982
+      "code": "E14001586",
+      "name": "Wimbledon",
+      "region": "London",
+      "income_change_gbp_per_person_full": -84.27178784037304,
+      "income_change_gbp_per_person_epd": -80.47909969658944
     },
     {
       "code": "E14001417",
       "name": "Orpington",
       "region": "London",
-      "income_change_gbp_per_person_full": -539.4557712887681,
-      "income_change_gbp_per_person_epd": -537.6934575054491
+      "income_change_gbp_per_person_full": -80.79297174473814,
+      "income_change_gbp_per_person_epd": -76.02905750137568
     },
     {
-      "code": "E14001162",
-      "name": "Chesham and Amersham",
+      "code": "E14001249",
+      "name": "Godalming and Ash",
       "region": "South East",
-      "income_change_gbp_per_person_full": -535.1919883000921,
-      "income_change_gbp_per_person_epd": -533.6963816328681
+      "income_change_gbp_per_person_full": -79.85073257982467,
+      "income_change_gbp_per_person_epd": -75.36991718717783
     },
     {
-      "code": "E14001360",
-      "name": "Mid Buckinghamshire",
+      "code": "E14001465",
+      "name": "Sevenoaks",
       "region": "South East",
-      "income_change_gbp_per_person_full": -525.1285311418172,
-      "income_change_gbp_per_person_epd": -523.434466973716
-    },
-    {
-      "code": "E14001289",
-      "name": "Hitchin",
-      "region": "Eastern",
-      "income_change_gbp_per_person_full": -512.9495157337312,
-      "income_change_gbp_per_person_epd": -511.03818253168663
+      "income_change_gbp_per_person_full": -82.46691762446794,
+      "income_change_gbp_per_person_epd": -74.7213476677654
     },
     {
       "code": "E14001556",
       "name": "Twickenham",
       "region": "London",
-      "income_change_gbp_per_person_full": -490.1579659201443,
-      "income_change_gbp_per_person_epd": -487.456272722438
+      "income_change_gbp_per_person_full": -80.23244159864235,
+      "income_change_gbp_per_person_epd": -74.6110201834625
     },
     {
-      "code": "E14001392",
-      "name": "North East Hampshire",
+      "code": "E14001162",
+      "name": "Chesham and Amersham",
       "region": "South East",
-      "income_change_gbp_per_person_full": -483.4370224043629,
-      "income_change_gbp_per_person_epd": -481.39593340930816
+      "income_change_gbp_per_person_full": -80.58579316540724,
+      "income_change_gbp_per_person_epd": -73.82308046302657
+    },
+    {
+      "code": "E14001593",
+      "name": "Wokingham",
+      "region": "South East",
+      "income_change_gbp_per_person_full": -76.53731242184419,
+      "income_change_gbp_per_person_epd": -71.52032708185763
+    },
+    {
+      "code": "E14001289",
+      "name": "Hitchin",
+      "region": "Eastern",
+      "income_change_gbp_per_person_full": -77.78617554021955,
+      "income_change_gbp_per_person_epd": -70.31641399968028
     }
   ]
 }

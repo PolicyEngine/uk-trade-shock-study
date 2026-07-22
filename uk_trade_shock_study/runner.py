@@ -90,6 +90,30 @@ def _person_table(sim, period: int) -> pd.DataFrame:
     return table
 
 
+def _household_income_per_person(sim, period: int) -> np.ndarray:
+    """Household disposable income allocated equally across its members.
+
+    PolicyEngine broadcasts the *whole* household income when a household
+    variable is mapped to persons.  Using that broadcast value directly as a
+    per-person outcome counts a household's income change once for every
+    member.  Divide by the correspondingly broadcast household size before
+    constructing person-weighted decile or regional means.
+    """
+    income = np.asarray(
+        sim.calculate("hbai_household_net_income", period=period, map_to="person").values,
+        dtype=float,
+    )
+    people = np.asarray(
+        sim.calculate("household_count_people", period=period, map_to="person").values,
+        dtype=float,
+    )
+    if income.shape != people.shape:
+        raise ValueError("person-mapped household income and household size differ in shape")
+    if (people <= 0).any():
+        raise ValueError("person-mapped household size must be positive")
+    return income / people
+
+
 def _metrics(sim, period: int) -> dict:
     hh_w = sim.calculate("household_weight", period=period, map_to="household").values
     equiv = sim.calculate("equiv_hbai_household_net_income", period=period, map_to="household").values
@@ -104,7 +128,7 @@ def _metrics(sim, period: int) -> dict:
             sim.calculate("in_poverty_ahc", period=period, map_to="person").values, weights=p_w
         )),
         "gini": gini(equiv, hh_w * hh_count),
-        "hni": sim.calculate("hbai_household_net_income", period=period, map_to="person").values,
+        "hni": _household_income_per_person(sim, period),
         "hni_total": float(
             (sim.calculate("hbai_household_net_income", period=period, map_to="household").values * hh_w).sum()
         ),

@@ -9,7 +9,7 @@ Three exercises, all on the full_tariff schedule, period 2026:
    none (positive UC).
 
 2. COMPONENT DECOMPOSITION of the cushioning rate for both margins
-   (displacement seed 0 and the deterministic wage cut): the cushioned share
+   (displacement seed 0 and wage cut seed 0): the cushioned share
    of the gross earnings loss split into income tax, employee NI, UC,
    other benefits (JSA/ESA/HB/tax credits/pension credit/...), and a residual
    (council tax, pension contributions, statutory pay zeroed in transition,
@@ -103,7 +103,37 @@ def build_shocked_sim(dataset, baseline_sim, shocked_table, period, reform=None)
     # Same post-shock UC take-up re-draw as build_shocked_simulation: the
     # baseline would_claim_uc flag is a stored draw conditioned on pre-shock
     # circumstances and is uninformative for newly displaced families.
-    redraw_uc_takeup(sim, baseline_sim, shocked_table, period)
+    # Match the production constructor's definition of a newly entitled
+    # benefit unit.  Passing no baseline potential award would make
+    # redraw_uc_takeup treat every post-shock positive award as new, including
+    # incumbent UC recipients, and grossly overstate the UC component.
+    cache_name = "_trade_shock_uc_potential_award"
+    baseline_potential_award = getattr(baseline_sim, cache_name, None)
+    if baseline_potential_award is None:
+        potential_sim = Microsimulation(dataset=dataset, reform=reform)
+        baseline_flag = np.asarray(
+            baseline_sim.calculate(
+                "would_claim_uc", period=period, map_to="benunit"
+            ).values,
+            dtype=bool,
+        )
+        potential_sim.set_input(
+            "would_claim_uc", period, np.ones(baseline_flag.size, dtype=bool)
+        )
+        baseline_potential_award = np.asarray(
+            potential_sim.calculate(
+                "universal_credit", period=period, map_to="benunit"
+            ).values,
+            dtype=float,
+        )
+        setattr(baseline_sim, cache_name, baseline_potential_award)
+    redraw_uc_takeup(
+        sim,
+        baseline_sim,
+        shocked_table,
+        period,
+        baseline_potential_award=baseline_potential_award,
+    )
     for var in TRANSITION_ZEROED_VARIABLES:
         values = baseline_sim.calculate(var, period=period, map_to="person").values.astype(float)
         values[displaced] = 0.0

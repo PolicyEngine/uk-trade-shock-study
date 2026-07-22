@@ -11,11 +11,11 @@ it post-shock for affected benunits at ``uc_takeup`` = 0.80
                           modelled as not claiming because it was not claiming
                           while in work; measured take-up among the displaced
                           0.469)
-    0.55, 0.70, 0.80, 0.90, 1.00   post-shock take-up among AFFECTED benunits
+    0.55, 0.70, 0.80, 0.90, 1.00   take-up among NEWLY ENTITLED benunits
 
 for both tariff schedules (full_tariff, epd) and both headline margins
-(displacement, wage_cut). The wage-cut margin has NO affected persons, so it is
-invariant to uc_takeup by construction — reported once and verified.
+(displacement, wage_cut). Both margins use the same new-entitlement rule and
+are evaluated over the same seed count.
 
 Reports per cell: cushioning rate, Exchequer cost, BHC/AHC poverty change,
 Gini change, and the component decomposition of the cushion (income tax,
@@ -47,7 +47,10 @@ from uk_trade_shock_study.shocks import (  # noqa: E402
 PERIOD = 2026
 DATASET = Path("data/frs_2024_25.h5")
 RESULTS = Path("results")
-N_DRAWS = 20
+# This is a robustness grid rather than the headline Monte Carlo.  Five
+# common-seed assignment draws per cell keep the 24-cell exercise tractable;
+# the resulting SDs describe assignment dispersion, not sampling precision.
+N_DRAWS = 5
 TAKEUPS = (0.55, 0.70, 0.80, 0.90, 1.00)
 STALE = "stale_baseline_flag"
 
@@ -105,15 +108,15 @@ def main() -> None:
         "notes": {
             "stale_baseline_flag": "pre-fix behaviour: post-shock would_claim_uc "
             "restored to the baseline stored draw.",
-            "wage_cut": "no affected persons -> no benunit is re-drawn; the "
-            "family is invariant to uc_takeup by construction (verified).",
+            "wage_cut": "earnings cuts are deterministic, but newly entitled "
+            "benefit units receive seeded claiming draws under the common rule.",
             "baseline_flag_rate_all_benunits": float(baseline_flag.mean()),
         },
     }
 
     for tariff in ("full_tariff", "epd"):
         for margin in ("displacement", "wage_cut"):
-            n = N_DRAWS if margin == "displacement" else 1
+            n = N_DRAWS
             for label in (STALE, *TAKEUPS):
                 takeup = 0.80 if label == STALE else float(label)
                 scen = TradeShockScenario(
@@ -161,18 +164,14 @@ def main() -> None:
                     flush=True,
                 )
 
-    # verify the wage-cut family really is invariant to uc_takeup
+    # Record, rather than assume, the wage-cut sensitivity to take-up.
     for tariff in ("full_tariff", "epd"):
         vals = {
             k: v["cushioning_rate"]["mean"]
             for k, v in out[f"{tariff}_wage_cut"].items()
         }
         spread = max(vals.values()) - min(vals.values())
-        out["notes"][f"{tariff}_wage_cut_invariance_max_spread"] = spread
-        if spread > 1e-12:
-            raise RuntimeError(
-                f"{tariff}_wage_cut is not invariant to uc_takeup (spread {spread})"
-            )
+        out["notes"][f"{tariff}_wage_cut_takeup_max_spread"] = spread
 
     RESULTS.mkdir(exist_ok=True)
     (RESULTS / "takeup_sensitivity.json").write_text(json.dumps(out, indent=2))

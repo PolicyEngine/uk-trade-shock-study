@@ -2,7 +2,7 @@
 
 Runs epsilon in {1.0, 1.5, 2.0, 3.0} x pi in {0.5, 0.75, 1.0} for the
 full_tariff schedule on the displacement margin (10 Monte Carlo draws per
-cell, seeds 0-9) and the deterministic wage-cut margin. Per cell: aggregate
+cell, seeds 0-4) and the wage-cut margin. Per cell: aggregate
 gross earnings loss, Exchequer cost, cushioning rate, weighted displaced
 count, relative BHC poverty change.
 
@@ -35,7 +35,8 @@ DATASET = Path("data/frs_2024_25.h5")
 RESULTS = Path("results")
 ELASTICITIES = (1.0, 1.5, 2.0, 3.0)
 PASSTHROUGHS = (0.5, 0.75, 1.0)
-N_DRAWS = 10
+# Appendix robustness grid; headline scenarios use 50 draws.
+N_DRAWS = 5
 
 
 def sim_metrics(sim):

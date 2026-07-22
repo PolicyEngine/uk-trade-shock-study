@@ -116,7 +116,11 @@ def _metrics(sim, period: int) -> dict:
             sim.calculate("in_absolute_poverty_bhc", period=period, map_to="person").values,
             weights=p_w,
         ))
-    except Exception:
+    except ValueError as exc:
+        # policyengine-uk 2.89.2 reports an unavailable optional variable as a
+        # ValueError.  Do not hide unrelated calculation/data failures.
+        if "Variable in_absolute_poverty_bhc does not exist" not in str(exc):
+            raise
         out["abs_poverty_bhc"] = float("nan")
     return out
 
@@ -236,14 +240,13 @@ def run_monte_carlo(
     base_seed: int = 0,
     adult_tab_path: str | Path | None = None,
 ) -> MonteCarloResult:
-    """Repeat the displacement draw n_draws times; report mean +/- SD.
+    """Repeat a scenario across take-up/assignment seeds; report mean +/- SD.
 
-    Wage-cut scenarios are deterministic, so n_draws collapses to 1.
+    Wage earnings cuts are deterministic, but newly entitled benefit units'
+    UC claiming draws vary by seed, so wage-cut scenarios retain ``n_draws``.
     """
     if isinstance(scenario, str):
         scenario = PRESETS[scenario]
-    if scenario.margin == "wage_cut":
-        n_draws = 1
     dataset, baseline, persons = _baseline_and_persons(dataset_path, adult_tab_path, period)
     draws = [
         _one_draw(dataset, baseline, persons, scenario, period, base_seed + i)
@@ -271,4 +274,15 @@ def run_monte_carlo(
 
 
 def write_result(result, path: str | Path) -> None:
-    Path(path).write_text(json.dumps(asdict(result), indent=2))
+    def json_value(value):
+        """Return standards-compliant JSON values (RFC 8259 has no NaN)."""
+        if isinstance(value, dict):
+            return {key: json_value(item) for key, item in value.items()}
+        if isinstance(value, list):
+            return [json_value(item) for item in value]
+        if isinstance(value, (float, np.floating)) and not np.isfinite(value):
+            return None
+        return value
+
+    payload = json_value(asdict(result))
+    Path(path).write_text(json.dumps(payload, indent=2, allow_nan=False))

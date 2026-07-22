@@ -9,6 +9,7 @@ from uk_trade_shock_study.shocks import (
     MARGINS,
     PRESETS,
     TradeShockScenario,
+    apply_mixed_margin,
     apply_shocks,
     apply_wage_cut,
     draw_displaced,
@@ -75,6 +76,26 @@ def test_equal_inclusion_regardless_of_weight():
     assert hits[1] / n == pytest.approx(0.5, abs=0.03)
 
 
+def test_displacement_expected_wage_loss_matches_sector_shock():
+    """Bernoulli sampling is unbiased for the wage bill with unequal weights
+    and earnings, not merely for weighted headcount."""
+    persons = pd.DataFrame(
+        {
+            "age": [40, 40, 40],
+            "employment_income": [10_000.0, 50_000.0, 120_000.0],
+            "weight": [1.0, 7.0, 30.0],
+            "sic_division": [29.0, 29.0, 29.0],
+        }
+    )
+    shock = person_earnings_shock(np.array([29.0]), "full_tariff")[0]
+    scenario = PRESETS["full_tariff_displacement"]
+    wage_bill = (
+        persons["employment_income"].to_numpy() * persons["weight"].to_numpy()
+    )
+    losses = [wage_bill[draw_displaced(persons, scenario, seed=s)].sum() for s in range(5_000)]
+    assert np.mean(losses) == pytest.approx(shock * wage_bill.sum(), rel=0.08)
+
+
 def test_displaced_earn_zero_and_unexposed_untouched():
     persons = make_persons()
     shocked = apply_shocks(persons, PRESETS["full_tariff_displacement"], seed=0)
@@ -119,6 +140,43 @@ def test_wage_cut_gradient_matches_sector_shock():
     np.testing.assert_allclose(
         (base - new)[employed] / base[employed], shock[employed], rtol=1e-9
     )
+
+
+@pytest.mark.parametrize("share", [0.0, 0.25, 0.5, 0.75, 1.0])
+def test_mixed_margin_preserves_expected_worker_loss(share):
+    """For each worker, E[loss/base] equals the original sector shock."""
+    persons = make_persons(n=1200)
+    scenario = TradeShockScenario(
+        "mixed", "full_tariff", "mixed", displacement_share=share
+    )
+    base = persons["employment_income"].to_numpy(float)
+    expected = person_earnings_shock(persons["sic_division"], "full_tariff")
+    realised = np.zeros(len(persons))
+    for seed in range(500):
+        shocked = apply_mixed_margin(persons, scenario, seed=seed)
+        realised += (base - shocked["employment_income"].to_numpy(float)) / base
+    np.testing.assert_allclose(realised / 500, expected, atol=0.035)
+
+
+def test_mixed_margin_endpoints_match_pure_margins():
+    persons = make_persons()
+    wage = apply_mixed_margin(
+        persons,
+        TradeShockScenario("mixed_wage", "epd", "mixed", displacement_share=0.0),
+        seed=3,
+    )
+    pure_wage = apply_wage_cut(persons, PRESETS["epd_wage_cut"])
+    np.testing.assert_allclose(wage["employment_income"], pure_wage["employment_income"])
+    assert not wage["displaced"].any()
+
+    job = apply_mixed_margin(
+        persons,
+        TradeShockScenario("mixed_job", "epd", "mixed", displacement_share=1.0),
+        seed=3,
+    )
+    pure_job = apply_shocks(persons, PRESETS["epd_displacement"], seed=3)
+    np.testing.assert_array_equal(job["displaced"], pure_job["displaced"])
+    np.testing.assert_allclose(job["employment_income"], pure_job["employment_income"])
 
 
 def test_inactivity_margin_age_split():
@@ -373,7 +431,7 @@ def test_reallocation_hard_error_when_sector_switch_is_dropped():
 class _TakeupSim:
     """Minimal sim stub: persons map to benunits in fixed-size blocks."""
 
-    def __init__(self, n_persons, per_benunit=2, baseline_flag=None):
+    def __init__(self, n_persons, per_benunit=2, baseline_flag=None, potential_uc=None):
         self.n = n_persons
         self.k = per_benunit
         self.n_bu = (n_persons + per_benunit - 1) // per_benunit
@@ -381,18 +439,29 @@ class _TakeupSim:
             np.zeros(self.n_bu, dtype=bool) if baseline_flag is None else baseline_flag
         )
         self.stored = {}
+        self.potential_uc = (
+            np.ones(self.n_bu) if potential_uc is None else np.asarray(potential_uc)
+        )
 
     def calculate(self, var, period=None, map_to=None):
         import types
 
         if var == "would_claim_uc":
             values = self.stored.get(var, self.flag)
+        elif var == "employment_income":
+            values = np.ones(self.n)
+        elif var == "universal_credit":
+            claim = self.stored.get("would_claim_uc", self.flag)
+            values = self.potential_uc * np.asarray(claim)
         else:
             values = np.zeros(self.n)
         return types.SimpleNamespace(values=np.asarray(values))
 
     def set_input(self, var, period, values):
         self.stored[var] = np.asarray(values)
+
+    def _invalidate_all_caches(self):
+        return None
 
     def map_result(self, values, source, target):
         assert (source, target) == ("person", "benunit")
@@ -405,6 +474,7 @@ class _TakeupSim:
 def _takeup_table(n, affected_idx, uc_takeup=0.8, seed=0):
     table = pd.DataFrame(
         {
+            "employment_income": np.ones(n),
             "displaced": np.zeros(n, dtype=bool),
             "inactive": np.zeros(n, dtype=bool),
             "reallocated": np.zeros(n, dtype=bool),
@@ -460,7 +530,7 @@ def test_uc_takeup_rate_approximately_honoured_among_affected():
     assert min(rates0) == 1.0
 
 
-def test_uc_takeup_no_redraw_when_nothing_affected():
+def test_uc_takeup_no_redraw_when_nothing_changed():
     """Wage-cut margin: no new claimants, baseline flags survive untouched."""
     from uk_trade_shock_study.shocks import redraw_uc_takeup
 
@@ -474,12 +544,54 @@ def test_uc_takeup_no_redraw_when_nothing_affected():
     assert "would_claim_uc" not in sim.stored
 
 
-def test_wage_cut_table_has_no_affected_persons():
-    from uk_trade_shock_study.shocks import affected_mask
-
+def test_wage_cut_earnings_changes_are_considered_for_takeup():
     persons = make_persons()
     table = apply_shocks(persons, PRESETS["full_tariff_wage_cut"], seed=0)
-    assert not affected_mask(table).any()
+    assert not np.array_equal(
+        table["employment_income"].to_numpy(), persons["employment_income"].to_numpy()
+    )
+
+
+def test_uc_takeup_redraw_requires_positive_postshock_entitlement():
+    from uk_trade_shock_study.shocks import redraw_uc_takeup
+
+    n = 8
+    baseline = np.array([False, False, True, True])
+    potential = np.array([100.0, 0.0, 100.0, 0.0])
+    sim = _TakeupSim(n, 2, baseline.copy(), potential_uc=potential)
+    base_sim = _TakeupSim(n, 2, baseline.copy(), potential_uc=potential)
+    table = _takeup_table(n, [0, 2, 4, 6], uc_takeup=1.0)
+    out = redraw_uc_takeup(sim, base_sim, table, 2026)
+    np.testing.assert_array_equal(out, np.array([True, False, True, True]))
+
+
+def test_uc_takeup_redraw_only_newly_entitled_units():
+    from uk_trade_shock_study.shocks import redraw_uc_takeup
+
+    n = 6
+    baseline = np.array([False, False, False])
+    sim = _TakeupSim(n, 2, baseline.copy(), potential_uc=[100.0, 100.0, 0.0])
+    base_sim = _TakeupSim(n, 2, baseline.copy(), potential_uc=[0.0, 100.0, 0.0])
+    table = _takeup_table(n, [0, 2, 4], uc_takeup=1.0)
+    out = redraw_uc_takeup(
+        sim,
+        base_sim,
+        table,
+        2026,
+        baseline_potential_award=np.array([0.0, 100.0, 0.0]),
+    )
+    np.testing.assert_array_equal(out, np.array([True, False, False]))
+
+
+def test_existing_lcwra_element_is_not_double_paid():
+    from uk_trade_shock_study.shocks import merge_lcwra_element
+
+    annual = 5_000.0
+    base = np.array([0.0, annual, annual * 1.1])
+    addon = np.array([annual, annual, annual])
+    np.testing.assert_array_equal(
+        merge_lcwra_element(base, addon), np.array([annual, annual, annual * 1.1])
+    )
 
 
 def test_displacement_draw_invariant_to_uc_takeup():

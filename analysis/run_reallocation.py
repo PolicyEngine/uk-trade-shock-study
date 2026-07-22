@@ -1,8 +1,8 @@
 """Run the REALLOCATION margin (literal sectoral switch into services).
 
 Writes:
-  results/full_tariff_reallocation.json   instant reallocation, 20 draws
-  results/epd_reallocation.json           instant reallocation, 20 draws
+  results/full_tariff_reallocation.json   instant reallocation, 5 draws
+  results/epd_reallocation.json           instant reallocation, 5 draws
   results/full_tariff_reallocation_lag3.json   3-month lag variant
   results/epd_reallocation_lag3.json           3-month lag variant
   results/reallocation_cushioning.json    four-way margin comparison with
@@ -30,7 +30,8 @@ from uk_trade_shock_study.shocks import (
 )
 
 PERIOD = 2026
-N_DRAWS = 20  # reallocation family + paired comparison runs
+# Reallocation robustness family; headline scenarios use 50 draws.
+N_DRAWS = 5
 DATASET = Path("data/frs_2024_25.h5")
 RESULTS = Path("results")
 

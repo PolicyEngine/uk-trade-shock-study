@@ -46,7 +46,7 @@ def fig_decile_by_margin(tariff: str = "full_tariff") -> None:
         ax.plot(x, mean, marker="o", color=colour, label=margin.replace("_", " "))
         if sd.any():
             ax.fill_between(x, mean - sd, mean + sd, color=colour, alpha=0.15, lw=0)
-    figstyle.decile_ax(ax, "Mean change in household disposable income (£/year)")
+    figstyle.decile_ax(ax, "Mean per-capita disposable-income change (£/year)")
     figstyle.legend_below(ax, ncol=3)
     FIGURES.mkdir(parents=True, exist_ok=True)
     figstyle.save(fig, FIGURES / f"decile_by_margin_{tariff}.png")

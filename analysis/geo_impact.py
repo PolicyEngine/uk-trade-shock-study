@@ -13,7 +13,8 @@ employee earnings decile) cells, with the same documented fallback ladder as
 the sister study's SOC imputation. Match rates land in
 results/geo/imputation_notes.json.
 
-Scenarios: full_tariff_displacement and epd_displacement, seed 0, period 2025
+Scenarios: full_tariff_displacement and epd_displacement, 20 paired assignment
+draws, period 2025
 (the weights' calibration year; the headline runs use 2026 on a different
 dataset, so levels are indicative of relative, not absolute, local impacts).
 
@@ -51,7 +52,8 @@ OUT = ROOT / "results" / "geo"
 OUT.mkdir(parents=True, exist_ok=True)
 
 PERIOD = 2025  # the weights' calibration year (h5 key "2025")
-SEED = 0
+IMPUTATION_SEED = 0
+N_DRAWS = 20
 SCENARIOS = ("full_tariff_displacement", "epd_displacement")
 AGE_BANDS = ((16, 24), (25, 34), (35, 44), (45, 54), (55, 64), (65, 200))
 
@@ -89,7 +91,9 @@ def main():
     notes = {
         "method": "route B: SIC-division imputation on enhanced FRS 2023-24",
         "period": PERIOD,
-        "seed": SEED,
+        "imputation_seed": IMPUTATION_SEED,
+        "assignment_seeds": list(range(N_DRAWS)),
+        "n_assignment_draws": N_DRAWS,
         "scenarios": list(SCENARIOS),
     }
 
@@ -129,7 +133,7 @@ def main():
     gender = persons["gender"].to_numpy()
     region = persons["region"].to_numpy()
 
-    rng = np.random.default_rng(SEED)
+    rng = np.random.default_rng(IMPUTATION_SEED)
     sic = np.full(len(persons), np.nan)
     tier_counts = {"full_cell": 0.0, "age_gender_decile": 0.0, "age_gender": 0.0, "marginal": 0.0}
     w = persons["weight"].to_numpy(float)
@@ -179,31 +183,54 @@ def main():
     # ---- Step 5: scenarios -------------------------------------------------
     for name in SCENARIOS:
         scenario = PRESETS[name]
-        shocked_table = apply_shocks(persons, scenario, seed=SEED)
-        shocked = build_shocked_simulation(dataset, baseline, shocked_table, PERIOD)
-        displaced = shocked_table["displaced"].to_numpy()
-
-        hh_income_shock = shocked.calculate(
-            "hbai_household_net_income", period=PERIOD, map_to="household"
-        ).values
-        hh_delta = hh_income_shock - hh_income_base
-        hh_displaced = np.zeros(len(hh_id))
-        np.add.at(hh_displaced, pidx, displaced.astype(float))
-        del shocked
-
-        # mean disposable-income change per person: person-weighted mean of the
-        # household income change (household value broadcast to members, as in
-        # the runner's regional profile) = W @ (n_h * delta_h) / W @ n_h.
         col = "full" if name.startswith("full") else "epd"
-        df[f"income_change_gbp_per_person_{col}"] = (
-            W @ (hh_people * hh_delta)
-        ) / people
-        df[f"displaced_per_1000_workers_{col}"] = 1000 * (W @ hh_displaced) / workers
-        notes[f"{name}_national_income_change_gbp_per_person"] = float(
-            (W @ (hh_people * hh_delta)).sum() / people.sum()
+        income_draws = []
+        displaced_draws = []
+        national_income_draws = []
+        national_displaced_draws = []
+        for seed in range(N_DRAWS):
+            shocked_table = apply_shocks(persons, scenario, seed=seed)
+            shocked = build_shocked_simulation(dataset, baseline, shocked_table, PERIOD)
+            displaced = shocked_table["displaced"].to_numpy()
+
+            hh_income_shock = shocked.calculate(
+                "hbai_household_net_income", period=PERIOD, map_to="household"
+            ).values
+            hh_delta = hh_income_shock - hh_income_base
+            hh_displaced = np.zeros(len(hh_id))
+            np.add.at(hh_displaced, pidx, displaced.astype(float))
+            del shocked
+
+            # A household's annual cash-income change is shared across its
+            # members. Its per-capita change is delta_h / n_h, so the
+            # person-weighted constituency mean simplifies to W @ delta_h /
+            # W @ n_h. Multiplying by n_h here would incorrectly repeat the
+            # total household change once for every household member.
+            income_draws.append((W @ hh_delta) / people)
+            displaced_draws.append(1000 * (W @ hh_displaced) / workers)
+            national_income_draws.append(float((W @ hh_delta).sum() / people.sum()))
+            national_displaced_draws.append(
+                float((persons["weight"].to_numpy() * displaced).sum())
+            )
+            print(f"{name}: assignment draw {seed + 1}/{N_DRAWS}", flush=True)
+
+        income_draws = np.asarray(income_draws)
+        displaced_draws = np.asarray(displaced_draws)
+        df[f"income_change_gbp_per_person_{col}"] = income_draws.mean(axis=0)
+        df[f"income_change_gbp_per_person_{col}_sd"] = income_draws.std(axis=0, ddof=1)
+        df[f"displaced_per_1000_workers_{col}"] = displaced_draws.mean(axis=0)
+        df[f"displaced_per_1000_workers_{col}_sd"] = displaced_draws.std(axis=0, ddof=1)
+        notes[f"{name}_national_income_change_gbp_per_person_mean"] = float(
+            np.mean(national_income_draws)
         )
-        notes[f"{name}_displaced_weighted"] = float(
-            (persons["weight"].to_numpy() * displaced).sum()
+        notes[f"{name}_national_income_change_gbp_per_person_sd"] = float(
+            np.std(national_income_draws, ddof=1)
+        )
+        notes[f"{name}_displaced_weighted_mean"] = float(
+            np.mean(national_displaced_draws)
+        )
+        notes[f"{name}_displaced_weighted_sd"] = float(
+            np.std(national_displaced_draws, ddof=1)
         )
 
     df["people"] = people

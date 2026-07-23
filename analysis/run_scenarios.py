@@ -1,7 +1,7 @@
 """Run all tariff/margin presets and write results to results/.
 
 Usage: python analysis/run_scenarios.py [--data-dir DATA] [--period 2026]
-       [--n-draws 20] [--scenarios full_tariff_displacement ...]
+       [--n-draws 500] [--scenarios full_tariff_displacement ...]
 """
 
 import argparse
@@ -25,7 +25,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--data-dir", default="data")
     parser.add_argument("--period", type=int, default=2026)
-    parser.add_argument("--n-draws", type=int, default=20)
+    parser.add_argument("--n-draws", type=int, default=500)
     parser.add_argument("--scenarios", nargs="*", default=list(ALL_PRESETS))
     args = parser.parse_args()
 

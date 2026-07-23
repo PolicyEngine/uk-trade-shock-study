@@ -35,6 +35,9 @@ The disposition of the referee audit is tracked in `REVISION_STATUS.md`.
    the wage-cut/displacement mixture on common seeds and writes the scenario
    surface, cell data and draw-level artifact.
 
+The default production run uses 500 assignment draws. Use `--n-draws`
+explicitly for faster exploratory runs.
+
 ## Package
 
 - `uk_trade_shock_study/exposure.py` — tariff schedule (both scenarios),
@@ -44,6 +47,11 @@ The disposition of the referee audit is tracked in `REVISION_STATUS.md`.
 - `uk_trade_shock_study/runner.py` — PolicyEngine UK runs: disposable income,
   relative/absolute BHC + AHC poverty, Gini, decile/region breakdowns,
   Exchequer effect, Monte Carlo support.
+- `uk_trade_shock_study/channels.py` — calibrated observable heterogeneity and
+  a real-income price-channel interface; these require external estimates or
+  expenditure data before causal use.
+- `uk_trade_shock_study/uncertainty.py` — reproducible Latin-hypercube draws
+  for structured parameter sensitivity (not confidence intervals).
 
 ## Setup
 

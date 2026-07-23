@@ -1,4 +1,4 @@
-.PHONY: bootstrap test manifest check inputs results figures paper reproduce
+.PHONY: bootstrap test manifest check inputs results figures uncertainty-design paper reproduce
 
 PYTHON := .venv/bin/python
 
@@ -35,6 +35,9 @@ figures:
 	$(PYTHON) analysis/figures.py
 	$(PYTHON) analysis/geo_impact.py
 	$(PYTHON) analysis/geo_choropleth.py
+
+uncertainty-design:
+	$(PYTHON) analysis/write_uncertainty_design.py
 
 paper:
 	cd paper && latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex

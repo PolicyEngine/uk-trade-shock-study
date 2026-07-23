@@ -38,6 +38,11 @@ The disposition of the referee audit is tracked in `REVISION_STATUS.md`.
 The default production run uses 500 assignment draws. Use `--n-draws`
 explicitly for faster exploratory runs.
 
+`make uncertainty-design` writes a seeded 500-draw Latin-hypercube design for
+elasticity, wage-bill incidence, UC take-up, reallocation penalty, and the
+displacement share. It is a parameter-sensitivity design, not a confidence
+interval, and can be consumed by an expensive licensed-data run.
+
 ## Package
 
 - `uk_trade_shock_study/exposure.py` — tariff schedule (both scenarios),

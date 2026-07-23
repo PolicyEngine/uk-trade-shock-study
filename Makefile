@@ -19,7 +19,7 @@ inputs:
 	$(PYTHON) analysis/validate_manifest.py
 
 results:
-	$(PYTHON) analysis/run_scenarios.py --n-draws 10
+	$(PYTHON) analysis/run_scenarios.py --n-draws 500
 	$(PYTHON) analysis/scenario_testing.py
 	$(PYTHON) analysis/sensitivity_grid.py
 	$(PYTHON) analysis/takeup_sensitivity.py

@@ -12,7 +12,7 @@ UC claiming is redrawn after every margin for benefit units whose circumstances 
 
 \section{Monte Carlo and measures}\label{app:mc}
 
-Central direct and measured scenarios use 50 assignments. Every $\pm$ value is an assignment SD, not a standard error or confidence interval. The survey-design, tariff-response and model-parameter uncertainty are not estimated. Five-assignment take-up, mechanism, demographic, poverty-gap, reallocation, duration, sensitivity-grid and supply-chain exercises are exploratory.
+Central direct and measured scenarios use 10 assignments. Every displayed $\pm$ value is an assignment SD, not a standard error or confidence interval. The machine-readable artifacts additionally store numerical Monte Carlo standard error as assignment SD divided by $\sqrt{n}$; it measures precision of the simulated mean only. Survey-design, tariff-response and model-parameter uncertainty are not estimated. Five-assignment take-up, mechanism, demographic, poverty-gap, reallocation, duration, sensitivity-grid and supply-chain exercises are exploratory.
 The mixed-adjustment scenario surface likewise uses five common assignments per cell; its machine-readable cells and draws are in \texttt{results/scenario\_testing.json} and \texttt{.csv}.
 
 Absolute BHC poverty uses 60 per cent of the baseline equivalised median as a fixed line. The cushioning rate is $1-\Delta Y/\Delta E$, where $\Delta E$ is gross employment-earnings loss and $\Delta Y$ is household disposable-income loss.
@@ -21,13 +21,13 @@ Absolute BHC poverty uses 60 per cent of the baseline equivalised median as a fi
 
 The regenerated grid spans $\varepsilon\in\{1,1.5,2,3\}$ and $\pi\in\{0.5,0.75,1\}$. Because only five displacement assignments are used per cell, it is an exploratory scaling diagnostic. Equal products $\varepsilon\pi$ generate equal deterministic wage-cut shocks; Bernoulli displacement outcomes vary across assignments. The grid is not an uncertainty interval.
 
-\section{Duration sensitivity}\label{app:durationtakeup}
+\section{Duration scope}\label{app:durationtakeup}
 
-The duration exercise uses five assignments. Its six-month construction retains half-year earnings while coding a full-period unemployed status with zero hours. This is internally inconsistent in an annual model and cannot reproduce within-year tax, waiting-period or eligibility timing. It is retained only as a rough scaling diagnostic.
+The model reports the internally coherent full-year endpoint only. An earlier six-month sensitivity combined half-year earnings with full-period unemployment status and was removed because an annual model cannot reproduce within-year tax, waiting-period or eligibility timing. A shorter-duration estimate requires monthly simulations; no such result is claimed here.
 
 \section{Supply-chain sensitivity}\label{app:supplychain}
 
-The input--output scenario adds upstream requirements using the ONS domestic Leontief inverse. The accounting shock has a 1.95 direct-plus-upstream factor. It is not a lower bound and is not multiplied by local-employment multipliers. In the exploratory five-assignment microsimulation, displacement affects 69,255 weighted workers on average, costs the Exchequer \pounds $1.801\pm0.544$ billion and raises relative BHC poverty by $0.073\pm0.011$ percentage points. The wage-cut variant costs \pounds 1.904 billion and raises poverty by 0.031 points. These figures are accounting sensitivities, not all-channel causal estimates.
+The input--output scenario adds upstream requirements using the ONS domestic Leontief inverse. The accounting shock has a 1.95 direct-plus-upstream factor. It is not a lower bound and is not multiplied by local-employment multipliers. In the exploratory five-assignment microsimulation, displacement affects 29,700 weighted workers on average, costs the Exchequer \pounds $0.68\pm0.31$ billion and raises relative BHC poverty by 0.028 percentage points. The wage-cut variant costs \pounds 0.96 billion and leaves measured relative poverty unchanged. These figures are accounting sensitivities, not all-channel causal estimates.
 
 \section{Constituency illustration}\label{app:constituency}
 

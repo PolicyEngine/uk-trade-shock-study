@@ -5,7 +5,8 @@
 # in the 1-yr base; the pure 1-yr YoY fall is kept as a sensitivity column).
 # Source: HMRC uktradeinfo OTS API, SITC->SIC crosswalk of
 # analysis/build_trade_by_sic.py; written by analysis/build_measured_shocks.py.
-# export_fall may be negative (US exports rose); exposure.py clips at zero.
+# export_fall may be negative (US exports rose). The microsimulation uses
+# the clipped downside; validation_sectors.json also reports the signed net.
 sic_division,description,export_fall,export_fall_yoy1
 10,Food products,-0.0661,0.0709
 11,Beverages,0.0965,0.1245

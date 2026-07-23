@@ -34,7 +34,7 @@ from uk_trade_shock_study.shocks import PRESETS, apply_shocks, build_shocked_sim
 PERIOD = 2026
 DATASET = Path("data/frs_2024_25.h5")
 RESULTS = Path("results")
-# Distributional appendix calculation; headline aggregate scenarios use 50 draws.
+# Distributional appendix calculation; headline aggregate scenarios use 10 draws.
 N_DRAWS = 5
 
 

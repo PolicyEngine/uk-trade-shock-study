@@ -3,22 +3,18 @@
 The shock enters through PRIMITIVES. A US tariff rate per SIC 2007 division
 (the 2025 schedule, with and without the Economic Prosperity Deal) is combined
 with the division's US-export intensity (US goods exports as a share of
-division gross output — ONS/HMRC trade-by-SIC; the packaged CSV is a
-PLACEHOLDER, see data/us_export_intensity_by_sic.csv and
-analysis/build_trade_by_sic.py) and an export-demand elasticity to produce a
+division turnover — HMRC trade-by-SIC divided by ONS ABS turnover; the
+packaged CSV is a frozen real-data build documented in
+``data/input_manifest.json``) and an export-demand calibration to produce a
 per-division earnings-shock size:
 
-    earnings_shock_j = elasticity * tariff_j * us_export_share_j * passthrough
+    earnings_shock_j = elasticity * tariff_j * us_export_share_j
+                       * wage_bill_incidence
 
-- ``elasticity`` is the proportional fall in US demand per unit tariff
-  (trade elasticity; ``DEFAULT_ELASTICITY = 2.0``). Calibration is COMPLETE
-  (Jul 2026): the value is anchored on the ONS realised 2025 US-export
-  outturn and cross-checked against De Lyon & Pessoa (2021) UK worker-level
-  elasticities and the OBR Mar-2025 / Ignatenko et al. (2025) UK aggregate
-  anchors — see the DEFAULT_ELASTICITY comment below.
-- ``passthrough`` is the share of the sector output loss that lands on the
-  sector wage bill (default 1.0 = full pass-through; a labour-share or
-  margin-absorption parameter belongs here).
+- ``elasticity`` is a scenario parameter for the proportional export-demand
+  fall per unit tariff. It is not estimated by this project.
+- ``wage_bill_incidence`` is the assumed share of that exposure assigned to
+  employee earnings. The legacy ``passthrough`` name remains as an API alias.
 
 Employment is an OUTCOME of the derived shock (via the adjustment-margin
 families in shocks.py), not a free input.
@@ -52,28 +48,27 @@ STEEL_SIC = 24
 PHARMA_SIC = 21
 
 #: EPD auto quota: 100,000 vehicles at 10%, 25% above. SMMT: 2024 US exports
-#: ~102k units, so the quota bites only marginally; effective rate modelled
-#: at the in-quota 10% (TODO: blend with realised over-quota volumes).
+#: ~102k units, so the quota bites only marginally. This static scenario uses
+#: the in-quota 10%; realised above-quota volumes are outside the frozen input.
 EPD_AUTO_EFFECTIVE_RATE = 0.10
-#: EPD steel relief was conditional and delayed; 0.5 = half of the 25% rate
-#: relieved. TODO: update to the implemented terms.
+#: EPD steel relief was conditional and delayed; 0.5 is an explicit scenario
+#: assumption that half of the 25% rate is relieved, not an implementation fact.
 EPD_STEEL_RELIEF_SHARE = 0.5
 
-#: CALIBRATED (Jul 2026): elasticity = 2.0, anchored on the ONS realised
-#: outturn — UK goods exports to the US fell 24.7% in April 2025 against a
-#: trade-weighted average full-schedule tariff of 12.8% (computed from the
-#: real intensity build: 0.247 / 0.128 = 1.93, rounded to 2.0; also mid-range
-#: of short-run trade elasticities). With passthrough = 1.0 (the full sector
-#: output loss lands on the sector wage bill, the right short-run displacement
-#: assumption), the implied aggregate gross earnings loss under the full
-#: tariff schedule on FRS 2024-25 is ~£1.8bn/yr, i.e. ~0.06% of GDP — the
-#: DIRECT exposed-sector earnings channel only, sensibly below the OBR
-#: Mar-2025 no-retaliation scenario peak of ~0.3-0.6% of GDP, which includes
-#: uncertainty/investment and general-equilibrium channels a static
-#: microsimulation deliberately excludes. run_scenarios.py prints the implied
-#: aggregate at run time.
-DEFAULT_ELASTICITY = 2.0
-DEFAULT_PASSTHROUGH = 1.0
+#: Scenario anchors, not estimated coefficients. 0.4 reproduces the lower OBR
+#: export-demand anchor highlighted by the audit; 1.0 is the neutral central
+#: stress; 2.0 preserves the former April-outturn calibration as a high case;
+#: and 3.0 is a severe tail sensitivity.
+ELASTICITY_SCENARIOS = {
+    "obr_low": 0.4,
+    "central": 1.0,
+    "former_april_high": 2.0,
+    "severe": 3.0,
+}
+DEFAULT_ELASTICITY = ELASTICITY_SCENARIOS["central"]
+DEFAULT_WAGE_BILL_INCIDENCE = 1.0
+# Backwards-compatible alias for scripts and third-party imports.
+DEFAULT_PASSTHROUGH = DEFAULT_WAGE_BILL_INCIDENCE
 
 TARIFF_SCENARIOS = ("full_tariff", "epd")
 
@@ -113,7 +108,7 @@ def tariff_rates(scenario: str) -> pd.Series:
 
 
 def load_us_export_intensity() -> pd.DataFrame:
-    """US-export intensity by SIC division (PLACEHOLDER numbers — see TODO)."""
+    """Load the frozen HMRC/ONS US-export-intensity build by SIC division."""
     path = resources.files("uk_trade_shock_study") / "data" / US_EXPORT_INTENSITY_CSV
     table = pd.read_csv(str(path), comment="#")
     table = table.set_index("sic_division")
@@ -136,9 +131,11 @@ def load_measured_export_falls() -> pd.Series:
 def sector_earnings_shocks(
     scenario: str,
     elasticity: float = DEFAULT_ELASTICITY,
-    passthrough: float = DEFAULT_PASSTHROUGH,
+    passthrough: float | None = None,
     intensity: pd.DataFrame | None = None,
     export_falls: pd.Series | None = None,
+    *,
+    wage_bill_incidence: float | None = None,
 ) -> pd.Series:
     """Per-SIC-division earnings-shock size (fraction of the sector wage bill).
 
@@ -152,16 +149,25 @@ def sector_earnings_shocks(
     (fractions, indexed by SIC division); by default the packaged outturn
     CSV is used.
     """
+    if passthrough is not None and wage_bill_incidence is not None:
+        raise ValueError("use wage_bill_incidence or legacy passthrough, not both")
+    incidence = (
+        wage_bill_incidence
+        if wage_bill_incidence is not None
+        else DEFAULT_WAGE_BILL_INCIDENCE if passthrough is None else passthrough
+    )
+    if incidence < 0:
+        raise ValueError("wage_bill_incidence must be non-negative")
     if intensity is None:
         intensity = load_us_export_intensity()
     if scenario == MEASURED_SCENARIO:
         if export_falls is None:
             export_falls = load_measured_export_falls()
         falls = export_falls.reindex(intensity.index).fillna(0.0).clip(lower=0.0)
-        shock = falls * intensity["us_export_share"] * passthrough
+        shock = falls * intensity["us_export_share"] * incidence
     else:
         rates = tariff_rates(scenario).reindex(intensity.index).fillna(BASELINE_TARIFF)
-        shock = elasticity * rates * intensity["us_export_share"] * passthrough
+        shock = elasticity * rates * intensity["us_export_share"] * incidence
     return shock.clip(0.0, 1.0).rename("earnings_shock")
 
 
@@ -184,9 +190,10 @@ def load_frs_adult_sic(adult_tab_path: str | Path) -> pd.Series:
     """SIC 2007 division keyed by ``SERNUM*1000 + PERSON`` from FRS adult.tab.
 
     Mirrors uk-ai-study's SOC join (person_id = SERNUM*1000 + PERSON, the
-    current policyengine-uk-data convention). TODO: verify the FRS industry
-    column name/coding in the 2024-25 adult.tab (candidates: ``SIC``,
-    ``INDINC``); values outside known divisions become NaN.
+    current policyengine-uk-data convention). The frozen build reads SIC from
+    the h5; this legacy fallback accepts the two documented adult.tab column
+    candidates, ``SIC`` and ``INDINC``. Values outside known divisions become
+    NaN.
     """
     adult = pd.read_csv(adult_tab_path, sep="\t")
     column = next((c for c in ("SIC", "INDINC") if c in adult.columns), None)
@@ -217,8 +224,10 @@ def person_earnings_shock(
     sic_division: np.ndarray | pd.Series,
     scenario: str,
     elasticity: float = DEFAULT_ELASTICITY,
-    passthrough: float = DEFAULT_PASSTHROUGH,
+    passthrough: float | None = None,
     export_falls: pd.Series | None = None,
+    *,
+    wage_bill_incidence: float | None = None,
 ) -> np.ndarray:
     """Per-person earnings-shock size from SIC division codes.
 
@@ -226,7 +235,11 @@ def person_earnings_shock(
     take a ZERO shock: only US-goods-exporting sectors are exposed.
     """
     shocks = sector_earnings_shocks(
-        scenario, elasticity, passthrough, export_falls=export_falls
+        scenario,
+        elasticity,
+        passthrough,
+        export_falls=export_falls,
+        wage_bill_incidence=wage_bill_incidence,
     )
     codes = pd.to_numeric(pd.Series(np.asarray(sic_division)), errors="coerce")
     return codes.map(shocks).fillna(0.0).to_numpy(dtype=float)

@@ -1,16 +1,15 @@
 """Duration sensitivity, full_tariff displacement margin.
 
 Conventions mirror the sister study's analysis/sensitivity_duration_takeup.py.
-10 Monte Carlo displacement draws (seeds 0-9) per variant.
+Five exploratory displacement draws (seeds 0--4) per variant.
 
-(a) DURATION: the central results annualise a full-year (12-month) out-of-work
-    spell. Under d = 6 months, displaced workers keep 50% of baseline annual
-    employment income, evaluated IN-MODEL so taxes and means-tested benefits
-    respond to the actual annual income. Documented hybrid: the annual model
-    has no intra-year timing, so displaced persons carry the full displacement
-    transition (hours zeroed, employment_status = UNEMPLOYED) while receiving
-    half a year's earnings. d = 12 months is the central case, recomputed on
-    the same seeds for comparability.
+(a) DURATION: the annual PolicyEngine model cannot represent a six-month
+    employed state followed by a six-month unemployed state coherently.
+    The former hybrid (half annual earnings plus full-year unemployment
+    status) has therefore been removed rather than presented as a sensitivity.
+    This script reproduces only the internally coherent 12-month endpoint.
+    A shorter-duration estimate requires monthly simulations and is outside
+    the current static replication contract.
 
 (b) UC TAKE-UP: superseded. The take-up sensitivity is now reported by the
     main-text grid (analysis/takeup_sensitivity.py); the variants that once
@@ -39,14 +38,13 @@ from uk_trade_shock_study.shocks import (
 PERIOD = 2026
 DATASET = Path("data/frs_2024_25.h5")
 RESULTS = Path("results")
-# Appendix robustness grid; headline scenarios use 50 draws.
+# Appendix robustness grid; headline scenarios use 10 draws.
 N_DRAWS = 5
 # The take-up half of this script is SUPERSEDED by the main-text take-up grid
 # (analysis/takeup_sensitivity.py -> Table tab:takeupgrid). Only the duration
 # variants are run and written here.
 VARIANTS = (
     "duration_12m_central",
-    "duration_6m",
 )
 
 
@@ -66,7 +64,6 @@ def sim_metrics(sim):
 def main() -> None:
     dataset, baseline, persons = _baseline_and_persons(DATASET, None, PERIOD)
     w = persons["weight"].to_numpy(float)
-    base_emp = persons["employment_income"].to_numpy(float)
     scen = PRESETS["full_tariff_displacement"]
     base = sim_metrics(baseline)
 
@@ -83,14 +80,18 @@ def main() -> None:
             t = table.copy()
             t.attrs = dict(table.attrs)
             base_row = base
-            if variant == "duration_6m":
-                t["employment_income"] = np.where(
-                    displaced, 0.5 * base_emp, t["employment_income"].to_numpy(float)
-                )
             sim = build_shocked_simulation(dataset, baseline, t, PERIOD)
             m = sim_metrics(sim)
             del sim
-            gross = float(((base_emp - t["employment_income"].to_numpy(float)) * w).sum())
+            gross = float(
+                (
+                    (
+                        persons["employment_income"].to_numpy(float)
+                        - t["employment_income"].to_numpy(float)
+                    )
+                    * w
+                ).sum()
+            )
             net = base_row["hni"] - m["hni"]
             rows[variant].append({
                 "gross_earnings_loss_bn": gross / 1e9,
@@ -108,9 +109,9 @@ def main() -> None:
         "modelled_baseline_uc_takeup_person_weighted": modelled_takeup,
         "central_post_shock_uc_takeup": DEFAULT_UC_TAKEUP,
         "notes": {
-            "duration_6m": "displaced keep 50% of baseline annual earnings "
-                           "(6-month spell), in-model hybrid: transition "
-                           "(hours/status) unchanged.",
+            "duration_6m": "Removed: an annual model cannot combine a half-year "
+            "earnings flow with a full-year unemployment status coherently. "
+            "Monthly modelling is required.",
         },
     }
     for variant in VARIANTS:

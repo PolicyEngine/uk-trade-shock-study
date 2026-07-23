@@ -30,7 +30,7 @@ from uk_trade_shock_study.shocks import (
 )
 
 PERIOD = 2026
-# Reallocation robustness family; headline scenarios use 50 draws.
+# Reallocation robustness family; headline scenarios use 10 draws.
 N_DRAWS = 5
 DATASET = Path("data/frs_2024_25.h5")
 RESULTS = Path("results")

@@ -138,6 +138,11 @@ class TradeShockScenario:
     #: through Bernoulli displacement; the remainder is a survivor wage cut.
     displacement_share: float = 0.5
 
+    @property
+    def wage_bill_incidence(self) -> float:
+        """Canonical name for the legacy ``passthrough`` constructor field."""
+        return self.passthrough
+
     def __post_init__(self):
         if not 0.0 <= self.uc_takeup <= 1.0:
             raise ValueError("uc_takeup must lie in [0, 1]")
@@ -164,7 +169,7 @@ def _person_shock(persons: pd.DataFrame, scenario: TradeShockScenario) -> np.nda
         persons["sic_division"],
         scenario.tariff_scenario,
         elasticity=scenario.elasticity,
-        passthrough=scenario.passthrough,
+        wage_bill_incidence=scenario.wage_bill_incidence,
     )
 
 

@@ -36,7 +36,7 @@ def main() -> None:
     results = Path("results")
     results.mkdir(exist_ok=True)
 
-    # print the calibrated aggregate gross earnings loss per tariff scenario
+    # Print the imposed aggregate gross earnings stress per scenario.
     from policyengine_uk import Microsimulation
     from policyengine_uk.data import UKSingleYearDataset
 

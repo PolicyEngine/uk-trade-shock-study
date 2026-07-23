@@ -45,8 +45,9 @@ CROSSWALK — SITC (rev 4) -> SIC 2007 division, coded in SITC2_TO_SIC /
 
 DENOMINATOR — division total turnover, ONS Annual Business Survey
   ("Non-financial business economy, UK: Sections A to S", abssectionsas.xlsx,
-  Section C sheet), latest year available (2023), £m. Turnover proxies gross
-  output at basic prices; intensity = US exports / turnover.
+  Section C sheet), latest available non-suppressed year by division (2024 in
+  the frozen build; beverages fall back to 2022), £m. Turnover is an exposure
+  denominator, not domestic value added; intensity = US exports / turnover.
 
 Usage: .venv/bin/python analysis/build_trade_by_sic.py
 Writes the packaged CSV in place. Requires network on first run; raw API

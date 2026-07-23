@@ -3,6 +3,11 @@
 **Audit date:** 21 July 2026  
 **Recommendation:** Major revision; not ready for external circulation in its current form.
 
+> **Status note (23 July 2026):** This file preserves the original audit.
+> Implemented remediations and deliberately out-of-scope empirical extensions
+> are tracked in [`REVISION_STATUS.md`](REVISION_STATUS.md). Do not read the
+> historical “remaining” language below as the state of the current branch.
+
 ## Remediation completed in this working revision
 
 The findings below record the code and manuscript as first audited. This

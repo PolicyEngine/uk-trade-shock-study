@@ -57,6 +57,8 @@ interval, and can be consumed by an expensive licensed-data run.
   expenditure data before causal use.
 - `uk_trade_shock_study/uncertainty.py` — reproducible Latin-hypercube draws
   for structured parameter sensitivity (not confidence intervals).
+- `uk_trade_shock_study/policy_counterfactuals.py` — transparent wage-insurance
+  and targeted-transfer accounting helpers for subsequent PolicyEngine runs.
 
 ## Setup
 

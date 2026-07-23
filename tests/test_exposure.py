@@ -9,6 +9,7 @@ from uk_trade_shock_study.exposure import (
     BASELINE_TARIFF,
     EPD_AUTO_EFFECTIVE_RATE,
     EPD_STEEL_RELIEF_SHARE,
+    ELASTICITY_SCENARIOS,
     PHARMA_SIC,
     STEEL_SIC,
     load_us_export_intensity,
@@ -16,6 +17,15 @@ from uk_trade_shock_study.exposure import (
     sector_earnings_shocks,
     tariff_rates,
 )
+
+
+def test_default_calibration_scenarios_are_explicit():
+    assert ELASTICITY_SCENARIOS == {
+        "obr_low": 0.4,
+        "central": 1.0,
+        "former_april_high": 2.0,
+        "severe": 3.0,
+    }
 
 
 def test_full_tariff_schedule():
@@ -56,6 +66,16 @@ def test_shock_formula():
     assert shock.loc[21] == pytest.approx(2.0 * BASELINE_TARIFF * 0.5 * 0.5)
     huge = sector_earnings_shocks("full_tariff", elasticity=100.0, intensity=intensity)
     assert (huge <= 1.0).all()
+
+
+def test_wage_bill_incidence_name_and_legacy_alias_match():
+    canonical = sector_earnings_shocks("full_tariff", wage_bill_incidence=0.5)
+    legacy = sector_earnings_shocks("full_tariff", passthrough=0.5)
+    pd.testing.assert_series_equal(canonical, legacy)
+    with pytest.raises(ValueError):
+        sector_earnings_shocks(
+            "full_tariff", passthrough=0.5, wage_bill_incidence=0.5
+        )
 
 
 def test_epd_pharma_shock_is_zero():

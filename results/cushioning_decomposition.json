@@ -1,46 +1,42 @@
 {
   "full_tariff_displacement_seed0": {
-    "gross_earnings_loss": 4067026297.7121744,
-    "net_disposable_loss": 2545549312.0,
-    "cushioning_rate": 0.3741006018495753,
+    "gross_earnings_loss": 1476352809.0388372,
+    "net_disposable_loss": 943718400.0,
+    "cushioning_rate": 0.3607771840022459,
     "components_share_of_gross_loss": {
-      "income_tax": 0.26447368878588845,
-      "employee_national_insurance": 0.04124926496034643,
-      "universal_credit": 0.04016503406321104,
-      "other_benefits": -0.0006334948587926085,
-      "other_residual": 0.028846108898921956
+      "income_tax": 0.2534725402094776,
+      "employee_national_insurance": 0.04191809941469721,
+      "universal_credit": 0.032539450637997805,
+      "other_benefits": 0.0,
+      "other_residual": 0.03284709374007326
     },
     "components_gbp": {
-      "income_tax": 1075621447.3451538,
-      "employee_national_insurance": 167761845.35502625,
-      "universal_credit": 163352249.7835846,
-      "other_benefits": -2576440.2501749992,
-      "other_residual": 117317883.47858477
+      "income_tax": 374214896.7524719,
+      "employee_national_insurance": 61885903.82045746,
+      "universal_credit": 48039709.35398865,
+      "other_benefits": 0.0,
+      "other_residual": 48493899.111919165
     },
-    "other_benefits_detail_gbp": {
-      "tax_free_childcare": -2576440.2501749992
-    }
+    "other_benefits_detail_gbp": {}
   },
   "full_tariff_wage_cut": {
-    "gross_earnings_loss": 1771498650.499899,
-    "net_disposable_loss": 1044774912.0,
-    "cushioning_rate": 0.410231042679499,
+    "gross_earnings_loss": 885749325.2499483,
+    "net_disposable_loss": 519700480.0,
+    "cushioning_rate": 0.4132646052500841,
     "components_share_of_gross_loss": {
-      "income_tax": 0.3516532927453516,
-      "employee_national_insurance": 0.04269499887341217,
-      "universal_credit": 0.014810267730945442,
-      "other_benefits": 0.001031204573024335,
-      "other_residual": 4.127875676541128e-05
+      "income_tax": 0.3559848433013936,
+      "employee_national_insurance": 0.042575720927613706,
+      "universal_credit": 0.014712074854461733,
+      "other_benefits": 6.170308982961544e-07,
+      "other_residual": -8.650864283208873e-06
     },
     "components_gbp": {
-      "income_tax": 622953333.5422363,
-      "employee_national_insurance": 75634132.88734436,
-      "universal_credit": 26236369.29891205,
-      "other_benefits": 1826777.509501934,
-      "other_residual": 73125.26190423965
+      "income_tax": 315313334.75341797,
+      "employee_national_insurance": 37711416.08366394,
+      "universal_credit": 13031210.375366211,
+      "other_benefits": 546.5347018241882,
+      "other_residual": -7662.497201681137
     },
-    "other_benefits_detail_gbp": {
-      "tax_free_childcare": 1825684.406791687
-    }
+    "other_benefits_detail_gbp": {}
   }
 }

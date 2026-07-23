@@ -3,6 +3,7 @@
 import numpy as np
 import pandas as pd
 import pytest
+from pathlib import Path
 
 from uk_trade_shock_study import supply_chain as sc
 
@@ -20,6 +21,11 @@ TOY = sc.IOTables(
     intermediate=Z,
     gross_output=np.array([100.0, 100.0, 100.0]),
     compensation=np.array([50.0, 40.0, 30.0]),
+)
+
+IOT_DATA = Path(__file__).resolve().parents[1] / "data" / "iot2022revisedproduct.xlsx"
+requires_iot_data = pytest.mark.skipif(
+    not IOT_DATA.exists(), reason="requires the non-distributed ONS IO workbook"
 )
 
 
@@ -95,6 +101,7 @@ def test_displacement_with_shock_expected_quota():
     assert np.mean(draws) == pytest.approx(20.0, abs=1.0)
 
 
+@requires_iot_data
 def test_per_division_upstream_levels_sum_to_aggregate():
     """Spanning CPA groups must be SPLIT, not replicated, across divisions."""
     table = sc.upstream_sector_shocks("full_tariff")
@@ -106,6 +113,7 @@ def test_per_division_upstream_levels_sum_to_aggregate():
     assert table["upstream_output_fall"].sum() == pytest.approx(float(dg.sum()), rel=1e-9)
 
 
+@requires_iot_data
 def test_iot_is_domestic_use_matrix():
     iot = sc.load_iot()
     # Domestic intermediate use of a product never exceeds its gross output.

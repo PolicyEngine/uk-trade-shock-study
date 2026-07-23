@@ -24,10 +24,10 @@ REALISED EXPORT FALL, per division j:
     fall_j = 1 - (exports in POST window) / (exports in BASELINE window)
 
 POST window: May 2025 - February 2026 (10 months). April 2025 - the first
-full tariff month - is EXCLUDED: it mixes the initial collapse with the
-unwinding of the Q1-2025 front-running spike and is the month the
-epsilon = 2.0 anchor was calibrated on, so excluding it also keeps the
-validation out-of-sample.
+full tariff month - is EXCLUDED because it mixes the initial movement with
+the unwinding of the Q1-2025 front-running spike. The former epsilon = 2.0
+calibration used that month; it is now retained only as a high-stress
+sensitivity rather than the central scenario.
 
 BASELINE window (documented choice): for each post calendar month, the MEAN
 of the same calendar month one and two years earlier (e.g. May 2025 vs the
@@ -40,14 +40,14 @@ Jan-Feb 2026 post months would divide by an inflated Jan-Feb 2025 base and
 overstate the fall. The one-year YoY variant is computed and stored alongside
 as a sensitivity.
 
-MEASURED EARNINGS SHOCK: s_j^measured = max(fall_j, 0) x us_export_share_j.
-No elasticity and no tariff rate enter - the realised fall IS the demand
-response, with the EPD (autos quota rate, steel relief, pharma exemption)
-already embedded in the outturn. Divisions whose US exports ROSE over the
-window take a zero shock (the displacement machinery cannot model gains;
-the raw negative falls are preserved in the outputs). Pass-through of the
-export fall to the sector wage bill remains 1.0, as in the calibrated
-families.
+MEASURED DOWNSIDE EARNINGS SHOCK:
+    s_j^measured = max(fall_j, 0) x us_export_share_j.
+No elasticity and no tariff rate enter. The outturn embeds tariffs alongside
+global demand, prices, exchange rates, composition and other shocks, so this
+is an observed-outturn stress scenario rather than a tariff-caused estimate.
+Divisions whose US exports rose take a zero shock in the downside
+microsimulation because displacement cannot model gains. The raw signed falls
+and an unclipped net aggregate are preserved in the validation output.
 
 Outputs:
 - uk_trade_shock_study/data/measured_export_falls_by_sic.csv (packaged;
@@ -68,6 +68,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import requests
+from uk_trade_shock_study.exposure import DEFAULT_ELASTICITY
 
 from build_trade_by_sic import (
     DIVISION_NAMES,
@@ -88,7 +89,7 @@ FIRST_MONTH, LAST_MONTH = 202301, 202602
 POST_MONTHS = [202505, 202506, 202507, 202508, 202509, 202510, 202511, 202512, 202601, 202602]
 
 # epsilon-model primitives for the validation table (mirror exposure.py).
-ELASTICITY = 2.0
+ELASTICITY = DEFAULT_ELASTICITY
 TARIFF_FULL = {29: 0.25, 24: 0.25}
 TARIFF_EPD = {29: 0.10, 24: 0.125, 21: 0.0}
 BASELINE_TARIFF = 0.10
@@ -200,10 +201,10 @@ def main() -> None:
     # sanity: 2024 calendar total must reproduce the intensity build's basis
     total_2024 = monthly[(monthly.month >= 202401) & (monthly.month <= 202412)]["value"].sum()
     print(f"2024 mapped US-export total: £{total_2024 / 1e9:.1f}bn (build_trade_by_sic: ~£52.5bn)")
-    # sanity: the April 2025 aggregate fall that anchored epsilon
+    # Diagnostic only: April is not used to identify the central scenario.
     apr = monthly[monthly.month == 202504]["value"].sum()
     apr_base = monthly[monthly.month.isin([202404, 202304])].groupby("month")["value"].sum().mean()
-    print(f"April 2025 aggregate YoY(2yr-avg) fall: {1 - apr / apr_base:.1%} (ONS anchor: 24.7% YoY)")
+    print(f"April 2025 aggregate YoY(2yr-avg) fall: {1 - apr / apr_base:.1%} (diagnostic only)")
 
     falls = realised_falls(monthly)
     agg_fall = 1.0 - falls["post"].sum() / falls["baseline_avg_2yr"].sum()
@@ -222,7 +223,8 @@ def main() -> None:
         "# in the 1-yr base; the pure 1-yr YoY fall is kept as a sensitivity column).",
         "# Source: HMRC uktradeinfo OTS API, SITC->SIC crosswalk of",
         "# analysis/build_trade_by_sic.py; written by analysis/build_measured_shocks.py.",
-        "# export_fall may be negative (US exports rose); exposure.py clips at zero.",
+        "# export_fall may be negative (US exports rose). The microsimulation uses",
+        "# the clipped downside; validation_sectors.json also reports the signed net.",
         "sic_division,description,export_fall,export_fall_yoy1",
     ]
     for div in sorted(set(intensity.index) & set(falls.index)):
@@ -250,6 +252,7 @@ def main() -> None:
             "realised_fall_yoy1": float(falls.loc[div, "export_fall_yoy1"]),
             "shock_full": ELASTICITY * tau_f * x,
             "shock_measured": max(float(falls.loc[div, "export_fall"]), 0.0) * x,
+            "shock_measured_signed": float(falls.loc[div, "export_fall"]) * x,
             "post_exports_gbp": float(falls.loc[div, "post"]),
             "baseline_exports_gbp": float(falls.loc[div, "baseline_avg_2yr"]),
         }
@@ -264,6 +267,17 @@ def main() -> None:
         "baseline": "mean of same calendar months 1 and 2 years earlier",
         "aggregate_realised_fall": float(agg_fall),
         "aggregate_realised_fall_yoy1": float(agg_yoy),
+        "measured_scenario_interpretation": (
+            "observed-outturn stress scenario; not a tariff-caused estimate"
+        ),
+        "aggregate_shock_measured_downside": float(
+            (frame["shock_measured"] * frame["baseline_exports_gbp"]).sum()
+            / frame["baseline_exports_gbp"].sum()
+        ),
+        "aggregate_shock_measured_signed_net": float(
+            (frame["shock_measured_signed"] * frame["baseline_exports_gbp"]).sum()
+            / frame["baseline_exports_gbp"].sum()
+        ),
         "aggregate_predicted_fall_full": float(
             (frame["predicted_fall_full"] * frame["baseline_exports_gbp"]).sum()
             / frame["baseline_exports_gbp"].sum()

@@ -63,10 +63,14 @@ class MonteCarloResult:
     gini_change_mean: float
     gini_change_sd: float
     displaced_weighted_mean: float
+    exchequer_cost_mc_se: float = 0.0
+    poverty_rate_change_bhc_mc_se: float = 0.0
+    gini_change_mc_se: float = 0.0
     lcwra_weighted_mean: float = 0.0
     reallocated_weighted_mean: float = 0.0
     cushioning_rate_mean: float = float("nan")
     cushioning_rate_sd: float = 0.0
+    cushioning_rate_mc_se: float = 0.0
     draws: list = field(default_factory=list)
 
 
@@ -264,7 +268,7 @@ def run_monte_carlo(
     base_seed: int = 0,
     adult_tab_path: str | Path | None = None,
 ) -> MonteCarloResult:
-    """Repeat a scenario across take-up/assignment seeds; report mean +/- SD.
+    """Repeat a scenario and report assignment SD and numerical MC SE.
 
     Wage earnings cuts are deterministic, but newly entitled benefit units'
     UC claiming draws vary by seed, so wage-cut scenarios retain ``n_draws``.
@@ -279,20 +283,33 @@ def run_monte_carlo(
     cost = np.array([d.exchequer_cost for d in draws])
     pov = np.array([d.poverty_rate_change_bhc for d in draws])
     gini_change = np.array([d.gini_shocked - d.gini_baseline for d in draws])
+    root_n = np.sqrt(n_draws)
+    cost_sd = float(cost.std(ddof=1)) if n_draws > 1 else 0.0
+    pov_sd = float(pov.std(ddof=1)) if n_draws > 1 else 0.0
+    gini_sd = float(gini_change.std(ddof=1)) if n_draws > 1 else 0.0
+    cushioning_sd = (
+        float(np.std([d.cushioning_rate for d in draws], ddof=1))
+        if n_draws > 1
+        else 0.0
+    )
     return MonteCarloResult(
         scenario=scenario.name,
         n_draws=n_draws,
         exchequer_cost_mean=float(cost.mean()),
-        exchequer_cost_sd=float(cost.std(ddof=1)) if n_draws > 1 else 0.0,
+        exchequer_cost_sd=cost_sd,
+        exchequer_cost_mc_se=cost_sd / root_n,
         poverty_rate_change_bhc_mean=float(pov.mean()),
-        poverty_rate_change_bhc_sd=float(pov.std(ddof=1)) if n_draws > 1 else 0.0,
+        poverty_rate_change_bhc_sd=pov_sd,
+        poverty_rate_change_bhc_mc_se=pov_sd / root_n,
         gini_change_mean=float(gini_change.mean()),
-        gini_change_sd=float(gini_change.std(ddof=1)) if n_draws > 1 else 0.0,
+        gini_change_sd=gini_sd,
+        gini_change_mc_se=gini_sd / root_n,
         displaced_weighted_mean=float(np.mean([d.displaced_weighted for d in draws])),
         lcwra_weighted_mean=float(np.mean([d.lcwra_weighted for d in draws])),
         reallocated_weighted_mean=float(np.mean([d.reallocated_weighted for d in draws])),
         cushioning_rate_mean=float(np.mean([d.cushioning_rate for d in draws])),
-        cushioning_rate_sd=float(np.std([d.cushioning_rate for d in draws], ddof=1)) if n_draws > 1 else 0.0,
+        cushioning_rate_sd=cushioning_sd,
+        cushioning_rate_mc_se=cushioning_sd / root_n,
         draws=[asdict(d) for d in draws],
     )
 

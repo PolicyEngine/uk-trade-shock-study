@@ -13,6 +13,7 @@ relief, pharma exempt) prices the deal for households and the Exchequer.
 
 Companion to [uk-ai-study](../uk-ai-study), whose conventions this repo
 mirrors. Literature and scenario design: `tariff_paper_lit_review.md`.
+The disposition of the referee audit is tracked in `REVISION_STATUS.md`.
 
 ## Pipeline
 
@@ -47,10 +48,16 @@ mirrors. Literature and scenario design: `tariff_paper_lit_review.md`.
 ## Setup
 
 ```sh
-python3.13 -m venv .venv && . .venv/bin/activate
-pip install -e '.[dev]'
-pytest            # unit tests run on synthetic tables, no FRS data needed
+uv sync --extra dev --frozen
+make check         # synthetic tests + frozen-input manifest validation
 ```
+
+`uv.lock` pins the Python 3.13 environment. CI runs the same lightweight
+contract without licensed data. With the licensed/raw files listed in
+`uk_trade_shock_study/data/input_manifest.json` present under `data/`, run
+`make reproduce` to rebuild results, figures and the paper. The manifest
+records source URLs, retrieval dates, vintages, exclusions and hashes; missing
+licensed inputs are never downloaded or redistributed implicitly.
 
 ## Data requirements
 

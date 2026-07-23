@@ -4,58 +4,32 @@
   "modelled_baseline_uc_takeup_person_weighted": 0.5477457313882192,
   "central_post_shock_uc_takeup": 0.8,
   "notes": {
-    "duration_6m": "displaced keep 50% of baseline annual earnings (6-month spell), in-model hybrid: transition (hours/status) unchanged."
+    "duration_6m": "Removed: an annual model cannot combine a half-year earnings flow with a full-year unemployment status coherently. Monthly modelling is required."
   },
   "duration_12m_central": {
     "gross_earnings_loss_bn": {
-      "mean": 2.10988434018341,
-      "sd": 1.2965855328033187
+      "mean": 0.9337716341935145,
+      "sd": 0.77467602729394
     },
     "exchequer_cost_bn": {
-      "mean": 1.0312974336,
-      "sd": 0.6593943880511774
+      "mean": 0.4758044672,
+      "sd": 0.468933477766156
     },
     "cushioning_rate": {
-      "mean": 0.3823184979310622,
-      "sd": 0.05365197919059125
+      "mean": 0.3571658914955642,
+      "sd": 0.059311409561381936
     },
     "uc_change_bn": {
-      "mean": 0.12416460904073182,
-      "sd": 0.04613698753400513
+      "mean": 0.03942025380675812,
+      "sd": 0.016588817316880933
     },
     "poverty_change_bhc_pp": {
-      "mean": 0.03194180595646967,
-      "sd": 0.016360362997950028
+      "mean": 0.010704283559191952,
+      "sd": 0.00904163051696586
     },
     "displaced_weighted": {
-      "mean": 32201.625909423827,
-      "sd": 15186.50933832614
-    }
-  },
-  "duration_6m": {
-    "gross_earnings_loss_bn": {
-      "mean": 1.054942170091705,
-      "sd": 0.6482927664016593
-    },
-    "exchequer_cost_bn": {
-      "mean": 0.575668224,
-      "sd": 0.3602267028250795
-    },
-    "cushioning_rate": {
-      "mean": 0.45418886594683344,
-      "sd": 0.03352447848312963
-    },
-    "uc_change_bn": {
-      "mean": 0.03190070586179809,
-      "sd": 0.020166506367486278
-    },
-    "poverty_change_bhc_pp": {
-      "mean": 0.007854510607003262,
-      "sd": 0.009406376263936644
-    },
-    "displaced_weighted": {
-      "mean": 32201.625909423827,
-      "sd": 15186.50933832614
+      "mean": 12813.154162597657,
+      "sd": 6333.937544595136
     }
   }
 }

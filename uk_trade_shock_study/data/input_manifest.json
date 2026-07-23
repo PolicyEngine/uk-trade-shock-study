@@ -1,0 +1,71 @@
+{
+  "frozen_at": "2026-07-23",
+  "notes": "Hashes identify the exact inputs used by the frozen build. Licensed and cached raw inputs are not distributed; packaged derived inputs are committed.",
+  "inputs": [
+    {
+      "id": "hmrc_us_exports_2024",
+      "source": "HMRC uktradeinfo RTS/OTS API",
+      "url": "https://api.uktradeinfo.com",
+      "retrieved_at": "2026-07-17",
+      "vintage": "calendar year 2024",
+      "local_path": "data/rts_us_2024.json",
+      "sha256": "77a47bfde808c04e0d7c7c79e38a5fe0219014f16394b2f26e77df3c2f1631ad",
+      "distributed": false,
+      "exclusions": "SITC 971, 681 and 896; extraction and non-production chapters as documented in analysis/build_trade_by_sic.py"
+    },
+    {
+      "id": "hmrc_us_exports_monthly",
+      "source": "HMRC uktradeinfo OTS API",
+      "url": "https://api.uktradeinfo.com",
+      "retrieved_at": "2026-07-17",
+      "vintage": "January 2023 to February 2026",
+      "local_path": "data/ots_us_monthly_202301_202602.json",
+      "sha256": "c52875eabb74695c0e0e5a00f5208b376d2c4f9f8778feee83e77dfa3b2e8484",
+      "distributed": false,
+      "exclusions": "Same SITC exclusions and crosswalk as the calendar-2024 build"
+    },
+    {
+      "id": "ons_abs_turnover",
+      "source": "ONS Annual Business Survey, Sections A to S",
+      "url": "https://www.ons.gov.uk/file?uri=/businessindustryandtrade/business/businessservices/datasets/uknonfinancialbusinesseconomyannualbusinesssurveysectionsas/current/abssectionsas.xlsx",
+      "retrieved_at": "2026-07-17",
+      "vintage": "latest non-suppressed division year; 2024 in the frozen workbook, beverages use 2022",
+      "local_path": "data/abssectionsas.xlsx",
+      "sha256": "9e548c5c410b73e5a7aec1f97db8f92843430cb6ef5457b1459a0e0e9b13e710",
+      "distributed": false,
+      "exclusions": "Suppressed division-years are skipped; latest available non-suppressed year is used per division"
+    },
+    {
+      "id": "frs_2024_25",
+      "source": "PolicyEngine UK single-year dataset built from Family Resources Survey 2024-25",
+      "url": "https://huggingface.co/policyengine/policyengine-uk-data",
+      "retrieved_at": "2026-07-22",
+      "vintage": "FRS 2024-25",
+      "local_path": "data/frs_2024_25.h5",
+      "sha256": "623802aad0f7eef76df8a0ce1b19933b5648ac97486d5b01d371e7c7d374ba40",
+      "distributed": false,
+      "exclusions": "Licensed microdata are not redistributed"
+    },
+    {
+      "id": "ons_input_output_2022",
+      "source": "ONS input-output analytical tables",
+      "url": "https://www.ons.gov.uk/economy/nationalaccounts/supplyandusetables",
+      "retrieved_at": "2026-07-17",
+      "vintage": "2022 revised product-by-product table",
+      "local_path": "data/iot2022revisedproduct.xlsx",
+      "sha256": "c4b0ebf34ccfceb8349de4a727c17618dfbddcaca1d6ae1aa13237641bc93a93",
+      "distributed": false,
+      "exclusions": "Used only for the separately labelled accounting sensitivity"
+    }
+  ],
+  "derived_outputs": [
+    {
+      "path": "uk_trade_shock_study/data/us_export_intensity_by_sic.csv",
+      "sha256": "c671a9e99804c0100d0c09e3cced3690d1be26a784377e04adbdd32420af113d"
+    },
+    {
+      "path": "uk_trade_shock_study/data/measured_export_falls_by_sic.csv",
+      "sha256": "fec39f0e1dfdb9185e8dd67b5c0830eafaeb6473cb3c72e0460622a5ee987468"
+    }
+  ]
+}

@@ -33,9 +33,9 @@ from uk_trade_shock_study.shocks import (
 PERIOD = 2026
 DATASET = Path("data/frs_2024_25.h5")
 RESULTS = Path("results")
-ELASTICITIES = (1.0, 1.5, 2.0, 3.0)
+ELASTICITIES = (0.4, 1.0, 2.0, 3.0)
 PASSTHROUGHS = (0.5, 0.75, 1.0)
-# Appendix robustness grid; headline scenarios use 50 draws.
+# Appendix robustness grid; headline scenarios use 10 draws.
 N_DRAWS = 5
 
 
@@ -88,8 +88,13 @@ def main() -> None:
             ]
             cell["displacement"] = {
                 k: {
-                    "mean": float(np.mean([d[k] for d in draws])),
-                    "sd": float(np.std([d[k] for d in draws], ddof=1)),
+                    "mean": float(np.nanmean([d[k] for d in draws])),
+                    "sd": float(np.nanstd([d[k] for d in draws], ddof=1)),
+                    "mc_se": float(
+                        np.nanstd([d[k] for d in draws], ddof=1)
+                        / np.sqrt(np.isfinite([d[k] for d in draws]).sum())
+                    ),
+                    "n_valid": int(np.isfinite([d[k] for d in draws]).sum()),
                 }
                 for k in draws[0]
             }

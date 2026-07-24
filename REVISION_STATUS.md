@@ -27,6 +27,14 @@ Updated 23 July 2026 against `REFEREE_AUDIT.md`.
   frozen in `uk_trade_shock_study/data/input_manifest.json`.
 - Python 3.13 dependencies are locked with `uv.lock`; CI runs tests and
   manifest validation; `make reproduce` declares the full licensed-data build.
+- Headline direct and measured scenarios use a common 100-assignment
+  production specification.
+- Headline manuscript values are generated from the JSON artifacts; the build
+  fails if the eight central artifacts have mixed draw counts.
+- Policy reforms not simulated in the paper are labelled candidate
+  counterfactuals rather than recommendations supported by the estimates.
+- PDF metadata, single-author acknowledgements, and submission declarations
+  have been standardised.
 
 ## Deliberately outside the current estimand
 

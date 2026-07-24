@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2024.1.12)  24 JUL 2026 13:13
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2024.1.12)  24 JUL 2026 13:58
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -436,14 +436,14 @@ Package hyperref Info: Link coloring ON on input line 30.
 \@outlinefile=\write3
 \openout3 = `main.out'.
 
- (./sections/summary.tex [1
+ [1
 
 {/usr/local/texlive/2023/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/loc
-al/texlive/2023/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]) [2] (./
-sections/intro.tex [3])
-(./sections/literature.tex [4] [5] [6] [7]) (./sections/methodology.tex
-[8] [9] [10] [11] [12]) (./sections/results.tex [13] [14]
-<../results/figures/decile_by_margin_full_tariff.png, id=556, 578.16pt x 325.21
+al/texlive/2023/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}] (./secti
+ons/intro.tex [2]) (./sections/literature.tex
+[3] [4] [5] [6]) (./sections/methodology.tex [7] [8] [9] [10] [11])
+(./sections/results.tex [12] [13]
+<../results/figures/decile_by_margin_full_tariff.png, id=547, 578.16pt x 325.21
 5pt>
 File: ../results/figures/decile_by_margin_full_tariff.png Graphic file (type pn
 g)
@@ -451,52 +451,50 @@ g)
 Package pdftex.def Info: ../results/figures/decile_by_margin_full_tariff.png  u
 sed on input line 48.
 (pdftex.def)             Requested size: 387.00787pt x 217.68945pt.
-<../results/figures/exchequer_cost_draws.png, id=558, 578.16pt x 325.215pt>
+<../results/figures/exchequer_cost_draws.png, id=549, 578.16pt x 325.215pt>
 File: ../results/figures/exchequer_cost_draws.png Graphic file (type png)
 <use ../results/figures/exchequer_cost_draws.png>
 Package pdftex.def Info: ../results/figures/exchequer_cost_draws.png  used on i
-nput line 75.
+nput line 71.
 (pdftex.def)             Requested size: 387.00787pt x 217.68945pt.
- [15 <../results/figures/decile_by_margin_full_tariff.png>] [16 <../results/fig
-ures/exchequer_cost_draws.png>]
-<../results/figures/epd_counterfactual.png, id=572, 578.16pt x 325.215pt>
+ [14 <../results/figures/decile_by_margin_full_tariff.png>]
+<../results/figures/epd_counterfactual.png, id=557, 578.16pt x 325.215pt>
 File: ../results/figures/epd_counterfactual.png Graphic file (type png)
 <use ../results/figures/epd_counterfactual.png>
 Package pdftex.def Info: ../results/figures/epd_counterfactual.png  used on inp
-ut line 86.
+ut line 82.
 (pdftex.def)             Requested size: 387.00787pt x 217.68945pt.
-<../results/figures/scenario_testing.png, id=574, 766.3905pt x 333.4275pt>
+) (./sections/policy.tex [15 <../results/figures/exchequer_cost_draws.png>]) (.
+/sections/discussion.tex [16 <../results/figures/epd_counterfactual.png>]) (./s
+ections/declarations.tex) [17] (./sections/references.tex [18]
+[19] [20] [21] [22]) (./sections/appendix.tex [23]
+<../results/figures/scenario_testing.png, id=609, 766.3905pt x 333.4275pt>
 File: ../results/figures/scenario_testing.png Graphic file (type png)
 <use ../results/figures/scenario_testing.png>
 Package pdftex.def Info: ../results/figures/scenario_testing.png  used on input
- line 97.
+ line 41.
 (pdftex.def)             Requested size: 446.19217pt x 194.12071pt.
- [17 <../results/figures/epd_counterfactual.png>])
-(./sections/policy.tex [18 <../results/figures/scenario_testing.png>])
-(./sections/discussion.tex [19]) (./sections/declarations.tex)
-(./sections/references.tex [20] [21] [22] [23] [24] [25])
-(./sections/appendix.tex [26]
-<../results/figures/map_constituency_income_change.png, id=630, 561.5379pt x 47
+ [24 <../results/figures/scenario_testing.png>] [25]
+<../results/figures/map_constituency_income_change.png, id=621, 561.5379pt x 47
 6.2593pt>
 File: ../results/figures/map_constituency_income_change.png Graphic file (type 
 png)
 <use ../results/figures/map_constituency_income_change.png>
 Package pdftex.def Info: ../results/figures/map_constituency_income_change.png 
- used on input line 40.
+ used on input line 100.
 (pdftex.def)             Requested size: 432.53372pt x 366.84431pt.
-) [27] [28 <../results/figures/map_constituency_income_change.png>] (./main.aux
-)
+) [26 <../results/figures/map_constituency_income_change.png>] (./main.aux)
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: EFF51E696F45F345FCD05AC73BBA4682;6137.
+(rerunfilecheck)             Checksum: F6135BB86E7CFA9C9E374DF2578293C0;5996.
  ) 
 Here is how much of TeX's memory you used:
- 11133 strings out of 476025
- 175992 string characters out of 5790017
+ 11121 strings out of 476025
+ 175716 string characters out of 5790017
  1864388 words of memory out of 5000000
- 31245 multiletter control sequences out of 15000+600000
+ 31240 multiletter control sequences out of 15000+600000
  524559 words of font info for 74 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 75i,11n,76p,4708b,719s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,11n,76p,4708b,711s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx9.pfb></
@@ -518,10 +516,10 @@ e/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive
 exmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/local/texlive/2023/tex
 mf-dist/fonts/type1/public/cm-super/sfrm1095.pfb></usr/local/texlive/2023/texmf
 -dist/fonts/type1/public/cm-super/sfrm1200.pfb>
-Output written on main.pdf (28 pages, 1011535 bytes).
+Output written on main.pdf (26 pages, 1008789 bytes).
 PDF statistics:
- 766 PDF objects out of 1000 (max. 8388607)
- 677 compressed objects within 7 object streams
- 165 named destinations out of 1000 (max. 500000)
- 314 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 752 PDF objects out of 1000 (max. 8388607)
+ 665 compressed objects within 7 object streams
+ 161 named destinations out of 1000 (max. 500000)
+ 306 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -23,6 +23,66 @@ Absolute BHC poverty uses 60 per cent of the baseline equivalised median as a fi
 
 The regenerated grid spans $\varepsilon\in\{1,1.5,2,3\}$ and $\pi\in\{0.5,0.75,1\}$. Because only five displacement assignments are used per cell, it is an exploratory scaling diagnostic. Equal products $\varepsilon\pi$ generate equal deterministic wage-cut shocks; Bernoulli displacement outcomes vary across assignments. The grid is not an uncertainty interval.
 
+\section{Factorial adjustment scenarios}\label{app:factorial}
+
+Figure~\ref{fig:scenario-testing} separates the aggregate export-demand
+calibration from the assumed composition of labour-market adjustment. Each
+cell uses the full tariff schedule and five common assignments. The wage-cut
+endpoint is stable: cushioning is 40.6--41.3 per cent over the four
+calibrations. Moving towards displacement generally lowers cushioning, but
+the small-shock cells are especially noisy because a few high-weight FRS
+records dominate five Bernoulli assignments. These cells are stress
+scenarios, not estimates or confidence regions. The qualitative result is
+that fiscal cost scales mainly with the imposed gross shock, while the
+adjustment mix changes the share absorbed by taxes and transfers.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.98\textwidth]{../results/figures/scenario_testing.png}
+\caption{Factorial scenario surface: export-demand calibration by the share of expected sector loss delivered through displacement rather than survivor wage cuts. Cell values are means over five common assignments. Assignment noise, survey uncertainty and uncertainty in the production-side transmission are not combined.}
+\label{fig:scenario-testing}
+\end{figure}
+
+\section{Reallocation sensitivity}\label{app:reallocation}
+
+The reallocation exercise uses five paired assignments and is exploratory.
+Under the full schedule, the central 28.3 per cent penalty produces a mean
+gross loss of \pounds0.264 billion, Exchequer cost of
+\pounds $0.149\pm0.131$ billion, cushioning of $39.7\pm3.4$ per cent, and zero
+measured BHC-poverty change. With a three-month lag, gross loss rises to
+\pounds0.432 billion and the Exchequer cost to
+\pounds $0.245\pm0.216$ billion. The 14 per cent penalty gives gross loss of
+\pounds0.131 billion and Exchequer cost of
+\pounds $0.075\pm0.064$ billion. These pound levels are not commensurable with
+the economy-wide wage-cut scenario because only selected movers' penalty is
+removed.
+
+\section{Observed-outturn stress scenario}\label{app:measured}
+
+The descriptive May 2025--February 2026 export window falls 12.7 per cent
+against its two-year same-month baseline. This is not a causal tariff
+estimate: it includes prices, exchange rates, front-running, rerouting and
+other demand conditions.
+
+The downside displacement scenario affects \MeasuredDisplacedWorkers\ thousand
+weighted workers on average, is cushioned by
+$\MeasuredDisplacedCushion\pm\MeasuredDisplacedCushionSD$ per cent and costs
+the Exchequer
+\pounds $\MeasuredDisplacedExchequer\pm\MeasuredDisplacedExchequerSD$ billion.
+The wage-cut scenario is cushioned by \MeasuredWageCushion\ per cent and costs
+\pounds\MeasuredWageExchequer\ billion. This is an observed-outturn downside
+stress case, not a tariff-caused or preferred estimate; the validation
+artifact also reports signed net exposure before expanding divisions are
+clipped.
+
+\section{Demographic diagnostic}\label{app:demographics}
+
+The gender, age and household-type breakdown uses five Bernoulli assignments
+and is exploratory. Selected exposed-sector workers are disproportionately men
+and concentrated in prime and older working ages, but individual subgroup
+estimates are too assignment-sensitive for precise rankings. The demographic
+artifact is therefore a diagnostic rather than an inferential table.
+
 \section{Duration scope}\label{app:durationtakeup}
 
 The model reports the internally coherent full-year endpoint only. An earlier six-month sensitivity combined half-year earnings with full-period unemployment status and was removed because an annual model cannot reproduce within-year tax, waiting-period or eligibility timing. A shorter-duration estimate requires monthly simulations; no such result is claimed here.

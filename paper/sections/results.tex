@@ -1,6 +1,6 @@
 \section{Results}\label{sec:results}
 
-All central results use FRS 2024--25, period 2026, and 10 assignments. Values after $\pm$ are standard deviations across artificial assignments, not standard errors or confidence intervals. Numerical Monte Carlo SE (SD divided by $\sqrt{10}$) is stored separately in each JSON artifact. Five-assignment diagnostics are labelled exploratory.
+All central results use FRS 2024--25, period 2026, and \ProductionDraws\ assignments. Values after $\pm$ are standard deviations across artificial assignments, not standard errors or confidence intervals. Numerical Monte Carlo SE (SD divided by $\sqrt{\ProductionDraws}$) is stored separately in each JSON artifact. Five-assignment diagnostics are labelled exploratory.
 
 \subsection{Derived sector shocks}\label{sec:results-shocks}
 
@@ -10,7 +10,7 @@ The deterministic full-schedule direct earnings stress is \pounds 0.886 billion 
 
 \begin{table}[htbp]
 \centering
-\caption{Central direct-channel scenarios, 10 assignments}
+\caption{Central direct-channel scenarios, \ProductionDraws\ assignments}
 \label{tab:cushioning}
 \small
 \begin{tabular}{llrrrr}
@@ -18,12 +18,12 @@ The deterministic full-schedule direct earnings stress is \pounds 0.886 billion 
 Schedule & Margin & Workers & Gross loss & Exchequer & Cushioning \\
 & & (thousands) & (\pounds bn) & (\pounds bn) & (\%) \\
 \midrule
-Full & Displacement & $13.6\pm4.7$ & $0.825\pm0.546$ & $0.388\pm0.334$ & $34.5\pm5.0$ \\
-Full & Wage cut & --- & 0.886 & 0.495 & 41.3 \\
-Full & Inactivity & $13.6\pm4.7$ & $0.825\pm0.546$ & $0.395\pm0.337$ & $35.5\pm4.9$ \\
-EPD & Displacement & $10.4\pm4.7$ & $0.694\pm0.577$ & $0.335\pm0.352$ & $33.7\pm7.3$ \\
-EPD & Wage cut & --- & 0.693 & 0.386 & 41.1 \\
-EPD & Inactivity & $10.4\pm4.7$ & $0.694\pm0.577$ & $0.340\pm0.356$ & $34.3\pm7.4$ \\
+Full & Displacement & \FullDisplacedWorkers & $\FullDisplacedGross\pm\FullDisplacedGrossSD$ & $\FullDisplacedExchequer\pm\FullDisplacedExchequerSD$ & $\FullDisplacedCushion\pm\FullDisplacedCushionSD$ \\
+Full & Wage cut & --- & 0.886 & \FullWageExchequer & \FullWageCushion \\
+Full & Inactivity & \FullDisplacedWorkers & $\FullDisplacedGross\pm\FullDisplacedGrossSD$ & $\FullInactiveExchequer\pm\FullInactiveExchequerSD$ & $\FullInactiveCushion\pm\FullInactiveCushionSD$ \\
+EPD & Displacement & \EPDDisplacedWorkers & $\EPDDisplacedGross\pm\EPDDisplacedGrossSD$ & $\EPDDisplacedExchequer\pm\EPDDisplacedExchequerSD$ & $\EPDDisplacedCushion\pm\EPDDisplacedCushionSD$ \\
+EPD & Wage cut & --- & 0.693 & \EPDWageExchequer & \EPDWageCushion \\
+EPD & Inactivity & \EPDDisplacedWorkers & $\EPDDisplacedGross\pm\EPDDisplacedGrossSD$ & $\EPDInactiveExchequer\pm\EPDInactiveExchequerSD$ & $\EPDInactiveCushion\pm\EPDInactiveCushionSD$ \\
 \bottomrule
 \end{tabular}
 \begin{minipage}{.94\textwidth}\footnotesize
@@ -31,7 +31,7 @@ EPD & Inactivity & $10.4\pm4.7$ & $0.694\pm0.577$ & $0.340\pm0.356$ & $34.3\pm7.
 \end{minipage}
 \end{table}
 
-The full-schedule displacement and wage-cut cushioning rates differ by about seven points in their means, while the displacement assignment SD is 5.0 points. The decomposition remains economically informative: proportional cuts remove the top slice of earnings and therefore receive relief near marginal tax rates; displacement removes the whole earnings stream and receives relief nearer average rates, with UC providing part of the remainder. These are descriptive model mechanisms rather than estimates of behavioural insurance reliability.
+The full-schedule displacement and wage-cut cushioning rates differ in their means, while displacement retains material assignment dispersion. For the displacement mean, the numerical Monte Carlo SE is \FullDisplacedCushionMCSE\ percentage points for cushioning and \pounds\FullDisplacedExchequerMCSE\ billion for Exchequer cost. These quantities measure simulation precision only. The decomposition remains economically informative: proportional cuts remove the top slice of earnings and therefore receive relief near marginal tax rates; displacement removes the whole earnings stream and receives relief nearer average rates, with UC providing part of the remainder. These are descriptive model mechanisms rather than estimates of behavioural insurance reliability.
 
 \paragraph{Take-up sensitivity.} The regenerated grid applies the same post-shock-entitlement claiming rule to all margins. It uses only five assignments per cell and is exploratory. It shows that displacement responds more visibly to the assumed claiming probability, while wage-cut results move little because relatively few wage-cut households change UC entitlement. No grid difference is treated as statistically identified.
 
@@ -41,7 +41,7 @@ The regenerated decomposition and gate audit are also five-assignment diagnostic
 
 \subsection{Distributional incidence}\label{sec:results-margins}
 
-Under full displacement, relative BHC poverty rises by $0.014\pm0.009$ percentage points and the Gini by $0.000028\pm0.000159$. Under the wage-cut scenario, relative BHC poverty is unchanged and the Gini falls by 0.000055. Inactivity raises poverty by $0.014\pm0.009$ points. The small national changes coexist with large losses for selected households, but the magnitude is assignment-sensitive.
+Under full displacement, relative BHC poverty rises by $\FullDisplacedPoverty\pm\FullDisplacedPovertySD$ percentage points. Under the wage-cut scenario, relative BHC poverty is unchanged at displayed precision. The national poverty changes are economically small relative to the uncertainty omitted from the exercise and are not a headline estimate. They can coexist with large losses for selected households because the exposed population is limited and often above the poverty line before the shock.
 
 \begin{figure}[htbp]
 \centering
@@ -64,8 +64,8 @@ The gender, age and household-type breakdown uses five Bernoulli assignments and
 \toprule
 Schedule & Displacement & Wage cut & Inactivity \\
 \midrule
-Full & $0.388\pm0.334$ & 0.495 & $0.395\pm0.337$ \\
-EPD & $0.335\pm0.352$ & 0.386 & $0.340\pm0.356$ \\
+Full & $\FullDisplacedExchequer\pm\FullDisplacedExchequerSD$ & \FullWageExchequer & $\FullInactiveExchequer\pm\FullInactiveExchequerSD$ \\
+EPD & $\EPDDisplacedExchequer\pm\EPDDisplacedExchequerSD$ & \EPDWageExchequer & $\EPDInactiveExchequer\pm\EPDInactiveExchequerSD$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -79,7 +79,7 @@ EPD & $0.335\pm0.352$ & 0.386 & $0.340\pm0.356$ \\
 
 \subsection{EPD counterfactual}\label{sec:results-epd}
 
-On paired seeds, full minus EPD displacement differs by $3{,}167\pm2{,}373$ workers, \pounds $0.131\pm0.109$ billion of gross earnings, and \pounds $0.053\pm0.038$ billion of Exchequer cost. The poverty-rate difference is $0.0040\pm0.0036$ percentage points. These are paired scenario contrasts, not causal deal estimates.
+On paired seeds, full minus EPD displacement differs by $\EPDWorkerDifference\pm\EPDWorkerDifferenceSD$ workers, \pounds $\EPDGrossDifference\pm\EPDGrossDifferenceSD$ billion of gross earnings, and \pounds $\EPDExchequerDifference\pm\EPDExchequerDifferenceSD$ billion of Exchequer cost. The poverty-rate difference is $\EPDPovertyDifference\pm\EPDPovertyDifferenceSD$ percentage points. These are paired scenario contrasts, not causal deal estimates.
 
 \begin{figure}[htbp]
 \centering
@@ -109,4 +109,4 @@ The descriptive May 2025--February 2026 export window falls 12.7 per cent agains
 
 \subsection{Measured outturn-shaped scenario}\label{sec:results-measured}
 
-The measured downside displacement scenario affects 14,466 weighted workers on average, is cushioned by $34.5\pm7.9$ per cent, costs the Exchequer \pounds $0.418\pm0.411$ billion, raises relative BHC poverty by $0.013\pm0.011$ percentage points and raises the Gini by $0.000032\pm0.000141$. The measured wage-cut scenario is cushioned by 41.6 per cent, costs \pounds 0.528 billion, leaves relative BHC poverty unchanged and lowers the Gini by 0.000070. This is an observed-outturn downside stress case, not a tariff-caused or preferred estimate; the validation artifact also reports the signed net exposure before clipping expanding divisions.
+The measured downside displacement scenario affects \MeasuredDisplacedWorkers\ thousand weighted workers on average, is cushioned by $\MeasuredDisplacedCushion\pm\MeasuredDisplacedCushionSD$ per cent and costs the Exchequer \pounds $\MeasuredDisplacedExchequer\pm\MeasuredDisplacedExchequerSD$ billion. The measured wage-cut scenario is cushioned by \MeasuredWageCushion\ per cent and costs \pounds\MeasuredWageExchequer\ billion. This is an observed-outturn downside stress case, not a tariff-caused or preferred estimate; the validation artifact also reports the signed net exposure before clipping expanding divisions.

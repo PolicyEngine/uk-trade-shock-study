@@ -35,8 +35,13 @@ The disposition of the referee audit is tracked in `REVISION_STATUS.md`.
    the wage-cut/displacement mixture on common seeds and writes the scenario
    surface, cell data and draw-level artifact.
 
-The default production run uses 500 assignment draws. Use `--n-draws`
+The default production run uses 100 assignment draws. Use `--n-draws`
 explicitly for faster exploratory runs.
+
+`analysis/write_paper_results.py` checks that all eight central artifacts use
+the same 100-draw production specification and generates
+`paper/generated_results.tex`. The paper build fails rather than silently
+mixing exploratory and production results.
 
 `make uncertainty-design` writes a seeded 500-draw Latin-hypercube design for
 elasticity, wage-bill incidence, UC take-up, reallocation penalty, and the

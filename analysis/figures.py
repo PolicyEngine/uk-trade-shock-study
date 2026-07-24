@@ -59,7 +59,7 @@ def fig_exchequer_draws() -> None:
     labels, data = [], []
     for tariff, label in (("full_tariff", "Full tariffs"), ("epd", "EPD")):
         result = load(f"{tariff}_displacement")
-        data.append([d["exchequer_cost"] / 1e9 for d in result["draws"]])
+        data.append([d["exchequer_cost"] / 1e6 for d in result["draws"]])
         labels.append(label)
     bp = ax.boxplot(
         data, tick_labels=labels, patch_artist=True, widths=0.45,
@@ -76,14 +76,14 @@ def fig_exchequer_draws() -> None:
         )
     for i, tariff in enumerate(("full_tariff", "epd"), start=1):
         wc_result = load(f"{tariff}_wage_cut")
-        wc = wc_result["exchequer_cost_mean"] / 1e9
-        wc_sd = wc_result["exchequer_cost_sd"] / 1e9
+        wc = wc_result["exchequer_cost_mean"] / 1e6
+        wc_sd = wc_result["exchequer_cost_sd"] / 1e6
         ax.errorbar(
             i, wc, yerr=wc_sd, fmt="D", color=figstyle.TEAL_PRESSED,
             capsize=4, zorder=4,
             label="wage-cut margin (mean ± assignment SD)" if i == 1 else None,
         )
-    ax.set_ylabel("Exchequer cost (£bn/year)")
+    ax.set_ylabel("Exchequer cost (£ million/year)")
     ax.set_xlabel("Displacement-margin Monte Carlo draws")
     figstyle.legend_below(ax, ncol=1)
     FIGURES.mkdir(parents=True, exist_ok=True)
@@ -98,14 +98,14 @@ def fig_epd_counterfactual() -> None:
     for i, (tariff, colour) in enumerate(
         (("full_tariff", figstyle.BLUE), ("epd", figstyle.TEAL))
     ):
-        means = [load(f"{tariff}_{m}")["exchequer_cost_mean"] / 1e9 for m in margins]
-        sds = [load(f"{tariff}_{m}")["exchequer_cost_sd"] / 1e9 for m in margins]
+        means = [load(f"{tariff}_{m}")["exchequer_cost_mean"] / 1e6 for m in margins]
+        sds = [load(f"{tariff}_{m}")["exchequer_cost_sd"] / 1e6 for m in margins]
         x = [j + (i - 0.5) * 0.35 for j in range(len(margins))]
         ax.bar(x, means, width=0.35, yerr=sds, color=colour,
                label="Full tariffs" if tariff == "full_tariff" else "EPD")
     ax.set_xticks(range(len(margins)))
     ax.set_xticklabels([m.replace("_", " ") for m in margins])
-    ax.set_ylabel("Exchequer cost (£bn/year)")
+    ax.set_ylabel("Exchequer cost (£ million/year)")
     figstyle.legend_below(ax, ncol=2)
     FIGURES.mkdir(parents=True, exist_ok=True)
     figstyle.save(fig, FIGURES / "epd_counterfactual.png")

@@ -8,11 +8,14 @@ from uk_trade_shock_study.exposure import DEFAULT_ELASTICITY, person_earnings_sh
 from uk_trade_shock_study.shocks import (
     MARGINS,
     PRESETS,
+    RENT_SHARING_ELASTICITY,
+    RENT_SHARING_PRESETS,
     TradeShockScenario,
     apply_mixed_margin,
     apply_shocks,
     apply_wage_cut,
     draw_displaced,
+    rent_sharing_displacement_share,
 )
 
 
@@ -183,6 +186,65 @@ def test_mixed_margin_endpoints_match_pure_margins():
     pure_job = apply_shocks(persons, PRESETS["epd_displacement"], seed=3)
     np.testing.assert_array_equal(job["displaced"], pure_job["displaced"])
     np.testing.assert_allclose(job["employment_income"], pure_job["employment_income"])
+
+
+def test_rent_sharing_lambda_mapping():
+    """displacement_share = 1 - rent-sharing elasticity (survivor wage cuts
+    absorb exactly the elasticity share of the sector wage-bill loss)."""
+    assert RENT_SHARING_ELASTICITY == pytest.approx(0.15)
+    assert rent_sharing_displacement_share() == pytest.approx(0.85)
+    assert rent_sharing_displacement_share(0.05) == pytest.approx(0.95)
+    assert rent_sharing_displacement_share(0.0) == 1.0
+    assert rent_sharing_displacement_share(1.0) == 0.0
+    with pytest.raises(ValueError):
+        rent_sharing_displacement_share(-0.01)
+    with pytest.raises(ValueError):
+        rent_sharing_displacement_share(1.01)
+
+
+def test_rent_sharing_presets_are_calibrated_mixed_scenarios():
+    assert set(RENT_SHARING_PRESETS) == {"full_tariff_rentsharing", "epd_rentsharing"}
+    for name, scenario in RENT_SHARING_PRESETS.items():
+        assert scenario.name == name
+        assert scenario.margin == "mixed"
+        assert scenario.displacement_share == pytest.approx(
+            1.0 - RENT_SHARING_ELASTICITY
+        )
+    assert RENT_SHARING_PRESETS["epd_rentsharing"].tariff_scenario == "epd"
+    assert (
+        RENT_SHARING_PRESETS["full_tariff_rentsharing"].tariff_scenario
+        == "full_tariff"
+    )
+
+
+def test_rent_sharing_preset_splits_wage_bill_loss_85_15():
+    """Running the rentsharing preset through apply_shocks delivers a mixed-
+    margin run in which, in expectation, displacement removes 85% and
+    survivor wage cuts 15% of the sector wage-bill loss."""
+    persons = make_persons(n=2000)
+    scenario = RENT_SHARING_PRESETS["full_tariff_rentsharing"]
+    base = persons["employment_income"].to_numpy(float)
+    w = persons["weight"].to_numpy(float)
+    shock = person_earnings_shock(persons["sic_division"], "full_tariff")
+    employed = base > 0
+    total_expected = float((shock * base * w)[employed].sum())
+
+    displacement_loss, survivor_loss = 0.0, 0.0
+    n_seeds = 300
+    for seed in range(n_seeds):
+        shocked = apply_shocks(persons, scenario, seed=seed)
+        displaced = shocked["displaced"].to_numpy(bool)
+        assert displaced.any()  # mixed margin with a displacement component
+        new = shocked["employment_income"].to_numpy(float)
+        loss = (base - new) * w
+        displacement_loss += float(loss[displaced].sum())
+        survivor_loss += float(loss[~displaced].sum())
+    displacement_loss /= n_seeds
+    survivor_loss /= n_seeds
+    total = displacement_loss + survivor_loss
+    assert total == pytest.approx(total_expected, rel=0.05)
+    assert displacement_loss / total == pytest.approx(0.85, abs=0.02)
+    assert survivor_loss / total == pytest.approx(0.15, abs=0.02)
 
 
 def test_inactivity_margin_age_split():

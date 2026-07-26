@@ -166,6 +166,58 @@ PRESETS = {
     for margin in MARGINS
 }
 
+#: RENT-SHARING CALIBRATION of the mixed margin's split. The quasi-
+#: experimental rent-sharing literature pins down how much of a firm-level
+#: revenue/output shock incumbent ("survivor") wages absorb:
+#:
+#: - Garin & Silverio (ReStud 2024): incumbent-wage elasticity to firm output
+#:   shocks of ~0.15;
+#: - Card, Cardoso, Heining & Kline (JOLE 2018 survey): rent-sharing
+#:   elasticities of 0.05-0.15;
+#: - Hummels, Jorgensen, Munch & Xiang (AER 2014): within-job wage responses
+#:   to trade shocks of 0.03-0.08.
+#:
+#: We take 0.15 — the upper end of the Card et al. range, matching Garin &
+#: Silverio — so survivor wage cuts absorb 15% of each sector's wage-bill
+#: loss and the residual 85% falls on the employment (displacement) margin.
+RENT_SHARING_ELASTICITY = 0.15
+
+
+def rent_sharing_displacement_share(
+    elasticity: float = RENT_SHARING_ELASTICITY,
+) -> float:
+    """Map a rent-sharing elasticity to the mixed margin's ``displacement_share``.
+
+    In ``apply_mixed_margin``, lambda = ``displacement_share`` and a worker in
+    division j with sector shock s_j faces displacement probability
+    p = lambda * s_j, while survivors take cut c = (s_j - p) / (1 - p). The
+    EXPECTED wage-bill loss of division j therefore splits exactly as
+
+        displacement:   p * B_j           = lambda * s_j * B_j
+        survivor cuts:  (1 - p) * c * B_j = (1 - lambda) * s_j * B_j
+
+    so the survivor-wage-cut share of the sector wage-bill loss is
+    (1 - lambda). Setting that share equal to the rent-sharing elasticity
+    gives lambda = 1 - elasticity.
+    """
+    if not 0.0 <= elasticity <= 1.0:
+        raise ValueError("rent-sharing elasticity must lie in [0, 1]")
+    return 1.0 - elasticity
+
+
+#: Mixed-margin presets with the rent-sharing-calibrated split: survivor wage
+#: cuts absorb RENT_SHARING_ELASTICITY (15%) of each sector's wage-bill loss,
+#: displacement the remaining 85% (displacement_share = 0.85).
+RENT_SHARING_PRESETS = {
+    f"{tariff}_rentsharing": TradeShockScenario(
+        f"{tariff}_rentsharing",
+        tariff,
+        "mixed",
+        displacement_share=rent_sharing_displacement_share(),
+    )
+    for tariff in ("full_tariff", "epd")
+}
+
 
 def _person_shock(persons: pd.DataFrame, scenario: TradeShockScenario) -> np.ndarray:
     return person_earnings_shock(

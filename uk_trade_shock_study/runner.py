@@ -118,17 +118,77 @@ def _household_income_per_person(sim, period: int) -> np.ndarray:
     return income / people
 
 
-def _metrics(sim, period: int) -> dict:
+def _weighted_median(values: np.ndarray, weights: np.ndarray) -> float:
+    values = np.asarray(values, dtype=float)
+    weights = np.asarray(weights, dtype=float)
+    order = np.argsort(values)
+    v, w = values[order], weights[order]
+    cw = np.cumsum(w)
+    if cw[-1] <= 0:
+        raise ValueError("weights must have positive total")
+    return float(v[np.searchsorted(cw, 0.5 * cw[-1])])
+
+
+def _metrics(sim, period: int, poverty_lines: tuple[float, float] | None = None) -> dict:
+    """Summary metrics for one simulation.
+
+    POVERTY LINES ARE FROZEN AT BASELINE (referee point H1). The headline
+    ``poverty_bhc`` / ``poverty_ahc`` rates are the person-weighted shares of
+    people in households whose equivalised HBAI net income (BHC / AHC) lies
+    below 60% of the BASELINE weighted median — the standard relative-poverty
+    definition, but with the threshold computed ONCE from the baseline
+    simulation and held fixed for shocked simulations. Recomputing the
+    relative threshold inside each shocked simulation (as the model's own
+    ``in_relative_poverty_*`` variables do) lets a broad earnings shock drag
+    the 60%-of-median line down with it, mechanically attenuating the
+    measured poverty change.
+
+    ``poverty_lines``: ``None`` for the baseline call — the (BHC, AHC)
+    thresholds are derived from THIS simulation's income distribution and
+    returned under ``poverty_line_bhc`` / ``poverty_line_ahc``; shocked calls
+    pass the baseline pair so shocked incomes are scored against the frozen
+    baseline line. The median mirrors policyengine-uk's
+    ``in_relative_poverty_*`` construction (household-weighted median of
+    equivalised HBAI income).
+
+    The model's own variable-based rates remain available under
+    ``poverty_bhc_model_line`` / ``poverty_ahc_model_line`` for reference.
+    """
     hh_w = sim.calculate("household_weight", period=period, map_to="household").values
     equiv = sim.calculate("equiv_hbai_household_net_income", period=period, map_to="household").values
+    equiv_ahc = sim.calculate(
+        "equiv_hbai_household_net_income_ahc", period=period, map_to="household"
+    ).values
     hh_count = sim.calculate("household_count_people", period=period, map_to="household").values
     p_w = sim.calculate("person_weight", period=period, map_to="person").values
+    if poverty_lines is None:
+        line_bhc = 0.6 * _weighted_median(equiv, hh_w)
+        line_ahc = 0.6 * _weighted_median(equiv_ahc, hh_w)
+    else:
+        line_bhc, line_ahc = (float(x) for x in poverty_lines)
+    equiv_p = np.asarray(
+        sim.calculate("equiv_hbai_household_net_income", period=period, map_to="person").values,
+        dtype=float,
+    )
+    equiv_ahc_p = np.asarray(
+        sim.calculate(
+            "equiv_hbai_household_net_income_ahc", period=period, map_to="person"
+        ).values,
+        dtype=float,
+    )
     out = {
         "gov_balance": float((sim.calculate("gov_balance", period=period, map_to="household").values * hh_w).sum()),
-        "poverty_bhc": float(np.average(
+        # Headline rates: fixed (baseline) relative poverty line (H1).
+        "poverty_bhc": float(np.average(equiv_p < line_bhc, weights=p_w)),
+        "poverty_ahc": float(np.average(equiv_ahc_p < line_ahc, weights=p_w)),
+        "poverty_line_bhc": float(line_bhc),
+        "poverty_line_ahc": float(line_ahc),
+        # Legacy model-variable rates (threshold recomputed inside this
+        # simulation by policyengine-uk); kept for reference only.
+        "poverty_bhc_model_line": float(np.average(
             sim.calculate("in_poverty_bhc", period=period, map_to="person").values, weights=p_w
         )),
-        "poverty_ahc": float(np.average(
+        "poverty_ahc_model_line": float(np.average(
             sim.calculate("in_poverty_ahc", period=period, map_to="person").values, weights=p_w
         )),
         "gini": gini(equiv, hh_w * hh_count),
@@ -187,7 +247,13 @@ def _one_draw(dataset, baseline, persons, scenario, period, seed) -> ScenarioRes
         else np.zeros(len(displaced), dtype=bool)
     )
 
-    base, shock = _metrics(baseline, period), _metrics(shocked, period)
+    base = _metrics(baseline, period)
+    # Freeze the BASELINE relative poverty lines when scoring the shocked
+    # simulation (referee point H1: an endogenous 60%-of-median line falls
+    # with a broad earnings shock and understates the poverty change).
+    shock = _metrics(
+        shocked, period, poverty_lines=(base["poverty_line_bhc"], base["poverty_line_ahc"])
+    )
 
     weight = persons["weight"].to_numpy()
     age = persons["age"].to_numpy()

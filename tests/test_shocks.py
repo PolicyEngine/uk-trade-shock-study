@@ -112,20 +112,26 @@ def test_displaced_earn_zero_and_unexposed_untouched():
 
 
 def test_wage_bill_conservation():
-    """Wage-cut aggregate loss equals sum_j shock_j x division wage bill —
-    the displacement family's expected earnings removal."""
+    """THE economic conservation property (referee point M6): the wage cut's
+    deterministic aggregate earnings loss equals the MONTE CARLO MEAN of the
+    displacement family's weighted earnings losses across seeds. The former
+    version compared the wage-cut loss to its own defining expression and
+    could never fail."""
     persons = make_persons()
-    scenario = PRESETS["full_tariff_wage_cut"]
-    shocked = apply_wage_cut(persons, scenario)
     base = persons["employment_income"].to_numpy()
-    new = shocked["employment_income"].to_numpy()
     w = persons["weight"].to_numpy()
-    shock = person_earnings_shock(persons["sic_division"], "full_tariff")
-    employed = base > 0
-    loss = ((base - new) * w)[employed].sum()
-    target = (shock * base * w)[employed].sum()
-    assert loss == pytest.approx(target, rel=1e-9)
+    shocked = apply_wage_cut(persons, PRESETS["full_tariff_wage_cut"])
+    new = shocked["employment_income"].to_numpy()
+    wage_cut_loss = float(((base - new) * w).sum())
+    assert wage_cut_loss > 0
+
+    displacement_losses = []
+    for seed in range(400):
+        mask = draw_displaced(persons, PRESETS["full_tariff_displacement"], seed=seed)
+        displacement_losses.append(float((base * w)[mask].sum()))
+    assert wage_cut_loss == pytest.approx(np.mean(displacement_losses), rel=0.05)
     # no job loss, no negative incomes
+    employed = base > 0
     assert (new[employed] > 0).all()
     assert not shocked["displaced"].to_numpy().any()
 
@@ -636,3 +642,163 @@ def test_uc_takeup_hard_error_when_flag_is_dropped():
     table = _takeup_table(n, [0, 1, 2], uc_takeup=1.0)
     with pytest.raises(RuntimeError, match="take-up re-draw not applied"):
         redraw_uc_takeup(sim, base_sim, table, 2026)
+
+
+class _CachingTakeupSim(_TakeupSim):
+    """Stub that CACHES universal_credit like the real engine (referee M5).
+
+    The first universal_credit calculation (the temporary all-claim
+    entitlement pass inside redraw_uc_takeup) is cached and served until
+    ``_invalidate_all_caches`` is called. ``flush_works=False`` models a
+    policyengine upgrade turning the private cache-flush into a no-op.
+    """
+
+    def __init__(self, *args, flush_works=True, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.flush_works = flush_works
+        self._uc_cache = None
+
+    def calculate(self, var, period=None, map_to=None):
+        import types
+
+        if var == "universal_credit":
+            if self._uc_cache is None:
+                self._uc_cache = super().calculate(var, period, map_to).values
+            return types.SimpleNamespace(values=self._uc_cache)
+        return super().calculate(var, period, map_to)
+
+    def _invalidate_all_caches(self):
+        if self.flush_works:
+            self._uc_cache = None
+
+
+def test_uc_award_cache_flush_is_verified_after_redraw():
+    """redraw_uc_takeup must FAIL HARD if _invalidate_all_caches is a no-op:
+    the UC award would otherwise silently retain the temporary all-claim
+    entitlement pass for units drawn to NOT claim (referee point M5)."""
+    from uk_trade_shock_study.shocks import redraw_uc_takeup
+
+    n = 40
+    baseline = np.zeros(n // 2, dtype=bool)
+    affected = list(range(0, n, 2))  # every benunit affected & newly entitled
+
+    # uc_takeup=0: every redrawn unit ends NOT claiming, so any positive
+    # post-redraw award can only come from the stale all-claim cache.
+    working = _CachingTakeupSim(n, 2, baseline.copy(), flush_works=True)
+    base_sim = _TakeupSim(n, 2, baseline.copy())
+    out = redraw_uc_takeup(
+        working, base_sim, _takeup_table(n, affected, uc_takeup=0.0), 2026
+    )
+    assert not out.any()
+    # the flushed cache means the final award differs from the all-claim pass
+    assert (working.calculate("universal_credit").values == 0).all()
+
+    broken = _CachingTakeupSim(n, 2, baseline.copy(), flush_works=False)
+    base_sim = _TakeupSim(n, 2, baseline.copy())
+    with pytest.raises(RuntimeError, match="cache was not flushed"):
+        redraw_uc_takeup(
+            broken, base_sim, _takeup_table(n, affected, uc_takeup=0.0), 2026
+        )
+
+
+def test_uc_takeup_stream_uses_tuple_seeding():
+    """The take-up stream must never collide with the displacement stream:
+    seed = UC_TAKEUP_SEED_OFFSET for the displacement RNG must not reproduce
+    the take-up draw of seed 0 (the failure mode of additive offsets)."""
+    from uk_trade_shock_study.shocks import UC_TAKEUP_SEED_OFFSET
+
+    a = np.random.default_rng((0, UC_TAKEUP_SEED_OFFSET)).random(1000)
+    b = np.random.default_rng(UC_TAKEUP_SEED_OFFSET).random(1000)
+    assert not np.allclose(a, b)
+
+
+# ---------------------------------------------------------------------------
+# H2: earnings-linked deductions scale with the earnings factor
+# ---------------------------------------------------------------------------
+
+
+class _RecordingSim:
+    """Stores set_input values and serves them back; defaults otherwise."""
+
+    def __init__(self, persons):
+        self.persons = persons
+        self.n = len(persons)
+        self.stored = {}
+
+    def calculate(self, var, period=None, map_to=None):
+        import types
+
+        if var in self.stored:
+            return types.SimpleNamespace(values=self.stored[var])
+        if var == "employment_status":
+            values = np.array(["EMPLOYED"] * self.n, dtype=object)
+        elif var == "employment_income":
+            values = self.persons["employment_income"].to_numpy(dtype=float)
+        elif var in (
+            "employee_pension_contributions",
+            "pension_contributions_via_salary_sacrifice",
+        ):
+            values = np.full(self.n, 1_000.0)
+        else:
+            values = np.zeros(self.n)
+        return types.SimpleNamespace(values=values)
+
+    def set_input(self, var, period, values):
+        self.stored[var] = np.asarray(values)
+
+    def _invalidate_all_caches(self):
+        return None
+
+    def map_result(self, values, source, target):
+        return np.asarray(values, dtype=float)
+
+
+def test_survivor_pension_contributions_scale_with_earnings_factor():
+    """Wage-cut (and mixed-survivor/reallocation) workers must not keep full
+    baseline pension contributions against cut earnings (referee point H2);
+    displaced workers keep the zeroing behaviour."""
+    from unittest import mock
+
+    from uk_trade_shock_study import shocks as shocks_module
+
+    persons = make_persons(n=500)
+    table = apply_shocks(persons, PRESETS["full_tariff_wage_cut"], seed=0)
+    base_earn = persons["employment_income"].to_numpy(dtype=float)
+    new_earn = table["employment_income"].to_numpy(dtype=float)
+    cut = ~np.isclose(new_earn, base_earn)
+    assert cut.any()
+
+    baseline_sim = _RecordingSim(persons)
+    shocked_sim = _RecordingSim(persons)
+    fake_pe = mock.MagicMock()
+    fake_pe.Microsimulation.return_value = shocked_sim
+    with mock.patch.dict("sys.modules", {"policyengine_uk": fake_pe}):
+        shocks_module.build_shocked_simulation(None, baseline_sim, table, 2026)
+
+    factor = np.divide(new_earn, base_earn, out=np.ones_like(new_earn), where=base_earn > 0)
+    applied = shocked_sim.stored["employee_pension_contributions"]
+    np.testing.assert_allclose(applied, 1_000.0 * factor, rtol=1e-9)
+    assert (applied[cut] < 1_000.0).all()
+    np.testing.assert_allclose(applied[~cut], 1_000.0)
+
+
+def test_displaced_pension_contributions_still_zeroed():
+    from unittest import mock
+
+    from uk_trade_shock_study import shocks as shocks_module
+
+    persons = make_persons(n=500)
+    table = apply_shocks(persons, PRESETS["full_tariff_displacement"], seed=0)
+    displaced = table["displaced"].to_numpy()
+    assert displaced.any()
+
+    baseline_sim = _RecordingSim(persons)
+    shocked_sim = _RecordingSim(persons)
+    fake_pe = mock.MagicMock()
+    fake_pe.Microsimulation.return_value = shocked_sim
+    with mock.patch.dict("sys.modules", {"policyengine_uk": fake_pe}):
+        shocks_module.build_shocked_simulation(None, baseline_sim, table, 2026)
+
+    applied = shocked_sim.stored["employee_pension_contributions"]
+    assert (applied[displaced] == 0.0).all()
+    np.testing.assert_allclose(applied[~displaced], 1_000.0)

@@ -5,3 +5,6 @@ __pycache__/
 .DS_Store
 paper/*.fdb_latexmk
 paper/*.fls
+paper/main.aux
+paper/main.log
+paper/main.out

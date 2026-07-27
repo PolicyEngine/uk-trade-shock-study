@@ -236,7 +236,9 @@ def upstream_sector_shocks(
     Returns a DataFrame indexed by sic_division with columns:
     upstream_output_fall (£m), upstream_earnings_loss (£m),
     upstream_shock (rate: passthrough x sum delta_g / sum GO over the
-    division's products).
+    division's products), and direct_shock_iot (the DIRECT channel expressed
+    on the SAME IOT gross-output denominator: passthrough x sum f / sum GO —
+    see total_sector_shocks for why).
     """
     if iot is None:
         iot = load_iot()
@@ -277,16 +279,19 @@ def upstream_sector_shocks(
                     "upstream_output_fall": 0.0,
                     "upstream_earnings_loss": 0.0,
                     "rate_output_fall": 0.0,
+                    "rate_direct_fall": 0.0,
                     "go": 0.0,
                 },
             )
             rec["upstream_output_fall"] += float(delta_g[i]) * float(w)
             rec["upstream_earnings_loss"] += float(earnings[i]) * float(w)
             rec["rate_output_fall"] += float(delta_g[i])
+            rec["rate_direct_fall"] += float(f[i])
             rec["go"] += float(iot.gross_output[i])
     table = pd.DataFrame.from_dict(records, orient="index").rename_axis("sic_division")
     table["upstream_shock"] = passthrough * table["rate_output_fall"] / table["go"]
-    return table.drop(columns=["go", "rate_output_fall"]).sort_index()
+    table["direct_shock_iot"] = passthrough * table["rate_direct_fall"] / table["go"]
+    return table.drop(columns=["go", "rate_output_fall", "rate_direct_fall"]).sort_index()
 
 
 def total_sector_shocks(
@@ -296,19 +301,29 @@ def total_sector_shocks(
     iot: IOTables | None = None,
     exports_by_division: dict[int, float] | None = None,
 ) -> pd.DataFrame:
-    """s^total = s^direct + s^upstream per SIC division.
+    """s^total = s^direct + s^upstream per SIC division, on ONE denominator.
 
-    Direct shocks are exposure.sector_earnings_shocks (wage-bill-share
-    rates); upstream rates come from the Leontief round. Divisions with only
-    an upstream shock (services) enter with s_direct = 0.
+    UNIFIED DENOMINATOR (referee point M8): both channels are expressed on
+    the IOT gross-output denominator (2022 basic prices). ``direct_shock`` is
+    passthrough x f / GO per division (f = elasticity x tariff x US exports,
+    the same primitives as the paper's Equation (1)), and ``upstream_shock``
+    is passthrough x delta_g / GO — so ``total_shock`` is a single
+    consistent wage-bill-share rate rather than a mixed-denominator sum. The
+    paper's core (ABS-turnover 2024 denominator) direct rate from
+    exposure.sector_earnings_shocks is kept alongside as
+    ``direct_shock_abs`` for comparison with the direct-only scenario; the
+    two differ by the ABS-turnover / IOT-gross-output wedge (different
+    valuation year, basic vs purchasers' prices, coverage).
+    Divisions with only an upstream shock (services) enter with s_direct = 0.
     """
     upstream = upstream_sector_shocks(
         tariff_scenario, elasticity, passthrough, iot, exports_by_division
     )
-    direct = sector_earnings_shocks(tariff_scenario, elasticity, passthrough)
-    index = upstream.index.union(direct.index)
+    direct_abs = sector_earnings_shocks(tariff_scenario, elasticity, passthrough)
+    index = upstream.index.union(direct_abs.index)
     table = pd.DataFrame(index=index).rename_axis("sic_division")
-    table["direct_shock"] = direct.reindex(index).fillna(0.0)
+    table["direct_shock"] = upstream["direct_shock_iot"].reindex(index).fillna(0.0)
+    table["direct_shock_abs"] = direct_abs.reindex(index).fillna(0.0)
     table["upstream_shock"] = upstream["upstream_shock"].reindex(index).fillna(0.0)
     table["total_shock"] = (table["direct_shock"] + table["upstream_shock"]).clip(0.0, 1.0)
     table["upstream_earnings_loss"] = (
@@ -344,7 +359,13 @@ def amplification_summary(
         "tariff_scenario": tariff_scenario,
         "direct_earnings_loss_gbp_m": direct_earnings,
         "upstream_earnings_loss_gbp_m": upstream_earnings,
-        "amplification_factor": (direct_earnings + upstream_earnings) / direct_earnings,
+        # Guarded: a zero direct earnings loss (e.g. an all-zero tariff
+        # scenario) would otherwise divide by zero.
+        "amplification_factor": (
+            (direct_earnings + upstream_earnings) / direct_earnings
+            if direct_earnings > 0
+            else float("nan")
+        ),
         "top_upstream_divisions": {
             int(d): {
                 "upstream_earnings_loss_gbp_m": float(r["upstream_earnings_loss"]),
@@ -414,19 +435,22 @@ def apply_displacement_with_shock(
 
 
 def apply_wage_cut_with_shock(persons: pd.DataFrame, shock: np.ndarray) -> pd.DataFrame:
-    """Wage-cut margin on an explicit shock vector, conservation asserted."""
+    """Wage-cut margin on an explicit shock vector.
+
+    Conservation (wage-cut loss = expected displacement loss across seeds) is
+    a property of the construction and is verified in the test suite; the
+    former in-function realised-vs-target assert recomputed the same
+    expression twice and could never fire (referee point M6).
+    """
     shocked = persons.copy()
     earnings = shocked["employment_income"].to_numpy(dtype=float)
-    weight = shocked["weight"].to_numpy(dtype=float)
     employed = earnings > 0
     shock = np.asarray(shock, dtype=float)
     if (shock[employed] >= 1.0).any():
         raise ValueError("total sector shock >= 100% of earnings for some workers")
-    target = float((shock * earnings * weight)[employed].sum())
     new = np.where(employed, earnings * (1.0 - shock), earnings)
-    realised = float(((earnings - new) * weight)[employed].sum())
-    if not np.isclose(realised, target, rtol=1e-9):
-        raise AssertionError("wage-bill conservation failed")
+    if (new < 0).any() or (new > earnings + 1e-9).any():
+        raise AssertionError("wage cut produced negative earnings or a raise")
     shocked["employment_income"] = new
     shocked["displaced"] = np.zeros(len(persons), dtype=bool)
     shocked["inactive"] = np.zeros(len(persons), dtype=bool)

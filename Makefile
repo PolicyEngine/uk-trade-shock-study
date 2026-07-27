@@ -19,7 +19,7 @@ inputs:
 	$(PYTHON) analysis/validate_manifest.py
 
 results:
-	$(PYTHON) analysis/run_scenarios.py --n-draws 100 --scenarios full_tariff_displacement full_tariff_wage_cut full_tariff_inactivity epd_displacement epd_wage_cut epd_inactivity measured_displacement measured_wage_cut
+	$(PYTHON) analysis/run_scenarios.py --n-draws 100 --scenarios full_tariff_displacement full_tariff_wage_cut full_tariff_inactivity epd_displacement epd_wage_cut epd_inactivity measured_displacement measured_wage_cut full_tariff_rentsharing epd_rentsharing
 	$(PYTHON) analysis/scenario_testing.py
 	$(PYTHON) analysis/sensitivity_grid.py
 	$(PYTHON) analysis/takeup_sensitivity.py

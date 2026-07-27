@@ -26,12 +26,21 @@
 \date{\small \ifcase\month\or January\or February\or March\or April\or May\or June\or July\or August\or September\or October\or November\or December\fi\ \the\year}
 
 \input{generated_results}
+% Manual result macros. TODO: migrate into analysis/write_paper_results.py so
+% they regenerate with the rest of generated_results.tex. Values are the
+% deterministic wage-cut gross earnings losses (results/full_tariff_wage_cut.json
+% and results/epd_wage_cut.json, draws[0].gross_earnings_loss) and the paired
+% full-minus-EPD worker difference restated in thousands.
+\newcommand{\FullWageGross}{886}
+\newcommand{\EPDWageGross}{693}
+\newcommand{\EPDWorkerDifferenceThousands}{3.7}
+\newcommand{\EPDWorkerDifferenceSDThousands}{2.8}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-\noindent This paper examines how the UK tax--benefit system cushions imposed labour-income losses associated with exposure to the 2025 US tariffs. I link 2024--25 Family Resources Survey households to SIC-level export exposure and use PolicyEngine UK to simulate earnings-equivalent wage cuts, job displacement, inactivity and reallocation. Under full-tariff exposure, the imposed annual earnings stress is \pounds886 million. The system offsets \FullWageCushion\ per cent under wage cuts and \FullDisplacedCushion\ per cent on average under displacement; Exchequer costs are \pounds\FullWageExchequer\ million and \pounds\FullDisplacedExchequer\ million. Results use \ProductionDraws\ assignments and distinguish assignment dispersion from numerical Monte Carlo error. The exercise is static, partial-equilibrium and first-round. It does not estimate tariff pass-through, production, labour demand, prices or total welfare: the tariff-to-wage-bill bridge and adjustment margins are imposed scenarios. The paper shows how labour-market adjustments reshape statutory fiscal and distributional incidence conditional on a common expected earnings loss.
+\noindent This paper examines how the UK tax--benefit system cushions imposed labour-income losses associated with exposure to the 2025 US tariffs. I link 2024--25 Family Resources Survey households to SIC-level export exposure and use PolicyEngine UK to simulate earnings-equivalent wage cuts, job displacement, inactivity and reallocation. Under full-tariff exposure, the imposed annual earnings stress is \pounds\FullWageGross\ million. The system offsets \FullWageCushion\ per cent under wage cuts and \FullDisplacedCushion\ per cent on average under displacement; Exchequer costs are \pounds\FullWageExchequer\ million and \pounds\FullDisplacedExchequer\ million. Results use \ProductionDraws\ assignments and distinguish assignment dispersion from numerical Monte Carlo error. The exercise is static, partial-equilibrium and first-round: the tariff-to-wage-bill bridge and adjustment margins are imposed scenarios, not estimates of tariff transmission. The paper shows how labour-market adjustments reshape statutory fiscal and distributional incidence conditional on a common expected earnings loss.
 \end{abstract}
 
 \medskip

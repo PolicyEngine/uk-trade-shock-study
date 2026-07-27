@@ -45,7 +45,11 @@ def _one_draw(dataset, baseline, persons, shock, period, seed, margin) -> Scenar
     else:
         shocked_table = sc.apply_displacement_with_shock(persons, shock, seed=seed)
     shocked = build_shocked_simulation(dataset, baseline, shocked_table, period)
-    base, shk = _metrics(baseline, period), _metrics(shocked, period)
+    base = _metrics(baseline, period)
+    # Frozen baseline relative poverty lines (referee point H1).
+    shk = _metrics(
+        shocked, period, poverty_lines=(base["poverty_line_bhc"], base["poverty_line_ahc"])
+    )
 
     weight = persons["weight"].to_numpy()
     displaced = shocked_table["displaced"].to_numpy()

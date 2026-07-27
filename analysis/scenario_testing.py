@@ -22,9 +22,14 @@ import json
 from dataclasses import asdict
 from pathlib import Path
 
+import sys
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from figstyle import DPI, INK, SEQUENTIAL, apply_style
 
 from uk_trade_shock_study.runner import _baseline_and_persons, _one_draw
 from uk_trade_shock_study.shocks import TradeShockScenario
@@ -126,28 +131,49 @@ def main() -> None:
         json.dumps(payload, indent=2, allow_nan=False)
     )
 
-    fig, axes = plt.subplots(1, 2, figsize=(10.5, 4.5), constrained_layout=True)
+    render_figure(frame)
+
+
+def render_figure(frame: pd.DataFrame | None = None) -> None:
+    """Render the scenario-surface heatmaps in the shared PolicyEngine style.
+
+    Presentation only. When ``frame`` is None the committed
+    results/scenario_testing.json is read, so the figure can be regenerated
+    without re-running any simulations.
+    """
+    if frame is None:
+        payload = json.loads((OUT / "scenario_testing.json").read_text())
+        frame = pd.DataFrame(payload["cells"])
+    apply_style()
+    FIGURES.mkdir(parents=True, exist_ok=True)
+    fig, axes = plt.subplots(1, 2, figsize=(10.5, 4.5), layout="constrained")
     panels = (
-        ("exchequer_cost_bn_mean", "Annual Exchequer cost (£bn)", "Blues"),
-        ("cushioning_pct_mean", "Tax–benefit cushioning (%)", "YlGnBu"),
+        ("exchequer_cost_bn_mean", "Annual Exchequer cost (£bn)", "{:.2f}"),
+        ("cushioning_pct_mean", "Tax–benefit cushioning (%)", "{:.1f}"),
     )
-    for ax, (metric, title, cmap) in zip(axes, panels):
+    for ax, (metric, title, fmt) in zip(axes, panels):
         matrix = frame.pivot(
             index="elasticity", columns="displacement_share", values=metric
         ).loc[list(ELASTICITIES), list(DISPLACEMENT_SHARES)]
-        image = ax.imshow(matrix, aspect="auto", origin="lower", cmap=cmap)
+        lo, hi = matrix.values.min(), matrix.values.max()
+        image = ax.imshow(
+            matrix, aspect="auto", origin="lower", cmap=SEQUENTIAL
+        )
         ax.set_xticks(range(len(DISPLACEMENT_SHARES)), [f"{100*x:.0f}" for x in DISPLACEMENT_SHARES])
         ax.set_yticks(range(len(ELASTICITIES)), [f"{x:g}" for x in ELASTICITIES])
         ax.set_xlabel("Share of shock delivered through displacement (%)")
         ax.set_ylabel("Export-demand calibration")
         ax.set_title(title)
+        ax.grid(visible=False)
+        span = (hi - lo) or 1.0
         for i in range(matrix.shape[0]):
             for j in range(matrix.shape[1]):
                 value = matrix.iloc[i, j]
-                ax.text(j, i, f"{value:.2f}" if metric.endswith("bn_mean") else f"{value:.1f}",
-                        ha="center", va="center", fontsize=8)
-        fig.colorbar(image, ax=ax, shrink=0.82)
-    fig.savefig(FIGURES / "scenario_testing.png", dpi=220, bbox_inches="tight")
+                dark = (value - lo) / span > 0.55
+                ax.text(j, i, fmt.format(value), ha="center", va="center",
+                        fontsize=7.5, color="white" if dark else INK)
+        fig.colorbar(image, ax=ax, shrink=0.8)
+    fig.savefig(FIGURES / "scenario_testing.png", dpi=DPI, bbox_inches="tight")
     plt.close(fig)
 
 

@@ -106,12 +106,15 @@ HOURLY_REALLOCATION_PENALTY = 0.140
 #: population flag rate) models a newly unemployed family as not claiming
 #: precisely because it was not claiming while in work. We therefore RE-DRAW
 #: the flag post-shock for AFFECTED benefit units at ``uc_takeup``, from an
-#: independent RNG stream (seeded UC_TAKEUP_SEED_OFFSET + seed) so that the
+#: independent RNG stream (tuple-seeded (seed, UC_TAKEUP_SEED_OFFSET)) so the
 #: displacement draw is bit-identical across take-up values. Unaffected benefit
 #: units keep their baseline draw untouched.
 DEFAULT_UC_TAKEUP = 0.80
-#: RNG stream offset for the post-shock take-up re-draw (independent of the
-#: displacement, destination and LCWRA streams).
+#: Stream tag for the post-shock take-up re-draw, used as the SECOND element
+#: of a TUPLE seed (seed, UC_TAKEUP_SEED_OFFSET). Tuple seeding keeps the
+#: stream disjoint from the plain-integer displacement stream for every seed
+#: (an additive offset would overlap it once seeds reach the offset) and from
+#: the destination/LCWRA tuple streams, which use different second elements.
 UC_TAKEUP_SEED_OFFSET = 900_000
 
 
@@ -161,6 +164,58 @@ PRESETS = {
     f"{tariff}_{margin}": TradeShockScenario(f"{tariff}_{margin}", tariff, margin)
     for tariff in ("full_tariff", "epd")
     for margin in MARGINS
+}
+
+#: RENT-SHARING CALIBRATION of the mixed margin's split. The quasi-
+#: experimental rent-sharing literature pins down how much of a firm-level
+#: revenue/output shock incumbent ("survivor") wages absorb:
+#:
+#: - Garin & Silverio (ReStud 2024): incumbent-wage elasticity to firm output
+#:   shocks of ~0.15;
+#: - Card, Cardoso, Heining & Kline (JOLE 2018 survey): rent-sharing
+#:   elasticities of 0.05-0.15;
+#: - Hummels, Jorgensen, Munch & Xiang (AER 2014): within-job wage responses
+#:   to trade shocks of 0.03-0.08.
+#:
+#: We take 0.15 — the upper end of the Card et al. range, matching Garin &
+#: Silverio — so survivor wage cuts absorb 15% of each sector's wage-bill
+#: loss and the residual 85% falls on the employment (displacement) margin.
+RENT_SHARING_ELASTICITY = 0.15
+
+
+def rent_sharing_displacement_share(
+    elasticity: float = RENT_SHARING_ELASTICITY,
+) -> float:
+    """Map a rent-sharing elasticity to the mixed margin's ``displacement_share``.
+
+    In ``apply_mixed_margin``, lambda = ``displacement_share`` and a worker in
+    division j with sector shock s_j faces displacement probability
+    p = lambda * s_j, while survivors take cut c = (s_j - p) / (1 - p). The
+    EXPECTED wage-bill loss of division j therefore splits exactly as
+
+        displacement:   p * B_j           = lambda * s_j * B_j
+        survivor cuts:  (1 - p) * c * B_j = (1 - lambda) * s_j * B_j
+
+    so the survivor-wage-cut share of the sector wage-bill loss is
+    (1 - lambda). Setting that share equal to the rent-sharing elasticity
+    gives lambda = 1 - elasticity.
+    """
+    if not 0.0 <= elasticity <= 1.0:
+        raise ValueError("rent-sharing elasticity must lie in [0, 1]")
+    return 1.0 - elasticity
+
+
+#: Mixed-margin presets with the rent-sharing-calibrated split: survivor wage
+#: cuts absorb RENT_SHARING_ELASTICITY (15%) of each sector's wage-bill loss,
+#: displacement the remaining 85% (displacement_share = 0.85).
+RENT_SHARING_PRESETS = {
+    f"{tariff}_rentsharing": TradeShockScenario(
+        f"{tariff}_rentsharing",
+        tariff,
+        "mixed",
+        displacement_share=rent_sharing_displacement_share(),
+    )
+    for tariff in ("full_tariff", "epd")
 }
 
 
@@ -237,15 +292,15 @@ def apply_wage_cut(persons: pd.DataFrame, scenario: TradeShockScenario) -> pd.Da
     Each employee in division j is cut by k x shock_j where
     k = L / sum_j shock_j x B_j = 1 identically for proportional cuts, so
     cut_i = shock_j — the per-division cut IS the derived shock size, and the
-    weighted aggregate earnings removed equals L exactly (conservation is
-    asserted, not assumed). Non-exposed workers are untouched. Deterministic
-    (no draw, no seed).
+    weighted aggregate earnings removed equals L exactly. The conservation
+    property (wage-cut loss = Monte Carlo mean of displacement losses across
+    seeds) is verified in tests/test_shocks.py::test_wage_bill_conservation.
+    Non-exposed workers are untouched. Deterministic (no draw, no seed).
     """
     if scenario.margin != "wage_cut":
         raise ValueError("apply_wage_cut requires a wage_cut scenario")
     shocked = persons.copy()
     earnings = shocked["employment_income"].to_numpy(dtype=float)
-    weight = shocked["weight"].to_numpy(dtype=float)
     employed = earnings > 0
     shock = _person_shock(persons, scenario)
     if (shock[employed] >= 1.0).any():
@@ -253,11 +308,16 @@ def apply_wage_cut(persons: pd.DataFrame, scenario: TradeShockScenario) -> pd.Da
             "derived sector shock >= 100% of earnings for some workers; "
             "check elasticity/passthrough calibration."
         )
-    target = float((shock * earnings * weight)[employed].sum())
     new = np.where(employed, earnings * (1.0 - shock), earnings)
-    realised = float(((earnings - new) * weight)[employed].sum())
-    if not np.isclose(realised, target, rtol=1e-9):
-        raise AssertionError("wage-bill conservation failed")
+    # Sanity checks that CAN fire (the former realised-vs-target comparison
+    # recomputed the same expression twice and was tautological — referee
+    # point M6; the economic conservation property, wage-cut loss equalling
+    # the Monte Carlo mean of displacement losses, is asserted in
+    # tests/test_shocks.py::test_wage_bill_conservation).
+    if (new < 0).any() or (new > earnings + 1e-9).any():
+        raise AssertionError("wage cut produced negative earnings or a raise")
+    if not np.array_equal(new[~employed], earnings[~employed]):
+        raise AssertionError("wage cut touched non-employed records")
     shocked["employment_income"] = new
     shocked["displaced"] = np.zeros(len(persons), dtype=bool)
     shocked["inactive"] = np.zeros(len(persons), dtype=bool)
@@ -412,6 +472,23 @@ TRANSITION_ZEROED_VARIABLES = (
     "statutory_sick_pay",
 )
 
+#: Subset of TRANSITION_ZEROED_VARIABLES that are earnings-linked deductions
+#: or earnings-linked statutory pay. For NON-displaced workers whose earnings
+#: change (wage-cut, mixed-survivor and reallocation margins) these are scaled
+#: by the worker's earnings factor (shocked / baseline earnings) rather than
+#: left at their baseline level — leaving full baseline pension contributions
+#: against cut earnings overstates tax relief and inflates the measured
+#: cushioning rate (referee point H2). hours_worked is deliberately NOT in
+#: this set: a proportional wage cut is a price change, not an hours change,
+#: and the reallocation margin already carries its own hours factor.
+EARNINGS_SCALED_VARIABLES = (
+    "employee_pension_contributions",
+    "pension_contributions_via_salary_sacrifice",
+    "statutory_maternity_pay",
+    "statutory_paternity_pay",
+    "statutory_sick_pay",
+)
+
 SHOCKED_INCOME_VARIABLES = ("employment_income",)
 
 
@@ -424,16 +501,21 @@ def lcwra_benunit_addon(sim, lcwra, monthly: float) -> np.ndarray:
     member — and NOT a person-level sum, which double-counts benefit units
     with two flagged members (e.g. a displaced over-50 couple).
     """
+    lcwra = np.asarray(lcwra, dtype=float)
     flagged_bu = np.asarray(
-        sim.map_result(np.asarray(lcwra, dtype=float), "person", "benunit"), dtype=float
+        sim.map_result(lcwra, "person", "benunit"), dtype=float
     )
-    addon = (flagged_bu > 0).astype(float) * monthly * 12.0
-    if addon.size and addon.max() > monthly * 12.0 + 1e-6:
+    # Real self-check (the former max-vs-one-element comparison was vacuous:
+    # the addon is constructed from a boolean so could never exceed one
+    # element). The person->benunit mapping must CONSERVE the flagged count —
+    # a lossy or duplicating map_result would silently mis-pay units.
+    if not np.isclose(flagged_bu.sum(), lcwra.sum(), rtol=0.0, atol=1e-6):
         raise RuntimeError(
-            "LCWRA addon exceeds one annual health element for some benefit "
-            "unit (flagged members double-counted)."
+            "LCWRA person->benunit mapping did not conserve the flagged "
+            f"count (persons {lcwra.sum():.0f} vs benunit total "
+            f"{flagged_bu.sum():.0f})."
         )
-    return addon
+    return (flagged_bu > 0).astype(float) * monthly * 12.0
 
 
 def merge_lcwra_element(base_element, addon) -> np.ndarray:
@@ -552,8 +634,14 @@ def redraw_uc_takeup(
     if not redraw_bu.any():
         sim.set_input("would_claim_uc", period, baseline_flag)
         sim._invalidate_all_caches()
+        _verify_uc_award_cache_flushed(sim, period, baseline_flag, potential_award)
         return baseline_flag
-    rng = np.random.default_rng(UC_TAKEUP_SEED_OFFSET + int(seed))
+    # Tuple seeding gives the take-up stream its own np.random.SeedSequence
+    # spawn key, so it can NEVER collide with the plain-integer displacement
+    # stream or the other tuple-seeded streams (destination (seed, 4_010_2026)
+    # and LCWRA (seed, 7_002_026)) — an additive integer offset shares the
+    # displacement seed space and overlaps it for seeds >= the offset.
+    rng = np.random.default_rng((int(seed), UC_TAKEUP_SEED_OFFSET))
     draw = rng.random(baseline_flag.size) < uc_takeup
     new_flag = np.where(redraw_bu, draw, baseline_flag)
     sim.set_input("would_claim_uc", period, new_flag)
@@ -569,12 +657,40 @@ def redraw_uc_takeup(
             "post-shock UC take-up re-draw not applied: would_claim_uc in the "
             "shocked simulation does not match the re-drawn flag."
         )
+    _verify_uc_award_cache_flushed(sim, period, new_flag, potential_award)
     return new_flag
+
+
+def _verify_uc_award_cache_flushed(sim, period, flag, potential_award) -> None:
+    """Hard-error if the UC award still reflects the temporary all-claim pass.
+
+    ``redraw_uc_takeup`` measures entitlement by computing universal_credit
+    under a temporary all-True ``would_claim_uc``. Restoring the final flag
+    relies on the private ``sim._invalidate_all_caches()`` to drop that cached
+    award; if a policyengine upgrade turned that call into a no-op, every
+    downstream metric would silently score the all-claim award. Verify the
+    flush by recomputing the award: any unit with a positive potential award
+    whose final flag is False must now score zero UC (referee point M5).
+    """
+    award = np.asarray(
+        sim.calculate("universal_credit", period=period, map_to="benunit").values,
+        dtype=float,
+    )
+    stale = (~np.asarray(flag, dtype=bool)) & (np.asarray(potential_award) > 1e-8)
+    if stale.any() and (award[stale] > 1e-8).any():
+        raise RuntimeError(
+            "post-shock UC take-up re-draw not applied: universal_credit still "
+            "reflects the temporary all-claim entitlement pass — the "
+            "simulation cache was not flushed (_invalidate_all_caches no-op?)."
+        )
 
 
 def build_shocked_simulation(dataset, baseline_sim, shocked_table, period):
     """One shared constructor for the shocked simulation (every pipeline).
 
+    Displaced workers have all TRANSITION_ZEROED_VARIABLES zeroed; workers
+    whose earnings change without displacement have their earnings-linked
+    deductions (EARNINGS_SCALED_VARIABLES) scaled by the earnings factor.
     Displaced-not-inactive workers become UNEMPLOYED; inactive workers become
     OTHER_INACTIVE and (per the shocked table's ``lcwra`` column) are flagged
     uc_limited_capability_for_WRA = True on top of any baseline flag, so
@@ -600,8 +716,25 @@ def build_shocked_simulation(dataset, baseline_sim, shocked_table, period):
         if "reallocation_hours_factor" in shocked_table
         else np.ones(len(displaced), dtype=float)
     )
+    # Earnings factor per worker: shocked / baseline earnings (1.0 where the
+    # baseline is zero). Displaced workers have factor 0 but are handled by
+    # the explicit zeroing below; the factor scales the earnings-linked
+    # deductions of NON-displaced shocked workers (wage-cut, mixed-survivor
+    # and reallocation margins) — referee point H2.
+    baseline_earnings = baseline_sim.calculate(
+        "employment_income", period=period, map_to="person"
+    ).values.astype(float)
+    shocked_earnings = shocked_table["employment_income"].to_numpy(dtype=float)
+    earnings_factor = np.divide(
+        shocked_earnings,
+        baseline_earnings,
+        out=np.ones_like(shocked_earnings),
+        where=baseline_earnings > 0,
+    )
     for var in TRANSITION_ZEROED_VARIABLES:
         values = baseline_sim.calculate(var, period=period, map_to="person").values.astype(float)
+        if var in EARNINGS_SCALED_VARIABLES:
+            values = values * np.where(displaced, 1.0, earnings_factor)
         values[displaced] = 0.0
         if var == "hours_worked":
             values = values * hours_factor

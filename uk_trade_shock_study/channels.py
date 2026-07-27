@@ -80,5 +80,15 @@ def real_income_after_price_shock(
         raise ValueError("nominal_income and expenditure_shares must have equal length")
     if (shares < 0).any().any() or (price_changes < -1).any():
         raise ValueError("shares must be non-negative and price changes above -100%")
+    # Enforce the documented contract: expenditure shares are weights and must
+    # sum to at most one per household (small tolerance for rounding).
+    row_sums = shares.to_numpy().sum(axis=1)
+    if (row_sums > 1.0 + 1e-9).any():
+        raise ValueError("expenditure shares must sum to at most one per household")
     index = 1.0 + shares.to_numpy() @ price_changes.to_numpy(dtype=float)
+    # With shares <= 1 and price changes > -100% the index is positive by
+    # construction; guard anyway so a contract slip fails loudly, not with a
+    # sign-flipped 'real income'.
+    if (index <= 0.0).any():
+        raise ValueError("household price index must be positive")
     return income / index

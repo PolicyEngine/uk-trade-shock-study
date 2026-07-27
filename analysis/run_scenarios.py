@@ -8,7 +8,11 @@ import argparse
 from pathlib import Path
 
 from uk_trade_shock_study.runner import run_monte_carlo, write_result
-from uk_trade_shock_study.shocks import PRESETS, TradeShockScenario
+from uk_trade_shock_study.shocks import (
+    PRESETS,
+    RENT_SHARING_PRESETS,
+    TradeShockScenario,
+)
 
 #: The MEASURED family: per-division shocks from the realised HMRC OTS
 #: outturn (exposure.MEASURED_SCENARIO; built by build_measured_shocks.py)
@@ -18,7 +22,10 @@ MEASURED_PRESETS = {
     f"measured_{margin}": TradeShockScenario(f"measured_{margin}", "measured", margin)
     for margin in ("displacement", "wage_cut")
 }
-ALL_PRESETS = {**PRESETS, **MEASURED_PRESETS}
+# Rent-sharing-calibrated mixed margin: {tariff}_rentsharing runs the mixed
+# margin with displacement_share = 1 - RENT_SHARING_ELASTICITY = 0.85, so
+# survivor wage cuts absorb 15% of each sector's wage-bill loss.
+ALL_PRESETS = {**PRESETS, **MEASURED_PRESETS, **RENT_SHARING_PRESETS}
 
 
 def main() -> None:

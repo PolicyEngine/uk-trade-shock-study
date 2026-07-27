@@ -68,7 +68,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import requests
-from uk_trade_shock_study.exposure import DEFAULT_ELASTICITY
+from uk_trade_shock_study.exposure import DEFAULT_ELASTICITY, tariff_rates
 
 from build_trade_by_sic import (
     DIVISION_NAMES,
@@ -88,11 +88,13 @@ US, EXPORTS_NON_EU = 400, 4
 FIRST_MONTH, LAST_MONTH = 202301, 202602
 POST_MONTHS = [202505, 202506, 202507, 202508, 202509, 202510, 202511, 202512, 202601, 202602]
 
-# epsilon-model primitives for the validation table (mirror exposure.py).
+# epsilon-model primitives for the validation table. Tariff schedules come
+# straight from exposure.tariff_rates so the validation table can never
+# desynchronise from the simulated scenarios (e.g. if EPD_STEEL_RELIEF_SHARE
+# changes) — referee point M7.
 ELASTICITY = DEFAULT_ELASTICITY
-TARIFF_FULL = {29: 0.25, 24: 0.25}
-TARIFF_EPD = {29: 0.10, 24: 0.125, 21: 0.0}
-BASELINE_TARIFF = 0.10
+RATES_FULL = tariff_rates("full_tariff")
+RATES_EPD = tariff_rates("epd")
 
 
 def _paged(url: str) -> list[dict]:
@@ -179,6 +181,17 @@ def realised_falls(monthly: pd.DataFrame) -> pd.DataFrame:
 
     base_1y = _window_sum(monthly, [shift(m, 1) for m in POST_MONTHS])
     base_2y = _window_sum(monthly, [shift(m, 2) for m in POST_MONTHS])
+
+    # A missing window sum means NO recorded exports in that window, i.e. a
+    # true zero, not missing data — fill with 0 BEFORE taking the ratio
+    # (referee point M9). The former dropna() silently assigned a ZERO shock
+    # to any division that collapsed to zero exports post-window (post
+    # missing -> row dropped -> no CSV row -> exposure fills 0), when the
+    # correct realised fall is 1.0.
+    index = post.index.union(base_1y.index).union(base_2y.index)
+    post = post.reindex(index, fill_value=0.0)
+    base_1y = base_1y.reindex(index, fill_value=0.0)
+    base_2y = base_2y.reindex(index, fill_value=0.0)
     base_avg = (base_1y + base_2y) / 2.0
 
     table = pd.DataFrame(
@@ -187,9 +200,25 @@ def realised_falls(monthly: pd.DataFrame) -> pd.DataFrame:
             "baseline_avg_2yr": base_avg,
             "baseline_yoy_1yr": base_1y,
         }
-    ).dropna()
+    )
+    # 0/0 guard: a division with zero exports in BOTH windows carries no
+    # information; log and drop it rather than emit NaN/inf.
+    no_baseline = table["baseline_avg_2yr"] <= 0.0
+    if no_baseline.any():
+        for div in table.index[no_baseline]:
+            print(
+                f"dropping division {div}: zero exports in the 2-yr baseline "
+                f"window (post window: £{table.loc[div, 'post']:,.0f})"
+            )
+        table = table[~no_baseline]
     table["export_fall"] = 1.0 - table["post"] / table["baseline_avg_2yr"]
-    table["export_fall_yoy1"] = 1.0 - table["post"] / table["baseline_yoy_1yr"]
+    # The 1-yr YoY sensitivity has its own zero-baseline guard (a division
+    # can have a 2-yr baseline but no 1-yr one): NaN rather than -inf.
+    table["export_fall_yoy1"] = np.where(
+        table["baseline_yoy_1yr"] > 0.0,
+        1.0 - table["post"] / table["baseline_yoy_1yr"],
+        np.nan,
+    )
     table.index.name = "sic_division"
     return table
 
@@ -238,8 +267,8 @@ def main() -> None:
     # ---- validation table: predicted (epsilon-model) vs realised falls ----
     rows = {}
     for div in intensity.index:
-        tau_f = TARIFF_FULL.get(div, BASELINE_TARIFF)
-        tau_e = TARIFF_EPD.get(div, BASELINE_TARIFF)
+        tau_f = float(RATES_FULL.loc[div])
+        tau_e = float(RATES_EPD.loc[div])
         x = float(intensity.loc[div, "us_export_share"])
         if div not in falls.index:
             continue

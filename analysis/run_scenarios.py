@@ -13,6 +13,7 @@ from uk_trade_shock_study.shocks import (
     RENT_SHARING_PRESETS,
     TradeShockScenario,
 )
+from uk_trade_shock_study.exposure import ELASTICITY_SCENARIOS
 
 #: The MEASURED family: per-division shocks from the realised HMRC OTS
 #: outturn (exposure.MEASURED_SCENARIO; built by build_measured_shocks.py)
@@ -22,10 +23,21 @@ MEASURED_PRESETS = {
     f"measured_{margin}": TradeShockScenario(f"measured_{margin}", "measured", margin)
     for margin in ("displacement", "wage_cut")
 }
-# Rent-sharing-calibrated mixed margin: {tariff}_rentsharing runs the mixed
+# Literature-disciplined mixed sensitivity: {tariff}_rentsharing runs the mixed
 # margin with displacement_share = 1 - RENT_SHARING_ELASTICITY = 0.85, so
-# survivor wage cuts absorb 15% of each sector's wage-bill loss.
+# survivor wage cuts absorb 15% of each imposed sector wage-bill loss. A
+# rent-sharing elasticity does not identify this decomposition one-for-one.
 ALL_PRESETS = {**PRESETS, **MEASURED_PRESETS, **RENT_SHARING_PRESETS}
+OBR_LOW_PRESETS = {
+    f"full_tariff_obr_low_{margin}": TradeShockScenario(
+        f"full_tariff_obr_low_{margin}",
+        "full_tariff",
+        margin,
+        elasticity=ELASTICITY_SCENARIOS["obr_low"],
+    )
+    for margin in ("displacement", "wage_cut")
+}
+ALL_PRESETS.update(OBR_LOW_PRESETS)
 
 
 def main() -> None:

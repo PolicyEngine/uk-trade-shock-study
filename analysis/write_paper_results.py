@@ -31,6 +31,10 @@ OPTIONAL = (
     "full_tariff_rentsharing",
     "epd_rentsharing",
 )
+ANCHORS = (
+    "full_tariff_obr_low_displacement",
+    "full_tariff_obr_low_wage_cut",
+)
 
 
 def _load(results_dir: Path, name: str) -> dict:
@@ -53,6 +57,7 @@ def main() -> None:
     args = parser.parse_args()
 
     data = {name: _load(args.results_dir, name) for name in CENTRAL}
+    anchor_data = {name: _load(args.results_dir, name) for name in ANCHORS}
     optional_data = {}
     for name in OPTIONAL:
         if (args.results_dir / f"{name}.json").exists():
@@ -65,7 +70,8 @@ def main() -> None:
                 f"--n-draws 100 --scenarios {name}`."
             )
     draw_counts = {
-        name: item["n_draws"] for name, item in {**data, **optional_data}.items()
+        name: item["n_draws"]
+        for name, item in {**data, **anchor_data, **optional_data}.items()
     }
     if set(draw_counts.values()) != {args.expected_draws}:
         details = ", ".join(f"{k}={v}" for k, v in draw_counts.items())
@@ -81,6 +87,8 @@ def main() -> None:
     ei = data["epd_inactivity"]
     md = data["measured_displacement"]
     mw = data["measured_wage_cut"]
+    od = anchor_data["full_tariff_obr_low_displacement"]
+    ow = anchor_data["full_tariff_obr_low_wage_cut"]
     full_draws = fd["draws"]
     epd_draws = ed["draws"]
     if len(full_draws) != len(epd_draws):
@@ -128,6 +136,9 @@ def main() -> None:
         "FullDisplacedPoverty": _fmt(fd["poverty_rate_change_bhc_mean"], 100, 3),
         "FullDisplacedPovertySD": _fmt(fd["poverty_rate_change_bhc_sd"], 100, 3),
         "FullWageExchequer": _fmt(fw["exchequer_cost_mean"], 1 / 1e6, 0),
+        "FullWageGross": _fmt(
+            _mean([d["gross_earnings_loss"] for d in fw["draws"]]), 1 / 1e6, 0
+        ),
         "FullWageCushion": _fmt(fw["cushioning_rate_mean"], 100, 1),
         "FullInactiveExchequer": _fmt(fi["exchequer_cost_mean"], 1 / 1e6, 0),
         "FullInactiveExchequerSD": _fmt(fi["exchequer_cost_sd"], 1 / 1e6, 0),
@@ -149,6 +160,9 @@ def main() -> None:
         "EPDDisplacedPoverty": _fmt(ed["poverty_rate_change_bhc_mean"], 100, 3),
         "EPDDisplacedPovertySD": _fmt(ed["poverty_rate_change_bhc_sd"], 100, 3),
         "EPDWageExchequer": _fmt(ew["exchequer_cost_mean"], 1 / 1e6, 0),
+        "EPDWageGross": _fmt(
+            _mean([d["gross_earnings_loss"] for d in ew["draws"]]), 1 / 1e6, 0
+        ),
         "EPDWageCushion": _fmt(ew["cushioning_rate_mean"], 100, 1),
         "EPDInactiveExchequer": _fmt(ei["exchequer_cost_mean"], 1 / 1e6, 0),
         "EPDInactiveExchequerSD": _fmt(ei["exchequer_cost_sd"], 1 / 1e6, 0),
@@ -161,8 +175,51 @@ def main() -> None:
         "MeasuredDisplacedCushionSD": _fmt(md["cushioning_rate_sd"], 100, 1),
         "MeasuredWageExchequer": _fmt(mw["exchequer_cost_mean"], 1 / 1e6, 0),
         "MeasuredWageCushion": _fmt(mw["cushioning_rate_mean"], 100, 1),
+        "OBRLowDisplacedWorkers": _fmt(
+            od["displaced_weighted_mean"], 1 / 1_000, 1
+        ),
+        "OBRLowDisplacedGross": _fmt(
+            _mean([d["gross_earnings_loss"] for d in od["draws"]]), 1 / 1e6, 0
+        ),
+        "OBRLowDisplacedGrossSD": _fmt(
+            _sample_sd([d["gross_earnings_loss"] for d in od["draws"]]),
+            1 / 1e6,
+            0,
+        ),
+        "OBRLowDisplacedExchequer": _fmt(
+            od["exchequer_cost_mean"], 1 / 1e6, 0
+        ),
+        "OBRLowDisplacedExchequerSD": _fmt(
+            od["exchequer_cost_sd"], 1 / 1e6, 0
+        ),
+        "OBRLowDisplacedCushion": _fmt(
+            od["cushioning_rate_mean"], 100, 1
+        ),
+        "OBRLowDisplacedCushionSD": _fmt(
+            od["cushioning_rate_sd"], 100, 1
+        ),
+        "OBRLowDisplacedPoverty": _fmt(
+            od["poverty_rate_change_bhc_mean"], 100, 3
+        ),
+        "OBRLowDisplacedPovertySD": _fmt(
+            od["poverty_rate_change_bhc_sd"], 100, 3
+        ),
+        "OBRLowCushionValidDraws": str(od["cushioning_valid_draws"]),
+        "OBRLowWageGross": _fmt(
+            _mean([d["gross_earnings_loss"] for d in ow["draws"]]), 1 / 1e6, 0
+        ),
+        "OBRLowWageExchequer": _fmt(
+            ow["exchequer_cost_mean"], 1 / 1e6, 0
+        ),
+        "OBRLowWageCushion": _fmt(ow["cushioning_rate_mean"], 100, 1),
         "EPDWorkerDifference": _fmt(_mean(paired_workers), 1.0, 0),
         "EPDWorkerDifferenceSD": _fmt(_sample_sd(paired_workers), 1.0, 0),
+        "EPDWorkerDifferenceThousands": _fmt(
+            _mean(paired_workers), 1 / 1_000, 1
+        ),
+        "EPDWorkerDifferenceSDThousands": _fmt(
+            _sample_sd(paired_workers), 1 / 1_000, 1
+        ),
         "EPDGrossDifference": _fmt(_mean(paired_gross), 1 / 1e6, 0),
         "EPDGrossDifferenceSD": _fmt(_sample_sd(paired_gross), 1 / 1e6, 0),
         "EPDExchequerDifference": _fmt(_mean(paired_exchequer), 1 / 1e6, 0),

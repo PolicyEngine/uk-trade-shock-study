@@ -1,0 +1,29 @@
+{
+  "method": "QRF benchmark calibrated to the primary model's direct LFS targets",
+  "lfs_all_employed_donors": 2084,
+  "lfs_exit_training_donors": 2084,
+  "lfs_wage_training_donors": 1236,
+  "manufacturing_target_donors": 177,
+  "frs_receivers": 1102,
+  "job_exit_target": 0.08960154595717354,
+  "qrf_job_exit_weighted_mean": 0.08960154595717354,
+  "wage_change_target": 0.058693428869518595,
+  "qrf_wage_change_weighted_mean": 0.058693428869518595,
+  "cell_qrf_exit_correlation": 0.060528243872971225,
+  "cell_qrf_wage_correlation": 0.07600360439026621,
+  "qrf_exit_range": [
+    0.0017981966839516947,
+    0.6262499205761238
+  ],
+  "qrf_wage_change_range": [
+    -0.4573663807076116,
+    0.7195971829245869
+  ],
+  "wage_training_winsorisation": {
+    "lower_quantile": 0.01,
+    "upper_quantile": 0.99,
+    "lower_value": -2.2300898178945205,
+    "upper_value": 1.3173239397205685
+  },
+  "caveat": "QRF estimates predictive heterogeneity, not a causal tariff effect; aggregate levels are imposed by LFS calibration."
+}

@@ -1,15 +1,45 @@
 \section{Discussion and conclusion}\label{sec:discussion}
 
-This paper is a conditional stress test of direct labour-income scenarios, not an estimate of the tariffs' total causal incidence. Under the full schedule, displacement is cushioned by $\FullDisplacedCushion\pm\FullDisplacedCushionSD$ per cent, inactivity by $\FullInactiveCushion\pm\FullInactiveCushionSD$ per cent and wage cuts by \FullWageCushion\ per cent. Exchequer costs are \pounds $\FullDisplacedExchequer\pm\FullDisplacedExchequerSD$ million, \pounds $\FullInactiveExchequer\pm\FullInactiveExchequerSD$ million and \pounds\FullWageExchequer\ million respectively. Every $\pm$ value is assignment dispersion; numerical Monte Carlo SE is stored separately.
+This paper pre-specifies a conditional statutory contrast, not the tariffs'
+total causal incidence. Across two loss anchors and three duration-equivalent
+scales, wage-cut cushioning exceeds displacement cushioning by
+\SubmissionCushionDifferenceMin--\SubmissionCushionDifferenceMax\ percentage
+points. At the unit twelve-month scale the difference is
+\PrimaryCushionDifference\ points and the wage-cut Exchequer cost is
+\pounds\PrimaryExchequerDifference\ million higher. Proportional cuts receive
+tax relief near marginal rates, while whole-job loss receives relief nearer
+average rates and relies more on UC. Part of the wage-cut difference is lower
+pension saving under the HBAI cash-income measure, not current tax-benefit
+insurance.
 
-The component mechanism is consistent with automatic-stabiliser theory: proportional earnings cuts receive tax relief near marginal rates, while a whole-job loss receives relief nearer average rates and relies more on UC. The corrected common claiming rule applies to every margin. Five-assignment take-up and gate exercises are exploratory and do not establish behavioural reliability or precise gate shares.
+Balanced integration makes the common aggregate loss comparable assignment
+by assignment and closely reproduces the Bernoulli mean at unit scale. It
+does not overcome sparse information: the unit displacement loss has only
+\UnitEffectiveLossRecords\ effective record contributions, and support is
+weaker at the smallest OBR-duration cells. Assignment SDs therefore describe
+scenario-allocation sensitivity, not population confidence intervals.
+The sign also survives all \LeaveSectorCount\ leave-one-division-out reruns,
+with a cushioning difference of \LeaveSectorCushionDifferenceMin--%
+\LeaveSectorCushionDifferenceMax\ points. This establishes sector robustness
+within the imposed bridge, not causal robustness of that bridge.
 
-National poverty effects are small in the central scenarios: $+\FullDisplacedPoverty\pm\FullDisplacedPovertySD$ percentage points under full displacement and zero at displayed precision under wage cuts. These changes should not be interpreted as precise population estimates because survey and production-side uncertainty are omitted. They also do not make selected households' losses small: the exposed population is limited and often above the poverty line before the shock.
+Calibrated longitudinal-LFS allocation sensitivities leave the central
+extensive-margin conclusion broadly unchanged: cushioning spans 36.0--37.4
+per cent across cell, earnings-band and regularised-QRF risk shapes, compared
+with 36.8 per cent under uniform assignment. This robustness is conditional
+and limited. The imputation models agree weakly person by person, and the
+available LFS manufacturing target has only \LFSManufacturingDonors\ donors;
+stability of an aggregate fiscal ratio is not evidence that tariff-specific
+worker selection has been identified.
 
-The paired full-minus-EPD displacement contrast is $\EPDWorkerDifferenceThousands\pm\EPDWorkerDifferenceSDThousands$ thousand workers and \pounds $\EPDExchequerDifference\pm\EPDExchequerDifferenceSD$ million of annual Exchequer cost, driven substantially by autos.
+National poverty changes remain near zero because the exposed population is
+small and often above the poverty line. They are not precise population
+estimates and do not imply that affected households' losses are small. EPD,
+inactivity, reallocation and demographic results are secondary or
+supplementary rather than competing headline estimands.
 
-The main limitation is structural: the model starts at the end of the production-side transmission mechanism. It does not estimate how the tariff changes border prices, export quantities, domestic output, value added, imported-input costs, firm productivity, investment, profits or labour demand. It assigns calibrated exposure directly to the wage bill and then assumes how that loss is divided among wages, employment, inactivity and reallocation. The results therefore answer a conditional fiscal-incidence question---what statutory taxes and transfers do after specified labour-income changes---not what the tariff does to the economy. Assignment is also independent within broad SIC divisions; the inactivity scenario assumes WCA passage for selected older workers; New Style JSA and within-year timing are absent; household labour-supply responses are suppressed; and indirect taxes, exchange rates, market switching, retaliation and general equilibrium are outside the central model. The supply-chain calculation is an accounting sensitivity, not a lower bound, and cannot be mechanically combined with local-employment multipliers. Constituency results are illustrative because local industry is not observed at the required level (Appendix~\ref{app:constituency}).
+The main limitation is structural: the model starts at the end of the production-side transmission mechanism. It does not estimate how the tariff changes border prices, export quantities, domestic output, value added, imported-input costs, firm productivity, investment, profits or labour demand. It assigns calibrated exposure directly to the wage bill and then assumes how that loss is divided among wages, employment, inactivity and reallocation. The results therefore answer a conditional fiscal-incidence question---what statutory taxes and transfers do after specified labour-income changes---not what the tariff does to the economy. Assignment is also independent within broad SIC divisions. The new longitudinal LFS exercise shows that plausible cell and forest incidence shapes agree only weakly even after matching aggregate targets; with just \LFSManufacturingDonors\ manufacturing donors it cannot identify tariff-specific worker selection. The inactivity scenario assumes WCA passage for selected older workers; New Style JSA and within-year timing are absent; household labour-supply responses are suppressed; and indirect taxes, exchange rates, market switching, retaliation and general equilibrium are outside the central model. The supply-chain calculation is an accounting sensitivity, not a lower bound, and cannot be mechanically combined with local-employment multipliers. Constituency results in the online supplement are illustrative because local industry is not observed at the required level.
 
 The companion UK AI study suggests useful extensions to the analysis architecture: separate the aggregate shock size from its incidence pattern as factorial scenario axes; add mixed wage--employment adjustment rather than only polar margins; benchmark exposure against external employment data; distinguish literature-calibrated from measured-incidence scenarios; evaluate policy counterfactuals on common draws; and generate paper values from a declared build manifest. Those extensions improve transparency and robustness, but they do not replace the missing trade-to-production first stage. The priority for a substantive extension is therefore a product- or firm-level model linking tariffs to prices, quantities, output, value added and productivity before any household microsimulation is run.
 
-The defensible conclusion is therefore modest. For a given direct earnings loss, the adjustment margin materially changes the mix of tax relief, benefit support, poverty and fiscal cost---and because the polar margins imply survivor-wage pass-through of one and zero, they bracket the empirical rent-sharing range of roughly 0.05--0.15 \citep{cardcardosoheining2018, garinsilverio2024}, with the rent-sharing-calibrated mixed scenario marking its empirically plausible interior. Quantifying the realised tariff effect requires causal trade and linked employer--worker evidence beyond this microsimulation.
+The defensible conclusion is therefore modest. For a given direct earnings loss, the adjustment margin materially changes the mix of tax relief, benefit support, poverty and fiscal cost. The polar margins bracket a range of adjustment assumptions, and the 15/85 mixed result is a literature-disciplined sensitivity rather than an estimated decomposition. The close aggregate match between the reference and observed export falls does not validate the bridge because sector agreement is weak. Quantifying the realised tariff effect requires causal trade and linked employer--worker evidence beyond this microsimulation.

@@ -47,6 +47,9 @@ class ScenarioResult:
     gross_earnings_loss: float = float("nan")
     net_disposable_loss: float = float("nan")
     cushioning_rate: float = float("nan")
+    affected_records: int = 0
+    effective_loss_records: float = 0.0
+    max_record_loss_share: float = 0.0
     decile_income_change: dict = field(default_factory=dict)
     region_income_change: dict = field(default_factory=dict)
     age_band_displacement_share: dict = field(default_factory=dict)
@@ -71,6 +74,7 @@ class MonteCarloResult:
     cushioning_rate_mean: float = float("nan")
     cushioning_rate_sd: float = 0.0
     cushioning_rate_mc_se: float = 0.0
+    cushioning_valid_draws: int = 0
     draws: list = field(default_factory=list)
 
 
@@ -230,7 +234,17 @@ def _baseline_and_persons(dataset_path, adult_tab_path, period):
     return dataset, baseline, persons
 
 
-def _one_draw(dataset, baseline, persons, scenario, period, seed) -> ScenarioResult:
+def _one_draw(
+    dataset,
+    baseline,
+    persons,
+    scenario,
+    period,
+    seed,
+    baseline_metrics: dict | None = None,
+    baseline_equiv: np.ndarray | None = None,
+    baseline_region: np.ndarray | None = None,
+) -> ScenarioResult:
     shocked_table = apply_shocks(persons, scenario, seed=seed)
     shocked = build_shocked_simulation(dataset, baseline, shocked_table, period)
     displaced = shocked_table["displaced"].to_numpy()
@@ -247,7 +261,7 @@ def _one_draw(dataset, baseline, persons, scenario, period, seed) -> ScenarioRes
         else np.zeros(len(displaced), dtype=bool)
     )
 
-    base = _metrics(baseline, period)
+    base = baseline_metrics if baseline_metrics is not None else _metrics(baseline, period)
     # Freeze the BASELINE relative poverty lines when scoring the shocked
     # simulation (referee point H1: an endogenous 60%-of-median line falls
     # with a broad earnings shock and understates the poverty change).
@@ -262,9 +276,13 @@ def _one_draw(dataset, baseline, persons, scenario, period, seed) -> ScenarioRes
     shocked_earnings = shocked_table["employment_income"].to_numpy(dtype=float)
     gross_loss = float(((base_earnings - shocked_earnings) * weight).sum())
     net_loss = base["hni_total"] - shock["hni_total"]
-    equiv = baseline.calculate(
-        "equiv_hbai_household_net_income", period=period, map_to="person"
-    ).values
+    equiv = (
+        baseline_equiv
+        if baseline_equiv is not None
+        else baseline.calculate(
+            "equiv_hbai_household_net_income", period=period, map_to="person"
+        ).values
+    )
     order = np.argsort(equiv)
     cum = np.cumsum(weight[order])
     ranks = np.empty(len(equiv), dtype=float)
@@ -274,12 +292,32 @@ def _one_draw(dataset, baseline, persons, scenario, period, seed) -> ScenarioRes
         int(d): float(np.average(income_delta[deciles == d], weights=weight[deciles == d]))
         for d in range(1, 11)
     }
-    region = baseline.calculate("region", period=period, map_to="person").values.astype(str)
+    region = (
+        baseline_region
+        if baseline_region is not None
+        else baseline.calculate("region", period=period, map_to="person").values.astype(str)
+    )
     region_change = {
         r: float(np.average(income_delta[region == r], weights=weight[region == r]))
         for r in sorted(set(region))
     }
     displaced_w = float(weight[displaced].sum())
+    record_loss = (
+        persons["employment_income"].to_numpy(dtype=float)
+        - shocked_table["employment_income"].to_numpy(dtype=float)
+    ) * weight
+    positive_loss = record_loss > 0
+    total_record_loss = float(record_loss[positive_loss].sum())
+    effective_loss_records = (
+        total_record_loss**2 / float(np.square(record_loss[positive_loss]).sum())
+        if positive_loss.any()
+        else 0.0
+    )
+    max_record_loss_share = (
+        float(record_loss[positive_loss].max() / total_record_loss)
+        if positive_loss.any() and total_record_loss > 0
+        else 0.0
+    )
     # age composition is reported over the AFFECTED set: displaced under the
     # job-loss margins, reallocated under the reallocation margin.
     affected = displaced | reallocated
@@ -307,6 +345,9 @@ def _one_draw(dataset, baseline, persons, scenario, period, seed) -> ScenarioRes
         gross_earnings_loss=gross_loss,
         net_disposable_loss=net_loss,
         cushioning_rate=(1.0 - net_loss / gross_loss) if gross_loss else float("nan"),
+        affected_records=int(positive_loss.sum()),
+        effective_loss_records=effective_loss_records,
+        max_record_loss_share=max_record_loss_share,
         decile_income_change=decile_change,
         region_income_change=region_change,
         age_band_displacement_share=band_share,
@@ -342,8 +383,40 @@ def run_monte_carlo(
     if isinstance(scenario, str):
         scenario = PRESETS[scenario]
     dataset, baseline, persons = _baseline_and_persons(dataset_path, adult_tab_path, period)
+    return run_monte_carlo_prepared(
+        dataset, baseline, persons, scenario, period, n_draws, base_seed
+    )
+
+
+def run_monte_carlo_prepared(
+    dataset,
+    baseline,
+    persons: pd.DataFrame,
+    scenario: TradeShockScenario,
+    period: int = 2026,
+    n_draws: int = 20,
+    base_seed: int = 0,
+) -> MonteCarloResult:
+    """Run draws using an already prepared/enriched person table."""
+    baseline_metrics = _metrics(baseline, period)
+    baseline_equiv = baseline.calculate(
+        "equiv_hbai_household_net_income", period=period, map_to="person"
+    ).values
+    baseline_region = baseline.calculate(
+        "region", period=period, map_to="person"
+    ).values.astype(str)
     draws = [
-        _one_draw(dataset, baseline, persons, scenario, period, base_seed + i)
+        _one_draw(
+            dataset,
+            baseline,
+            persons,
+            scenario,
+            period,
+            base_seed + i,
+            baseline_metrics,
+            baseline_equiv,
+            baseline_region,
+        )
         for i in range(n_draws)
     ]
     cost = np.array([d.exchequer_cost for d in draws])
@@ -353,10 +426,8 @@ def run_monte_carlo(
     cost_sd = float(cost.std(ddof=1)) if n_draws > 1 else 0.0
     pov_sd = float(pov.std(ddof=1)) if n_draws > 1 else 0.0
     gini_sd = float(gini_change.std(ddof=1)) if n_draws > 1 else 0.0
-    cushioning_sd = (
-        float(np.std([d.cushioning_rate for d in draws], ddof=1))
-        if n_draws > 1
-        else 0.0
+    cushioning_mean, cushioning_sd, valid_cushioning = _finite_mean_sd(
+        [d.cushioning_rate for d in draws]
     )
     return MonteCarloResult(
         scenario=scenario.name,
@@ -373,11 +444,26 @@ def run_monte_carlo(
         displaced_weighted_mean=float(np.mean([d.displaced_weighted for d in draws])),
         lcwra_weighted_mean=float(np.mean([d.lcwra_weighted for d in draws])),
         reallocated_weighted_mean=float(np.mean([d.reallocated_weighted for d in draws])),
-        cushioning_rate_mean=float(np.mean([d.cushioning_rate for d in draws])),
+        cushioning_rate_mean=cushioning_mean,
         cushioning_rate_sd=cushioning_sd,
-        cushioning_rate_mc_se=cushioning_sd / root_n,
+        cushioning_rate_mc_se=(
+            cushioning_sd / np.sqrt(valid_cushioning)
+            if valid_cushioning
+            else float("nan")
+        ),
+        cushioning_valid_draws=valid_cushioning,
         draws=[asdict(d) for d in draws],
     )
+
+
+def _finite_mean_sd(values) -> tuple[float, float, int]:
+    """Mean/SD for defined draws, retaining the valid-draw denominator."""
+    finite = np.asarray(values, dtype=float)
+    finite = finite[np.isfinite(finite)]
+    if not len(finite):
+        return float("nan"), 0.0, 0
+    standard_deviation = float(finite.std(ddof=1)) if len(finite) > 1 else 0.0
+    return float(finite.mean()), standard_deviation, len(finite)
 
 
 def write_result(result, path: str | Path) -> None:

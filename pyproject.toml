@@ -11,6 +11,8 @@ dependencies = [
     "matplotlib==3.10.0",
     "openpyxl==3.1.5",
     "requests==2.34.2",
+    "microimpute>=1.8.1,<2",
+    "statsmodels>=0.14,<1",
 ]
 
 [project.optional-dependencies]

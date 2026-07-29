@@ -13,9 +13,9 @@ A reader is entitled to ask, before any number is reported, which parts of this 
 Object & Status \\
 \midrule
 Tariff schedule $\tau_j$ & \textbf{Data} (policy documents: the April 2025 schedule, the May 2025 EPD, the December 2025 pharmaceutical agreement). \\
-US-export intensity $x_j$ & \textbf{Data} (HMRC RTS/OTS customs exports over ONS ABS division turnover; Appendix~\ref{app:data}). \\
+US-export intensity $x_j$ & \textbf{Data} (HMRC RTS/OTS customs exports over ONS ABS division turnover; online supplement). \\
 Export fall & \textbf{Data} in the measured family (realised HMRC outturn, May 2025--February 2026); \textbf{assumed} in the tariff families through declared low, central, high and severe demand scenarios. \\
-Pass-through $\pi$ & \textbf{Assumed} ($\pi = 1.0$), varied on a grid (Appendix~\ref{app:grid}). \\
+Pass-through $\pi$ & \textbf{Assumed} ($\pi = 1.0$), varied on a grid (online supplement). \\
 Adjustment margin & \textbf{Assumed}, and deliberately varied. This is the paper's free dimension. \\
 Household incidence & \textbf{Computed} from statutory tax and benefit rules in PolicyEngine UK; no behavioural or reduced-form step. \\
 \bottomrule
@@ -31,7 +31,37 @@ s_j \;=\; \tau_j \, x_j \, \varepsilon \, \pi,
 \end{equation}
 where $s_j$ is an imposed employee-wage-bill stress for SIC 2007 division $j$, $\tau_j$ is its tariff rate, $x_j$ is US-export intensity, $\varepsilon$ is an export-demand calibration and $\pi$ is a \emph{wage-bill-incidence assumption}. Calling $\pi$ pass-through would conflate distinct mechanisms. A structural transmission would separately map the tariff into export prices and quantities, quantities into domestic production and value added, and production into factor demand, productivity, profits, wages, hours and employment. Equation~\eqref{eq:shock} compresses those links into one accounting bridge. It neither estimates a production function nor identifies the causal response of productivity, output or labour demand.
 
-$x_j$ is US goods exports as a share of division turnover, built from HMRC trade data and ONS Annual Business Survey turnover denominators; Appendix~\ref{app:data} documents the frozen provenance and per-division denominator choice. The central $\varepsilon=1.0$ is a transparent unit stress, not an elasticity estimate; it amounts to a unit tariff-to-export-demand semi-elasticity, under which each percentage point of tariff removes one per cent of US-bound demand, and $\varepsilon=0.4$ is the lower anchor, in the spirit of the trade-elasticity assumptions underlying the OBR's March 2025 tariff scenarios \citep{obr2025}. The central $\pi=1$ assigns the full calibrated exposure to the employee wage bill; it is intentionally severe and is not established by the economics literature. The sensitivity grid varies $\varepsilon\pi$, but this is parameter sensitivity, not an uncertainty interval around an identified coefficient. The implied gross earnings loss is therefore a conditional scenario input. OECD METRO and the UK Trade Modelling Review instead place tariff shocks inside multi-sector production systems in which prices, output, value added and factor demand adjust jointly \citep{luu2020, ditreview2021}; the World Bank HIT framework similarly labels its direct household calculations first-order and excludes productivity and substitution responses \citep{artuc2021}. This paper begins only after those missing production-side mechanisms would have generated a labour-income distribution.
+$x_j$ is US goods exports as a share of division turnover, built from HMRC trade data and ONS Annual Business Survey turnover denominators; the online supplement documents the frozen provenance and per-division denominator choice. The central $\varepsilon=1.0$ is a transparent unit stress, not an elasticity estimate; it amounts to a unit tariff-to-export-demand semi-elasticity, under which each percentage point of tariff removes one per cent of US-bound demand, and $\varepsilon=0.4$ is the lower anchor, in the spirit of the trade-elasticity assumptions underlying the OBR's March 2025 tariff scenarios \citep{obr2025}. The central $\pi=1$ assigns the full calibrated exposure to the employee wage bill; it is intentionally severe and is not established by the economics literature. The sensitivity grid varies $\varepsilon\pi$, but this is parameter sensitivity, not an uncertainty interval around an identified coefficient. The implied gross earnings loss is therefore a conditional scenario input. OECD METRO and the UK Trade Modelling Review instead place tariff shocks inside multi-sector production systems in which prices, output, value added and factor demand adjust jointly \citep{luu2020, ditreview2021}; the World Bank HIT framework similarly labels its direct household calculations first-order and excludes productivity and substitution responses \citep{artuc2021}. This paper begins only after those missing production-side mechanisms would have generated a labour-income distribution.
+
+\subsection{Public product--destination benchmark}\label{sec:method-trade-panel}
+
+To test whether post-policy US exports move differently from other UK export
+destinations, I build a monthly HMRC OTS panel from January 2018 to May 2026
+for the United States, Canada, Japan and Australia \citep{hmrcots2026}.
+Detailed HS8 rows are aggregated to HS4 and balanced across products,
+destinations and months, with absent flows set to zero. HMRC's separate
+two-digit aggregate rows are excluded. For product $p$ and month $t$, the
+outcome is
+\[
+g_{pt}=\log(1+V_{p,\mathrm{US},t})
+-\frac{1}{3}\sum_{d\in\{\mathrm{CA,JP,AU}\}}\log(1+V_{pdt}).
+\]
+I regress this destination gap on a post-May-2025 indicator, HS4 product
+fixed effects, month-of-year effects and a linear trend. April 2025 is
+omitted as an announcement and anticipation month. The primary WLS weights
+are products' mean 2022--24 US export values, capped at the 99th percentile;
+standard errors are clustered by HS4. Uncapped value weights, equal product
+weights, individual destinations, later sample starts and pseudo-policy dates
+in May 2019--23 are reported as specification checks.
+
+This design controls for product shocks common across destinations but not
+US-specific demand, exchange rates, shipping, inventories, composition or
+other coincident policies. The high-tariff comparison groups HS chapters 72,
+73 and 87 as steel and automotive products; that broad mapping is a
+falsification check, not a complete product-level statutory tariff schedule.
+The panel is therefore not used to estimate $\varepsilon$ or $\pi$ in
+Equation~\eqref{eq:shock}. It tests whether the imposed bridge is consistent
+with destination-differential outturn patterns.
 
 \subsection{The tariff schedule and the EPD counterfactual}\label{sec:method-schedule}
 
@@ -39,13 +69,32 @@ Two tariff scenarios bracket the policy. \emph{Full tariffs}: the April 2025 sch
 
 \subsection{Adjustment-margin families}\label{sec:method-margins}
 
-The derived $s_j$ is realised on Family Resources Survey 2024--25 employees in exposed divisions under four central families, plus a factorial mixed-margin stress test. Wage cuts remove $\sum_j s_j B_j$ deterministically; Bernoulli displacement and inactivity remove that amount only in expectation, with realised weighted earnings varying across assignments:
+The derived $s_j$ is realised on Family Resources Survey 2024--25 employees
+in exposed divisions. The submission design pre-specifies one primary
+contrast: statutory cushioning under displacement versus proportional wage
+cuts, conditional on a common expected sector wage-bill loss. Inactivity,
+reallocation, mixed margins and the EPD schedule are secondary sensitivities.
+Wage cuts remove $\sum_j s_j B_j$ deterministically; displacement removes
+that amount in expectation under the risk model and is numerically integrated
+using the balanced design below.
 
-\paragraph{Displacement (ADH short run).} Within each exposed division every employee is selected independently with probability $s_j$, irrespective of the record's survey weight. This Bernoulli design gives each represented worker the intended probability and the sector target in expectation without forcing a weighted head-count quota. Selected workers move to unemployment with earnings, hours, pension contributions and statutory pay zeroed.
+\paragraph{Displacement (ADH short run).} Within each exposed division every
+employee has baseline risk $s_j$, irrespective of the record's survey weight.
+The primary estimator generates repeated random-start systematic candidates,
+ordered across age and within-industry earnings ranks, and retains the
+candidate that best matches the expected industry wage-bill and weighted-
+headcount losses while secondarily balancing broad age and earnings margins.
+This is balanced numerical integration, not a survey estimator: conditioning
+on aggregate balance intentionally changes exact record-level marginal
+inclusion probabilities. Selected workers move to unemployment with earnings,
+hours, pension contributions and statutory pay zeroed. An independent
+Bernoulli estimator, which preserves the declared first-order probabilities
+exactly but has much larger allocation dispersion, is reported as the
+unbiased assignment-rule comparator.
 \paragraph{Wage cuts with reallocation (Dauth/Traiberman long run).} No job loss; every employee in division $j$ takes a proportional cut of $s_j$, so the weighted aggregate earnings removed equals $\sum_j s_j B_j$ by construction---exact earnings-equivalence with the displacement family's expected removal. Employee pension and salary-sacrifice contributions are scaled proportionally with the cut, mirroring their zeroing under displacement; this lowers taxable pay (and hence tax relief) but also reduces the household's pension outflow, so under the HBAI disposable-income concept part of the earnings loss is absorbed by reduced retirement saving rather than by current income.
 \paragraph{Inactivity (Beatty--Fothergill UK history).} The displacement draw, but displaced workers aged 50 and over exit to economic inactivity, the benefit-financed route of UK deindustrialisation, rather than unemployment. The route is benefit-financed in the model, not just relabelled: every inactive worker is flagged as having limited capability for work-related activity, so their household's Universal Credit includes the LCWRA health element (\pounds 217.26 a month in 2026---the reduced rate applying to new claims from April 2026 under the Universal Credit Act 2025; existing claimants retain the higher pre-reform rate, and all modelled inactivity claims are new claims). In policyengine-uk 2.89.2 the survey-imputed \texttt{uc\_LCWRA\_element} is stored, so the post-shock benefit-unit value is set to the maximum of the stored amount and one annual statutory element; an existing recipient is never paid a second element, unaffected units are unchanged, and the run hard-errors if the element fails to reach a newly flagged person's benefit unit. This mirrors the \citet{beatty2007} route by which industrial job loss became incapacity-benefit inactivity. The strong assumption should be stated plainly: \emph{all} displaced workers aged 50 and over are assumed to pass the Work Capability Assessment, so the family is an upper bound on the health-element route; no partial-qualification sensitivity (for example, 50 per cent of the older displaced qualifying) has been simulated, which is a limitation of the present scenario set. Work-search conditionality carries no separate fiscal machinery in the model, so the LCWRA element is the entire modelled wedge between inactivity and unemployment.
 
-\paragraph{Reallocation into services (ADH/\citealp{autor2014}).} The same displacement draw on the same seed---so the two families are paired worker-for-worker---but the drawn workers are re-employed rather than left out of work. Their \texttt{sic\_industry\_division} is reassigned to one of four services destinations (SIC 47 retail, 86 human health, 49 land transport, 56 food and beverage service) in proportion to those divisions' FRS employee-weight shares (29.5, 45.8, 9.2 and 15.5 per cent), and their annual earnings are cut by a penalty calibrated on the FRS itself: weighted mean annual employee earnings of \pounds 48{,}272 over 2{,}047 hours in the exposed goods divisions against \pounds 34{,}594 over 1{,}701 hours in the four destinations, a \textbf{28.3 per cent annual-earnings penalty} that embeds the hours fall. Two variants are reported: an hours- and age-controlled \textbf{low-penalty} case of 14.0 per cent (the pure hourly-wage gap), and a \textbf{three-month lag} in which workers are out of work for a quarter of the year before the services job starts, scaling annual earnings and hours by a further $1-3/12$. ASHE 2024 full-time medians bracket the hours-controlled figure at 10--20 per cent; the FRS all-employee penalty is larger because it also captures the shift into part-time work. Because this family removes only the penalty on the movers rather than the full earnings-equivalent aggregate, its pound figures are comparable with the displacement family (identical worker sets, paired draws) but \emph{not} with the wage-cut family; its cushioning \emph{rate} is comparable with both. Appendix~\ref{app:reallocation} reports the results and Appendix~\ref{app:mechanics} the mechanics.
+\paragraph{Reallocation into services (ADH/\citealp{autor2014}).} The same displacement draw on the same seed---so the two families are paired worker-for-worker---but the drawn workers are re-employed rather than left out of work. Their \texttt{sic\_industry\_division} is reassigned to one of four services destinations (SIC 47 retail, 86 human health, 49 land transport, 56 food and beverage service) in proportion to those divisions' FRS employee-weight shares (29.5, 45.8, 9.2 and 15.5 per cent), and their annual earnings are cut by a penalty calibrated on the FRS itself: weighted mean annual employee earnings of \pounds 48{,}272 over 2{,}047 hours in the exposed goods divisions against \pounds 34{,}594 over 1{,}701 hours in the four destinations, a \textbf{28.3 per cent annual-earnings penalty} that embeds the hours fall. Two variants are reported: an hours- and age-controlled \textbf{low-penalty} case of 14.0 per cent (the pure hourly-wage gap), and a \textbf{three-month lag} in which workers are out of work for a quarter of the year before the services job starts, scaling annual earnings and hours by a further $1-3/12$. ASHE 2024 full-time medians bracket the hours-controlled figure at 10--20 per cent; the FRS all-employee penalty is larger because it also captures the shift into part-time work. Because this family removes only the penalty on the movers rather than the full earnings-equivalent aggregate, its pound figures are comparable with the displacement family (identical worker sets, paired draws) but \emph{not} with the wage-cut family; its cushioning \emph{rate} is comparable with both. The online supplement reports the results and mechanics.
 
 \paragraph{Mixed adjustment and factorial scenario testing.} Let $\lambda\in[0,1]$ denote the share of the sector shock delivered through displacement. A worker with sector shock $s$ is displaced with probability $p=\lambda s$. Conditional on surviving, the proportional wage cut is
 \[
@@ -53,13 +102,92 @@ c=\frac{s-p}{1-p},
 \]
 so expected earnings loss is exactly $p+(1-p)c=s$ for every worker. The endpoints reproduce pure wage cuts ($\lambda=0$) and pure displacement ($\lambda=1$). The exploratory grid crosses $\lambda\in\{0,.25,.5,.75,1\}$ with export-demand calibrations $\varepsilon\in\{0.4,1,2,3\}$ on five common assignments per cell. This follows the companion UK AI study's factorial principle: vary shock magnitude separately from adjustment composition. It is scenario testing, not a probability distribution over future outcomes.
 
-\paragraph{The wage-cut margin as an upper bound, and a rent-sharing-calibrated scenario.} The pure wage-cut family should be read against the rent-sharing evidence, because it embeds a survivor-wage pass-through assumption far above anything estimated. Delivering the entire sector wage-bill loss through proportional cuts to incumbent workers' wages implies a rent-sharing (survivor-wage pass-through) elasticity of one: each per cent of firm-level revenue exposure becomes one per cent of incumbent wages. The empirical literature puts that elasticity at 7--20 times lower. \citet{garinsilverio2024} estimate an incumbent-wage elasticity of roughly 0.15 to firm-specific export-demand shocks in Portuguese matched data---the closest experiment to our channel; the rent-sharing survey of \citet{cardcardosoheining2018} places typical elasticities at 0.05--0.15; and \citet{hummels2014} find within-job-spell wage elasticities of 0.03--0.08 in Danish data, with the dominant worker losses arriving through displacement rather than in-place wage cuts---consistent with the US evidence of \citet{autor2014} and with \citet{kimvogel2021}, whose money-metric accounting attributes most worker welfare loss to the employment margin. The wage-cut family ($\lambda=0$) is therefore an \emph{upper-bound stress scenario for survivor-wage incidence}, retained because it prices the flexible-wage pole of the structural disagreement; the displacement family ($\lambda=1$) is the empirically dominant channel. To anchor the interior of the $\lambda$ grid to this evidence, the scenario set includes a \emph{rent-sharing-calibrated mixed scenario}: a survivor-wage share of 0.15, so 15 per cent of each sector's wage-bill loss is delivered through survivor wage cuts at the empirical rent-sharing elasticity and the residual 85 per cent through displacement (in the grid's notation, a displacement share $\lambda=0.85$). Of the points spanned by the $\lambda$ dimension, this is the most empirically plausible interior scenario, and its results are reported alongside the mixed-margin family on the same paired assignments.
+\paragraph{The wage-cut margin as an upper bound, and a literature-disciplined mixed sensitivity.} The pure wage-cut family should be read against the rent-sharing evidence, because it embeds a survivor-wage response far above anything estimated. Delivering the entire sector wage-bill loss through proportional cuts to incumbent workers' wages imposes a unit wage response to the sector exposure index. \citet{garinsilverio2024} estimate an incumbent-wage elasticity of roughly 0.15 to firm-specific output shocks in Portuguese matched data; the rent-sharing survey of \citet{cardcardosoheining2018} places typical elasticities at 0.05--0.15; and \citet{hummels2014} find small within-job wage responses in Danish data alongside losses through displacement. The wage-cut family ($\lambda=0$) is therefore an \emph{upper-bound stress scenario for survivor-wage incidence}, retained because it prices the flexible-wage pole of the structural disagreement.
+
+The scenario set also reports a transparent 15/85 mixed sensitivity: 15 per cent of the imposed wage-bill loss is delivered through survivor wage cuts and 85 per cent through displacement ($\lambda=0.85$). The value 0.15 is disciplined by the upper end of the cited wage-response estimates, but it is not an empirical calibration of the loss decomposition. A wage elasticity to firm output or rents is not algebraically the share of an aggregate wage-bill loss borne by survivor wages. Identifying that share requires linked employer--worker estimates of wages, hours, employment and re-employment. The mixed result is therefore a literature-disciplined scenario point, not the uniquely ``most plausible'' margin.
 
 Two scope limits on the family set should be stated here rather than in a footnote. The wage-cut family models the \emph{earnings consequence} of reallocation without moving anyone between sectors: workers keep their observed industry and hours, and the proportional cut stands in for the wage penalty that a completed reallocation would carry; the reallocation family does move them, but who reallocates is assumed (it is the displacement draw) rather than estimated. And no household-side behavioural margin is active---added-worker responses, earlier or later retirement, and shifts into self-employment \citep{irastorza2025} are all suppressed, as are any labour-supply responses to the tax and benefit changes themselves. All four families are therefore first-round, rules-based incidence.
 
-A third caveat concerns selection within divisions. Displacement is a uniform Bernoulli draw over all employees in an exposed division, but export-exposed workers are unlikely to be representative of their division: exporters pay a wage premium and pass export-demand shocks into the wages of their own incumbent workers \citep{hummels2014, garinsilverio2024}, so the workers actually at risk are systematically higher-paid than the division average. Because cushioning is nonlinear in earnings---marginal tax rates rise with earnings while UC entitlement and tapers bind lower down---uniform selection may misstate the tax/benefit composition of cushioning relative to an earnings-tilted selection rule; an earnings-tilted sensitivity is a natural extension the current pipeline's heterogeneity interface supports but this paper does not run.
+A third caveat concerns selection within divisions. Export-exposed workers are
+unlikely to be representative of their division: exporters pay a wage premium
+and pass export-demand shocks into incumbent wages
+\citep{hummels2014, garinsilverio2024}. Cushioning is nonlinear in earnings,
+so uniform risk may misstate its tax/benefit composition. The longitudinal-LFS
+cell, earnings-band and QRF sensitivities vary observed risk shape while
+recalibrating each division to its wage-bill target. They quantify selection-
+model sensitivity but cannot identify exporter status or tariff-specific
+worker risk.
+
+The FRS support for the transition is thin. Of 34,966 person records, 12,800
+have employee earnings and 1,018 are in mapped exposed divisions, but the
+reference probabilities imply only 9.7 selected records. The largest exposed
+record has a person weight above 19 thousand. Balanced integration constrains
+the realised aggregate and observed composition; it does not create survey
+information or establish population representativeness. I therefore report
+the affected record count, Kish-style effective number of gross-loss
+contributions, largest-record loss share, and balanced-versus-Bernoulli mean
+and SD comparisons. Subgroup rankings remain exploratory.
+
+\paragraph{Duration-equivalent annual stresses.} The annual PolicyEngine model
+cannot represent a worker employed for part of a year and unemployed for the
+remainder with internally consistent monthly UC assessment, work status and
+earnings. I therefore do not simulate three- or six-month unemployment
+spells. Instead I scale $s_j$ by $d/12$, for
+$d\in\{3,6,12\}$, and assign a correspondingly smaller number of coherent
+full-year displaced states. These rows preserve the expected worker-month
+earnings loss associated with each duration while changing the extensive-
+margin stock. They are labelled \emph{duration-equivalent annual stresses},
+not spell estimates. Wage-cut rows use the same scale, preserving the common-
+loss comparison at every duration and at both the OBR-style 0.4 and unit
+anchors.
 
 The margin is the paper's central axis because the tax--benefit system treats the two poles asymmetrically: an in-work earnings reduction is offset automatically at marginal tax and taper rates, while a job loss moves the worker to the gated, means-tested extensive margin of the benefit system. How much each pole is cushioned, and---the question that turns out to discriminate between them---how much that cushioning depends on anyone doing anything, are empirical questions the microdata answer (Section~\ref{sec:results-cushioning}).
+
+\subsection{Longitudinal LFS imputation benchmark}\label{sec:method-lfs}
+
+The uniform within-division assignment in the central displacement family is
+transparent but suppresses observable worker heterogeneity. I therefore use
+UK Data Service Study 9490, the Labour Force Survey Five-Quarter Longitudinal
+Dataset covering July 2024--September 2025, as a donor benchmark. The donor
+population comprises respondents employed at wave 1. Job exit is observed at
+wave 5; log wage change is defined only for respondents employed with
+positive main-job pay at both endpoints. Negative UKDS sentinel values are
+missing, not zero. Public 2024 Nomis BRES employee totals rescale the
+manufacturing SIC composition before direct transition targets are computed.
+\citep{onslfs9490}
+
+The primary imputation maps SIC-division--sex--age cells to employed FRS
+receivers, shrinking sparse cells towards sector and manufacturing means.
+After matching, predicted exit risks are rescaled so their FRS-weighted mean
+equals the directly measured, BRES-composition-adjusted LFS manufacturing
+exit rate. Mean predicted log wage changes are centred on the corresponding
+LFS target. An income-tercile estimator supplies a transparent sensitivity
+specification.
+
+A regularised quantile/random-forest benchmark follows the calibrated
+imputation architecture in PolicyEngine's \texttt{young-worker-nics}
+project. It estimates model shape on all wave-1 employed adult donors using
+age, sex and annualised employment income. The binary outcome uses the
+random-forest event probability; the continuous outcome uses the QRF
+conditional mean. Forests use 500 trees and a minimum leaf size of 20; wage
+outcomes are winsorised at the donor 1st and 99th percentiles. Both receiver
+predictions are then calibrated to exactly the same manufacturing LFS
+targets as the cell estimator. This is a predictive baseline-transition
+benchmark, not an estimate of tariff-induced exits or wage changes. It is
+therefore reported as a robustness diagnostic and does not replace the
+declared central assignment rule.
+
+In a downstream allocation sensitivity, each receiver score $r_i$ is
+converted to a within-division displacement probability
+$p_i=\min(1,k_jr_i)$, where $k_j$ is solved numerically so
+\[
+\frac{\sum_{i\in j}p_i E_iw_i}{\sum_{i\in j}E_iw_i}=s_j.
+\]
+Thus cells, earnings bands and QRF change who is exposed while preserving
+each division's expected employee-wage-bill loss. Missing scores use the
+division mean. Common assignments then isolate sensitivity to incidence
+shape; they do not give the baseline transition model a causal tariff
+interpretation.
 
 \subsection{Universal Credit take-up after the shock}\label{sec:method-takeup}
 
@@ -73,4 +201,4 @@ The pipeline therefore re-draws \texttt{would\_claim\_uc} after each shock only 
 
 The Monte Carlo draws describe sensitivity to the artificial assignment of displacement across weighted FRS records. Their standard deviations are assignment dispersion, not sampling standard errors, confidence intervals, or uncertainty about the tariff response, survey design or model parameters. Numerical Monte Carlo error of a reported mean is the assignment SD divided by the square root of the number of draws. Parameter scenarios vary the demand calibration, wage-bill incidence, take-up and adjustment composition, but are not assigned probabilities and do not form confidence intervals. The FRS complex-survey sampling variance and uncertainty in the trade-to-earnings bridge are not estimated. Reported comparisons are therefore descriptive scenario contrasts. Distributional cash-income changes use annual household disposable-income change divided by household size before person-weighted aggregation; aggregate disposable-income totals remain household-weighted totals.
 
-The realisation step---an imposed status and earnings transition on survey households, then run through the full benefit rules---follows \citet{brewertasseva2021}, who apply it to the Covid-19 labour-market shock in UKMOD, and the EUROMOD nowcasting tradition of imposed labour-market transitions \citep{navicke2013}. PolicyEngine UK computes baseline and shocked household disposable income (HBAI cash concept throughout), relative before-housing-costs poverty measured against a poverty line frozen at 60 per cent of the baseline equivalised median (so the reported change reflects households crossing a fixed threshold rather than mechanical movement of the line itself), absolute before-housing-costs poverty against a fixed baseline line, after-housing-costs poverty, the Gini coefficient, distributional breakdowns and the Exchequer effect. The \emph{Exchequer effect} is defined as the change in the aggregate simulated government balance---all modelled tax and contribution revenue (including employer National Insurance contributions) minus all modelled benefit spending---between the baseline and shocked simulations. It is therefore broader than the employee-earnings loss $\Delta E$ that enters the cushioning rate; Appendix~\ref{app:mc} reconciles the two. On timing: trade exposure is built from 2024 HMRC customs data, the household input is FRS 2024--25, and the simulation year is 2026, with PolicyEngine UK's standard uprating applied to survey monetary variables between the survey year and the simulation year. Central direct and measured scenarios use \ProductionDraws\ assignments; explicitly exploratory appendix diagnostics use five. Following \citet{ignatenko2025}, revenue recycling can flip aggregate employment responses; here fiscal policy is held fixed. Only direct taxes and benefits respond. Indirect taxes are not shocked, so reduced consumption-tax receipts are absent from the government balance.
+The realisation step---an imposed status and earnings transition on survey households, then run through the full benefit rules---follows \citet{brewertasseva2021}, who apply it to the Covid-19 labour-market shock in UKMOD, and the EUROMOD nowcasting tradition of imposed labour-market transitions \citep{navicke2013}. PolicyEngine UK computes baseline and shocked household disposable income (HBAI cash concept throughout), relative before-housing-costs poverty measured against a poverty line frozen at 60 per cent of the baseline equivalised median (so the reported change reflects households crossing a fixed threshold rather than mechanical movement of the line itself), absolute before-housing-costs poverty against a fixed baseline line, after-housing-costs poverty, the Gini coefficient, distributional breakdowns and the Exchequer effect. The \emph{Exchequer effect} is defined as the change in the aggregate simulated government balance---all modelled tax and contribution revenue (including employer National Insurance contributions) minus all modelled benefit spending---between the baseline and shocked simulations. It is therefore broader than the employee-earnings loss $\Delta E$ that enters the cushioning rate; the online supplement reconciles the two. On timing: trade exposure is built from 2024 HMRC customs data, the household input is FRS 2024--25, and the simulation year is 2026, with PolicyEngine UK's standard uprating applied to survey monetary variables between the survey year and the simulation year. Primary submission scenarios use \SubmissionDraws\ balanced assignments; legacy direct and measured scenarios use \ProductionDraws\ assignments, and explicitly exploratory diagnostics use five. Following \citet{ignatenko2025}, revenue recycling can flip aggregate employment responses; here fiscal policy is held fixed. Only direct taxes and benefits respond. Indirect taxes are not shocked, so reduced consumption-tax receipts are absent from the government balance.

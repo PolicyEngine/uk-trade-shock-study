@@ -1,0 +1,212 @@
+{
+  "n_draws": 50,
+  "scenarios": {
+    "obr_3m_displacement": {
+      "gross_loss_mean_million": 89.30455080152463,
+      "gross_loss_sd_million": 2.179128028336792,
+      "exchequer_cost_mean_million": 35.14466304,
+      "exchequer_cost_sd_million": 8.151768038102325,
+      "cushioning_mean_percent": 30.93876631048577,
+      "cushioning_sd_pp": 9.000830715221277,
+      "poverty_change_mean_pp": 0.0031352975719716176,
+      "affected_records_mean": 1.28,
+      "effective_loss_records_mean": 1.1840194987267676,
+      "max_record_loss_share_mean_percent": 91.90199202148924
+    },
+    "obr_3m_wage_cut": {
+      "gross_loss_mean_million": 88.5749325249951,
+      "gross_loss_sd_million": 0.0,
+      "exchequer_cost_mean_million": 48.16896,
+      "exchequer_cost_sd_million": 0.0,
+      "cushioning_mean_percent": 43.768108447675324,
+      "cushioning_sd_pp": 0.0,
+      "poverty_change_mean_pp": 0.0,
+      "affected_records_mean": 1018.0,
+      "effective_loss_records_mean": 226.07919873713664,
+      "max_record_loss_share_mean_percent": 3.560769245774173
+    },
+    "obr_6m_displacement": {
+      "gross_loss_mean_million": 176.60245207757075,
+      "gross_loss_sd_million": 2.5068467657647027,
+      "exchequer_cost_mean_million": 73.42358528,
+      "exchequer_cost_sd_million": 13.138274411967638,
+      "cushioning_mean_percent": 32.718217262494406,
+      "cushioning_sd_pp": 7.716053086058686,
+      "poverty_change_mean_pp": 0.008581304287212599,
+      "affected_records_mean": 2.44,
+      "effective_loss_records_mean": 2.0334632071258922,
+      "max_record_loss_share_mean_percent": 62.05244104391446
+    },
+    "obr_6m_wage_cut": {
+      "gross_loss_mean_million": 177.14986504998885,
+      "gross_loss_sd_million": 3.0104891793495737e-14,
+      "exchequer_cost_mean_million": 96.354304,
+      "exchequer_cost_sd_million": 0.0,
+      "cushioning_mean_percent": 43.69411911668498,
+      "cushioning_sd_pp": 0.0,
+      "poverty_change_mean_pp": 0.0,
+      "affected_records_mean": 1018.0,
+      "effective_loss_records_mean": 226.0791987371419,
+      "max_record_loss_share_mean_percent": 3.5607692457740607
+    },
+    "obr_12m_displacement": {
+      "gross_loss_mean_million": 354.16627375530675,
+      "gross_loss_sd_million": 4.206609668602468,
+      "exchequer_cost_mean_million": 141.29922048,
+      "exchequer_cost_sd_million": 21.417306816125457,
+      "cushioning_mean_percent": 32.033426910014306,
+      "cushioning_sd_pp": 5.703475687821957,
+      "poverty_change_mean_pp": 0.014503948156824653,
+      "affected_records_mean": 4.44,
+      "effective_loss_records_mean": 3.544595616027296,
+      "max_record_loss_share_mean_percent": 41.112172470852606
+    },
+    "obr_12m_wage_cut": {
+      "gross_loss_mean_million": 354.2997300999792,
+      "gross_loss_sd_million": 0.0,
+      "exchequer_cost_mean_million": 192.462848,
+      "exchequer_cost_sd_million": 0.0,
+      "cushioning_mean_percent": 43.58313512020038,
+      "cushioning_sd_pp": 5.6074730667277685e-15,
+      "poverty_change_mean_pp": 0.0,
+      "affected_records_mean": 1018.0,
+      "effective_loss_records_mean": 226.07919873713962,
+      "max_record_loss_share_mean_percent": 3.5607692457741145
+    },
+    "unit_3m_displacement": {
+      "gross_loss_mean_million": 221.96450306941964,
+      "gross_loss_sd_million": 3.764342866183376,
+      "exchequer_cost_mean_million": 91.36242688,
+      "exchequer_cost_sd_million": 14.787211424012629,
+      "cushioning_mean_percent": 31.9510912205504,
+      "cushioning_sd_pp": 6.223932369801279,
+      "poverty_change_mean_pp": 0.008189351808228718,
+      "affected_records_mean": 2.9,
+      "effective_loss_records_mean": 2.287430722417591,
+      "max_record_loss_share_mean_percent": 57.904595235966106
+    },
+    "unit_3m_wage_cut": {
+      "gross_loss_mean_million": 221.4373313124875,
+      "gross_loss_sd_million": 3.0104891793495737e-14,
+      "exchequer_cost_mean_million": 120.389632,
+      "exchequer_cost_sd_million": 0.0,
+      "cushioning_mean_percent": 43.64972551809142,
+      "cushioning_sd_pp": 0.0,
+      "poverty_change_mean_pp": 0.0,
+      "affected_records_mean": 1018.0,
+      "effective_loss_records_mean": 226.07919873714135,
+      "max_record_loss_share_mean_percent": 3.5607692457740647
+    },
+    "unit_6m_displacement": {
+      "gross_loss_mean_million": 442.0171833837056,
+      "gross_loss_sd_million": 5.788519181840408,
+      "exchequer_cost_mean_million": 189.50782976,
+      "exchequer_cost_sd_million": 23.92270491780529,
+      "cushioning_mean_percent": 33.80545491641096,
+      "cushioning_sd_pp": 5.3727987887213775,
+      "poverty_change_mean_pp": 0.015528023900778176,
+      "affected_records_mean": 5.26,
+      "effective_loss_records_mean": 3.790730936399852,
+      "max_record_loss_share_mean_percent": 40.214282349884236
+    },
+    "unit_6m_wage_cut": {
+      "gross_loss_mean_million": 442.87466262497526,
+      "gross_loss_sd_million": 6.020978358699147e-14,
+      "exchequer_cost_mean_million": 240.500736,
+      "exchequer_cost_sd_million": 0.0,
+      "cushioning_mean_percent": 43.56093832090357,
+      "cushioning_sd_pp": 5.6074730667277685e-15,
+      "poverty_change_mean_pp": 0.0,
+      "affected_records_mean": 1018.0,
+      "effective_loss_records_mean": 226.07919873713968,
+      "max_record_loss_share_mean_percent": 3.560769245774119
+    },
+    "unit_12m_displacement": {
+      "gross_loss_mean_million": 885.3836894362082,
+      "gross_loss_sd_million": 6.103060666934451,
+      "exchequer_cost_mean_million": 377.57419519999996,
+      "exchequer_cost_sd_million": 36.502352767609224,
+      "cushioning_mean_percent": 33.97274916112502,
+      "cushioning_sd_pp": 4.668392704901335,
+      "poverty_change_mean_pp": 0.03634038359565278,
+      "affected_records_mean": 9.78,
+      "effective_loss_records_mean": 6.228527748934224,
+      "max_record_loss_share_mean_percent": 28.727221182076423
+    },
+    "unit_12m_wage_cut": {
+      "gross_loss_mean_million": 885.7493252499482,
+      "gross_loss_sd_million": 0.0,
+      "exchequer_cost_mean_million": 484.22912,
+      "exchequer_cost_sd_million": 0.0,
+      "cushioning_mean_percent": 43.93088497585293,
+      "cushioning_sd_pp": 0.0,
+      "poverty_change_mean_pp": 0.0,
+      "affected_records_mean": 1018.0,
+      "effective_loss_records_mean": 226.07919873714064,
+      "max_record_loss_share_mean_percent": 3.5607692457740994
+    }
+  },
+  "contrasts": {
+    "obr_3m_wage_minus_displacement": {
+      "cushioning_difference_pp": 12.829342137189553,
+      "cushioning_difference_assignment_sd_pp": 9.000830715221277,
+      "exchequer_difference_million": 13.024296960000001,
+      "exchequer_difference_assignment_sd_million": 8.151768038102325
+    },
+    "obr_6m_wage_minus_displacement": {
+      "cushioning_difference_pp": 10.975901854190582,
+      "cushioning_difference_assignment_sd_pp": 7.716053086058686,
+      "exchequer_difference_million": 22.930718719999998,
+      "exchequer_difference_assignment_sd_million": 13.138274411967638
+    },
+    "obr_12m_wage_minus_displacement": {
+      "cushioning_difference_pp": 11.549708210186072,
+      "cushioning_difference_assignment_sd_pp": 5.703475687821957,
+      "exchequer_difference_million": 51.163627520000006,
+      "exchequer_difference_assignment_sd_million": 21.41730681612546
+    },
+    "obr_balanced_vs_bernoulli": {
+      "gross_loss_sd_ratio": 0.013269281411366407,
+      "exchequer_sd_ratio": 0.1224492497810711,
+      "balanced_exchequer_mean_million": 141.29922048,
+      "bernoulli_exchequer_mean_million": 173.15201024,
+      "balanced_cushioning_percent": 32.033426910014306,
+      "bernoulli_cushioning_percent": 31.823926209137166,
+      "balanced_gross_loss_mean_million": 354.16627375530675,
+      "bernoulli_gross_loss_mean_million": 390.7272781660405
+    },
+    "unit_3m_wage_minus_displacement": {
+      "cushioning_difference_pp": 11.698634297541021,
+      "cushioning_difference_assignment_sd_pp": 6.223932369801279,
+      "exchequer_difference_million": 29.02720512,
+      "exchequer_difference_assignment_sd_million": 14.787211424012629
+    },
+    "unit_6m_wage_minus_displacement": {
+      "cushioning_difference_pp": 9.755483404492603,
+      "cushioning_difference_assignment_sd_pp": 5.3727987887213775,
+      "exchequer_difference_million": 50.99290624,
+      "exchequer_difference_assignment_sd_million": 23.922704917805287
+    },
+    "unit_12m_wage_minus_displacement": {
+      "cushioning_difference_pp": 9.95813581472791,
+      "cushioning_difference_assignment_sd_pp": 4.668392704901335,
+      "exchequer_difference_million": 106.6549248,
+      "exchequer_difference_assignment_sd_million": 36.502352767609224
+    },
+    "unit_balanced_vs_bernoulli": {
+      "gross_loss_sd_ratio": 0.015466287485351567,
+      "exchequer_sd_ratio": 0.18386336909003592,
+      "balanced_exchequer_mean_million": 377.57419519999996,
+      "bernoulli_exchequer_mean_million": 376.90769408,
+      "balanced_cushioning_percent": 33.97274916112502,
+      "bernoulli_cushioning_percent": 33.459824760795904,
+      "balanced_gross_loss_mean_million": 885.3836894362082,
+      "bernoulli_gross_loss_mean_million": 871.732581276175
+    }
+  },
+  "leave_one_sector_out": {
+    "division_count": 23,
+    "cushioning_difference_min_pp": 7.6344408305293925,
+    "cushioning_difference_max_pp": 11.345467176447606
+  }
+}

@@ -34,14 +34,27 @@ The disposition of the referee audit is tracked in `REVISION_STATUS.md`.
 5. `analysis/scenario_testing.py` — crosses export-demand calibration with
    the wage-cut/displacement mixture on common seeds and writes the scenario
    surface, cell data and draw-level artifact.
+6. `analysis/hmrc_destination_event_study.py` — builds a balanced public HS4
+   product panel and tests whether exports to the US changed relative to the
+   same products sent to Canada, Japan and Australia, with weighting,
+   control-destination, sample-start, placebo-date and tariff-intensity
+   diagnostics.
+7. `analysis/run_submission_scenarios.py` — runs the pre-specified primary
+   design: {OBR-style 0.4, unit} × {wage cut, displacement} × {3, 6, 12 month
+   duration-equivalent annual stress}. Displacement uses balanced repeated
+   assignment and retains an independent Bernoulli comparator.
+8. `analysis/write_submission_results.py` — validates all 50-draw submission
+   artifacts, writes the primary manuscript table, paired margin contrasts
+   and record-support diagnostics.
 
-The default production run uses 100 assignment draws. Use `--n-draws`
-explicitly for faster exploratory runs.
+The legacy scenario suite uses 100 assignment draws. The compact submission
+design uses 50 balanced draws; both specifications are declared explicitly.
 
-`analysis/write_paper_results.py` checks that all eight central artifacts use
-the same 100-draw production specification and generates
+`analysis/write_paper_results.py` checks that all central artifacts use the
+same 100-draw production specification and generates
 `paper/generated_results.tex`. The paper build fails rather than silently
-mixing exploratory and production results.
+mixing exploratory and production results. The corresponding submission
+writer enforces 50 draws independently.
 
 `make uncertainty-design` writes a seeded 500-draw Latin-hypercube design for
 elasticity, wage-bill incidence, UC take-up, reallocation penalty, and the
@@ -52,6 +65,20 @@ interval, and can be consumed by an expensive licensed-data run.
 
 - `uk_trade_shock_study/exposure.py` — tariff schedule (both scenarios),
   US-export intensity, derived per-SIC earnings shocks, FRS SIC join.
+- `analysis/download_hmrc_panel.py` — credential-free public HMRC
+  product-by-destination monthly export-panel download.
+- `analysis/download_bres_benchmarks.py` — credential-free open Nomis BRES
+  manufacturing employment benchmarks (rounded aggregates, not microdata).
+- `analysis/impute_lfs_to_frs.py` — locally estimates five-quarter LFS
+  employment/wage-transition cells, aligns sector mass to public BRES, and
+  attaches credibility-shrunk and aggregate-calibrated parameters to FRS
+  employee records.
+- `analysis/benchmark_lfs_qrf.py` — runs a regularised QRF robustness
+  benchmark on all employed LFS adults for model shape, then calibrates its
+  manufacturing level to the same direct LFS/BRES targets as the primary
+  estimator. `make lfs-benchmarks LFS_TAB=/path/to/panel.tab` rebuilds both.
+  These outputs are predictive imputations, not linked ASHE evidence or
+  tariff-effect estimates.
 - `uk_trade_shock_study/shocks.py` — pure and mixed adjustment-margin families;
   hard-errors if the employment_status transition fails to apply.
 - `uk_trade_shock_study/runner.py` — PolicyEngine UK runs: disposable income,
@@ -85,9 +112,21 @@ licensed inputs are never downloaded or redistributed implicitly.
 - HMRC uktradeinfo country-by-commodity exports and ONS Annual Business Survey
   turnover are used to rebuild the packaged intensity table.
 
+Public historical HMRC data require no credential. `make public-hmrc` builds
+an interruptible, cached 2018--2026 monthly commodity-destination export panel
+for the United States, Canada, Japan and Australia under `data/public/`.
+`make trade-event-study` then rebuilds the public destination-panel benchmark.
+
+The longitudinal LFS input is UKDS End User Licence data rather than Secure
+Lab microdata. It must be downloaded by a registered user and supplied via
+`LFS_TAB`; it is never copied into the repository. Secure ASHE is not required
+for the implemented benchmark.
+
 ## Paper
 
-`paper/main.tex` + `paper/sections/` (LaTeX conventions from uk-ai-study).
+`paper/main.tex` is the compressed submission manuscript.
+`paper/supplement.tex` compiles the exploratory appendices as a separate
+online supplement. Both draw values only from validated generated files.
 The paper reports a static, partial-equilibrium, first-round fiscal-incidence
 stress test conditional on imposed labour-income changes. It is not a causal
 estimate of the tariffs' production, productivity, employment, macroeconomic

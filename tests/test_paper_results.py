@@ -1,7 +1,8 @@
 import re
 from pathlib import Path
 
-from analysis.write_paper_results import CENTRAL
+from analysis.write_paper_results import ANCHORS, CENTRAL
+from analysis.run_submission_scenarios import scenarios
 
 
 def test_central_result_artifacts_are_declared() -> None:
@@ -9,9 +10,30 @@ def test_central_result_artifacts_are_declared() -> None:
     assert all((results / f"{name}.json").exists() for name in CENTRAL)
 
 
+def test_anchor_result_artifacts_are_declared() -> None:
+    results = Path("results")
+    assert all((results / f"{name}.json").exists() for name in ANCHORS)
+
+
+def test_submission_result_artifacts_are_declared() -> None:
+    results = Path("results/submission")
+    assert all((results / f"{name}.json").exists() for name in scenarios())
+
+
 def test_manuscript_loads_generated_results() -> None:
     main = Path("paper/main.tex").read_text()
     assert r"\input{generated_results}" in main
+    assert r"\input{generated_lfs_benchmarks}" in main
+    assert r"\input{generated_trade_benchmarks}" in main
+    assert r"\input{generated_lfs_selection}" in main
+    assert r"\input{generated_submission}" in main
+
+
+def test_exploratory_appendix_is_a_separate_supplement() -> None:
+    main = Path("paper/main.tex").read_text()
+    supplement = Path("paper/supplement.tex").read_text()
+    assert r"\input{sections/appendix}" not in main
+    assert r"\input{sections/appendix}" in supplement
 
 
 def test_abstract_is_at_most_150_words() -> None:
@@ -43,3 +65,15 @@ def test_manuscript_uses_british_spelling() -> None:
         re.IGNORECASE,
     )
     assert not american_forms.search(prose)
+
+
+def test_manuscript_does_not_overstate_mixed_margin_calibration() -> None:
+    files = [
+        Path("paper/main.tex"),
+        *sorted(Path("paper/sections").glob("*.tex")),
+    ]
+    prose = "\n".join(
+        path.read_text() for path in files if path.name != "references.tex"
+    ).lower()
+    assert "rent-sharing-calibrated mixed scenario" not in prose
+    assert "empirically calibrated mixed scenario" not in prose

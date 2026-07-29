@@ -1,5 +1,5 @@
 {
-  "frozen_at": "2026-07-23",
+  "frozen_at": "2026-07-29",
   "notes": "Hashes identify the exact inputs used by the frozen build. Licensed and cached raw inputs are not distributed; packaged derived inputs are committed.",
   "inputs": [
     {
@@ -56,6 +56,39 @@
       "sha256": "c4b0ebf34ccfceb8349de4a727c17618dfbddcaca1d6ae1aa13237641bc93a93",
       "distributed": false,
       "exclusions": "Used only for the separately labelled accounting sensitivity"
+    },
+    {
+      "id": "hmrc_product_destination_panel",
+      "source": "HMRC uktradeinfo OTS API",
+      "url": "https://api.uktradeinfo.com",
+      "retrieved_at": "2026-07-29",
+      "vintage": "January 2018 to May 2026; United States, Canada, Japan and Australia",
+      "local_path": "data/public/hmrc_exports_product_destination_201801_202606.csv.gz",
+      "sha256": "fbfca6bc2963cab2e15d0899e540c5f6e5abeaa598cd8de9213da504d8364d8e",
+      "distributed": false,
+      "exclusions": "HMRC two-digit aggregate rows are excluded from the HS4 event-study panel; detailed seven-digit numeric IDs are retained after restoring the leading zero"
+    },
+    {
+      "id": "nomis_bres_manufacturing_2024",
+      "source": "Nomis BRES API",
+      "url": "https://www.nomisweb.co.uk/api/v01/dataset/NM_189_1.data.csv",
+      "retrieved_at": "2026-07-29",
+      "vintage": "2015-2024 Great Britain manufacturing employee totals by SIC division",
+      "local_path": "data/public/bres_manufacturing_employment_2015_2024.csv",
+      "sha256": "c49811ebf51904f1f04a017e664857c12e127041be3902f30dfa7b835ee1c4da",
+      "distributed": false,
+      "exclusions": "Disclosure-rounded public aggregates; 2024 employees are used for LFS composition calibration"
+    },
+    {
+      "id": "lfs_five_quarter_9490",
+      "source": "Office for National Statistics via UK Data Service",
+      "url": "https://doi.org/10.5255/UKDA-SN-9490-1",
+      "retrieved_at": "2026-07-29",
+      "vintage": "July 2024 to September 2025, Study Number 9490",
+      "local_path": "data/licensed/lgwt24_5q_js24_js25_eul.tab",
+      "sha256": "961b9622df950e1fa0661f89a3062c5a444cfab34f86c13e8fd4e4dac00ca9ac",
+      "distributed": false,
+      "exclusions": "End User Licence microdata are not redistributed; analysis keeps wave-1 employees and treats negative UKDS sentinels as missing"
     }
   ],
   "derived_outputs": [

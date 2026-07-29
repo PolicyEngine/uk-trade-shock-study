@@ -14,8 +14,11 @@ from uk_trade_shock_study.shocks import (
     apply_mixed_margin,
     apply_shocks,
     apply_wage_cut,
+    balanced_probability_sample,
+    risk_weighted_displacement_probabilities,
     draw_displaced,
     rent_sharing_displacement_share,
+    systematic_probability_sample,
 )
 
 
@@ -42,6 +45,85 @@ def test_presets_cover_the_grid():
 def test_bad_margin_errors():
     with pytest.raises(ValueError):
         TradeShockScenario("t", "epd", "nonsense")
+
+
+def test_bad_selection_and_duration_errors():
+    with pytest.raises(ValueError, match="selection_method"):
+        TradeShockScenario(
+            "t", "epd", "displacement", selection_method="convenience"
+        )
+    with pytest.raises(ValueError, match="duration_equivalent"):
+        TradeShockScenario(
+            "t", "epd", "displacement", duration_equivalent=0
+        )
+
+
+def test_duration_equivalent_scales_wage_loss():
+    persons = make_persons()
+    full = apply_wage_cut(
+        persons, TradeShockScenario("full", "full_tariff", "wage_cut")
+    )
+    half = apply_wage_cut(
+        persons,
+        TradeShockScenario(
+            "half", "full_tariff", "wage_cut", duration_equivalent=0.5
+        ),
+    )
+    baseline = persons["employment_income"].to_numpy(float)
+    full_loss = baseline - full["employment_income"].to_numpy(float)
+    half_loss = baseline - half["employment_income"].to_numpy(float)
+    np.testing.assert_allclose(half_loss, 0.5 * full_loss)
+
+
+def test_systematic_sampling_preserves_marginals_and_balances_group_counts():
+    n = 40
+    probability = np.linspace(0.02, 0.38, n)
+    group = np.repeat([21, 29], n // 2)
+    age = np.tile(np.arange(20, 60), 1)
+    earnings = np.linspace(10_000, 100_000, n)
+    hits = np.zeros(n)
+    for seed in range(3_000):
+        draw = systematic_probability_sample(
+            probability,
+            group,
+            age,
+            earnings,
+            np.random.default_rng(seed),
+        )
+        hits += draw
+        for value in (21, 29):
+            expected = probability[group == value].sum()
+            realised = draw[group == value].sum()
+            assert realised in (np.floor(expected), np.ceil(expected))
+    np.testing.assert_allclose(hits / 3_000, probability, atol=0.025)
+
+
+def test_balanced_sampling_reduces_weighted_target_error():
+    persons = make_persons(n=500)
+    probabilities = person_earnings_shock(
+        persons["sic_division"], "full_tariff"
+    )
+    contribution = (
+        persons["employment_income"].to_numpy(float)
+        * persons["weight"].to_numpy(float)
+    )
+    target = float((probabilities * contribution).sum())
+    rng = np.random.default_rng(42)
+    balanced = balanced_probability_sample(
+        probabilities, persons, rng, n_candidates=128
+    )
+    balanced_error = abs(float(contribution[balanced].sum()) - target)
+    systematic_errors = []
+    for seed in range(128):
+        draw = systematic_probability_sample(
+            probabilities,
+            persons["sic_division"].to_numpy(),
+            persons["age"].to_numpy(float),
+            persons["employment_income"].to_numpy(float),
+            np.random.default_rng(seed),
+        )
+        systematic_errors.append(abs(float(contribution[draw].sum()) - target))
+    assert balanced_error <= np.median(systematic_errors)
 
 
 def test_displacement_quota_in_expectation():
@@ -77,6 +159,30 @@ def test_equal_inclusion_regardless_of_weight():
         hits += draw_displaced(persons, scenario, seed=s)
     assert hits[0] / n == pytest.approx(0.5, abs=0.03)
     assert hits[1] / n == pytest.approx(0.5, abs=0.03)
+
+
+def test_risk_weighting_preserves_sector_expected_wage_bill_loss():
+    persons = pd.DataFrame(
+        {
+            "age": [30, 40, 50, 35],
+            "employment_income": [10_000.0, 40_000.0, 80_000.0, 30_000.0],
+            "weight": [2.0, 1.0, 3.0, 5.0],
+            "sic_division": [29.0, 29.0, 29.0, 62.0],
+            "risk": [0.02, 0.10, 0.30, np.nan],
+        }
+    )
+    shock = np.array([0.08, 0.08, 0.08, 0.0])
+    probabilities = risk_weighted_displacement_probabilities(
+        persons, shock, "risk"
+    )
+    wage_bill_weights = persons["employment_income"] * persons["weight"]
+    manufacturing = persons["sic_division"].eq(29)
+    assert np.average(
+        probabilities[manufacturing],
+        weights=wage_bill_weights[manufacturing],
+    ) == pytest.approx(0.08)
+    assert probabilities[0] < probabilities[1] < probabilities[2]
+    assert probabilities[3] == 0
 
 
 def test_displacement_expected_wage_loss_matches_sector_shock():

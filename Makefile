@@ -1,4 +1,4 @@
-.PHONY: bootstrap test manifest check inputs results figures paper-values uncertainty-design paper reproduce
+.PHONY: bootstrap test manifest check public-hmrc public-bres trade-event-study lfs-imputation lfs-qrf lfs-benchmarks inputs results submission-results figures paper-values uncertainty-design paper supplement reproduce
 
 PYTHON := .venv/bin/python
 
@@ -13,13 +13,33 @@ manifest:
 
 check: test manifest paper-values
 
+public-hmrc:
+	$(PYTHON) analysis/download_hmrc_panel.py
+
+public-bres:
+	$(PYTHON) analysis/download_bres_benchmarks.py
+
+trade-event-study:
+	$(PYTHON) analysis/hmrc_destination_event_study.py
+
+lfs-imputation:
+	@test -n "$(LFS_TAB)" || (echo "Set LFS_TAB=/path/to/five-quarter-LFS.tab" && exit 1)
+	$(PYTHON) analysis/impute_lfs_to_frs.py --lfs-tab "$(LFS_TAB)"
+
+lfs-qrf:
+	@test -n "$(LFS_TAB)" || (echo "Set LFS_TAB=/path/to/five-quarter-LFS.tab" && exit 1)
+	$(PYTHON) analysis/benchmark_lfs_qrf.py --lfs-tab "$(LFS_TAB)"
+
+lfs-benchmarks: lfs-imputation lfs-qrf
+	$(PYTHON) analysis/write_lfs_benchmark_results.py
+
 inputs:
 	$(PYTHON) analysis/build_trade_by_sic.py
 	$(PYTHON) analysis/build_measured_shocks.py
 	$(PYTHON) analysis/validate_manifest.py
 
 results:
-	$(PYTHON) analysis/run_scenarios.py --n-draws 100 --scenarios full_tariff_displacement full_tariff_wage_cut full_tariff_inactivity epd_displacement epd_wage_cut epd_inactivity measured_displacement measured_wage_cut full_tariff_rentsharing epd_rentsharing
+	$(PYTHON) analysis/run_scenarios.py --n-draws 100 --scenarios full_tariff_displacement full_tariff_wage_cut full_tariff_inactivity epd_displacement epd_wage_cut epd_inactivity measured_displacement measured_wage_cut full_tariff_rentsharing epd_rentsharing full_tariff_obr_low_displacement full_tariff_obr_low_wage_cut
 	$(PYTHON) analysis/scenario_testing.py
 	$(PYTHON) analysis/sensitivity_grid.py
 	$(PYTHON) analysis/takeup_sensitivity.py
@@ -29,7 +49,13 @@ results:
 	$(PYTHON) analysis/mechanism_decomposition.py
 	$(PYTHON) analysis/poverty_gap.py
 	$(PYTHON) analysis/demographics.py
+	$(PYTHON) analysis/run_lfs_selection_sensitivity.py
 	$(PYTHON) analysis/supply_chain_scenario.py
+
+submission-results:
+	$(PYTHON) analysis/run_submission_scenarios.py --n-draws 50
+	$(PYTHON) analysis/run_leave_one_sector_out.py --n-draws 20
+	$(PYTHON) analysis/write_submission_results.py --expected-draws 50
 
 figures:
 	$(PYTHON) analysis/figures.py
@@ -41,8 +67,15 @@ uncertainty-design:
 
 paper-values:
 	$(PYTHON) analysis/write_paper_results.py --expected-draws 100
+	$(PYTHON) analysis/write_lfs_benchmark_results.py
+	$(PYTHON) analysis/write_trade_benchmark_results.py
+	$(PYTHON) analysis/write_lfs_selection_results.py
+	$(PYTHON) analysis/write_submission_results.py --expected-draws 50
 
 paper: paper-values
 	cd paper && latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
 
-reproduce: check inputs results figures paper
+supplement: paper-values
+	cd paper && latexmk -pdf -interaction=nonstopmode -halt-on-error supplement.tex
+
+reproduce: check inputs results submission-results figures paper supplement

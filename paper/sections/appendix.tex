@@ -77,6 +77,30 @@ stress case, not a tariff-caused or preferred estimate; the validation
 artifact also reports signed net exposure before expanding divisions are
 clipped.
 
+\section{HMRC destination-panel diagnostic}\label{app:trade-panel}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.94\textwidth]{../results/figures/hmrc_destination_event_study.png}
+\caption{Monthly capped-value-weighted gap between UK HS4 exports to the
+United States and mean exports of the same products to Canada, Japan and
+Australia, normalised to January--March 2025. The dashed line marks April
+2025, which is omitted from the regression as an announcement and
+anticipation month. The series is descriptive and has no causal confidence
+band.}
+\label{fig:hmrc-destination}
+\end{figure}
+
+The machine-readable specification, clustered standard errors, individual
+destination checks, sample-start sensitivities, tariff-intensity groups and
+May 2019--23 pseudo-policy estimates are stored in the event-study JSON
+artifact; the plotted observations are stored in its companion monthly CSV.
+Pre-policy
+value weights are capped at the 99th percentile, giving an effective product
+count of \HMRCPanelEffectiveProducts\ despite \HMRCPanelProducts\ included
+HS4 products. Uncapped and equal-weight estimates disclose the remaining
+concentration sensitivity.
+
 \section{Demographic diagnostic}\label{app:demographics}
 
 The gender, age and household-type breakdown uses five Bernoulli assignments
@@ -87,7 +111,35 @@ artifact is therefore a diagnostic rather than an inferential table.
 
 \section{Duration scope}\label{app:durationtakeup}
 
-The model reports the internally coherent full-year endpoint only. An earlier six-month sensitivity combined half-year earnings with full-period unemployment status and was removed because an annual model cannot reproduce within-year tax, waiting-period or eligibility timing. A shorter-duration estimate requires monthly simulations; no such result is claimed here.
+The submission design reports three-, six- and twelve-month
+\emph{duration-equivalent annual stresses}. It scales the probability of a
+coherent full-year displaced state rather than combining partial-year earnings
+with full-year unemployment status. These rows preserve expected worker-month
+loss but are not unemployment-spell simulations. Actual within-year tax, UC,
+waiting-period and re-employment timing requires a monthly model and is not
+claimed here.
+
+\section{Secondary distributional and fiscal figures}\label{app:secondaryfigures}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.85\textwidth]{../results/figures/decile_by_margin_full_tariff.png}
+\caption{Per-capita disposable-income change by baseline income decile in the
+legacy full-schedule scenarios. Shading is assignment dispersion.}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.85\textwidth]{../results/figures/exchequer_cost_draws.png}
+\caption{Annual Exchequer cost across legacy regenerated assignments.}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.85\textwidth]{../results/figures/epd_counterfactual.png}
+\caption{Full-schedule and EPD scenario comparison. Error bars are assignment
+standard deviations, not causal confidence intervals.}
+\end{figure}
 
 \section{Supply-chain sensitivity}\label{app:supplychain}
 

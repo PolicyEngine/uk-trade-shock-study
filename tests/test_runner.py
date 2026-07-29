@@ -5,6 +5,7 @@ import pytest
 
 from uk_trade_shock_study.runner import (
     MonteCarloResult,
+    _finite_mean_sd,
     _household_income_per_person,
     write_result,
 )
@@ -29,6 +30,15 @@ def test_write_result_serializes_nonfinite_optional_values_as_null(tmp_path):
 
     assert json.loads(path.read_text())["cushioning_rate_mean"] is None
     assert "NaN" not in path.read_text()
+
+
+def test_finite_draw_summary_ignores_undefined_cushioning():
+    mean, standard_deviation, count = _finite_mean_sd(
+        [0.3, np.nan, 0.5, np.inf]
+    )
+    assert mean == pytest.approx(0.4)
+    assert standard_deviation == pytest.approx(np.sqrt(0.02))
+    assert count == 2
 
 
 class _PersonMappedHouseholdSim:

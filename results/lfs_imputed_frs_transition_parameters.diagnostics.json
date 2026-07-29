@@ -1,0 +1,36 @@
+{
+  "method": "Five-quarter LFS donor cells (SIC division \u00d7 sex \u00d7 age band), credibility-shrunk to sector means and sector-mass aligned to open BRES 2024 employee totals; receiver levels calibrated to direct weighted LFS targets, with an income-tercile sensitivity estimate",
+  "lfs_source": "/Users/janansadeqian/Downloads/UKDA-9490-tab/tab/lgwt24_5q_js24_js25_eul.tab",
+  "lfs_employed_wave1_records": 2084,
+  "lfs_calibrated_manufacturing_records": 177,
+  "transition_cell_count": 133,
+  "frs_employee_records": 1102,
+  "coverage": [
+    {
+      "metric": "exact_person_match_rate",
+      "value": 0.677858439201452
+    },
+    {
+      "metric": "exact_weighted_match_rate",
+      "value": 0.6675634543491332
+    },
+    {
+      "metric": "person_match_rate_with_sector_fallback",
+      "value": 0.9981851179673321
+    },
+    {
+      "metric": "weighted_match_rate_with_sector_fallback",
+      "value": 0.998865921739683
+    }
+  ],
+  "level_calibration": {
+    "lfs_job_exit_target": 0.08960154595717354,
+    "lfs_log_wage_change_target": 0.058693428869518595,
+    "frs_job_exit_mean": 0.08960154595717354,
+    "frs_banded_job_exit_mean": 0.08960154595717353
+  },
+  "unsupported_bres_sectors": [
+    12
+  ],
+  "caveat": "Imputed parameters are not linked outcomes and do not identify a causal tariff effect."
+}

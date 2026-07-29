@@ -6,10 +6,10 @@ paper's central axis, because Universal Credit replaces unemployment far more
 generously than in-work wage cuts:
 
 - ``displacement`` (ADH short-run): the sector earnings shock is delivered as
-  JOB LOSS. Each employee in division j is independently displaced with
-  probability ``shock_j``. Survey weights never enter the draw, so expected
-  weighted employment and earnings losses are both exactly proportional to
-  the sector shock. Displaced workers move to
+  JOB LOSS. The declared person risks are integrated using Bernoulli,
+  systematic or balanced repeated assignments. Survey weights never define
+  baseline person risk; the balanced submission design uses them only to
+  condition realised aggregate losses. Displaced workers move to
   employment_status UNEMPLOYED with earnings, hours, pension contributions
   and statutory pay zeroed.
 
@@ -140,6 +140,24 @@ class TradeShockScenario:
     #: Mixed margin: share of each sector's expected earnings loss delivered
     #: through Bernoulli displacement; the remainder is a survivor wage cut.
     displacement_share: float = 0.5
+    #: Optional person column used to vary displacement risk within SIC.
+    #: Probabilities are recalibrated within division to preserve the expected
+    #: weighted wage-bill loss. None retains uniform central assignment.
+    selection_risk_column: str | None = None
+    #: Assignment design for job-loss margins. ``systematic`` preserves the
+    #: intended first-order probabilities but fixes each industry's realised
+    #: record count to floor/ceil of its expected count and spreads selections
+    #: across age and earnings strata. ``balanced`` draws repeated systematic
+    #: candidates and retains the one closest to industry wage-bill and
+    #: weighted-headcount targets. ``bernoulli`` is retained as a transparent
+    #: sensitivity comparator.
+    selection_method: str = "bernoulli"
+    #: Scale applied to every sector earnings shock. Values 0.25 and 0.5 are
+    #: annual duration-equivalent stresses for three and six months: they do
+    #: not simulate a partial-year unemployment spell.
+    duration_equivalent: float = 1.0
+    #: Divisions set to zero exposure for leave-one-sector-out diagnostics.
+    excluded_divisions: tuple[int, ...] = ()
 
     @property
     def wage_bill_incidence(self) -> float:
@@ -157,6 +175,12 @@ class TradeShockScenario:
             raise ValueError("reallocation_lag_months must lie in [0, 12]")
         if not 0.0 <= self.displacement_share <= 1.0:
             raise ValueError("displacement_share must lie in [0, 1]")
+        if self.selection_method not in ("bernoulli", "systematic", "balanced"):
+            raise ValueError(
+                "selection_method must be 'bernoulli', 'systematic' or 'balanced'"
+            )
+        if not 0.0 < self.duration_equivalent <= 1.0:
+            raise ValueError("duration_equivalent must lie in (0, 1]")
 
 
 #: Scenario presets: {full_tariff, epd} x {displacement, wage_cut, inactivity}.
@@ -166,9 +190,9 @@ PRESETS = {
     for margin in MARGINS
 }
 
-#: RENT-SHARING CALIBRATION of the mixed margin's split. The quasi-
-#: experimental rent-sharing literature pins down how much of a firm-level
-#: revenue/output shock incumbent ("survivor") wages absorb:
+#: LITERATURE-DISCIPLINED SENSITIVITY for the mixed margin's split. The quasi-
+#: experimental rent-sharing literature provides a plausible scale for
+#: incumbent ("survivor") wage responses:
 #:
 #: - Garin & Silverio (ReStud 2024): incumbent-wage elasticity to firm output
 #:   shocks of ~0.15;
@@ -177,16 +201,18 @@ PRESETS = {
 #: - Hummels, Jorgensen, Munch & Xiang (AER 2014): within-job wage responses
 #:   to trade shocks of 0.03-0.08.
 #:
-#: We take 0.15 — the upper end of the Card et al. range, matching Garin &
-#: Silverio — so survivor wage cuts absorb 15% of each sector's wage-bill
-#: loss and the residual 85% falls on the employment (displacement) margin.
+#: We use 0.15 to define a transparent 15/85 wage-cut/displacement scenario.
+#: This is NOT an empirical calibration: an elasticity of wages to firm
+#: output or rents is not algebraically the share of an aggregate wage-bill
+#: loss borne by survivor wages. Identifying that share requires linked
+#: employer-worker estimates of wages, hours, employment and re-employment.
 RENT_SHARING_ELASTICITY = 0.15
 
 
 def rent_sharing_displacement_share(
     elasticity: float = RENT_SHARING_ELASTICITY,
 ) -> float:
-    """Map a rent-sharing elasticity to the mixed margin's ``displacement_share``.
+    """Construct a stylised split from a rent-sharing sensitivity value.
 
     In ``apply_mixed_margin``, lambda = ``displacement_share`` and a worker in
     division j with sector shock s_j faces displacement probability
@@ -196,16 +222,18 @@ def rent_sharing_displacement_share(
         displacement:   p * B_j           = lambda * s_j * B_j
         survivor cuts:  (1 - p) * c * B_j = (1 - lambda) * s_j * B_j
 
-    so the survivor-wage-cut share of the sector wage-bill loss is
-    (1 - lambda). Setting that share equal to the rent-sharing elasticity
-    gives lambda = 1 - elasticity.
+    so the survivor-wage-cut share of the imposed sector wage-bill loss is
+    (1 - lambda). We set that scenario share numerically equal to the supplied
+    sensitivity value for transparency only. Do not interpret this function
+    as converting a reduced-form rent-sharing elasticity into an empirically
+    identified extensive/intensive-margin decomposition.
     """
     if not 0.0 <= elasticity <= 1.0:
         raise ValueError("rent-sharing elasticity must lie in [0, 1]")
     return 1.0 - elasticity
 
 
-#: Mixed-margin presets with the rent-sharing-calibrated split: survivor wage
+#: Mixed-margin presets with a literature-disciplined stylised split: wage
 #: cuts absorb RENT_SHARING_ELASTICITY (15%) of each sector's wage-bill loss,
 #: displacement the remaining 85% (displacement_share = 0.85).
 RENT_SHARING_PRESETS = {
@@ -220,12 +248,168 @@ RENT_SHARING_PRESETS = {
 
 
 def _person_shock(persons: pd.DataFrame, scenario: TradeShockScenario) -> np.ndarray:
-    return person_earnings_shock(
+    shock = person_earnings_shock(
         persons["sic_division"],
         scenario.tariff_scenario,
         elasticity=scenario.elasticity,
         wage_bill_incidence=scenario.wage_bill_incidence,
     )
+    shock = np.asarray(shock, dtype=float) * scenario.duration_equivalent
+    if scenario.excluded_divisions:
+        division = persons["sic_division"].to_numpy(dtype=float)
+        shock[np.isin(division, scenario.excluded_divisions)] = 0.0
+    return shock
+
+
+def systematic_probability_sample(
+    probabilities: np.ndarray,
+    groups: np.ndarray,
+    age: np.ndarray,
+    earnings: np.ndarray,
+    rng: np.random.Generator,
+) -> np.ndarray:
+    """Systematic probability sampling within groups.
+
+    For each industry, records are ordered by broad age and within-industry
+    earnings ranks, with a random tie-breaker. A random-start systematic pass
+    then selects cumulative-probability interval crossings. This preserves
+    every record's first-order inclusion probability while reducing realised
+    industry-count variation from Bernoulli sampling.
+    """
+    probabilities = np.asarray(probabilities, dtype=float)
+    groups = np.asarray(groups)
+    age = np.asarray(age, dtype=float)
+    earnings = np.asarray(earnings, dtype=float)
+    if not (
+        probabilities.shape == groups.shape == age.shape == earnings.shape
+    ):
+        raise ValueError("systematic-sampling inputs must have equal shape")
+    if ((probabilities < 0) | (probabilities > 1)).any():
+        raise ValueError("sampling probabilities must lie in [0, 1]")
+
+    selected = np.zeros(probabilities.size, dtype=bool)
+    active_groups = pd.unique(groups[probabilities > 0])
+    for group in active_groups:
+        idx = np.flatnonzero((groups == group) & (probabilities > 0))
+        if not idx.size:
+            continue
+        # Rank rather than cut at fixed currency values so every industry is
+        # spread across its own earnings distribution.
+        rank = pd.Series(earnings[idx]).rank(method="average", pct=True).to_numpy()
+        age_band = np.floor(np.nan_to_num(age[idx], nan=40.0) / 10.0)
+        tie_break = rng.random(idx.size)
+        order = np.lexsort((tie_break, rank, age_band))
+        ordered = idx[order]
+        p = probabilities[ordered]
+        cumulative = np.cumsum(p)
+        total = float(cumulative[-1])
+        start = float(rng.random())
+        thresholds = start + np.arange(int(np.ceil(total)))
+        thresholds = thresholds[thresholds < total]
+        if thresholds.size:
+            positions = np.searchsorted(cumulative, thresholds, side="right")
+            selected[ordered[positions]] = True
+    return selected
+
+
+def balanced_probability_sample(
+    probabilities: np.ndarray,
+    persons: pd.DataFrame,
+    rng: np.random.Generator,
+    n_candidates: int = 256,
+) -> np.ndarray:
+    """Choose a systematic candidate close to weighted industry targets.
+
+    This is a numerical-integration design, not a survey estimator. Repeated
+    candidates share the declared first-order risk model; selecting the best
+    balanced candidate intentionally trades exact marginal inclusion
+    probabilities for much lower dependence on arbitrary high-weight records.
+    Bernoulli results are always retained as the unbiased comparator.
+    """
+    probabilities = np.asarray(probabilities, dtype=float)
+    sic = persons["sic_division"].to_numpy()
+    age = persons["age"].to_numpy(dtype=float)
+    earnings = persons["employment_income"].to_numpy(dtype=float)
+    weight = persons["weight"].to_numpy(dtype=float)
+    wage_contribution = earnings * weight
+    target_wage = probabilities * wage_contribution
+    target_headcount = probabilities * weight
+    divisions = pd.unique(sic[probabilities > 0])
+    total_wage_target = float(target_wage.sum())
+    total_headcount_target = float(target_headcount.sum())
+    employed = probabilities > 0
+    earnings_rank = np.zeros(probabilities.size, dtype=float)
+    earnings_rank[employed] = (
+        pd.Series(earnings[employed]).rank(method="average", pct=True).to_numpy()
+    )
+    earnings_band = np.minimum((earnings_rank * 3).astype(int), 2)
+    age_band = np.select(
+        [age < 35, age < 50],
+        [0, 1],
+        default=2,
+    )
+
+    best = np.zeros(probabilities.size, dtype=bool)
+    best_score = float("inf")
+    for _ in range(n_candidates):
+        candidate = systematic_probability_sample(
+            probabilities, sic, age, earnings, rng
+        )
+        realised_wage = float(wage_contribution[candidate].sum())
+        realised_headcount = float(weight[candidate].sum())
+        score = 10_000.0 * (
+            (realised_wage - total_wage_target) / total_wage_target
+        ) ** 2
+        score += 100.0 * (
+            (realised_headcount - total_headcount_target)
+            / total_headcount_target
+        ) ** 2
+        for division in divisions:
+            group = sic == division
+            wage_target = float(target_wage[group].sum())
+            headcount_target = float(target_headcount[group].sum())
+            if wage_target > 0:
+                target_share = wage_target / total_wage_target
+                score += target_share * (
+                    (float(wage_contribution[group & candidate].sum()) - wage_target)
+                    / wage_target
+                ) ** 2
+            if headcount_target > 0:
+                target_share = headcount_target / total_headcount_target
+                score += 0.25 * target_share * (
+                    (float(weight[group & candidate].sum()) - headcount_target)
+                    / headcount_target
+                ) ** 2
+        # Preserve the main observed fiscal-risk gradients as marginal
+        # balances. Crossed cells would be too sparse at the roughly ten-record
+        # reference assignment.
+        for strata in (earnings_band, age_band):
+            for value in (0, 1, 2):
+                group = employed & (strata == value)
+                wage_target = float(target_wage[group].sum())
+                headcount_target = float(target_headcount[group].sum())
+                if wage_target > 0:
+                    score += 1.0 * (wage_target / total_wage_target) * (
+                        (
+                            float(wage_contribution[group & candidate].sum())
+                            - wage_target
+                        )
+                        / wage_target
+                    ) ** 2
+                if headcount_target > 0:
+                    score += 0.25 * (
+                        headcount_target / total_headcount_target
+                    ) * (
+                        (
+                            float(weight[group & candidate].sum())
+                            - headcount_target
+                        )
+                        / headcount_target
+                    ) ** 2
+        if score < best_score:
+            best_score = score
+            best = candidate
+    return best
 
 
 def draw_displaced(
@@ -233,16 +417,79 @@ def draw_displaced(
     scenario: TradeShockScenario,
     seed: int = 0,
 ) -> np.ndarray:
-    """Boolean mask from independent Bernoulli sector-shock draws.
+    """Boolean displacement mask under the scenario's assignment design.
 
-    Every employed record in division j has inclusion probability shock_j,
-    making weighted headcount and wage-bill losses unbiased regardless of
-    survey-weight dispersion.
+    Bernoulli preserves the declared person probabilities exactly. Systematic
+    sampling preserves first-order probabilities while balancing record
+    counts. Balanced repeated assignment conditions on weighted aggregate and
+    observed-composition targets; its Bernoulli comparator remains necessary.
     """
-    rng = np.random.default_rng(seed)
     employed = persons["employment_income"].to_numpy(dtype=float) > 0
     shock = _person_shock(persons, scenario)
-    return employed & (rng.random(len(persons)) < shock)
+    probabilities = shock
+    if scenario.selection_risk_column is not None:
+        probabilities = risk_weighted_displacement_probabilities(
+            persons, shock, scenario.selection_risk_column
+        )
+    rng = np.random.default_rng(seed)
+    if scenario.selection_method == "bernoulli":
+        return employed & (rng.random(len(persons)) < probabilities)
+    active_probabilities = np.where(employed, probabilities, 0.0)
+    if scenario.selection_method == "systematic":
+        sampled = systematic_probability_sample(
+            active_probabilities,
+            persons["sic_division"].to_numpy(),
+            persons["age"].to_numpy(dtype=float),
+            persons["employment_income"].to_numpy(dtype=float),
+            rng,
+        )
+    else:
+        sampled = balanced_probability_sample(
+            active_probabilities, persons, rng
+        )
+    return employed & sampled
+
+
+def risk_weighted_displacement_probabilities(
+    persons: pd.DataFrame,
+    sector_shock: np.ndarray,
+    risk_column: str,
+) -> np.ndarray:
+    """Vary risk within SIC while preserving each division's wage-bill loss."""
+    from uk_trade_shock_study.lfs_imputation import calibrate_probabilities
+
+    if risk_column not in persons:
+        raise KeyError(f"selection risk column not found: {risk_column}")
+    result = np.zeros(len(persons), dtype=float)
+    earnings = persons["employment_income"].to_numpy(dtype=float)
+    survey_weight = persons["weight"].to_numpy(dtype=float)
+    risk = persons[risk_column].to_numpy(dtype=float)
+    sic = persons["sic_division"].to_numpy(dtype=float)
+    sector_shock = np.asarray(sector_shock, dtype=float)
+    employed = earnings > 0
+    for division in np.unique(sic[np.isfinite(sic) & employed]):
+        selected = employed & (sic == division)
+        target = float(sector_shock[selected][0])
+        if target <= 0:
+            continue
+        sector_risk = risk[selected].copy()
+        valid_risk = np.isfinite(sector_risk) & (sector_risk >= 0)
+        fallback = (
+            np.average(
+                sector_risk[valid_risk],
+                weights=(earnings[selected] * survey_weight[selected])[valid_risk],
+            )
+            if valid_risk.any()
+            else 1.0
+        )
+        sector_risk[~valid_risk] = fallback
+        result[selected] = calibrate_probabilities(
+            sector_risk,
+            target,
+            np.ones(selected.sum(), dtype=bool),
+            earnings[selected] * survey_weight[selected],
+        )
+    return result
 
 
 def apply_displacement(
@@ -699,9 +946,16 @@ def build_shocked_simulation(dataset, baseline_sim, shocked_table, period):
     zero hours, changing entitlements in every result — we verify and FAIL
     HARD (do not replicate the template's silent-failure bug).
     """
-    from policyengine_uk import Microsimulation
+    # Cloning the already validated baseline avoids reconstructing and deeply
+    # copying the complete UK parameter tree for every integration draw.
+    # set_input invalidates dependent calculations; the transition and UC
+    # checks below hard-error if any stale baseline state survives.
+    if hasattr(baseline_sim, "clone"):
+        sim = baseline_sim.clone()
+    else:  # lightweight test doubles and older PolicyEngine releases
+        from policyengine_uk import Microsimulation
 
-    sim = Microsimulation(dataset=dataset)
+        sim = Microsimulation(dataset=dataset)
     for column in SHOCKED_INCOME_VARIABLES:
         sim.set_input(column, period, shocked_table[column].to_numpy(dtype=float))
     displaced = shocked_table["displaced"].to_numpy()
@@ -838,7 +1092,12 @@ def build_shocked_simulation(dataset, baseline_sim, shocked_table, period):
         baseline_sim, "_trade_shock_uc_potential_award", None
     )
     if baseline_potential_award is None:
-        potential_sim = Microsimulation(dataset=dataset)
+        if hasattr(baseline_sim, "clone"):
+            potential_sim = baseline_sim.clone()
+        else:
+            from policyengine_uk import Microsimulation
+
+            potential_sim = Microsimulation(dataset=dataset)
         baseline_flag = np.asarray(
             baseline_sim.calculate(
                 "would_claim_uc", period=period, map_to="benunit"

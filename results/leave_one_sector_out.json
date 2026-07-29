@@ -1,0 +1,190 @@
+{
+  "n_draws": 20,
+  "estimand": "unit 12-month duration-equivalent stress",
+  "excluded_divisions": {
+    "28": {
+      "excluded_expected_gross_loss_million": 151.90028374526221,
+      "displacement_exchequer_mean_million": 316.6601216,
+      "wage_cut_exchequer_mean_million": 402.653184,
+      "displacement_cushioning_percent": 34.47038620714888,
+      "wage_cut_cushioning_percent": 44.18470600436368,
+      "poverty_change_displacement_pp": 0.025801604069148328
+    },
+    "30": {
+      "excluded_expected_gross_loss_million": 129.93522407112286,
+      "displacement_exchequer_mean_million": 318.10109439999997,
+      "wage_cut_exchequer_mean_million": 410.50112,
+      "displacement_cushioning_percent": 33.016665710232395,
+      "wage_cut_cushioning_percent": 43.51765820005585,
+      "poverty_change_displacement_pp": 0.02546982308852877
+    },
+    "29": {
+      "excluded_expected_gross_loss_million": 122.36777442765161,
+      "displacement_exchequer_mean_million": 329.465856,
+      "wage_cut_exchequer_mean_million": 420.757504,
+      "displacement_cushioning_percent": 34.27899600472213,
+      "wage_cut_cushioning_percent": 44.403799706341545,
+      "poverty_change_displacement_pp": 0.03563174145317538
+    },
+    "26": {
+      "excluded_expected_gross_loss_million": 112.79376731413173,
+      "displacement_exchequer_mean_million": 328.3771392,
+      "wage_cut_exchequer_mean_million": 420.036608,
+      "displacement_cushioning_percent": 34.388880727317485,
+      "wage_cut_cushioning_percent": 43.80367622169701,
+      "poverty_change_displacement_pp": 0.029928250149942742
+    },
+    "21": {
+      "excluded_expected_gross_loss_million": 107.77283770226077,
+      "displacement_exchequer_mean_million": 325.88431360000004,
+      "wage_cut_exchequer_mean_million": 422.887424,
+      "displacement_cushioning_percent": 33.03585657590828,
+      "wage_cut_cushioning_percent": 43.492445461206465,
+      "poverty_change_displacement_pp": 0.03801194737591107
+    },
+    "32": {
+      "excluded_expected_gross_loss_million": 54.45221002193366,
+      "displacement_exchequer_mean_million": 359.1380992,
+      "wage_cut_exchequer_mean_million": 454.672384,
+      "displacement_cushioning_percent": 34.552068962465995,
+      "wage_cut_cushioning_percent": 43.94772320697967,
+      "poverty_change_displacement_pp": 0.03195807274535792
+    },
+    "27": {
+      "excluded_expected_gross_loss_million": 34.622800436235494,
+      "displacement_exchequer_mean_million": 362.5025536,
+      "wage_cut_exchequer_mean_million": 467.51744,
+      "displacement_cushioning_percent": 34.19970415435247,
+      "wage_cut_cushioning_percent": 44.144832743398396,
+      "poverty_change_displacement_pp": 0.031659228638956094
+    },
+    "20": {
+      "excluded_expected_gross_loss_million": 34.06957592855039,
+      "displacement_exchequer_mean_million": 375.9702016,
+      "wage_cut_exchequer_mean_million": 466.78016,
+      "displacement_cushioning_percent": 35.525613648249305,
+      "wage_cut_cushioning_percent": 44.08877557797816,
+      "poverty_change_displacement_pp": 0.02903630714899463
+    },
+    "25": {
+      "excluded_expected_gross_loss_million": 27.54623368633342,
+      "displacement_exchequer_mean_million": 362.5295872,
+      "wage_cut_exchequer_mean_million": 469.417984,
+      "displacement_cushioning_percent": 33.08689631567493,
+      "wage_cut_cushioning_percent": 43.99448933185625,
+      "poverty_change_displacement_pp": 0.03668119982589535
+    },
+    "24": {
+      "excluded_expected_gross_loss_million": 23.588874937962675,
+      "displacement_exchequer_mean_million": 364.3031552,
+      "wage_cut_exchequer_mean_million": 471.4496,
+      "displacement_cushioning_percent": 34.1820536630629,
+      "wage_cut_cushioning_percent": 43.90189438346631,
+      "poverty_change_displacement_pp": 0.028200895495080897
+    },
+    "31": {
+      "excluded_expected_gross_loss_million": 12.284036771640684,
+      "displacement_exchequer_mean_million": 373.91319039999996,
+      "wage_cut_exchequer_mean_million": 478.33088,
+      "displacement_cushioning_percent": 33.485901602784715,
+      "wage_cut_cushioning_percent": 44.042711891677136,
+      "poverty_change_displacement_pp": 0.03617483155261808
+    },
+    "11": {
+      "excluded_expected_gross_loss_million": 12.065590726303661,
+      "displacement_exchequer_mean_million": 373.63056639999996,
+      "wage_cut_exchequer_mean_million": 477.67552,
+      "displacement_cushioning_percent": 34.31001544701972,
+      "wage_cut_cushioning_percent": 43.93668502171891,
+      "poverty_change_displacement_pp": 0.030315918407487905
+    },
+    "10": {
+      "excluded_expected_gross_loss_million": 11.8473382437572,
+      "displacement_exchequer_mean_million": 361.3278208,
+      "wage_cut_exchequer_mean_million": 478.216192,
+      "displacement_cushioning_percent": 32.78683869302817,
+      "wage_cut_cushioning_percent": 43.995681978403255,
+      "poverty_change_displacement_pp": 0.03172437683105225
+    },
+    "14": {
+      "excluded_expected_gross_loss_million": 11.30728033317162,
+      "displacement_exchequer_mean_million": 376.7410688,
+      "wage_cut_exchequer_mean_million": 477.83936,
+      "displacement_cushioning_percent": 34.338787679276315,
+      "wage_cut_cushioning_percent": 43.925345899090765,
+      "poverty_change_displacement_pp": 0.03668152197641078
+    },
+    "18": {
+      "excluded_expected_gross_loss_million": 10.988628465866395,
+      "displacement_exchequer_mean_million": 364.3834368,
+      "wage_cut_exchequer_mean_million": 478.920704,
+      "displacement_cushioning_percent": 32.92631800050351,
+      "wage_cut_cushioning_percent": 44.020691167281655,
+      "poverty_change_displacement_pp": 0.031090127603604356
+    },
+    "22": {
+      "excluded_expected_gross_loss_million": 8.791839703177104,
+      "displacement_exchequer_mean_million": 371.06319360000003,
+      "wage_cut_exchequer_mean_million": 479.756288,
+      "displacement_cushioning_percent": 33.86563528971311,
+      "wage_cut_cushioning_percent": 43.99651156477796,
+      "poverty_change_displacement_pp": 0.033601274294208505
+    },
+    "23": {
+      "excluded_expected_gross_loss_million": 7.33014784347955,
+      "displacement_exchequer_mean_million": 365.6892416,
+      "wage_cut_exchequer_mean_million": 476.987392,
+      "displacement_cushioning_percent": 32.95834174240334,
+      "wage_cut_cushioning_percent": 43.552532918966705,
+      "poverty_change_displacement_pp": 0.018992847472199398
+    },
+    "17": {
+      "excluded_expected_gross_loss_million": 5.029053461884671,
+      "displacement_exchequer_mean_million": 371.69152,
+      "wage_cut_exchequer_mean_million": 481.411072,
+      "displacement_cushioning_percent": 33.70721351094932,
+      "wage_cut_cushioning_percent": 43.938133387394615,
+      "poverty_change_displacement_pp": 0.033784639620215856
+    },
+    "13": {
+      "excluded_expected_gross_loss_million": 3.4155667735803137,
+      "displacement_exchequer_mean_million": 385.9529728,
+      "wage_cut_exchequer_mean_million": 482.492416,
+      "displacement_cushioning_percent": 36.31707964014006,
+      "wage_cut_cushioning_percent": 43.95152047066945,
+      "poverty_change_displacement_pp": 0.03158546350213676
+    },
+    "12": {
+      "excluded_expected_gross_loss_million": 1.8458364311372504,
+      "displacement_exchequer_mean_million": 391.9028224,
+      "wage_cut_exchequer_mean_million": 483.065856,
+      "displacement_cushioning_percent": 35.77443931286214,
+      "wage_cut_cushioning_percent": 43.93242720851074,
+      "poverty_change_displacement_pp": 0.03131383805759336
+    },
+    "19": {
+      "excluded_expected_gross_loss_million": 1.3048568146361754,
+      "displacement_exchequer_mean_million": 368.3975168,
+      "wage_cut_exchequer_mean_million": 483.426304,
+      "displacement_cushioning_percent": 32.57679524920343,
+      "wage_cut_cushioning_percent": 43.922262425651034,
+      "poverty_change_displacement_pp": 0.034717652685642975
+    },
+    "16": {
+      "excluded_expected_gross_loss_million": 0.2879640580957705,
+      "displacement_exchequer_mean_million": 381.46703360000004,
+      "wage_cut_exchequer_mean_million": 484.098048,
+      "displacement_cushioning_percent": 34.695192767165125,
+      "wage_cut_cushioning_percent": 43.94225589563002,
+      "poverty_change_displacement_pp": 0.027218034815545824
+    },
+    "15": {
+      "excluded_expected_gross_loss_million": 0.20160335177412622,
+      "displacement_exchequer_mean_million": 370.5561088,
+      "wage_cut_exchequer_mean_million": 484.1472,
+      "displacement_cushioning_percent": 34.30249102881938,
+      "wage_cut_cushioning_percent": 43.94772277929526,
+      "poverty_change_displacement_pp": 0.02661406461057364
+    }
+  }
+}

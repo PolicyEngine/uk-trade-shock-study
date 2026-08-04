@@ -40,6 +40,7 @@ from mechanism_decomposition import cushioning_components  # noqa: E402
 from uk_trade_shock_study.runner import _baseline_and_persons, gini  # noqa: E402
 from uk_trade_shock_study.shocks import (  # noqa: E402
     TradeShockScenario,
+    _baseline_flag_values_and_rate,
     apply_shocks,
     build_shocked_simulation,
 )
@@ -97,10 +98,7 @@ def main() -> None:
     dataset, baseline, persons = _baseline_and_persons(DATASET, None, PERIOD)
     w = persons["weight"].to_numpy(float)
     base = sim_metrics(baseline)
-    baseline_flag = np.asarray(
-        baseline.calculate("would_claim_uc", period=PERIOD, map_to="benunit").values,
-        dtype=bool,
-    )
+    baseline_flag, baseline_flag_rate = _baseline_flag_values_and_rate(baseline, PERIOD)
 
     out = {
         "n_draws_displacement": N_DRAWS,
@@ -110,7 +108,7 @@ def main() -> None:
             "restored to the baseline stored draw.",
             "wage_cut": "earnings cuts are deterministic, but newly entitled "
             "benefit units receive seeded claiming draws under the common rule.",
-            "baseline_flag_rate_all_benunits": float(baseline_flag.mean()),
+            "baseline_flag_rate_all_benunits": baseline_flag_rate,
         },
     }
 

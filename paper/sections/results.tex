@@ -71,6 +71,33 @@ ranging from \LeaveSectorCushionDifferenceMin\ to
 \LeaveSectorCushionDifferenceMax\ percentage points. No single division
 creates or reverses the primary contrast.
 
+\paragraph{Survey sampling uncertainty.} Assignment SDs do not measure
+sampling variance, so the primary contrast is additionally scored with a
+household bootstrap of the FRS sample: \BootstrapReplicates\ multinomial
+resamples of the \BootstrapHouseholds\ households, applied to per-household
+contributions from \BootstrapDraws\ common assignment draws of each unit
+12-month margin, so that resampling variation is measured around the
+draw-averaged statistic. The wage-minus-displacement cushioning difference is
+\BootstrapCushionDifference\ percentage points with a bootstrap standard
+error of \BootstrapCushionDifferenceSE\ points and a 95 per cent percentile
+interval of \BootstrapCushionDifferenceCILower\ to
+\BootstrapCushionDifferenceCIUpper\ points: the interval excludes zero, so
+the sign of the primary contrast is not an artefact of which households the
+FRS happened to sample, although its magnitude is estimated imprecisely.
+Margin-level bootstrap SEs are \BootstrapDisplacementCushionSE\ points
+(displacement cushioning), \BootstrapWageCushionSE\ points (wage-cut
+cushioning), and \pounds\BootstrapDisplacementExchequerSE\ million and
+\pounds\BootstrapWageExchequerSE\ million on the respective Exchequer costs.
+The FRS research file carries no PSU or stratum identifiers, so households
+are the resampling unit; the interval approximates the design-based sampling
+variance without capturing geographic clustering, and it does not incorporate
+first-stage or parameter uncertainty, which remain scenario dimensions. One
+convention should be noted: a resample can zero a displacement draw's gross
+loss, leaving that draw's cushioning ratio undefined; replicates average
+over the defined draws, and near-zero-gross resamples with unstable ratios
+are retained, which if anything fattens the reported bootstrap tails---the
+interval is conservative in that respect.
+
 Part of the wage-cut margin's higher measured cushioning reflects a pension-contribution channel rather than the tax--benefit system alone: employee pension and salary-sacrifice contributions are scaled proportionally with the earnings cut, so part of the gross earnings loss is absorbed by reduced retirement saving rather than by current disposable income, while the associated tax relief falls. This is a measurement choice---the HBAI disposable-income concept treats employee pension contributions as an outflow---and it carries a caveat: the implied loss of deferred consumption in retirement is not captured by the cushioning rate.
 
 \paragraph{Mixed-margin sensitivity.} The stylised mixed scenario of Section~\ref{sec:methodology} (survivor-wage share 0.15, displacement share 0.85) yields a cushioning rate of $\FullRentSharingCushion\pm\FullRentSharingCushionSD$ per cent and an Exchequer cost of \pounds $\FullRentSharingExchequer\pm\FullRentSharingExchequerSD$ million under the full schedule, and $\EPDRentSharingCushion\pm\EPDRentSharingCushionSD$ per cent and \pounds $\EPDRentSharingExchequer\pm\EPDRentSharingExchequerSD$ million under the EPD schedule. Both sit between the polar margins but much closer to displacement, mechanically reflecting the imposed 85/15 split. The result is a literature-disciplined sensitivity point, not an estimated pass-through or adjustment decomposition.
@@ -99,6 +126,26 @@ tariff-intensity ordering fails. The online supplement displays the monthly
 gap. The panel supports a post-policy decline concentrated in
 large US export products, but it cannot attribute that decline to tariffs or
 validate the tariff-rate mapping.
+
+Why this failure does not undermine the paper's estimand deserves a direct
+statement rather than an implication. The falsification tests the
+\emph{bridge}---the claim that sector-level tariff rates predict sector-level
+export falls---and the bridge fails at sector rank. But the primary estimand
+never conditions on that claim: it asks how the tax--benefit system treats a
+\emph{declared} sector wage-bill loss delivered through two adjustment
+margins, and the declared loss is identical across margins by construction.
+A different sector composition of the same aggregate loss changes which
+households are exposed, not the statutory asymmetry between intensive and
+extensive relief; the leave-one-division-out audit (all
+\LeaveSectorCount\ divisions, contrast range
+\LeaveSectorCushionDifferenceMin--\LeaveSectorCushionDifferenceMax\ points)
+and the three LFS-shaped selection models test exactly this and the contrast
+survives every rerun. The failed falsification therefore bounds the paper's
+claims---the sector calibration must not be read as measured tariff
+incidence---without touching the cushioning comparison, which is the result
+the paper is submitted on. What the failure \emph{does} rule out is any
+future reading of Equation~\eqref{eq:shock} as an estimated first stage;
+that reading is disclaimed throughout.
 
 \paragraph{Longitudinal worker benchmark.} The five-quarter LFS contains
 \LFSManufacturingDonors\ wave-1 manufacturing employees after the required

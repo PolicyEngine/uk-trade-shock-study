@@ -41,6 +41,11 @@ def main() -> None:
         type=Path,
         default=Path("results/leave_one_sector_out.json"),
     )
+    parser.add_argument(
+        "--bootstrap",
+        type=Path,
+        default=Path("results/bootstrap_uncertainty.json"),
+    )
     parser.add_argument("--expected-draws", type=int, default=100)
     args = parser.parse_args()
 
@@ -267,6 +272,38 @@ def main() -> None:
         "division_count": len(leave_differences),
         "cushioning_difference_min_pp": min(leave_differences),
         "cushioning_difference_max_pp": max(leave_differences),
+    }
+    bootstrap = load(args.bootstrap)
+    estimates = bootstrap["estimates"]
+    design = bootstrap["design"]
+    diff = estimates["cushioning_difference"]
+    macros.update(
+        {
+            "BootstrapDraws": str(design["n_draws"]),
+            "BootstrapReplicates": str(design["n_boot"]),
+            "BootstrapHouseholds": f"{design['n_households']:,}",
+            "BootstrapCushionDifference": fmt(diff["point"] * 100, 1),
+            "BootstrapCushionDifferenceSE": fmt(diff["bootstrap_se"] * 100, 1),
+            "BootstrapCushionDifferenceCILower": fmt(diff["ci_2_5"] * 100, 1),
+            "BootstrapCushionDifferenceCIUpper": fmt(diff["ci_97_5"] * 100, 1),
+            "BootstrapDisplacementCushionSE": fmt(
+                estimates["displacement_cushioning"]["bootstrap_se"] * 100, 1
+            ),
+            "BootstrapWageCushionSE": fmt(
+                estimates["wage_cut_cushioning"]["bootstrap_se"] * 100, 1
+            ),
+            "BootstrapDisplacementExchequerSE": fmt(
+                estimates["displacement_exchequer"]["bootstrap_se"] / 1e6, 0
+            ),
+            "BootstrapWageExchequerSE": fmt(
+                estimates["wage_cut_exchequer"]["bootstrap_se"] / 1e6, 0
+            ),
+        }
+    )
+    diagnostics["bootstrap"] = {
+        "cushioning_difference_pp": diff["point"] * 100,
+        "cushioning_difference_se_pp": diff["bootstrap_se"] * 100,
+        "cushioning_difference_ci_pp": [diff["ci_2_5"] * 100, diff["ci_97_5"] * 100],
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     lines = [

@@ -91,7 +91,12 @@ cushioning), and \pounds\BootstrapDisplacementExchequerSE\ million and
 The FRS research file carries no PSU or stratum identifiers, so households
 are the resampling unit; the interval approximates the design-based sampling
 variance without capturing geographic clustering, and it does not incorporate
-first-stage or parameter uncertainty, which remain scenario dimensions.
+first-stage or parameter uncertainty, which remain scenario dimensions. One
+convention should be noted: a resample can zero a displacement draw's gross
+loss, leaving that draw's cushioning ratio undefined; replicates average
+over the defined draws, and near-zero-gross resamples with unstable ratios
+are retained, which if anything fattens the reported bootstrap tails---the
+interval is conservative in that respect.
 
 Part of the wage-cut margin's higher measured cushioning reflects a pension-contribution channel rather than the tax--benefit system alone: employee pension and salary-sacrifice contributions are scaled proportionally with the earnings cut, so part of the gross earnings loss is absorbed by reduced retirement saving rather than by current disposable income, while the associated tax relief falls. This is a measurement choice---the HBAI disposable-income concept treats employee pension contributions as an outflow---and it carries a caveat: the implied loss of deferred consumption in retirement is not captured by the cushioning rate.
 

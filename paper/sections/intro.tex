@@ -1,57 +1,69 @@
 \section{Introduction}\label{sec:intro}
 
-How differently does the UK tax--benefit system cushion a common earnings
-loss when it arrives through proportional wage cuts rather than job loss?
-That is the paper's primary question, and the answer is quantitatively
-large and institutionally interpretable: for the same sector wage-bill
-loss, an in-work earnings reduction is offset automatically at marginal tax
-and taper rates, while a job loss moves the worker to the gated,
-means-tested extensive margin of the benefit system---and the measured gap
-between the two statutory cushioning rates is around ten percentage points,
-stable across loss anchors, durations and every sector-exclusion and
-worker-selection sensitivity tested. The 2025 US tariffs provide the sector
-exposure and policy setting; they do not supply a natural experiment for the
-household comparison. A rich institutional literature traces the
-macroeconomic and firm-level consequences of the tariffs
-\citep{obr2025,boe2025,cityredi2025,centreforcities2025}, while tariff studies
-map prices and income exposure into household welfare
-\citep{artuc2021,luu2020}. This paper isolates the statutory
-automatic-stabiliser response conditional on declared labour-income losses.
+Who bears a trade shock when the same aggregate labour-income loss can be
+distributed through different labour-market margins? This paper studies that
+question for the United Kingdom. We hold a trade-exposure-calibrated loss in
+employee earnings fixed and compare incumbent wage reductions, temporary
+non-employment, re-employment with an earnings penalty, and mixtures of these
+paths. The estimand is conditional: it is the statutory tax--benefit and
+distributional response to a specified earnings-loss path, not a causal
+estimate of the effect of a particular tariff episode.
 
-The scope of that claim is deliberately narrow. The paper is a static,
-partial-equilibrium, first-round stress test, not a model or estimate of the
-economic transmission of tariffs: in a complete trade model, tariffs first
-change border prices and quantities, firms adjust production and
-productivity, and only subsequently do wages, employment and household
-income respond. This paper replaces those links with an imposed reduced-form
-tariff-to-wage-bill bridge and alternative assumed adjustment margins, then
-evaluates the statutory tax--benefit consequences conditional on each
-scenario.
+This normalization is useful because the UK tax--benefit system is nonlinear.
+For an equal aggregate loss, a broad reduction in earnings can leave most
+households in work and within the tax schedule, whereas a concentrated loss
+can move households across benefit eligibility thresholds. The fiscal
+incidence therefore depends on who loses earnings, whether the loss is
+temporary, and whether employment resumes. The comparison is also a warning
+against interpreting a single wage-cut or displacement scenario as a forecast
+of realised trade adjustment.
 
-The calibration combines the tariff schedule, US export exposure by SIC division, and an export-demand scenario parameter to construct a sector exposure index. The exposure shares are built from ONS and HMRC data. A further wage-bill-incidence assumption maps that index directly to employee earnings. This deliberately strong step suppresses the intervening responses of export prices and quantities, domestic sales, imported inputs, production, productivity, profits and capital; it is not a structural production-side equation. Main evidence reports an OBR-style lower anchor of 0.4 alongside a unit stress of 1.0; the latter remains the common scale for the detailed margin decomposition. Sensitivities include the former April-outturn ratio of 2.0 as a high case and a severe value of 3.0. None is treated as an estimated coefficient. The resulting wage-bill stress is imposed on Family Resources Survey workers through four assumed adjustment families: wage cuts, displacement, inactivity among selected older workers, and reallocation into selected service industries at an FRS-calibrated earnings penalty. Because the pure wage-cut family implies a survivor-wage response far above empirical rent-sharing elasticities of 0.05--0.15 \citep{cardcardosoheining2018, garinsilverio2024}, it is read as an upper-bound stress scenario. A stylised mixed sensitivity puts 15 per cent of the imposed wage-bill loss on survivor wage cuts and 85 per cent on displacement; the numerical 15 per cent is literature-disciplined, but the split is not empirically identified by a rent-sharing elasticity. PolicyEngine UK then computes the conditional disposable-income, poverty, inequality and Exchequer responses. Employment and wages are scenario inputs at the microsimulation stage, not estimated consequences of the tariff.
+Our design follows the trade-adjustment and automatic-stabiliser literatures.
+The empirical literature documents persistent non-employment, lower earnings
+after re-employment, sector switching, and household responses to import
+competition. Automatic-stabiliser studies then evaluate how taxes and
+transfers absorb income shocks conditional on these labour-market outcomes.
+We combine these insights in a transparent scenario surface: pure wage-cut
+and pure displacement cases are reported as bounds, while mixed paths vary the
+shares assigned to temporary non-employment, survivor earnings reductions,
+and post-displacement re-employment penalties. The mixed shares are
+disciplined by external evidence but are not estimated from the available
+data.
 
-The pre-specified submission design crosses OBR-style 0.4 and unit anchors,
-wage-cut and displacement margins, and three-, six- and twelve-month
-duration-equivalent annual stresses. At the unit twelve-month scale, wage
-cuts are cushioned by \SubmissionUnitWageCushion\ per cent and displacement
-by \BalancedUnitCushion\ per cent, a
-\PrimaryCushionDifference-percentage-point difference. Exchequer costs are
-\pounds\SubmissionUnitWageExchequer\ million and
-\pounds\BalancedUnitExchequer\ million. Across all six anchor-duration pairs,
-wage-cut cushioning is \SubmissionCushionDifferenceMin--%
-\SubmissionCushionDifferenceMax\ points higher. A household bootstrap of the
-FRS sample puts a bootstrap standard error of
-\BootstrapCushionDifferenceSE\ points and a 95 per cent interval of
-\BootstrapCushionDifferenceCILower--\BootstrapCushionDifferenceCIUpper\ points
-on the unit-scale difference: effective record support is thin, but the sign
-and rough magnitude of the primary contrast are not artefacts of the
-particular households the FRS sampled. Assignment, risk-model and
-sector-exclusion sensitivities are reported separately from numerical Monte
-Carlo error and from this sampling interval.
+The 2025 US tariff schedule supplies sector weights and plausible shock
+magnitudes. We combine tariff rates with US export exposure by SIC division
+and an export-demand parameter to construct a calibration. This first stage is
+deliberately not interpreted as identified tariff transmission: a complete
+trade model would also include quantities, prices, imported inputs, domestic
+demand, productivity, profits, and firm entry and exit. The HMRC destination
+panel and longitudinal-LFS exercises are therefore validation and calibration
+diagnostics, not causal evidence for the main fiscal-incidence estimand.
 
-Two sectoral nuances discipline the headline claims. Steel carries a caveat: roughly 80 per cent of UK steel exports go to the EU, so the steel--Wales cell is more exposed to EU/UK safeguards than to US tariffs. And pharmaceuticals---exempted under the December 2025 deal in exchange for VPAG rebate cuts and NHS pricing concessions---is a fiscal and pricing channel, not an employment channel, and is treated as such. Finally, an EPD counterfactual (full tariffs versus deal-mitigated rates) prices what the deal was worth, sector by sector and region by region, to households and the Treasury. Following \citet{ignatenko2025}, revenue recycling can flip aggregate employment signs; we compute first-round fiscal incidence holding fiscal policy fixed.
+The second stage uses the 2024--25 Family Resources Survey and PolicyEngine UK
+to compute taxes, National Insurance, benefits, household disposable income,
+poverty, inequality, and Exchequer effects. We report a common aggregate loss
+under alternative adjustment paths, decompose the result by tax and benefit
+channel, and show sensitivity to duration, worker selection, benefit take-up,
+and re-employment. Pension contributions are separated from current-income
+insurance because lower saving can mechanically raise measured disposable
+income while reducing future resources.
 
-The remainder of the paper reviews the relevant evidence, defines the
-conditional scenario design, reports the primary contrast and concludes.
-Exploratory reallocation, outturn-shaped, supply-chain and geographical
-exercises are retained in the separate online supplement.
+At the full-schedule transition calibration, the common annual earnings loss is
+\pounds\FullTransitionGross\,million, cushioning is
+\FullTransitionCushion\ per cent, and the Exchequer cost is
+\pounds\FullTransitionExchequer\,million. The polar wage-cut and displacement
+cases remain useful bounds. These are statutory comparisons conditional on the
+common-loss normalization, not estimates of the tariff's household effect.
+The paper's central object is the response surface around the bounds, making
+explicit how fiscal consequences change with temporary non-employment,
+re-employment and incumbent earnings adjustment.
+
+The paper makes three contributions. First, it provides a reproducible UK
+microsimulation framework for mapping trade-exposure-calibrated earnings
+losses into fiscal and distributional outcomes. Second, it shows why the
+incidence margin matters even when aggregate lost earnings are identical.
+Third, it quantifies which statutory channels drive the differences and which
+assumptions---timing, take-up, pensions, and worker selection---are most
+important for policy conclusions. The remainder of the paper describes the
+evidence and scenario design, presents the polar bounds and mixed paths,
+reports policy counterfactuals, and discusses limitations and reproducibility.

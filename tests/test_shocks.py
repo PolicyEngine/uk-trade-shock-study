@@ -294,6 +294,25 @@ def test_mixed_margin_endpoints_match_pure_margins():
     np.testing.assert_allclose(job["employment_income"], pure_job["employment_income"])
 
 
+def test_transition_preserves_expected_sector_loss():
+    """Temporary re-employment and survivor cuts retain the common-loss target."""
+    persons = make_persons(n=1400)
+    scenario = TradeShockScenario(
+        "transition", "full_tariff", "transition",
+        displacement_share=0.7,
+        reallocation_penalty=0.283, reallocation_lag_months=3.0,
+    )
+    base = persons["employment_income"].to_numpy(float)
+    expected = person_earnings_shock(persons["sic_division"], "full_tariff")
+    realised = np.zeros(len(persons))
+    for seed in range(250):
+        shocked = apply_shocks(persons, scenario, seed=seed)
+        realised += (base - shocked["employment_income"].to_numpy(float)) / base
+        assert (shocked["reallocated"] == shocked["transitioned"]).all()
+        assert not shocked["displaced"].any()
+    np.testing.assert_allclose(realised / 250, expected, atol=0.04)
+
+
 def test_rent_sharing_lambda_mapping():
     """displacement_share = 1 - rent-sharing elasticity (survivor wage cuts
     absorb exactly the elasticity share of the sector wage-bill loss)."""
@@ -316,6 +335,19 @@ def test_rent_sharing_presets_are_calibrated_mixed_scenarios():
         assert scenario.displacement_share == pytest.approx(
             1.0 - RENT_SHARING_ELASTICITY
         )
+
+
+def test_mixed_central_presets_are_explicit_aliases():
+    """The paper-facing central labels retain the documented 85/15 split."""
+    from uk_trade_shock_study.shocks import MIXED_CENTRAL_PRESETS
+
+    assert set(MIXED_CENTRAL_PRESETS) == {
+        "full_tariff_mixed_central",
+        "epd_mixed_central",
+    }
+    for scenario in MIXED_CENTRAL_PRESETS.values():
+        assert scenario.margin == "mixed"
+        assert scenario.displacement_share == pytest.approx(0.85)
     assert RENT_SHARING_PRESETS["epd_rentsharing"].tariff_scenario == "epd"
     assert (
         RENT_SHARING_PRESETS["full_tariff_rentsharing"].tariff_scenario

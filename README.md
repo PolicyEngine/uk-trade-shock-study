@@ -6,7 +6,9 @@ reduced-form tariff-exposure-to-wage-bill bridge on FRS 2024-25 microdata and
 runs it through PolicyEngine UK. It does not model the intervening effects on
 prices, quantities, production, value added, productivity or labour demand.
 Adjustment scenarios include **displacement**, **wage cuts**, **inactivity**,
-**reallocation**, and a factorial **mixed wage/job-loss** family. An Economic
+**reallocation**, a common-loss **temporary transition** path (lagged
+re-employment plus survivor earnings cuts), and a factorial **mixed
+wage/job-loss** family. An Economic
 Prosperity Deal counterfactual
 (full tariffs vs deal-mitigated: autos 25%→10% in-quota, conditional steel
 relief, pharma exempt) prices the deal for households and the Exchequer.

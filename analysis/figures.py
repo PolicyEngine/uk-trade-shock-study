@@ -39,11 +39,26 @@ def fig_decile_by_margin(tariff: str = "full_tariff") -> None:
     figstyle.apply_style()
     fig, ax = plt.subplots(figsize=figstyle.SINGLE)
     x = np.arange(1, 11)
-    for margin, colour in zip(
-        ("displacement", "wage_cut", "inactivity"), figstyle.SERIES
-    ):
+    # Draw overlapping margins with distinct styles and put displacement last;
+    # its profile is close to inactivity in several deciles.
+    styles = {
+        "displacement": (figstyle.SERIES[0], "--", "o"),
+        "wage_cut": (figstyle.SERIES[1], "-", "s"),
+        "inactivity": (figstyle.SERIES[2], ":", "^"),
+    }
+    for margin in ("wage_cut", "inactivity", "displacement"):
+        colour, linestyle, marker = styles[margin]
         mean, sd = decile_mc(load(f"{tariff}_{margin}"))
-        ax.plot(x, mean, marker="o", color=colour, label=margin.replace("_", " "))
+        ax.plot(
+            x,
+            mean,
+            marker=marker,
+            linestyle=linestyle,
+            linewidth=2.0,
+            color=colour,
+            label=margin.replace("_", " "),
+            zorder=4 if margin == "displacement" else 3,
+        )
         if sd.any():
             ax.fill_between(x, mean - sd, mean + sd, color=colour, alpha=0.15, lw=0)
     figstyle.decile_ax(ax, "Mean per-capita disposable-income change (£/year)")

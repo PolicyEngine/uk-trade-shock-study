@@ -1,0 +1,185 @@
+{
+  "monthly_uc_bounding": {
+    "parameters": {
+      "standard_allowance_single_25_plus_month": 424.9,
+      "personal_allowance": 12570.0,
+      "basic_rate": 0.2,
+      "higher_rate": 0.4,
+      "ni_employee_main": 0.08,
+      "representative_earnings": 48272.0
+    },
+    "spells": {
+      "3m": {
+        "uc_monthly_correct": 1274.6999999999998,
+        "uc_annual_equivalent": 1274.6999999999998,
+        "tax_relief_monthly_correct": 2413.6000000000004,
+        "tax_relief_annual_equivalent": 1785.1000000000001,
+        "ni_relief_monthly_correct": 714.0408,
+        "ni_relief_annual_equivalent": 714.0408,
+        "gross_loss": 12068.0,
+        "cushion_share_monthly_correct": 0.3647945641365595,
+        "cushion_share_annual_equivalent": 0.3127146834603911
+      },
+      "6m": {
+        "uc_monthly_correct": 2549.3999999999996,
+        "uc_annual_equivalent": 2549.3999999999996,
+        "tax_relief_monthly_correct": 4827.200000000001,
+        "tax_relief_annual_equivalent": 3570.2000000000003,
+        "ni_relief_monthly_correct": 1428.0816,
+        "ni_relief_annual_equivalent": 1428.0816,
+        "gross_loss": 24136.0,
+        "cushion_share_monthly_correct": 0.3647945641365595,
+        "cushion_share_annual_equivalent": 0.3127146834603911
+      },
+      "12m": {
+        "uc_monthly_correct": 5098.799999999999,
+        "uc_annual_equivalent": 5098.799999999999,
+        "tax_relief_monthly_correct": 7140.400000000001,
+        "tax_relief_annual_equivalent": 7140.400000000001,
+        "ni_relief_monthly_correct": 2856.1632,
+        "ni_relief_annual_equivalent": 2856.1632,
+        "gross_loss": 48272.0,
+        "cushion_share_monthly_correct": 0.3127146834603911,
+        "cushion_share_annual_equivalent": 0.3127146834603911
+      }
+    },
+    "notes": "UC entitlement per worker-month is identical by construction: m months at the full standard allowance equals probability m/12 of 12 months. Differences arise in income tax (convexity: the annual model overstates relief for partial-year spells at this earnings level, where zeroing a full year forgoes higher-rate relief while a partial-year earner loses basic/higher-rate slices) and in the 5-week payment wait, which shifts timing, not annual entitlement."
+  },
+  "pension_channel": {
+    "full_tariff_wage_cut": {
+      "gross_earnings_loss": {
+        "mean": 885749325.2499483,
+        "sd": 0.0
+      },
+      "disposable_loss_hbai": {
+        "mean": 496631808.0,
+        "sd": 0.0
+      },
+      "pension_outflow_fall": {
+        "mean": 38583820.40625,
+        "sd": 0.0
+      },
+      "cushioning_hbai": {
+        "mean": 0.43930884975852935,
+        "sd": 0.0
+      },
+      "cushioning_pension_gross": {
+        "mean": 0.3957481951733711,
+        "sd": 0.0
+      },
+      "pension_share_of_gross_loss": {
+        "mean": 0.043560654585158266,
+        "sd": 0.0
+      }
+    },
+    "full_tariff_displacement": {
+      "gross_earnings_loss": {
+        "mean": 803889656.1936979,
+        "sd": 426825266.7555173
+      },
+      "disposable_loss_hbai": {
+        "mean": 532272906.24,
+        "sd": 263847355.19347897
+      },
+      "pension_outflow_fall": {
+        "mean": 32006113.226670228,
+        "sd": 20864881.638231955
+      },
+      "cushioning_hbai": {
+        "mean": 0.32987738933694183,
+        "sd": 0.04920132221707783
+      },
+      "cushioning_pension_gross": {
+        "mean": 0.2872481073078232,
+        "sd": 0.055659079679050726
+      },
+      "pension_share_of_gross_loss": {
+        "mean": 0.04262928202911869,
+        "sd": 0.02015351326265067
+      }
+    },
+    "contrast": {
+      "cushioning_gap_hbai_pp": 10.943146042158752,
+      "cushioning_gap_pension_gross_pp": 10.850008786554794,
+      "pension_channel_share_of_gap": 0.008511012760420544
+    }
+  },
+  "takeup_headline": {
+    "displacement": {
+      "n_seeds": 25,
+      "0.55": {
+        "cushioning_rate": {
+          "mean": 0.32987738933694183,
+          "sd": 0.04920132221707783
+        },
+        "exchequer_cost_m": {
+          "mean": 348.44901376,
+          "sd": 229.20896900543266
+        }
+      },
+      "0.80": {
+        "cushioning_rate": {
+          "mean": 0.32987738933694183,
+          "sd": 0.04920132221707783
+        },
+        "exchequer_cost_m": {
+          "mean": 348.44901376,
+          "sd": 229.20896900543266
+        }
+      },
+      "1.00": {
+        "cushioning_rate": {
+          "mean": 0.32987738933694183,
+          "sd": 0.04920132221707783
+        },
+        "exchequer_cost_m": {
+          "mean": 348.44901376,
+          "sd": 229.20896900543266
+        }
+      },
+      "stale_baseline_flag": {
+        "cushioning_rate": {
+          "mean": 0.32987738933694183,
+          "sd": 0.04920132221707783
+        },
+        "exchequer_cost_m": {
+          "mean": 348.44901376,
+          "sd": 229.20896900543266
+        }
+      }
+    },
+    "wage_cut": {
+      "n_seeds": 5,
+      "0.55": {
+        "cushioning_rate": {
+          "mean": 0.43930884975852935,
+          "sd": 0.0
+        },
+        "exchequer_cost_m": {
+          "mean": 484.2291200000001,
+          "sd": 6.355287432313019e-14
+        }
+      },
+      "0.80": {
+        "cushioning_rate": {
+          "mean": 0.43930884975852935,
+          "sd": 0.0
+        },
+        "exchequer_cost_m": {
+          "mean": 484.2291200000001,
+          "sd": 6.355287432313019e-14
+        }
+      },
+      "1.00": {
+        "cushioning_rate": {
+          "mean": 0.43930884975852935,
+          "sd": 0.0
+        },
+        "exchequer_cost_m": {
+          "mean": 484.2291200000001,
+          "sd": 6.355287432313019e-14
+        }
+      }
+    }
+  }
+}

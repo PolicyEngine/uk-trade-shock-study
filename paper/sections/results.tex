@@ -29,7 +29,7 @@ annual stress, \SubmissionDraws\ assignments}
 Anchor & Months & Margin & Gross loss & Exchequer & Cushioning & Poverty \\
 & & & (\pounds m) & (\pounds m) & (\%) & (pp) \\
 \midrule
-\SubmissionScenarioRows
+\SubmissionScenarioRowsMain
 \bottomrule
 \end{tabular}
 \begin{minipage}{.94\textwidth}\footnotesize
@@ -38,8 +38,14 @@ after $\pm$ are assignment SDs. Displacement uses balanced numerical
 integration; wage cuts are deterministic apart from the common UC claiming
 redraw. Three- and six-month rows scale the annual probability of a coherent
 full-year displaced state; they match expected worker-month loss but do not
-simulate partial-year unemployment spells. Poverty is the change in the
-person-weighted fixed-line BHC rate.
+simulate partial-year unemployment spells (Appendix~\ref{app:monthlyuc}
+bounds the annualisation bias). The OBR three-month cell is omitted: its
+displacement draw rests on \OBRThreeMonthEffectiveLossRecords\ effective
+record contributions and is reported in Appendix~\ref{app:mc} as sensitivity
+evidence only. Poverty is the change in the person-weighted fixed-line
+national BHC rate; because the exposed population is small and largely above
+the poverty line, near-zero national changes carry no information about
+losses among affected households.
 \end{minipage}
 \end{table}
 
@@ -101,26 +107,25 @@ over the defined draws, and near-zero-gross resamples with unstable ratios
 are retained. The interval is therefore a record-resampling sensitivity, not
 evidence that a conditional scenario contrast is statistically identified.
 
-Part of the wage-cut margin's higher measured cushioning reflects a pension-contribution channel rather than the tax--benefit system alone: employee pension and salary-sacrifice contributions are scaled proportionally with the earnings cut, so part of the gross earnings loss is absorbed by reduced retirement saving rather than by current disposable income, while the associated tax relief falls. This is a measurement choice---the HBAI disposable-income concept treats employee pension contributions as an outflow---and it carries a caveat: the implied loss of deferred consumption in retirement is not captured by the cushioning rate.
+\paragraph{Pension-contribution channel.} The HBAI disposable-income concept treats employee pension and salary-sacrifice contributions as an outflow, so a hypothesis worth testing is that part of the headline gap is reduced retirement saving rather than tax--benefit insurance. It is not. Recomputing both margins under a pension-gross income concept (disposable income plus employee pension and salary-sacrifice contributions, unit 12-month stress, Bernoulli comparator over \PensionSeeds\ draws) lowers wage-cut cushioning from \FullWageCushion\ to \WageCushionPensionGross\ per cent and displacement cushioning from \PensionDisplacedCushionHBAI\ to \DisplacedCushionPensionGross\ per cent---the pension outflow falls by close to the same share of the gross loss on both margins (\PensionShareWage\ and \PensionShareDisplaced\ per cent respectively; wage cuts scale contributions, displacement zeroes them)---so the wage-minus-displacement gap moves only from \GapHBAIPension\ to \GapPensionGross\ percentage points. The headline contrast is a statutory tax--benefit asymmetry, not a pension-accounting artefact. What the pension channel does affect is the \emph{level} of measured cushioning on both margins, and the implied loss of deferred retirement consumption is not captured by the cushioning rate.
 
-\paragraph{Mixed and transition paths.} The organizing mixed scenario uses a
-churn-dominated 85/15 displacement--survivor-earnings split, yielding a
-cushioning rate of $\FullRentSharingCushion\pm\FullRentSharingCushionSD$
-per cent and an Exchequer cost of \pounds
-$\FullRentSharingExchequer\pm\FullRentSharingExchequerSD$ million under the
-full schedule. This split is a transparent scenario choice, not a conversion
-of a rent-sharing elasticity into an estimated adjustment share. The new
-transition-equivalent path assigns 70 per cent of each sector's declared loss
-to workers whose annual earnings and hours embody a three-month
-re-employment lag before entering a services job at the FRS
-28.3 per cent earnings penalty; survivor cuts are rescaled so expected sector
-loss remains common. It yields $\FullTransitionCushion\pm\FullTransitionCushionSD$
-per cent cushioning and an Exchequer cost of \pounds
-$\FullTransitionExchequer\pm\FullTransitionExchequerSD$ million. The 70/30
-share, lag and penalty are organising assumptions bounded by external evidence,
-not estimated tariff responses. The response surface is shown in
-Figure~\ref{fig:scenario-testing}; the lower 14 per cent penalty sensitivity is
-reported in the additional diagnostics section.
+\paragraph{Mixed and transition paths.} The illustrative interior
+calibration is the transition-equivalent path: 70 per cent of each sector's
+declared loss is assigned to workers whose annual earnings and hours embody
+a three-month re-employment lag before entering a services job at the FRS
+28.3 per cent earnings penalty, with survivor cuts rescaled so the expected
+sector loss remains common. It yields
+$\FullTransitionCushion\pm\FullTransitionCushionSD$ per cent cushioning and
+an Exchequer cost of \pounds
+$\FullTransitionExchequer\pm\FullTransitionExchequerSD$ million---between
+the bounds, as the composition logic implies. The surrounding response
+surface (Figure~\ref{fig:scenario-testing}) includes a churn-dominated
+85/15 displacement--survivor split
+($\FullRentSharingCushion\pm\FullRentSharingCushionSD$ per cent cushioning,
+\pounds $\FullRentSharingExchequer\pm\FullRentSharingExchequerSD$ million)
+and the lower 14 per cent penalty sensitivity reported in the appendix.
+The 70/30 share, lag and penalty are assumptions bounded by external
+evidence, not estimated tariff responses.
 
 \begin{figure}[htbp]
 \centering
@@ -135,51 +140,22 @@ The frozen HMRC customs build totals \pounds55.6 billion of 2024 US-bound goods 
 
 Sector agreement is much weaker. The stored validation artifact reports a rank correlation of 0.00 between the full-schedule predicted and realised falls among the ten largest exposed divisions, and a correlation of 0.58 between full-schedule and observed downside shock rates across all mapped divisions. Machinery and motor vehicles decline broadly in the expected direction, while aerospace, electrical equipment and basic metals do not. The aggregate match can therefore be coincidental and must not be used to validate Equation~\eqref{eq:shock}. As a separate policy benchmark, the OBR's March 2025 scenario uses a demand elasticity of 0.4, implying an 8 per cent export-demand fall after a 20 percentage-point tariff and a direct export-demand effect just under 0.2 per cent of GDP \citep{obr2025}. The paper's $\varepsilon=1$ reference is 2.5 times that elasticity and additionally assumes full wage-bill incidence; it is a deliberately strong stress, not a central forecast.
 
-\paragraph{Product--destination panel.} Across \HMRCPanelProducts\ HS4
-products, the capped value-weighted specification estimates a
-\HMRCWeightedEffect\ per cent change in exports to the US relative to the same
-products sent to the three comparison destinations (95 per cent interval
-\HMRCWeightedCILower\ to \HMRCWeightedCIUpper\ per cent,
-$p=\HMRCWeightedPValue$). Results have similar signs against each destination,
-and May 2019--23 pseudo-policy estimates are individually insignificant.
-This is not robust evidence of a common product effect: equal product weights
-give \HMRCEqualEffect\ per cent ($p=\HMRCEqualPValue$), and restricting the
-sample to 2023 onward gives \HMRCRecentEffect\ per cent
-($p=\HMRCRecentPValue$). The estimated differential trend is itself borderline
-($p=\HMRCTrendPValue$). Most importantly, broad steel and auto chapters fall
-\HMRCHighTariffEffect\ per cent ($p=\HMRCHighTariffPValue$), compared with
-\HMRCOtherEffect\ per cent for other products ($p=\HMRCOtherPValue$): the
-tariff-intensity ordering fails. Figure~\ref{fig:hmrc-destination} displays the monthly
-gap. The panel supports a post-policy decline concentrated in
-large US export products, but it cannot attribute that decline to tariffs or
-validate the tariff-rate mapping.
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=.94\textwidth]{../results/figures/hmrc_destination_event_study.png}
-\caption{Monthly capped-value-weighted gap between UK HS4 exports to the United States and mean exports of the same products to Canada, Japan and Australia, normalised to January--March 2025.}
-\label{fig:hmrc-destination}
-\end{figure}
-
-Why this failure does not undermine the paper's estimand deserves a direct
-statement rather than an implication. The falsification tests the
-\emph{bridge}---the claim that sector-level tariff rates predict sector-level
-export falls---and the bridge fails at sector rank. But the primary estimand
-never conditions on that claim: it asks how the tax--benefit system treats a
-\emph{declared} sector wage-bill loss delivered through two adjustment
-margins, and the declared loss is identical across margins by construction.
-A different sector composition of the same aggregate loss changes which
-households are exposed, not the statutory asymmetry between intensive and
-extensive relief; the leave-one-division-out audit (all
-\LeaveSectorCount\ divisions, contrast range
-\LeaveSectorCushionDifferenceMin--\LeaveSectorCushionDifferenceMax\ points)
-and the three LFS-shaped selection models test exactly this and the contrast
-survives every rerun. The failed falsification therefore bounds the paper's
-claims---the sector calibration must not be read as measured tariff
-incidence---without touching the cushioning comparison, which is the result
-the paper is submitted on. What the failure \emph{does} rule out is any
-future reading of Equation~\eqref{eq:shock} as an estimated first stage;
-that reading is disclaimed throughout.
+\paragraph{Product--destination panel.} The monthly HMRC panel
+(Appendix~\ref{app:trade-panel}) supports a post-policy decline concentrated
+in large US export products---the capped value-weighted specification
+estimates a \HMRCWeightedEffect\ per cent change in US-bound exports
+relative to the same products sent to Canada, Japan and Australia---but the
+tariff-intensity ordering fails: broad steel and auto chapters fall
+\HMRCHighTariffEffect\ per cent against \HMRCOtherEffect\ per cent for other
+products. As set out in the introduction, this failed falsification tests
+the bridge, not the estimand: the cushioning comparison conditions on a
+declared loss that is identical across margins by construction, and the
+leave-one-division-out audit (all \LeaveSectorCount\ divisions, contrast
+range \LeaveSectorCushionDifferenceMin--%
+\LeaveSectorCushionDifferenceMax\ points) together with the three LFS-shaped
+selection models confirm that sector composition does not create or reverse
+it. What the failure rules out is any reading of
+Equation~\eqref{eq:shock} as an estimated first stage.
 
 \paragraph{Longitudinal worker benchmark.} The five-quarter LFS contains
 \LFSManufacturingDonors\ wave-1 manufacturing employees after the required
@@ -263,7 +239,26 @@ causal probabilities.
 
 The realised displacement output is also consistent with the allocation design but too sparse for precise empirical incidence: the expected 9.7 selected FRS records per assignment produce \FullDisplacedWorkers{} thousand represented displaced workers and \pounds $\FullDisplacedGross\pm\FullDisplacedGrossSD$ million of gross loss. The gross-loss SD is nearly half its mean, and Exchequer-cost SD exceeds half its mean. The 100-assignment average is numerically more stable than an individual assignment, but it remains conditional on the observed 1,018 exposed records and the uniform within-division selection rule.
 
-\paragraph{Take-up sensitivity.} The regenerated grid applies the same post-shock-entitlement claiming rule to all margins. It uses only five assignments per cell and is exploratory. It shows that displacement responds more visibly to the assumed claiming probability, while wage-cut results move little because relatively few wage-cut households change UC entitlement. No grid difference is treated as statistically identified.
+\paragraph{Take-up as a headline sensitivity.} Because the displacement-side
+cushion runs through UC, take-up is scored at the full comparator draw count
+(\PensionSeeds\ Bernoulli assignments) rather than as an exploratory grid,
+with the new-entitlement claiming rate at 0.55, 0.80 and 1.00 and,
+additionally, the stale pre-shock claiming flag restored as a fourth
+convention. The measured answer is that none of these moves the unit-stress
+headline: displacement cushioning is \TakeupDisplacedCentral\ per cent under
+every convention, with differences below 0.1 percentage points---within the
+numerical precision of the aggregation. The reason is institutional and was
+not obvious ex ante: most displaced households are \emph{already} entitled
+to UC at baseline through the in-work means test, so under the maintained
+rule they retain their stored claiming state, and the newly entitled
+population that the take-up parameter governs carries little survey weight.
+The residual convention that this grid cannot test is the retention of
+baseline claiming states for already-entitled non-claimants---about half of
+entitled benefit units in the input data do not claim---and the unmodelled
+UC capital test (redundancy payments against thresholds frozen since 2006),
+both of which would move measured cushioning down, not up
+(Section~\ref{sec:discussion}). Wage-cut results are take-up-insensitive
+because few wage-cut households change UC entitlement.
 
 \subsection{Mechanism}\label{sec:results-mechanism}
 
@@ -303,16 +298,11 @@ the decile profile.
 \label{fig:decile-results}
 \end{figure}
 
-The constituency illustration is deliberately descriptive. It uses imputed
-industry assignments rather than observed local industry structure and should
-not be read as a ranking of local tariff exposure.
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=.95\textwidth]{../results/figures/map_constituency_income_change.png}
-\caption{Illustrative constituency-level annual per-capita disposable-income change, averaged over 20 paired assignment draws. The map uses imputed SIC and no observed constituency industry mix.}
-\label{fig:constituency-map}
-\end{figure}
+A constituency-level surface was produced in earlier drafts but is not
+reported: it rests on imputed industry assignments rather than observed
+local industry structure, and a map invites exactly the seat-ranking
+reading it cannot support. Appendix~\ref{app:constituency} documents the
+machinery for future use with observed local industry data.
 
 \subsection{Fiscal incidence}\label{sec:results-fiscal}
 
@@ -332,7 +322,7 @@ shows the assignment distribution.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=.85\textwidth]{../results/figures/exchequer_cost_draws.png}
-\caption{Annual Exchequer cost across regenerated assignments.}
+\caption{Annual Exchequer cost across regenerated assignments. The spread is assignment dispersion from the Monte Carlo allocation of displacement, not sampling uncertainty.}
 \label{fig:exchequer-results}
 \end{figure}
 

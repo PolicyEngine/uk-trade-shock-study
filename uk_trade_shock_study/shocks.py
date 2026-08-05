@@ -60,7 +60,14 @@ from uk_trade_shock_study.exposure import (
     person_earnings_shock,
 )
 
-MARGINS = ("displacement", "wage_cut", "inactivity", "reallocation", "mixed")
+MARGINS = (
+    "displacement",
+    "wage_cut",
+    "inactivity",
+    "reallocation",
+    "mixed",
+    "transition",
+)
 
 #: Services destination divisions for the ``reallocation`` margin (SIC 2007):
 #: 47 retail trade, 86 human health activities, 49 land transport (incl.
@@ -122,7 +129,7 @@ UC_TAKEUP_SEED_OFFSET = 900_000
 class TradeShockScenario:
     name: str
     tariff_scenario: str  # "full_tariff" | "epd"
-    margin: str  # "displacement" | "wage_cut" | "inactivity"
+    margin: str  # adjustment-margin family, including ``transition``
     elasticity: float = DEFAULT_ELASTICITY
     passthrough: float = DEFAULT_PASSTHROUGH
     inactivity_age_threshold: int = 50
@@ -244,6 +251,29 @@ RENT_SHARING_PRESETS = {
         displacement_share=rent_sharing_displacement_share(),
     )
     for tariff in ("full_tariff", "epd")
+}
+
+# Named central scenarios for the paper's incidence exercise.  Keep the
+# explicit ``mixed_central`` label alongside the historical ``rentsharing``
+# alias: the latter describes how the 85/15 split was motivated, while this
+# name makes the estimand (a mixed adjustment path conditional on a common
+# earnings shock) unambiguous in result files and tables.
+MIXED_CENTRAL_PRESETS = {
+    f"{tariff}_mixed_central": TradeShockScenario(
+        f"{tariff}_mixed_central",
+        tariff,
+        "mixed",
+        displacement_share=rent_sharing_displacement_share(),
+    )
+    for tariff in ("full_tariff", "epd")
+}
+
+TRANSITION_PRESETS = {
+    f"{tariff}_transition_central": TradeShockScenario(
+        f"{tariff}_transition_central", tariff, "transition",
+        displacement_share=0.70, reallocation_penalty=DEFAULT_REALLOCATION_PENALTY,
+        reallocation_lag_months=3.0,
+    ) for tariff in ("full_tariff", "epd")
 }
 
 
@@ -616,6 +646,53 @@ def apply_mixed_margin(
     return shocked
 
 
+def apply_transition_margin(persons: pd.DataFrame, scenario: TradeShockScenario, seed: int = 0) -> pd.DataFrame:
+    """Annualized transition-equivalent earnings path plus survivor cuts.
+
+    ``displacement_share`` is the share of the sector loss borne by transition
+    workers (rather than their probability).  If a transition-equivalent
+    worker loses fraction ``d`` of annual earnings through a re-employment
+    penalty and lag, its draw probability is ``p = lambda*s/d``; survivors
+    take ``(1-lambda)*s/(1-p)``.  Thus expected loss is exactly ``s`` per
+    worker.  The annual PolicyEngine run represents the lag through earnings
+    and hours; it does not create a within-year unemployment spell or
+    activate unemployment benefits.
+    """
+    if scenario.margin != "transition":
+        raise ValueError("apply_transition_margin requires a transition scenario")
+    shocked = _blank_reallocation(persons.copy())
+    earnings = persons["employment_income"].to_numpy(dtype=float)
+    employed = earnings > 0
+    s = _person_shock(persons, scenario)
+    lag_factor = 1.0 - scenario.reallocation_lag_months / 12.0
+    factor = (1.0 - scenario.reallocation_penalty) * lag_factor
+    d = 1.0 - factor
+    if d <= 0:
+        raise ValueError("transition penalty and lag must imply a positive loss")
+    p = scenario.displacement_share * s / d
+    if (p[employed] >= 1.0).any():
+        raise ValueError("transition probability must be below one")
+    rng = np.random.default_rng(seed)
+    transitioned = employed & (rng.random(len(persons)) < p)
+    survivor_cut = np.divide(
+        (1.0 - scenario.displacement_share) * s,
+        1.0 - p,
+        out=np.zeros_like(s), where=(1.0 - p) > 0,
+    )
+    new = np.where(transitioned, earnings * factor,
+                   np.where(employed, earnings * (1.0 - survivor_cut), earnings))
+    shocked["employment_income"] = new
+    shocked["displaced"] = np.zeros(len(persons), dtype=bool)
+    shocked["inactive"] = np.zeros(len(persons), dtype=bool)
+    shocked["lcwra"] = np.zeros(len(persons), dtype=bool)
+    shocked["reallocated"] = transitioned
+    shocked["destination_division"] = draw_destinations(transitioned, seed=seed)
+    shocked["reallocation_hours_factor"] = np.where(transitioned, lag_factor, 1.0)
+    shocked["transitioned"] = transitioned
+    shocked["earnings_changed"] = employed & ~np.isclose(new, earnings)
+    return shocked
+
+
 def _blank_reallocation(shocked: pd.DataFrame) -> pd.DataFrame:
     shocked["reallocated"] = np.zeros(len(shocked), dtype=bool)
     shocked["destination_division"] = np.full(len(shocked), np.nan)
@@ -695,6 +772,8 @@ def apply_shocks(
         shocked = _blank_reallocation(apply_wage_cut(persons, scenario))
     elif scenario.margin == "mixed":
         shocked = _blank_reallocation(apply_mixed_margin(persons, scenario, seed=seed))
+    elif scenario.margin == "transition":
+        shocked = apply_transition_margin(persons, scenario, seed=seed)
     elif scenario.margin == "reallocation":
         shocked = apply_reallocation(persons, scenario, seed=seed)
     else:

@@ -1,6 +1,6 @@
 \section{Results}\label{sec:results}
 
-All results use FRS 2024--25 and period 2026. The primary table uses
+All results use FRS 2024--25 and period 2026. The bounds table uses
 \SubmissionDraws\ balanced assignments; legacy secondary scenarios use
 \ProductionDraws. Values after $\pm$ are assignment standard deviations, not
 standard errors or confidence intervals. Numerical Monte Carlo SE is stored
@@ -43,14 +43,17 @@ person-weighted fixed-line BHC rate.
 \end{minipage}
 \end{table}
 
-Table~\ref{tab:cushioning} is the pre-specified primary evidence: it crosses
-the external OBR-style and deliberately stronger unit anchors with one common-
-loss contrast and three duration-equivalent scales. At the 12-month unit
-stress, wage-cut cushioning exceeds displacement cushioning by
+Table~\ref{tab:cushioning} reports the two polar bounds of the incidence
+surface: it crosses the external OBR-style and deliberately stronger unit
+anchors with one common-loss contrast and three duration-equivalent scales.
+At the 12-month unit stress, wage-cut cushioning exceeds displacement
+cushioning by
 \PrimaryCushionDifference\ percentage points (assignment SD
 \PrimaryCushionDifferenceSD), while its Exchequer cost differs by
 \pounds\PrimaryExchequerDifference\ million. These are conditional statutory
-comparisons, not confidence intervals for tariff effects.
+comparisons, not confidence intervals for tariff effects. The mixed grid
+below is the conceptual centre of the design; the bounds make its composition
+effect transparent.
 
 \paragraph{Assignment-design and record-support audit.} At the unit 12-month
 stress, balanced and Bernoulli integration agree closely: cushioning is
@@ -95,12 +98,28 @@ first-stage or parameter uncertainty, which remain scenario dimensions. One
 convention should be noted: a resample can zero a displacement draw's gross
 loss, leaving that draw's cushioning ratio undefined; replicates average
 over the defined draws, and near-zero-gross resamples with unstable ratios
-are retained, which if anything fattens the reported bootstrap tails---the
-interval is conservative in that respect.
+are retained. The interval is therefore a record-resampling sensitivity, not
+evidence that a conditional scenario contrast is statistically identified.
 
 Part of the wage-cut margin's higher measured cushioning reflects a pension-contribution channel rather than the tax--benefit system alone: employee pension and salary-sacrifice contributions are scaled proportionally with the earnings cut, so part of the gross earnings loss is absorbed by reduced retirement saving rather than by current disposable income, while the associated tax relief falls. This is a measurement choice---the HBAI disposable-income concept treats employee pension contributions as an outflow---and it carries a caveat: the implied loss of deferred consumption in retirement is not captured by the cushioning rate.
 
-\paragraph{Mixed-margin sensitivity.} The stylised mixed scenario of Section~\ref{sec:methodology} (survivor-wage share 0.15, displacement share 0.85) yields a cushioning rate of $\FullRentSharingCushion\pm\FullRentSharingCushionSD$ per cent and an Exchequer cost of \pounds $\FullRentSharingExchequer\pm\FullRentSharingExchequerSD$ million under the full schedule, and $\EPDRentSharingCushion\pm\EPDRentSharingCushionSD$ per cent and \pounds $\EPDRentSharingExchequer\pm\EPDRentSharingExchequerSD$ million under the EPD schedule. Both sit between the polar margins but much closer to displacement, mechanically reflecting the imposed 85/15 split. The result is a literature-disciplined sensitivity point, not an estimated pass-through or adjustment decomposition.
+\paragraph{Mixed and transition paths.} The organizing mixed scenario uses a
+churn-dominated 85/15 displacement--survivor-earnings split, yielding a
+cushioning rate of $\FullRentSharingCushion\pm\FullRentSharingCushionSD$
+per cent and an Exchequer cost of \pounds
+$\FullRentSharingExchequer\pm\FullRentSharingExchequerSD$ million under the
+full schedule. This split is a transparent scenario choice, not a conversion
+of a rent-sharing elasticity into an estimated adjustment share. The new
+transition-equivalent path assigns 70 per cent of each sector's declared loss
+to workers whose annual earnings and hours embody a three-month
+re-employment lag before entering a services job at the FRS
+28.3 per cent earnings penalty; survivor cuts are rescaled so expected sector
+loss remains common. It yields $\FullTransitionCushion\pm\FullTransitionCushionSD$
+per cent cushioning and an Exchequer cost of \pounds
+$\FullTransitionExchequer\pm\FullTransitionExchequerSD$ million. The 70/30
+share, lag and penalty are organising assumptions bounded by external evidence,
+not estimated tariff responses. The response surface and lower 14 per cent
+penalty sensitivity are reported in the supplement.
 
 \subsection{External magnitude and outturn checks}\label{sec:results-benchmarks}
 

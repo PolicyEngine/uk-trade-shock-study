@@ -9,6 +9,8 @@ from pathlib import Path
 
 from uk_trade_shock_study.runner import run_monte_carlo, write_result
 from uk_trade_shock_study.shocks import (
+    MIXED_CENTRAL_PRESETS,
+    TRANSITION_PRESETS,
     PRESETS,
     RENT_SHARING_PRESETS,
     TradeShockScenario,
@@ -27,7 +29,13 @@ MEASURED_PRESETS = {
 # margin with displacement_share = 1 - RENT_SHARING_ELASTICITY = 0.85, so
 # survivor wage cuts absorb 15% of each imposed sector wage-bill loss. A
 # rent-sharing elasticity does not identify this decomposition one-for-one.
-ALL_PRESETS = {**PRESETS, **MEASURED_PRESETS, **RENT_SHARING_PRESETS}
+ALL_PRESETS = {
+    **PRESETS,
+    **MEASURED_PRESETS,
+    **RENT_SHARING_PRESETS,
+    **MIXED_CENTRAL_PRESETS,
+    **TRANSITION_PRESETS,
+}
 OBR_LOW_PRESETS = {
     f"full_tariff_obr_low_{margin}": TradeShockScenario(
         f"full_tariff_obr_low_{margin}",

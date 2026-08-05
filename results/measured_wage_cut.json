@@ -16,6 +16,7 @@
   "cushioning_rate_mean": 0.4407636143849647,
   "cushioning_rate_sd": 2.2316322462394835e-16,
   "cushioning_rate_mc_se": 2.2316322462394835e-17,
+  "cushioning_valid_draws": 100,
   "draws": [
     {
       "scenario": "measured_wage_cut",
@@ -34,6 +35,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -86,6 +90,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -138,6 +145,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -190,6 +200,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -242,6 +255,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -294,6 +310,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -346,6 +365,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -398,6 +420,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -450,6 +475,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -502,6 +530,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -554,6 +585,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -606,6 +640,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -658,6 +695,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -710,6 +750,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -762,6 +805,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -814,6 +860,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -866,6 +915,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -918,6 +970,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -970,6 +1025,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -1022,6 +1080,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -1074,6 +1135,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -1126,6 +1190,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -1178,6 +1245,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -1230,6 +1300,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -1282,6 +1355,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -1334,6 +1410,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -1386,6 +1465,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -1438,6 +1520,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -1490,6 +1575,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -1542,6 +1630,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -1594,6 +1685,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -1646,6 +1740,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -1698,6 +1795,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -1750,6 +1850,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -1802,6 +1905,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -1854,6 +1960,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -1906,6 +2015,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -1958,6 +2070,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -2010,6 +2125,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -2062,6 +2180,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -2114,6 +2235,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -2166,6 +2290,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -2218,6 +2345,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -2270,6 +2400,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -2322,6 +2455,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -2374,6 +2510,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -2426,6 +2565,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -2478,6 +2620,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -2530,6 +2675,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -2582,6 +2730,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -2634,6 +2785,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -2686,6 +2840,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -2738,6 +2895,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -2790,6 +2950,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -2842,6 +3005,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -2894,6 +3060,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -2946,6 +3115,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -2998,6 +3170,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -3050,6 +3225,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -3102,6 +3280,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -3154,6 +3335,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -3206,6 +3390,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -3258,6 +3445,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -3310,6 +3500,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -3362,6 +3555,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -3414,6 +3610,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -3466,6 +3665,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -3518,6 +3720,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -3570,6 +3775,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -3622,6 +3830,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -3674,6 +3885,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -3726,6 +3940,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -3778,6 +3995,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -3830,6 +4050,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -3882,6 +4105,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -3934,6 +4160,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -3986,6 +4215,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -4038,6 +4270,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -4090,6 +4325,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -4142,6 +4380,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -4194,6 +4435,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -4246,6 +4490,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -4298,6 +4545,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -4350,6 +4600,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -4402,6 +4655,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -4454,6 +4710,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -4506,6 +4765,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -4558,6 +4820,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -4610,6 +4875,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -4662,6 +4930,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -4714,6 +4985,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -4766,6 +5040,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -4818,6 +5095,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -4870,6 +5150,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -4922,6 +5205,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -4974,6 +5260,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -5026,6 +5315,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -5078,6 +5370,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -5130,6 +5425,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,
@@ -5182,6 +5480,9 @@
       "gross_earnings_loss": 946647645.9999621,
       "net_disposable_loss": 529399808.0,
       "cushioning_rate": 0.4407636143849649,
+      "affected_records": 565,
+      "effective_loss_records": 125.75856498266083,
+      "max_record_loss_share": 0.037681562778196794,
       "decile_income_change": {
         "1": -0.7618638596575813,
         "2": -0.6546502730094721,

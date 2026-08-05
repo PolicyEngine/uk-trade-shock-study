@@ -70,10 +70,13 @@ Two tariff scenarios bracket the policy. \emph{Full tariffs}: the April 2025 sch
 \subsection{Adjustment-margin families}\label{sec:method-margins}
 
 The derived $s_j$ is realised on Family Resources Survey 2024--25 employees
-in exposed divisions. The submission design pre-specifies one primary
-contrast: statutory cushioning under displacement versus proportional wage
-cuts, conditional on a common expected sector wage-bill loss. Inactivity,
-reallocation, mixed margins and the EPD schedule are secondary sensitivities.
+in exposed divisions. The submission design treats the mixed adjustment
+surface as the conceptual centre: statutory cushioning is evaluated for a
+common expected sector wage-bill loss while the share delivered through
+temporary non-employment, survivor earnings reductions, and re-employment is
+varied. The pure displacement and proportional wage-cut cases are transparent
+bounds on that surface. Inactivity, literal sectoral reallocation and the EPD
+schedule are complementary sensitivities, not alternative causal estimates.
 Wage cuts remove $\sum_j s_j B_j$ deterministically; displacement removes
 that amount in expectation under the risk model and is numerically integrated
 using the balanced design below.
@@ -103,11 +106,28 @@ percentage point (Section~\ref{sec:results-cushioning}).
 
 \paragraph{Reallocation into services (ADH/\citealp{autor2014}).} The same displacement draw on the same seed---so the two families are paired worker-for-worker---but the drawn workers are re-employed rather than left out of work. Their \texttt{sic\_industry\_division} is reassigned to one of four services destinations (SIC 47 retail, 86 human health, 49 land transport, 56 food and beverage service) in proportion to those divisions' FRS employee-weight shares (29.5, 45.8, 9.2 and 15.5 per cent), and their annual earnings are cut by a penalty calibrated on the FRS itself: weighted mean annual employee earnings of \pounds 48{,}272 over 2{,}047 hours in the exposed goods divisions against \pounds 34{,}594 over 1{,}701 hours in the four destinations, a \textbf{28.3 per cent annual-earnings penalty} that embeds the hours fall. Two variants are reported: an hours- and age-controlled \textbf{low-penalty} case of 14.0 per cent (the pure hourly-wage gap), and a \textbf{three-month lag} in which workers are out of work for a quarter of the year before the services job starts, scaling annual earnings and hours by a further $1-3/12$. ASHE 2024 full-time medians bracket the hours-controlled figure at 10--20 per cent; the FRS all-employee penalty is larger because it also captures the shift into part-time work. Because this family removes only the penalty on the movers rather than the full earnings-equivalent aggregate, its pound figures are comparable with the displacement family (identical worker sets, paired draws) but \emph{not} with the wage-cut family; its cushioning \emph{rate} is comparable with both. The online supplement reports the results and mechanics.
 
-\paragraph{Mixed adjustment and factorial scenario testing.} Let $\lambda\in[0,1]$ denote the share of the sector shock delivered through displacement. A worker with sector shock $s$ is displaced with probability $p=\lambda s$. Conditional on surviving, the proportional wage cut is
+\paragraph{Common-loss transition path.} The redesigned transition margin
+combines a transition-equivalent annual earnings/hours penalty, service-sector
+re-employment and survivor earnings reductions while preserving the common-loss
+normalization. Let $s$ be
+the sector shock, $\lambda$ the share of the declared loss assigned to
+transition workers, and $d=1-(1-r)(1-\ell/12)$ the annual earnings loss of a
+transition worker, where $r$ is the re-employment penalty and $\ell$ the lag in
+months. Transition probability is $p=\lambda s/d$; survivors take a cut
+$c=(1-\lambda)s/(1-p)$. Hence $pd+(1-p)c=s$ in expectation. The organizing
+calibration uses $\lambda=0.70$, $r=0.283$ and $\ell=3$. In the annual
+simulation, the lag is represented by an earnings/hours factor: workers remain
+employed for PolicyEngine purposes, so no within-year unemployment or JSA/UC
+spell is generated. This is an accounting normalization for comparing paths,
+not an estimate of the probability of re-employment or the UK tariff response.
+The 14 per cent hours/age-controlled
+penalty and zero-, three- and six-month lags are sensitivity dimensions.
+
+\paragraph{Mixed adjustment and factorial scenario testing.} Let $\lambda\in[0,1]$ denote the share of the sector shock delivered through temporary non-employment rather than an incumbent earnings reduction. A worker with sector shock $s$ is displaced with probability $p=\lambda s$. Conditional on surviving, the proportional wage cut is
 \[
 c=\frac{s-p}{1-p},
 \]
-so expected earnings loss is exactly $p+(1-p)c=s$ for every worker. The endpoints reproduce pure wage cuts ($\lambda=0$) and pure displacement ($\lambda=1$); because the mixed family draws displacement independently, the $\lambda=1$ endpoint reproduces the Bernoulli comparator rather than the balanced primary estimator. The exploratory grid crosses $\lambda\in\{0,.25,.5,.75,1\}$ with export-demand calibrations $\varepsilon\in\{0.4,1,2,3\}$ on five common assignments per cell. This follows the companion UK AI study's factorial principle: vary shock magnitude separately from adjustment composition. It is scenario testing, not a probability distribution over future outcomes.
+so expected earnings loss is exactly $p+(1-p)c=s$ for every worker. The endpoints reproduce pure wage cuts ($\lambda=0$) and pure temporary displacement ($\lambda=1$); because the mixed family draws displacement independently, the $\lambda=1$ endpoint reproduces the Bernoulli comparator rather than the balanced primary estimator. A separate reallocation family moves displaced workers into observed service destinations, with either an immediate earnings penalty or a three-month non-employment lag. It is paired worker-for-worker with displacement but does not preserve the common aggregate loss unless its penalty is explicitly re-scaled, so its pound totals are reported as a transition sensitivity rather than combined with the mixed grid. The exploratory grid crosses $\lambda\in\{0,.25,.5,.75,1\}$ with export-demand calibrations $\varepsilon\in\{0.4,1,2,3\}$ on five common assignments per cell. This follows the companion UK AI study's factorial principle: vary shock magnitude separately from adjustment composition. It is scenario testing, not a probability distribution over future outcomes.
 
 \paragraph{The wage-cut margin as an upper bound, and a literature-disciplined mixed sensitivity.} The pure wage-cut family should be read against the rent-sharing evidence, because it embeds a survivor-wage response far above anything estimated. Delivering the entire sector wage-bill loss through proportional cuts to incumbent workers' wages imposes a unit wage response to the sector exposure index. \citet{garinsilverio2024} estimate an incumbent-wage elasticity of roughly 0.13--0.14 to firm-specific output shocks in Portuguese matched data; the rent-sharing survey of \citet{cardcardosoheining2018} places typical elasticities at 0.05--0.15; and \citet{hummels2014} find small within-job wage responses in Danish data alongside losses through displacement. The wage-cut family ($\lambda=0$) is therefore an \emph{upper-bound stress scenario for survivor-wage incidence}, retained because it prices the flexible-wage pole of the structural disagreement.
 

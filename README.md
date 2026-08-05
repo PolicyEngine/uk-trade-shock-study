@@ -126,9 +126,10 @@ for the implemented benchmark.
 
 ## Paper
 
-`paper/main.tex` is the compressed submission manuscript.
-`paper/supplement.tex` compiles the exploratory appendices as a separate
-online supplement. Both draw values only from validated generated files.
+`paper/main.tex` is the complete manuscript, including the data, mechanics,
+Monte Carlo, sensitivity, and secondary-results appendices. It is the only
+paper PDF produced by the build. All numerical values draw from validated
+generated files.
 The paper reports a static, partial-equilibrium, first-round fiscal-incidence
 stress test conditional on imposed labour-income changes. It is not a causal
 estimate of the tariffs' production, productivity, employment, macroeconomic

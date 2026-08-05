@@ -1,4 +1,4 @@
-.PHONY: bootstrap test manifest check public-hmrc public-bres trade-event-study lfs-imputation lfs-qrf lfs-benchmarks inputs results submission-results figures paper-values uncertainty-design paper supplement reproduce
+.PHONY: bootstrap test manifest check public-hmrc public-bres trade-event-study lfs-imputation lfs-qrf lfs-benchmarks inputs results submission-results figures paper-values uncertainty-design paper reproduce
 
 PYTHON := .venv/bin/python
 
@@ -76,7 +76,4 @@ paper-values:
 paper: paper-values
 	cd paper && latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
 
-supplement: paper-values
-	cd paper && latexmk -pdf -interaction=nonstopmode -halt-on-error supplement.tex
-
-reproduce: check inputs results submission-results figures paper supplement
+reproduce: check inputs results submission-results figures paper

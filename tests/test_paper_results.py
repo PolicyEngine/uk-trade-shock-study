@@ -29,11 +29,11 @@ def test_manuscript_loads_generated_results() -> None:
     assert r"\input{generated_submission}" in main
 
 
-def test_exploratory_appendix_is_a_separate_supplement() -> None:
+def test_appendix_is_integrated_into_main_manuscript() -> None:
     main = Path("paper/main.tex").read_text()
-    supplement = Path("paper/supplement.tex").read_text()
-    assert r"\input{sections/appendix}" not in main
-    assert r"\input{sections/appendix}" in supplement
+    assert r"\input{sections/appendix}" in main
+    assert not Path("paper/supplement.tex").exists()
+    assert not Path("paper/supplement.pdf").exists()
 
 
 def test_abstract_is_at_most_150_words() -> None:

@@ -1,0 +1,70 @@
+{
+  "design": {
+    "scenarios": {
+      "displacement": "submission_unit_12m_displacement",
+      "wage_cut": "submission_unit_12m_wage_cut"
+    },
+    "n_draws": 25,
+    "n_boot": 999,
+    "bootstrap_seed": 20260805,
+    "n_households": 16288,
+    "resampling_unit": "household",
+    "notes": "Household bootstrap of the FRS sample; PSU/strata design variables are unavailable in the research file, so the interval approximates design-based sampling variance. Assignment dispersion is reported separately in the primary table; replicate statistics average over common assignment draws before resampling variation is measured."
+  },
+  "estimates": {
+    "displacement_cushioning": {
+      "point": 0.33268167254775155,
+      "bootstrap_se": 0.01170627642327889,
+      "ci_2_5": 0.30003198640202455,
+      "ci_97_5": 0.3457607142778686
+    },
+    "displacement_valid_draws": {
+      "point": 25.0,
+      "bootstrap_se": 0.06318202212515545,
+      "ci_2_5": 25.0,
+      "ci_97_5": 25.0
+    },
+    "displacement_exchequer": {
+      "point": 370294432.4999577,
+      "bootstrap_se": 43301851.45877814,
+      "ci_2_5": 290141971.0250458,
+      "ci_97_5": 466007592.2247052
+    },
+    "displacement_gross": {
+      "point": 885290817.7456354,
+      "bootstrap_se": 92483359.33133206,
+      "ci_2_5": 715345714.6462828,
+      "ci_97_5": 1083075801.6313941
+    },
+    "wage_cut_cushioning": {
+      "point": 0.43937746036824044,
+      "bootstrap_se": 0.008945952083486555,
+      "ci_2_5": 0.42104224116166983,
+      "ci_97_5": 0.45584951736101376
+    },
+    "wage_cut_valid_draws": {
+      "point": 25.0,
+      "bootstrap_se": 0.0,
+      "ci_2_5": 25.0,
+      "ci_97_5": 25.0
+    },
+    "wage_cut_exchequer": {
+      "point": 484229785.2152942,
+      "bootstrap_se": 37471588.81898845,
+      "ci_2_5": 416940322.4602355,
+      "ci_97_5": 557610749.9996741
+    },
+    "wage_cut_gross": {
+      "point": 885749325.2499481,
+      "bootstrap_se": 60673778.99836112,
+      "ci_2_5": 773931494.2921354,
+      "ci_97_5": 1006278327.1614248
+    },
+    "cushioning_difference": {
+      "point": 0.10669578782048889,
+      "bootstrap_se": 0.012409352126839,
+      "ci_2_5": 0.09056723423878754,
+      "ci_97_5": 0.13906709111996263
+    }
+  }
+}

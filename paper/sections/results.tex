@@ -118,8 +118,16 @@ loss remains common. It yields $\FullTransitionCushion\pm\FullTransitionCushionS
 per cent cushioning and an Exchequer cost of \pounds
 $\FullTransitionExchequer\pm\FullTransitionExchequerSD$ million. The 70/30
 share, lag and penalty are organising assumptions bounded by external evidence,
-not estimated tariff responses. The response surface and lower 14 per cent
-penalty sensitivity are reported in the supplement.
+not estimated tariff responses. The response surface is shown in
+Figure~\ref{fig:scenario-testing}; the lower 14 per cent penalty sensitivity is
+reported in the additional diagnostics section.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.98\textwidth]{../results/figures/scenario_testing.png}
+\caption{Factorial scenario surface: export-demand calibration by the share of expected sector loss delivered through displacement rather than survivor wage cuts. Cell values are means over five common assignments.}
+\label{fig:scenario-testing}
+\end{figure}
 
 \subsection{External magnitude and outturn checks}\label{sec:results-benchmarks}
 
@@ -145,6 +153,13 @@ tariff-intensity ordering fails. Section~\ref{sec:additional-results} displays t
 gap. The panel supports a post-policy decline concentrated in
 large US export products, but it cannot attribute that decline to tariffs or
 validate the tariff-rate mapping.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.94\textwidth]{../results/figures/hmrc_destination_event_study.png}
+\caption{Monthly capped-value-weighted gap between UK HS4 exports to the United States and mean exports of the same products to Canada, Japan and Australia, normalised to January--March 2025.}
+\label{fig:hmrc-destination}
+\end{figure}
 
 Why this failure does not undermine the paper's estimand deserves a direct
 statement rather than an implication. The falsification tests the
@@ -261,8 +276,15 @@ $\FullDisplacedPoverty\pm\FullDisplacedPovertySD$ percentage points. Under
 wage cuts it is unchanged at displayed precision. These national changes are
 small relative to omitted uncertainty and are not headline estimates. They
 can coexist with large selected-household losses because exposure is limited
-and concentrated above the poverty line. Decile profiles and assignment
-dispersion are reported in Section~\ref{sec:additional-results}.
+and concentrated above the poverty line. Figure~\ref{fig:decile-results} shows
+the decile profile.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.85\textwidth]{../results/figures/decile_by_margin_full_tariff.png}
+\caption{Per-capita disposable-income change by baseline income decile in the full-schedule scenarios. Shading denotes assignment dispersion.}
+\label{fig:decile-results}
+\end{figure}
 
 \subsection{Fiscal incidence}\label{sec:results-fiscal}
 
@@ -271,7 +293,15 @@ is the aggregate simulated government-balance change and is broader than the
 household cushioning identity. Employer National Insurance contributions and
 the tax consequences of pension and salary-sacrifice changes respond to the
 shock but sit outside employee disposable income. Section~\ref{sec:additional-results}
-provides the formal reconciliation and draw distributions.
+provides the formal reconciliation and draw distributions. Figure~\ref{fig:exchequer-results}
+shows the assignment distribution.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.85\textwidth]{../results/figures/exchequer_cost_draws.png}
+\caption{Annual Exchequer cost across regenerated assignments.}
+\label{fig:exchequer-results}
+\end{figure}
 
 \subsection{EPD counterfactual}\label{sec:results-epd}
 
@@ -279,5 +309,11 @@ On paired seeds, full minus EPD displacement differs by
 $\EPDWorkerDifferenceThousands\pm\EPDWorkerDifferenceSDThousands$ thousand
 workers and \pounds $\EPDExchequerDifference\pm\EPDExchequerDifferenceSD$
 million of Exchequer cost. These are secondary scenario contrasts, not causal
-deal estimates; detailed gross-loss, poverty and graphical results are in the
-Section~\ref{sec:additional-results}.
+deal estimates. Figure~\ref{fig:epd-results} summarises the paired comparison.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.85\textwidth]{../results/figures/epd_counterfactual.png}
+\caption{Full-schedule and EPD scenario comparison. Error bars are assignment standard deviations.}
+\label{fig:epd-results}
+\end{figure}

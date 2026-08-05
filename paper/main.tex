@@ -23,42 +23,45 @@
 
 \title{\bfseries Labour-Market Adjustment and Fiscal Incidence of Trade Exposure in the UK\thanks{\textbf{Acknowledgements:} I thank Max Ghenis and Seyed Mahdi Hosseini for valuable comments and helpful discussions.}\\[0.7cm]}
 \author{Vahid Ahmadi\thanks{Research Associate at PolicyEngine. Email: \href{mailto:vahid@policyengine.org}{vahid@policyengine.org}.}}
-\date{\small \ifcase\month\or January\or February\or March\or April\or May\or June\or July\or August\or September\or October\or November\or December\fi\ \the\year}
+\date{\small August 2026}
 
 \input{generated_results}
 \input{generated_lfs_benchmarks}
 \input{generated_trade_benchmarks}
 \input{generated_lfs_selection}
 \input{generated_submission}
+\input{referee_macros}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-\noindent I study how the UK tax--benefit system distributes the fiscal
-consequences of a trade-related earnings shock across alternative labour-market
-adjustments.
-Using the 2024--25 Family Resources Survey and PolicyEngine UK, I hold
-sector-specific earnings losses calibrated from the 2025 US tariff schedule
-fixed while varying their incidence across incumbent
-wage reductions, displacement, transition-equivalent re-employment penalties,
-and mixed paths. I quantify disposable income, poverty, inequality, and
-the Exchequer balance by tax and benefit channel. In the organizing
-full-schedule transition path, the annual
-earnings loss is \pounds\FullTransitionGross\,million; the tax--benefit system
-absorbs \FullTransitionCushion\ per cent, implying an Exchequer cost of
-\pounds\FullTransitionExchequer\,million. The polar wage-cut and displacement
-specifications provide bounds; sensitivity analysis varies adjustment shares,
-duration-equivalent penalties, worker selection, and benefit take-up. Fiscal
-incidence depends substantially on the labour-market margin through which an
-aggregate earnings loss is realised.
+\noindent For the same aggregate earnings loss, the UK tax--benefit system
+cushions an intensive-margin adjustment far more than an extensive-margin
+one. Using the 2024--25 Family Resources Survey and PolicyEngine UK, I hold a
+common sector-specific earnings loss of roughly \pounds\FullWageGross\,million
+a year, calibrated from the 2025 US tariff schedule, fixed while varying its
+incidence across incumbent wage reductions, displacement, and mixed
+transition paths. Proportional wage cuts are cushioned at
+\FullWageCushion\ per cent, displacement at
+$\FullDisplacedCushion \pm \FullDisplacedCushionSD$ per cent: a gap of
+\PrimaryCushionDifference\ percentage points (household-bootstrap 95 per
+cent interval \BootstrapCushionDifferenceCILower--%
+\BootstrapCushionDifferenceCIUpper\ points), because in-work losses are
+relieved automatically at marginal tax rates while job loss relies on gated,
+means-tested, imperfectly claimed Universal Credit. An illustrative interior
+transition path yields \FullTransitionCushion\ per cent cushioning and an
+Exchequer cost of \pounds\FullTransitionExchequer\,million. Sensitivity
+analysis quantifies the pension-saving component of the gap and varies
+adjustment shares, spell-duration equivalents, worker selection, and benefit
+take-up.
 \end{abstract}
 
 \medskip
 \noindent\textbf{Keywords:} tariffs, trade shocks, microsimulation, poverty, inequality, public finances
 
 \smallskip
-\noindent\textbf{JEL codes:} F13, F16, H23, I38, D31
+\noindent\textbf{JEL codes:} F13, F16, H23, H24, I38, J65
 
 \newpage
 \input{sections/intro}

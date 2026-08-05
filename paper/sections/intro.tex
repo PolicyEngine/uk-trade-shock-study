@@ -1,69 +1,92 @@
 \section{Introduction}\label{sec:intro}
 
 Who bears a trade shock when the same aggregate labour-income loss can be
-distributed through different labour-market margins? This paper studies that
+distributed through different labour-market margins? This paper answers that
 question for the United Kingdom. I hold a trade-exposure-calibrated loss in
-employee earnings fixed and compare incumbent wage reductions, temporary
-non-employment, re-employment with an earnings penalty, and mixtures of these
-paths. The estimand is conditional: it is the statutory tax--benefit and
+employee earnings---roughly \pounds\FullWageGross\,million a year, built from
+the 2025 US tariff schedule---fixed, and compare its fiscal and distributional
+consequences when it arrives as incumbent wage reductions, as displacement,
+or as mixtures of the two with re-employment penalties. The central finding
+is a large statutory asymmetry. Defining the cushioning rate as
+$1-\Delta Y/\Delta E$, where $\Delta E$ is the gross employee-earnings loss
+and $\Delta Y$ the household disposable-income loss, proportional wage cuts
+are cushioned at \FullWageCushion\ per cent while displacement is cushioned
+at $\FullDisplacedCushion \pm \FullDisplacedCushionSD$ per cent---a gap of
+\PrimaryCushionDifference\ percentage points, with a household-bootstrap 95
+per cent interval of \BootstrapCushionDifferenceCILower\ to
+\BootstrapCushionDifferenceCIUpper\ points that excludes zero. The mechanism
+is institutional: an in-work earnings reduction is offset automatically at
+marginal income-tax and National Insurance rates, whereas whole-job loss is
+relieved nearer average rates and depends on Universal Credit, which is
+gated by means tests, capital rules, and claiming behaviour. The gap is not
+an artefact of the HBAI treatment of pension saving: recomputed under a
+pension-gross income concept, both margins' cushioning falls by roughly four
+percentage points but the wage-minus-displacement contrast is essentially
+unchanged (Section~\ref{sec:results-cushioning}).
+
+The comparison matters because the UK tax--benefit system is nonlinear. For
+an equal aggregate loss, a broad reduction in earnings leaves most households
+in work and inside the tax schedule, whereas a concentrated loss moves
+households across benefit-eligibility thresholds. Fiscal incidence therefore
+depends on who loses earnings, whether the loss is temporary, and whether
+employment resumes---and a single wage-cut or displacement scenario should
+not be read as a forecast of realised trade adjustment. The two poles also
+price a structural disagreement: flexible-wage models turn a tariff primitive
+into a wage shock \citep{ignatenko2025}, while downward-nominal-rigidity
+models turn the same primitive into a job shock \citep{rodriguezclare2025}.
+Rather than endogenising the margin, I hold the aggregate loss fixed and
+report what each pole implies for households and the Exchequer.
+
+The epistemic status of every input is stated once, here, and in the
+design table of Section~\ref{sec:method-primitives}, rather than repeated
+throughout. The estimand is conditional: the statutory tax--benefit and
 distributional response to a specified earnings-loss path, not a causal
-estimate of the effect of a particular tariff episode.
+estimate of the 2025 tariff episode. The 2025 US tariff schedule supplies
+sector weights and shock magnitudes through a transparent accounting bridge
+(tariff rate $\times$ US-export intensity $\times$ a demand calibration
+$\times$ a wage-bill-incidence assumption); the bridge deliberately omits
+prices, quantities, imported inputs, productivity, profits, and firm entry.
+Reported $\pm$ values are assignment dispersion from the Monte Carlo
+allocation of displacement, not standard errors; survey-sampling uncertainty
+is scored separately by a household bootstrap. Mixed-path shares are
+disciplined by external evidence but not estimated.
 
-This normalization is useful because the UK tax--benefit system is nonlinear.
-For an equal aggregate loss, a broad reduction in earnings can leave most
-households in work and within the tax schedule, whereas a concentrated loss
-can move households across benefit eligibility thresholds. The fiscal
-incidence therefore depends on who loses earnings, whether the loss is
-temporary, and whether employment resumes. The comparison is also a warning
-against interpreting a single wage-cut or displacement scenario as a forecast
-of realised trade adjustment.
+One negative result should be on the table from the outset. A monthly HMRC
+product--destination panel confirms a post-policy decline in US-bound
+exports, but at sector rank the calibration fails its own falsification
+test: the rank correlation between predicted and realised sector export
+falls among the ten largest exposed divisions is zero
+(Section~\ref{sec:results-benchmarks}). This failure bounds the paper's
+claims---the sector calibration must not be read as measured tariff
+incidence---but it does not touch the cushioning comparison, which
+conditions on a declared loss rather than on the bridge. The
+leave-one-division-out audit across all \LeaveSectorCount\ exposed divisions
+shows the wage-minus-displacement contrast surviving every rerun
+(range \LeaveSectorCushionDifferenceMin--%
+\LeaveSectorCushionDifferenceMax\ points): the calibration determines
+\emph{who} is shocked, not the statutory asymmetry between intensive and
+extensive relief.
 
-My design follows the trade-adjustment and automatic-stabiliser literatures.
-The empirical literature documents persistent non-employment, lower earnings
-after re-employment, sector switching, and household responses to import
-competition. Automatic-stabiliser studies then evaluate how taxes and
-transfers absorb income shocks conditional on these labour-market outcomes.
-I combine these insights in a transparent scenario surface: pure wage-cut
-and pure displacement cases are reported as bounds, while mixed paths vary the
-shares assigned to temporary non-employment, survivor earnings reductions,
-and post-displacement re-employment penalties. The mixed shares are
-disciplined by external evidence but are not estimated from the available
-data.
-
-The 2025 US tariff schedule supplies sector weights and plausible shock
-magnitudes. I combine tariff rates with US export exposure by SIC division
-and an export-demand parameter to construct a calibration. This first stage is
-deliberately not interpreted as identified tariff transmission: a complete
-trade model would also include quantities, prices, imported inputs, domestic
-demand, productivity, profits, and firm entry and exit. The HMRC destination
-panel and longitudinal-LFS exercises are therefore validation and calibration
-diagnostics, not causal evidence for the main fiscal-incidence estimand.
-
-The second stage uses the 2024--25 Family Resources Survey and PolicyEngine UK
-to compute taxes, National Insurance, benefits, household disposable income,
-poverty, inequality, and Exchequer effects. I report a common aggregate loss
-under alternative adjustment paths, decompose the result by tax and benefit
-channel, and show sensitivity to duration, worker selection, benefit take-up,
-and re-employment. Pension contributions are separated from current-income
-insurance because lower saving can mechanically raise measured disposable
-income while reducing future resources.
-
-At the full-schedule transition calibration, the common annual earnings loss is
-\pounds\FullTransitionGross\,million, cushioning is
-\FullTransitionCushion\ per cent, and the Exchequer cost is
-\pounds\FullTransitionExchequer\,million. The polar wage-cut and displacement
-cases remain useful bounds. These are statutory comparisons conditional on the
-common-loss normalization, not estimates of the tariff's household effect.
-The paper's central object is the response surface around the bounds, making
-explicit how fiscal consequences change with temporary non-employment,
-re-employment and incumbent earnings adjustment.
+The second stage uses the 2024--25 Family Resources Survey and PolicyEngine
+UK to compute taxes, National Insurance, benefits, household disposable
+income, poverty, inequality, and Exchequer effects. I report a common
+aggregate loss under alternative adjustment paths, decompose the result by
+tax and benefit channel, and show sensitivity to spell duration, worker
+selection, benefit take-up, and re-employment. Between the polar bounds, an
+illustrative interior transition path---70 per cent of the loss borne by
+workers who re-enter services jobs at an FRS-calibrated earnings penalty
+after a three-month lag, the rest by survivor wage cuts---yields
+\FullTransitionCushion\ per cent cushioning and an Exchequer cost of
+\pounds\FullTransitionExchequer\,million. The response surface around the
+bounds, not any single interior point, is the paper's central object.
 
 The paper makes three contributions. First, it provides a reproducible UK
 microsimulation framework for mapping trade-exposure-calibrated earnings
 losses into fiscal and distributional outcomes. Second, it shows why the
 incidence margin matters even when aggregate lost earnings are identical.
-Third, it quantifies which statutory channels drive the differences and which
-assumptions---timing, take-up, pensions, and worker selection---are most
-important for policy conclusions. The remainder of the paper describes the
-evidence and scenario design, presents the polar bounds and mixed paths,
-reports policy counterfactuals, and discusses limitations and reproducibility.
+Third, it quantifies which statutory channels drive the differences and
+which assumptions---timing, take-up, pensions, and worker selection---are
+most important for policy conclusions. The remainder of the paper describes
+the evidence and scenario design, presents the polar bounds and mixed paths,
+reports policy counterfactuals, and discusses limitations and
+reproducibility.

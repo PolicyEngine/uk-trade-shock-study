@@ -790,7 +790,7 @@ def affected_mask(shocked_table) -> np.ndarray:
 
 
 def _baseline_flag_values_and_rate(sim, period: int) -> tuple[np.ndarray, float]:
-    """Preserve benefit-unit weights while extracting flags for simulation input."""
+    """Return the boolean claim flags and their weighted benefit-unit rate."""
     weighted_flags = sim.calculate("would_claim_uc", period=period, map_to="benunit")
     return np.asarray(weighted_flags.values, dtype=bool), float(weighted_flags.mean())
 

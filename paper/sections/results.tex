@@ -267,16 +267,33 @@ The realised displacement output is also consistent with the allocation design b
 
 \subsection{Mechanism}\label{sec:results-mechanism}
 
-The regenerated decomposition and gate audit are also five-assignment diagnostics. Income-tax relief is larger on the wage-cut margin than on displacement; UC is more important after displacement. The plain FRS input contains no usable household-capital measure, so the model cannot establish the empirical importance of UC's capital test. New-style JSA is not activated by the imposed transition. These omissions make the gate audit a description of the implemented model, not the full UK out-of-work system.
+The regenerated decomposition and gate audit are five-assignment diagnostics,
+but they clarify why the two margins produce different fiscal outcomes. A wage
+cut keeps the worker inside the income-tax and National Insurance schedule, so
+relief is concentrated in lower tax and contribution payments. Displacement
+removes earnings altogether and shifts the response towards Universal Credit and
+other means-tested support. The latter channel is nonlinear: entitlement
+depends on household composition, existing income, rent, capital, and claiming
+behaviour rather than on the individual earnings loss alone. The plain FRS
+input contains no usable household-capital measure, so the model cannot
+establish the empirical importance of UC's capital test. New-style JSA is not
+activated by the imposed transition. The gate audit should therefore be read
+as a decomposition of the implemented rules, not as a complete account of the
+UK out-of-work system.
 
 \subsection{Distributional incidence}\label{sec:results-margins}
 
 Under full displacement, relative BHC poverty rises by
 $\FullDisplacedPoverty\pm\FullDisplacedPovertySD$ percentage points. Under
-wage cuts it is unchanged at displayed precision. These national changes are
-small relative to omitted uncertainty and are not headline estimates. They
-can coexist with large selected-household losses because exposure is limited
-and concentrated above the poverty line. Figure~\ref{fig:decile-results} shows
+wage cuts it is unchanged at displayed precision. The small national change
+does not imply that exposed households are protected: the affected population
+is limited, and many exposed workers begin above the poverty threshold. The
+decile profile shows a broad reduction in disposable income, with the largest
+losses concentrated towards the upper end of the distribution where exposed
+earnings are concentrated. This pattern is consistent with a progressive
+tax--benefit response that cushions lower-income households more strongly than
+the gross earnings measure. These figures are distributional diagnostics rather
+than population-wide poverty forecasts. Figure~\ref{fig:decile-results} shows
 the decile profile.
 
 \begin{figure}[htbp]
@@ -286,14 +303,30 @@ the decile profile.
 \label{fig:decile-results}
 \end{figure}
 
+The constituency illustration is deliberately descriptive. It uses imputed
+industry assignments rather than observed local industry structure and should
+not be read as a ranking of local tariff exposure.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.95\textwidth]{../results/figures/map_constituency_income_change.png}
+\caption{Illustrative constituency-level annual per-capita disposable-income change, averaged over 20 paired assignment draws. The map uses imputed SIC and no observed constituency industry mix.}
+\label{fig:constituency-map}
+\end{figure}
+
 \subsection{Fiscal incidence}\label{sec:results-fiscal}
 
 Annual Exchequer costs are reported in Table~\ref{tab:cushioning}. The measure
 is the aggregate simulated government-balance change and is broader than the
-household cushioning identity. Employer National Insurance contributions and
-the tax consequences of pension and salary-sacrifice changes respond to the
-shock but sit outside employee disposable income. Appendix~\ref{app:support}
-provides the formal reconciliation and draw distributions. Figure~\ref{fig:exchequer-results}
+household cushioning identity. The cost combines lower income-tax and National
+Insurance receipts with additional benefit payments. Employer National
+Insurance contributions and the tax consequences of pension and
+salary-sacrifice changes respond to the shock but sit outside employee
+disposable income, which explains why the Exchequer cost does not equal the
+household-side cushioning amount. Displacement also produces more assignment
+dispersion because a small number of high-weight records can determine whether
+earnings are lost entirely. Appendix~\ref{app:support} provides the formal
+reconciliation and draw distributions. Figure~\ref{fig:exchequer-results}
 shows the assignment distribution.
 
 \begin{figure}[htbp]
@@ -308,8 +341,13 @@ shows the assignment distribution.
 On paired seeds, full minus EPD displacement differs by
 $\EPDWorkerDifferenceThousands\pm\EPDWorkerDifferenceSDThousands$ thousand
 workers and \pounds $\EPDExchequerDifference\pm\EPDExchequerDifferenceSD$
-million of Exchequer cost. These are secondary scenario contrasts, not causal
-deal estimates. Figure~\ref{fig:epd-results} summarises the paired comparison.
+million of Exchequer cost. The contrast is driven primarily by the lower auto
+tariff and the exemption of pharmaceuticals in the EPD schedule. It should be
+interpreted as the fiscal value of changing the declared sector shock while
+holding the household model and assignment draws fixed. It does not include
+quota allocation, above-quota trade, price responses, NHS pricing concessions,
+or other general-equilibrium effects. Figure~\ref{fig:epd-results} summarises
+the paired comparison.
 
 \begin{figure}[htbp]
 \centering

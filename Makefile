@@ -55,6 +55,7 @@ results:
 submission-results:
 	$(PYTHON) analysis/run_submission_scenarios.py --n-draws 50
 	$(PYTHON) analysis/run_leave_one_sector_out.py --n-draws 20
+	$(PYTHON) analysis/bootstrap_uncertainty.py
 	$(PYTHON) analysis/write_submission_results.py --expected-draws 50
 
 figures:

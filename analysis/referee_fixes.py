@@ -10,7 +10,8 @@ A. Pension-contribution channel. The HBAI disposable-income concept treats
    and displacement cushioning rates under a pension-gross income concept
    (disposable income plus employee pension and salary-sacrifice
    contributions), so the pure statutory component of the wage-minus-
-   displacement contrast can be reported.
+   displacement contrast can be reported. Runs on the primary submission
+   estimator (balanced assignment, unit 12-month stress, 50 paired draws).
 
 B. Take-up as a headline sensitivity. Full_tariff displacement at post-shock
    new-entitlement UC take-up 0.55/0.80/1.00 over 25 balanced-comparator
@@ -23,7 +24,7 @@ C. Monthly-versus-annual UC bounding. Parameter-based accounting for a
    monthly UC assessment and partial-year PAYE for 3-, 6- and 12-month spells.
 
 Writes results/referee_fixes.json.
-Usage: uv run python analysis/referee_fixes.py
+Usage: uv run python analysis/referee_fixes.py [--only pension takeup monthly]
 """
 
 from __future__ import annotations
@@ -35,7 +36,6 @@ import numpy as np
 
 from uk_trade_shock_study.runner import _baseline_and_persons
 from uk_trade_shock_study.shocks import (
-    PRESETS,
     TradeShockScenario,
     _baseline_flag_values_and_rate,
     apply_shocks,
@@ -46,7 +46,11 @@ PERIOD = 2026
 DATASET = Path("data/frs_2024_25.h5")
 RESULTS = Path("results")
 PENSION_VARS = ("employee_pension_contributions", "pension_contributions_via_salary_sacrifice")
-PENSION_SEEDS = 25
+#: Pension channel now runs on the primary submission estimator: balanced
+#: assignment at the unit 12-month stress, 50 paired draws — the same design
+#: behind every headline number (referee presentation point on estimator
+#: consistency).
+PENSION_SEEDS = 50
 TAKEUPS = (0.55, 0.80, 1.00)
 TAKEUP_SEEDS_DISPLACEMENT = 25
 TAKEUP_SEEDS_WAGE_CUT = 5
@@ -72,14 +76,33 @@ def pension_block(dataset, baseline, persons) -> dict:
     w = persons["weight"].to_numpy(float)
     base_hni = _hni_total(baseline)
     base_pen = _pension_total(baseline, w)
-    out = {}
-    for name, seeds in (
-        ("full_tariff_wage_cut", 1),
-        ("full_tariff_displacement", PENSION_SEEDS),
-    ):
+    scenarios = {
+        "full_tariff_wage_cut": (
+            TradeShockScenario(
+                "pension_unit_12m_wage_cut",
+                "full_tariff",
+                "wage_cut",
+                elasticity=1.0,
+                selection_method="balanced",
+            ),
+            1,
+        ),
+        "full_tariff_displacement": (
+            TradeShockScenario(
+                "pension_unit_12m_displacement",
+                "full_tariff",
+                "displacement",
+                elasticity=1.0,
+                selection_method="balanced",
+            ),
+            PENSION_SEEDS,
+        ),
+    }
+    out = {"n_seeds": PENSION_SEEDS, "selection_method": "balanced"}
+    for name, (scenario, seeds) in scenarios.items():
         rows = []
         for seed in range(seeds):
-            table = apply_shocks(persons, PRESETS[name], seed=seed)
+            table = apply_shocks(persons, scenario, seed=seed)
             sim = build_shocked_simulation(dataset, baseline, table, PERIOD)
             gross = float(
                 (
@@ -314,14 +337,34 @@ def monthly_uc_block() -> dict:
 
 
 def main() -> None:
-    dataset, baseline, persons = _baseline_and_persons(DATASET, None, PERIOD)
-    out = {
-        "monthly_uc_bounding": monthly_uc_block(),
-        "pension_channel": pension_block(dataset, baseline, persons),
-        "takeup_headline": takeup_block(dataset, baseline, persons),
-    }
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--only",
+        nargs="*",
+        choices=("monthly", "pension", "takeup"),
+        help=(
+            "recompute only the named blocks, merging into the existing "
+            "results/referee_fixes.json (all blocks when omitted)"
+        ),
+    )
+    args = parser.parse_args()
+    blocks = set(args.only or ("monthly", "pension", "takeup"))
+
+    artifact = RESULTS / "referee_fixes.json"
+    out = json.loads(artifact.read_text()) if args.only and artifact.exists() else {}
+    dataset = baseline = persons = None
+    if blocks & {"pension", "takeup"}:
+        dataset, baseline, persons = _baseline_and_persons(DATASET, None, PERIOD)
+    if "monthly" in blocks:
+        out["monthly_uc_bounding"] = monthly_uc_block()
+    if "pension" in blocks:
+        out["pension_channel"] = pension_block(dataset, baseline, persons)
+    if "takeup" in blocks:
+        out["takeup_headline"] = takeup_block(dataset, baseline, persons)
     RESULTS.mkdir(exist_ok=True)
-    (RESULTS / "referee_fixes.json").write_text(json.dumps(out, indent=2))
+    artifact.write_text(json.dumps(out, indent=2))
     print("[written] results/referee_fixes.json")
 
 

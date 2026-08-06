@@ -29,11 +29,29 @@ def test_manuscript_loads_generated_results() -> None:
     assert r"\input{generated_submission}" in main
 
 
-def test_appendix_is_integrated_into_main_manuscript() -> None:
+def test_core_appendix_stays_in_main_and_rest_is_supplemented() -> None:
+    """Referee major point 8: a short main paper plus an online supplement.
+
+    The main manuscript keeps only the core appendix (provenance, shock
+    mechanics, Monte Carlo conventions, duration scope, monthly-UC bounding);
+    exploratory and benchmark material lives in the standalone supplement.
+    """
     main = Path("paper/main.tex").read_text()
     assert r"\input{sections/appendix}" in main
-    assert not Path("paper/supplement.tex").exists()
-    assert not Path("paper/supplement.pdf").exists()
+    assert r"\input{generated_factorial}" in main
+    supplement = Path("paper/supplement.tex").read_text()
+    assert r"\input{sections/supplement_body}" in supplement
+    appendix = Path("paper/sections/appendix.tex").read_text()
+    body = Path("paper/sections/supplement_body.tex").read_text()
+    for moved in (
+        "HMRC destination-panel",
+        "Constituency machinery",
+        "Supply-chain sensitivity",
+        "Demographic diagnostic",
+        "Reallocation sensitivity",
+    ):
+        assert moved not in appendix
+        assert moved in body
 
 
 def test_abstract_is_at_most_150_words() -> None:

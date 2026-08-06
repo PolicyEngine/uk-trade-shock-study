@@ -12,9 +12,6 @@ UC claiming is redrawn after every margin for benefit units whose circumstances 
 \section{Monte Carlo and measures}\label{app:mc}
 
 Central direct and measured scenarios use \ProductionDraws\ assignments. Every displayed $\pm$ value is an assignment SD, not a standard error or confidence interval. The machine-readable artifacts additionally store numerical Monte Carlo standard error as assignment SD divided by $\sqrt{n}$; it measures precision of the simulated mean only. Survey-design, tariff-response and model-parameter uncertainty are not estimated. Five-assignment mechanism, demographic, poverty-gap, reallocation, duration and sensitivity-grid exercises, and the ten-assignment supply-chain exercise, are exploratory and are excluded from the headline evidence; the take-up grid is scored at the full comparator draw count and reported in the main text.
-The mixed-adjustment scenario surface likewise uses five common assignments
-per cell. Its machine-readable cells and draws are in
-\path{results/scenario_testing.json} and \path{results/scenario_testing.csv}.
 
 Reported relative BHC poverty changes hold the poverty line frozen at 60 per cent of the baseline equivalised median; absolute BHC poverty likewise uses 60 per cent of the baseline equivalised median as a fixed line. The cushioning rate is $1-\Delta Y/\Delta E$, where $\Delta E$ is gross employment-earnings loss and $\Delta Y$ is household disposable-income loss.
 
@@ -35,101 +32,6 @@ Anchor & Months & Margin & Gross loss & Exchequer & Cushioning & Poverty \\
 These rows are sensitivity evidence only, not population estimates.
 
 \paragraph{Reconciling cushioning and the Exchequer effect.} The Exchequer effect is the change in the aggregate simulated government balance, not the household-side transfer implied by the cushioning identity. The identity implies a household-side offset of $(1-\Delta Y/\Delta E)\times\Delta E=\Delta E-\Delta Y$: for the full-schedule wage cut, $0.439\times\pounds 886\text{m}\approx\pounds 389$ million, and for displacement $0.368\times\pounds 882\text{m}\approx\pounds 325$ million, against reported Exchequer costs of \pounds\FullWageExchequer\ million and \pounds\FullDisplacedExchequer\ million. The wedge is revenue lost outside employee disposable income: employer National Insurance contributions fall with the employee wage bill under every margin, and for displaced workers the zeroing of employee pension contributions and salary-sacrifice arrangements changes taxable pay relative to the gross-earnings accounting in $\Delta E$. The government balance also absorbs any other simulated fiscal flows that respond to the shock. Cushion $\times$ gross therefore understates the Exchequer cost by roughly \pounds 87--95 million in the central full-schedule scenarios, and the two statistics answer different questions: the cushioning rate measures household income protection per pound of employee earnings lost, while the Exchequer effect measures the total first-round cost to the public finances.
-
-\section{Elasticity and pass-through grid}\label{app:grid}
-
-The regenerated grid spans $\varepsilon\in\{0.4,1,2,3\}$ and $\pi\in\{0.5,0.75,1\}$. Because only five displacement assignments are used per cell, it is an exploratory scaling diagnostic. Equal products $\varepsilon\pi$ generate equal deterministic wage-cut shocks; Bernoulli displacement outcomes vary across assignments. The grid is not an uncertainty interval.
-
-\section{Factorial adjustment scenarios}\label{app:factorial}
-
-Figure~\ref{fig:scenario-testing} separates the aggregate export-demand
-calibration from the assumed composition of labour-market adjustment. Each
-cell uses the full tariff schedule and five common assignments. The wage-cut
-endpoint is stable: cushioning is 40.6--41.3 per cent over the four
-calibrations. Moving towards displacement generally lowers cushioning, but
-the small-shock cells are especially noisy because a few high-weight FRS
-records dominate five Bernoulli assignments. These cells are stress
-scenarios, not estimates or confidence regions. The qualitative result is
-that fiscal cost scales mainly with the imposed gross shock, while the
-adjustment mix changes the share absorbed by taxes and transfers.
-
-\section{Reallocation sensitivity}\label{app:reallocation}
-
-The reallocation exercise uses five paired assignments and is exploratory.
-Under the full schedule, the central 28.3 per cent penalty produces a mean
-gross loss of \pounds264 million, Exchequer cost of
-\pounds $149\pm131$ million, cushioning of $39.7\pm3.4$ per cent, and zero
-measured BHC-poverty change. With a three-month lag, gross loss rises to
-\pounds432 million and the Exchequer cost to
-\pounds $245\pm216$ million. The 14 per cent penalty gives gross loss of
-\pounds131 million and Exchequer cost of
-\pounds $75\pm64$ million. These pound levels are not commensurable with
-the economy-wide wage-cut scenario because only selected movers' penalty is
-removed.
-
-\section{Observed-outturn stress scenario}\label{app:measured}
-
-The descriptive May 2025--February 2026 export window falls 12.7 per cent
-against its two-year same-month baseline. This is not a causal tariff
-estimate: it includes prices, exchange rates, front-running, rerouting and
-other demand conditions.
-
-The downside displacement scenario affects \MeasuredDisplacedWorkers\ thousand
-weighted workers on average, is cushioned by
-$\MeasuredDisplacedCushion\pm\MeasuredDisplacedCushionSD$ per cent and costs
-the Exchequer
-\pounds $\MeasuredDisplacedExchequer\pm\MeasuredDisplacedExchequerSD$ million.
-The wage-cut scenario is cushioned by \MeasuredWageCushion\ per cent and costs
-\pounds\MeasuredWageExchequer\ million. This is an observed-outturn downside
-stress case, not a tariff-caused or preferred estimate; the validation
-artifact also reports signed net exposure before expanding divisions are
-clipped.
-
-\section{HMRC destination-panel diagnostic}\label{app:trade-panel}
-
-Across \HMRCPanelProducts\ HS4 products, the capped value-weighted
-specification estimates a \HMRCWeightedEffect\ per cent change in exports to
-the US relative to the same products sent to the three comparison
-destinations (95 per cent interval \HMRCWeightedCILower\ to
-\HMRCWeightedCIUpper\ per cent, $p=\HMRCWeightedPValue$). Results have
-similar signs against each destination, and May 2019--23 pseudo-policy
-estimates are individually insignificant. This is not robust evidence of a
-common product effect: equal product weights give \HMRCEqualEffect\ per cent
-($p=\HMRCEqualPValue$), and restricting the sample to 2023 onward gives
-\HMRCRecentEffect\ per cent ($p=\HMRCRecentPValue$). The estimated
-differential trend is itself borderline ($p=\HMRCTrendPValue$). Most
-importantly, broad steel and auto chapters fall \HMRCHighTariffEffect\ per
-cent ($p=\HMRCHighTariffPValue$), compared with \HMRCOtherEffect\ per cent
-for other products ($p=\HMRCOtherPValue$): the tariff-intensity ordering
-fails. Figure~\ref{fig:hmrc-destination} displays the monthly gap. The panel
-supports a post-policy decline concentrated in large US export products, but
-it cannot attribute that decline to tariffs or validate the tariff-rate
-mapping.
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=.94\textwidth]{../results/figures/hmrc_destination_event_study.png}
-\caption{Monthly capped-value-weighted gap between UK HS4 exports to the United States and mean exports of the same products to Canada, Japan and Australia, normalised to January--March 2025.}
-\label{fig:hmrc-destination}
-\end{figure}
-
-The machine-readable specification, clustered standard errors, individual
-destination checks, sample-start sensitivities, tariff-intensity groups and
-May 2019--23 pseudo-policy estimates are stored in the event-study JSON
-artifact; the plotted observations are stored in its companion monthly CSV.
-Pre-policy
-value weights are capped at the 99th percentile, giving an effective product
-count of \HMRCPanelEffectiveProducts\ despite \HMRCPanelProducts\ included
-HS4 products. Uncapped and equal-weight estimates disclose the remaining
-concentration sensitivity.
-
-\section{Demographic diagnostic}\label{app:demographics}
-
-The gender, age and household-type breakdown uses five Bernoulli assignments
-and is exploratory. Selected exposed-sector workers are disproportionately men
-and concentrated in prime and older working ages, but individual subgroup
-estimates are too assignment-sensitive for precise rankings. The demographic
-artifact is therefore a diagnostic rather than an inferential table.
 
 \section{Duration scope}\label{app:durationtakeup}
 
@@ -168,11 +70,3 @@ duration-equivalent rows are conservative for the displacement margin:
 correcting the annualisation would raise displacement cushioning at those
 scales and narrow, not widen, the reported gap. Parameters and the full
 accounting are stored in \path{results/referee_fixes.json}.
-
-\section{Supply-chain sensitivity}\label{app:supplychain}
-
-The input--output scenario adds upstream requirements using the ONS domestic Leontief inverse. The accounting shock has a 1.95 direct-plus-upstream factor. It is not a lower bound and is not multiplied by local-employment multipliers. In the exploratory ten-assignment microsimulation, displacement affects 29,700 weighted workers on average, costs the Exchequer \pounds $680\pm310$ million and raises relative BHC poverty by 0.028 percentage points. The wage-cut variant costs \pounds 960 million and leaves measured relative poverty unchanged. These figures are accounting sensitivities, not all-channel causal estimates.
-
-\section{Constituency machinery}\label{app:constituency}
-
-The enhanced-FRS constituency layer uses imputed industries rather than observed local industry structure. Its outputs are averaged over 20 paired worker-assignment draws (seeds 0--19), with each household's disposable-income change divided by household size before constituency means are constructed; the CSV artifact reports both the draw mean and the assignment-draw standard deviation. Because the constituency weights contain no observed local industry mix and the SIC imputation is held fixed, the outputs are synthetic demographic and income projections, not constituency exposure estimates. No map or seat-level figures are reported in this paper; the machinery is documented here so that future work can populate it with observed local industry data.

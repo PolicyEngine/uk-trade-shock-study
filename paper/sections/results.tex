@@ -61,6 +61,71 @@ comparisons, not confidence intervals for tariff effects. The mixed grid
 below is the conceptual centre of the design; the bounds make its composition
 effect transparent.
 
+\emph{Estimator provenance.} Every headline number in the abstract and this
+section comes from the same 50-assignment paired-draw design: the wage-cut
+and displacement cushioning levels are draw means of the two unit 12-month
+scenarios, and the \PrimaryCushionDifference-point gap is the mean of the
+per-draw differences on paired seeds, so the displayed levels and gap are
+consistent up to rounding of the unrounded underlying estimates. The
+record-resampling contrast reported below
+(\BootstrapCushionDifference\ points) is a different estimator---the
+draw-averaged contrast over the \BootstrapDraws\ common assignment draws
+retained in the resampling cache---and is labelled as such wherever it
+appears.
+
+\subsection{Factorial decomposition of the gap}\label{sec:results-factorial}
+
+The two headline scenarios differ in two respects at once: the adjustment
+margin and the concentration and identity of the losers. A diffuse wage cut
+spreads the loss over all exposed workers; displacement concentrates it on
+roughly ten selected survey records. To separate the channels, a factorial
+middle cell---a \emph{concentrated wage cut}---imposes the displacement
+draw's exact worker-level losses (the same balanced draw on the same seeds,
+each drawn worker losing their entire annual earnings, with pension
+contributions and statutory pay scaling to zero exactly as for any in-work
+earnings change) while leaving every worker employed at baseline hours.
+Because employment is binary, a ``diffuse displacement'' cell is not
+definable, so the sequential path diffuse $\rightarrow$ concentrated
+$\rightarrow$ displaced is the unique monotone decomposition of the gap
+(and coincides with the Shapley allocation over the two factors).
+
+At the unit 12-month stress over \FactorialDraws\ paired assignments, the
+concentrated wage cut is cushioned at \FactorialConcCushion\ per cent,
+almost exactly the displacement rate (\FactorialDispCushion) and far below
+the diffuse wage cut (\FactorialWageCushion). The decomposition is
+one-sided: of the total $\FactorialGapTotal\pm\FactorialGapTotalSD$-point
+gap, $\FactorialConcStep\pm\FactorialConcStepSD$ points arise from
+concentration and worker selection while employment state is held fixed,
+and only $\FactorialStateStep\pm\FactorialStateStepSD$ points---about
+\FactorialStateShare\ per cent of the gap---from the employment-state
+change itself, holding the loss-bearing workers and their worker-level
+losses fixed. At the OBR-style anchor the pattern repeats (concentration
+\FactorialOBRConcStep\ points, employment state
+\FactorialOBRStateStep\ points). The channel split on common seeds locates
+the concentration step almost entirely in the income-tax schedule: diffuse
+cuts retain \FactorialConcStepIncomeTax\ points more marginal-rate
+income-tax relief than the concentrated cell, partially offset by
+\pounds\ for \pounds\ stronger Universal Credit support of the concentrated
+losses (\FactorialConcStepUC\ points in the concentrated cell's favour).
+The employment-state step is nearly empty in every channel
+(UC \FactorialStateStepUC\ points; income tax and National Insurance zero
+by construction, since both cells zero the same earnings).
+
+Two readings follow, and both matter. First, the paper's earlier language
+of a ``statutory asymmetry between adjustment margins'' was imprecise: within
+the modelled annual system, the diffuse-wage-cut versus displacement gap is
+a \emph{loss-concentration} effect---complete individual losses exhaust
+marginal-rate relief---not an effect of unemployment status, which
+Universal Credit's income-based means test barely registers. Second, the
+near-zero employment-state step measures the modelled statutory rules, not
+the lived institutions of job loss: New Style JSA, monthly assessment
+periods, the five-week wait, claiming frictions and work-search
+conditionality all condition on employment status and all sit outside the
+annual model. The decomposition therefore bounds what a static statutory
+reading can attribute to the extensive margin, and it shifts the
+substantive weight of the headline contrast onto how concentrated the
+earnings losses are.
+
 \paragraph{Assignment-design and record-support audit.} At the unit 12-month
 stress, balanced and Bernoulli integration agree closely: cushioning is
 \BalancedUnitCushion\ versus \BernoulliUnitCushion\ per cent and Exchequer
@@ -80,34 +145,49 @@ ranging from \LeaveSectorCushionDifferenceMin\ to
 \LeaveSectorCushionDifferenceMax\ percentage points. No single division
 creates or reverses the primary contrast.
 
-\paragraph{Survey sampling uncertainty.} Assignment SDs do not measure
-sampling variance, so the primary contrast is additionally scored with a
-household bootstrap of the FRS sample: \BootstrapReplicates\ multinomial
-resamples of the \BootstrapHouseholds\ households, applied to per-household
-contributions from \BootstrapDraws\ common assignment draws of each unit
-12-month margin, so that resampling variation is measured around the
-draw-averaged statistic. The wage-minus-displacement cushioning difference is
-\BootstrapCushionDifference\ percentage points with a bootstrap standard
-error of \BootstrapCushionDifferenceSE\ points and a 95 per cent percentile
-interval of \BootstrapCushionDifferenceCILower\ to
-\BootstrapCushionDifferenceCIUpper\ points: the interval excludes zero, so
-the sign of the primary contrast is not an artefact of which households the
-FRS happened to sample, although its magnitude is estimated imprecisely.
-Margin-level bootstrap SEs are \BootstrapDisplacementCushionSE\ points
-(displacement cushioning), \BootstrapWageCushionSE\ points (wage-cut
-cushioning), and \pounds\BootstrapDisplacementExchequerSE\ million and
+\paragraph{Record-resampling sensitivity.} Assignment SDs do not measure
+sensitivity to which households the FRS sampled, so the primary contrast is
+additionally scored with a household record-resampling exercise:
+\BootstrapReplicates\ multinomial resamples of the
+\BootstrapHouseholds\ households, applied to per-household contributions
+from \BootstrapDraws\ common assignment draws of each unit 12-month margin,
+so that resampling variation is measured around the draw-averaged statistic.
+On that estimator the wage-minus-displacement cushioning difference is
+\BootstrapCushionDifference\ percentage points with a resampling standard
+error of \BootstrapCushionDifferenceSE\ points and a 2.5th--97.5th
+percentile range of \BootstrapCushionDifferenceCILower\ to
+\BootstrapCushionDifferenceCIUpper\ points. This is deliberately not
+presented as a significance test: the two counterfactuals are imposed
+scenarios, so their contrast is partly generated by construction, and the
+resampling captures record composition only---not the FRS complex survey
+design (no PSU or stratum identifiers exist in the research file), not
+tariff-calibration, incidence, concordance or model-parameter uncertainty,
+and not behavioural or claiming uncertainty, all of which remain scenario
+dimensions. The range should be read as robustness of the contrast to
+record composition, nothing stronger. Margin-level resampling SEs are
+\BootstrapDisplacementCushionSE\ points (displacement cushioning),
+\BootstrapWageCushionSE\ points (wage-cut cushioning), and
+\pounds\BootstrapDisplacementExchequerSE\ million and
 \pounds\BootstrapWageExchequerSE\ million on the respective Exchequer costs.
-The FRS research file carries no PSU or stratum identifiers, so households
-are the resampling unit; the interval approximates the design-based sampling
-variance without capturing geographic clustering, and it does not incorporate
-first-stage or parameter uncertainty, which remain scenario dimensions. One
-convention should be noted: a resample can zero a displacement draw's gross
-loss, leaving that draw's cushioning ratio undefined; replicates average
-over the defined draws, and near-zero-gross resamples with unstable ratios
-are retained. The interval is therefore a record-resampling sensitivity, not
-evidence that a conditional scenario contrast is statistically identified.
+One convention should be noted: a resample can zero a displacement draw's
+gross loss, leaving that draw's cushioning ratio undefined; replicates
+average over the defined draws, and near-zero-gross resamples with unstable
+ratios are retained.
 
-\paragraph{Pension-contribution channel.} The HBAI disposable-income concept treats employee pension and salary-sacrifice contributions as an outflow, so a hypothesis worth testing is that part of the headline gap is reduced retirement saving rather than tax--benefit insurance. It is not. Recomputing both margins under a pension-gross income concept (disposable income plus employee pension and salary-sacrifice contributions, unit 12-month stress, Bernoulli comparator over \PensionSeeds\ draws) lowers wage-cut cushioning from \FullWageCushion\ to \WageCushionPensionGross\ per cent and displacement cushioning from \PensionDisplacedCushionHBAI\ to \DisplacedCushionPensionGross\ per cent---the pension outflow falls by close to the same share of the gross loss on both margins (\PensionShareWage\ and \PensionShareDisplaced\ per cent respectively; wage cuts scale contributions, displacement zeroes them)---so the wage-minus-displacement gap moves only from \GapHBAIPension\ to \GapPensionGross\ percentage points. The headline contrast is a statutory tax--benefit asymmetry, not a pension-accounting artefact. What the pension channel does affect is the \emph{level} of measured cushioning on both margins, and the implied loss of deferred retirement consumption is not captured by the cushioning rate.
+\paragraph{Leave-one-record-out.} Because the displacement side of the
+contrast rests on few effective records, each of the
+\LOOHouseholds\ FRS households that contributes a positive weighted gross
+loss to any of the \LOODraws\ cached displacement draws is removed in
+turn---from both margins, since the same survey record underlies both
+counterfactuals---and the draw-averaged contrast is recomputed exactly from
+stored per-household contributions. The contrast remains positive in every
+case, ranging from \LOOMin\ to \LOOMax\ percentage points around the
+\LOOPoint-point resampling-cache value; the most influential single record
+moves it by \LOOMaxShift\ points. No individual FRS household creates the
+headline gap, although the sparse support continues to rule out subgroup,
+regional and constituency readings of the displacement scenarios.
+
+\paragraph{Pension-contribution channel.} The HBAI disposable-income concept treats employee pension and salary-sacrifice contributions as an outflow, so a hypothesis worth testing is that part of the headline gap is reduced retirement saving rather than tax--benefit insurance. It is not. Recomputing both margins under a pension-gross income concept (disposable income plus employee pension and salary-sacrifice contributions, unit 12-month stress, the primary balanced design over \PensionSeeds\ paired assignments) lowers wage-cut cushioning from \PensionWageCushionHBAI\ to \WageCushionPensionGross\ per cent and displacement cushioning from \PensionDisplacedCushionHBAI\ to \DisplacedCushionPensionGross\ per cent---the pension outflow falls by close to the same share of the gross loss on both margins (\PensionShareWage\ and \PensionShareDisplaced\ per cent respectively; wage cuts scale contributions, displacement zeroes them)---so the wage-minus-displacement gap moves only from \GapHBAIPension\ to \GapPensionGross\ percentage points. The headline contrast is a tax--benefit schedule effect, not a pension-accounting artefact. What the pension channel does affect is the \emph{level} of measured cushioning on both margins, and the implied loss of deferred retirement consumption is not captured by the cushioning rate.
 
 \paragraph{Mixed and transition paths.} The illustrative interior
 calibration is the transition-equivalent path: 70 per cent of each sector's
@@ -141,7 +221,7 @@ The frozen HMRC customs build totals \pounds55.6 billion of 2024 US-bound goods 
 Sector agreement is much weaker. The stored validation artifact reports a rank correlation of 0.00 between the full-schedule predicted and realised falls among the ten largest exposed divisions, and a correlation of 0.58 between full-schedule and observed downside shock rates across all mapped divisions. Machinery and motor vehicles decline broadly in the expected direction, while aerospace, electrical equipment and basic metals do not. The aggregate match can therefore be coincidental and must not be used to validate Equation~\eqref{eq:shock}. As a separate policy benchmark, the OBR's March 2025 scenario uses a demand elasticity of 0.4, implying an 8 per cent export-demand fall after a 20 percentage-point tariff and a direct export-demand effect just under 0.2 per cent of GDP \citep{obr2025}. The paper's $\varepsilon=1$ reference is 2.5 times that elasticity and additionally assumes full wage-bill incidence; it is a deliberately strong stress, not a central forecast.
 
 \paragraph{Product--destination panel.} The monthly HMRC panel
-(Appendix~\ref{app:trade-panel}) supports a post-policy decline concentrated
+(Online Supplement, Sections~S1--S2) supports a post-policy decline concentrated
 in large US export products---the capped value-weighted specification
 estimates a \HMRCWeightedEffect\ per cent change in US-bound exports
 relative to the same products sent to Canada, Japan and Australia---but the
@@ -157,85 +237,17 @@ selection models confirm that sector composition does not create or reverse
 it. What the failure rules out is any reading of
 Equation~\eqref{eq:shock} as an estimated first stage.
 
-\paragraph{Longitudinal worker benchmark.} The five-quarter LFS contains
-\LFSManufacturingDonors\ wave-1 manufacturing employees after the required
-population filters, compared with \LFSFRSReceivers\ employed manufacturing
-FRS receivers. Its BRES-composition-adjusted manufacturing targets are an
-\LFSExitTarget\ per cent wave-1-to-wave-5 job-exit rate and
-\LFSWageTarget\ per cent mean log wage growth among valid endpoint-pay
-observations. Table~\ref{tab:lfs-imputation} compares receiver distributions.
-Calibration deliberately makes the aggregate exit means identical, so the
-comparison tests incidence shape rather than level. The QRF has a much wider
-risk distribution and agrees weakly with the primary cells: person-level
-correlations are only \LFSExitCorrelation\ for exit risk and
-\LFSWageCorrelation\ for predicted wage change. The longitudinal evidence
-therefore does not support replacing transparent cells with forest-generated
-tariff incidence. It instead quantifies model uncertainty that the central
-uniform assignment omits. Regularisation does not eliminate all forest tails:
-the maximum calibrated exit risk is \LFSQRFExitMaximum\ per cent and the
-predicted log-wage-change range is \LFSQRFWageMinimum\ to
-\LFSQRFWageMaximum\ per cent. These are benchmark predictions, not plausible
-confidence bounds.
-
-\begin{table}[htbp]
-\centering
-\small
-\caption{Calibrated FRS job-exit-risk distributions}
-\label{tab:lfs-imputation}
-\begin{tabular}{lrrrr}
-\toprule
-Estimator & Weighted mean & P10 & Median & P90 \\
-\midrule
-\LFSBenchmarkRows
-\bottomrule
-\end{tabular}
-\begin{minipage}{0.94\textwidth}
-\footnotesize\emph{Notes:} Entries are percentages among matched employed
-manufacturing FRS receivers. All means equal the same directly measured LFS
-target by construction. Quantiles are survey-weighted. QRF denotes the
-regularised quantile/random-forest benchmark described in
-Section~\ref{sec:method-lfs}; it predicts baseline transitions, not causal
-tariff effects.
-\end{minipage}
-\end{table}
-
-\paragraph{Fiscal sensitivity to worker-risk shape.} Table~\ref{tab:lfs-selection}
-uses each calibrated risk model to vary selection within SIC divisions while
-holding every division's expected weighted wage-bill loss at the original
-shock. The cell model nearly reproduces uniform assignment. Across all three
-LFS-shaped models, mean cushioning ranges from 36.0 to 37.4 per cent,
-Exchequer cost from \pounds384 million to \pounds425 million, and measured
-poverty change from 0.024 to 0.028 percentage points. This model spread is
-smaller than the assignment SD within any specification. Weighted displaced
-headcount changes because calibration preserves the wage bill, not a
-headcount quota. The QRF mean gross loss is \pounds847 million rather than
-the \pounds886 million expectation, but its \pounds397 million assignment SD
-implies a numerical MC SE of about \pounds40 million, so this difference is
-not evidence of a different aggregate target.
-
-\begin{table}[htbp]
-\centering
-\scriptsize
-\caption{Full-schedule fiscal sensitivity to within-SIC worker selection}
-\label{tab:lfs-selection}
-\resizebox{\textwidth}{!}{%
-\begin{tabular}{lrrrrr}
-\toprule
-Selection model & Workers (000s) & Gross loss (\pounds m) &
-Exchequer (\pounds m) & Cushioning (\%) & Poverty (pp) \\
-\midrule
-\LFSSelectionRows
-\bottomrule
-\end{tabular}}
-\begin{minipage}{0.96\textwidth}
-\footnotesize\emph{Notes:} Means $\pm$ assignment SD over
-\LFSSelectionDraws\ common assignments. Within each SIC division, individual
-probabilities are rescaled so the earnings-weighted mean equals the declared
-sector shock. Poverty is relative BHC against the frozen baseline line.
-LFS risks are predictive baseline-transition scores, not tariff-specific
-causal probabilities.
-\end{minipage}
-\end{table}
+\paragraph{Longitudinal worker benchmark (summary).} A five-quarter
+longitudinal LFS benchmark (Study 9490) calibrates cell, earnings-band and
+quantile-random-forest job-exit-risk models to BRES-adjusted manufacturing
+targets and propagates each through the fiscal model while preserving every
+division's expected wage-bill loss. Across all three LFS-shaped risk models,
+mean cushioning spans 36.0--37.4 per cent against 36.8 under uniform
+assignment, a spread smaller than the assignment SD of any single
+specification; person-level agreement between the models is weak, so they
+quantify selection-model sensitivity rather than identify tariff-specific
+worker risk. Full designs, distributions and tables are in the Online
+Supplement (Sections~S3--S4).
 
 The realised displacement output is also consistent with the allocation design but too sparse for precise empirical incidence: the expected 9.7 selected FRS records per assignment produce \FullDisplacedWorkers{} thousand represented displaced workers and \pounds $\FullDisplacedGross\pm\FullDisplacedGrossSD$ million of gross loss. The gross-loss SD is nearly half its mean, and Exchequer-cost SD exceeds half its mean. The 100-assignment average is numerically more stable than an individual assignment, but it remains conditional on the observed 1,018 exposed records and the uniform within-division selection rule.
 
@@ -301,7 +313,7 @@ the decile profile.
 A constituency-level surface was produced in earlier drafts but is not
 reported: it rests on imputed industry assignments rather than observed
 local industry structure, and a map invites exactly the seat-ranking
-reading it cannot support. Appendix~\ref{app:constituency} documents the
+reading it cannot support. The Online Supplement documents the
 machinery for future use with observed local industry data.
 
 \subsection{Fiscal incidence}\label{sec:results-fiscal}
@@ -331,17 +343,8 @@ shows the assignment distribution.
 On paired seeds, full minus EPD displacement differs by
 $\EPDWorkerDifferenceThousands\pm\EPDWorkerDifferenceSDThousands$ thousand
 workers and \pounds $\EPDExchequerDifference\pm\EPDExchequerDifferenceSD$
-million of Exchequer cost. The contrast is driven primarily by the lower auto
-tariff and the exemption of pharmaceuticals in the EPD schedule. It should be
-interpreted as the fiscal value of changing the declared sector shock while
-holding the household model and assignment draws fixed. It does not include
-quota allocation, above-quota trade, price responses, NHS pricing concessions,
-or other general-equilibrium effects. Figure~\ref{fig:epd-results} summarises
-the paired comparison.
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=.85\textwidth]{../results/figures/epd_counterfactual.png}
-\caption{Full-schedule and EPD scenario comparison. Error bars are assignment standard deviations.}
-\label{fig:epd-results}
-\end{figure}
+million of Exchequer cost, driven primarily by the lower auto tariff and the
+pharmaceutical exemption. It prices a change in the declared sector shock
+with the household model and draws held fixed, not the deal's causal effect;
+the paired comparison and its caveats are in the Online Supplement
+(Section~S5).

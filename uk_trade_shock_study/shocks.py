@@ -63,6 +63,7 @@ from uk_trade_shock_study.exposure import (
 MARGINS = (
     "displacement",
     "wage_cut",
+    "concentrated_wage_cut",
     "inactivity",
     "reallocation",
     "mixed",
@@ -602,6 +603,51 @@ def apply_wage_cut(persons: pd.DataFrame, scenario: TradeShockScenario) -> pd.Da
     return shocked
 
 
+def apply_concentrated_wage_cut(
+    persons: pd.DataFrame,
+    scenario: TradeShockScenario,
+    seed: int = 0,
+) -> pd.DataFrame:
+    """Concentrated wage cut: the displacement draw's losses without job loss.
+
+    FACTORIAL MIDDLE CELL (referee major point 1). The drawn worker set is
+    EXACTLY the displacement family's (same ``draw_displaced`` call, same
+    seed, same selection method), and each drawn worker loses their entire
+    annual earnings — the same worker-level loss displacement imposes. But
+    nobody's employment state changes: workers remain EMPLOYED with baseline
+    hours, and only the earnings-linked deductions (pensions, statutory pay)
+    scale with the earnings factor in build_shocked_simulation, exactly as
+    for any other in-work earnings cut.
+
+    Comparisons this cell licenses, holding the aggregate loss fixed:
+
+    - broad wage cut vs concentrated wage cut  = concentration + worker
+      selection, holding employment state fixed at EMPLOYED;
+    - concentrated wage cut vs displacement    = the incremental effect of
+      the employment-state change itself (status flag, hours zeroing, and
+      the benefit rules they activate), holding the loss-bearing workers and
+      their worker-level losses fixed.
+
+    Because employment is binary, "diffuse displacement" is not defined, so
+    the sequential path broad -> concentrated -> displaced is the unique
+    monotone decomposition of the headline gap (it coincides with the Shapley
+    allocation over the two factors along the feasible lattice).
+    """
+    if scenario.margin != "concentrated_wage_cut":
+        raise ValueError(
+            "apply_concentrated_wage_cut requires a concentrated_wage_cut scenario"
+        )
+    shocked = persons.copy()
+    drawn = draw_displaced(persons, scenario, seed=seed)
+    earnings = shocked["employment_income"].to_numpy(dtype=float)
+    shocked["employment_income"] = np.where(drawn, 0.0, earnings)
+    shocked["displaced"] = np.zeros(len(persons), dtype=bool)
+    shocked["inactive"] = np.zeros(len(persons), dtype=bool)
+    shocked["lcwra"] = np.zeros(len(persons), dtype=bool)
+    shocked["earnings_changed"] = drawn
+    return shocked
+
+
 def apply_mixed_margin(
     persons: pd.DataFrame,
     scenario: TradeShockScenario,
@@ -770,6 +816,10 @@ def apply_shocks(
     """
     if scenario.margin == "wage_cut":
         shocked = _blank_reallocation(apply_wage_cut(persons, scenario))
+    elif scenario.margin == "concentrated_wage_cut":
+        shocked = _blank_reallocation(
+            apply_concentrated_wage_cut(persons, scenario, seed=seed)
+        )
     elif scenario.margin == "mixed":
         shocked = _blank_reallocation(apply_mixed_margin(persons, scenario, seed=seed))
     elif scenario.margin == "transition":

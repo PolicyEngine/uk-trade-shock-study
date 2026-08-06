@@ -13,15 +13,15 @@
 \usepackage[hang,flushmargin]{footmisc}
 \usepackage[colorlinks=true, citecolor=paperblue, linkcolor=paperblue, urlcolor=paperblue]{hyperref}
 \hypersetup{
-  pdftitle={Labour-Market Adjustment and Fiscal Incidence of Trade Exposure in the UK},
+  pdftitle={Adjustment Margins and Tax-Benefit Cushioning of Earnings Losses in the United Kingdom},
   pdfauthor={Vahid Ahmadi},
-  pdfsubject={UK tax--benefit microsimulation under trade-related labour-income stress scenarios},
-  pdfkeywords={tariffs, trade shocks, microsimulation, poverty, inequality, public finances}
+  pdfsubject={UK tax--benefit microsimulation under labour-income stress scenarios, with the 2025 US tariffs as an application},
+  pdfkeywords={automatic stabilisers, tariffs, trade shocks, microsimulation, poverty, inequality, public finances}
 }
 \usepackage{natbib}
 \bibliographystyle{apalike}
 
-\title{\bfseries Labour-Market Adjustment and Fiscal Incidence of Trade Exposure in the UK\thanks{\textbf{Acknowledgements:} I thank Max Ghenis and Seyed Mahdi Hosseini for valuable comments and helpful discussions.}\\[0.7cm]}
+\title{\bfseries Adjustment Margins and Tax--Benefit Cushioning of Earnings Losses in the United Kingdom\thanks{\textbf{Acknowledgements:} I thank Max Ghenis and Seyed Mahdi Hosseini for valuable comments and helpful discussions.}\\[0.7cm]}
 \author{Vahid Ahmadi\thanks{Research Associate at PolicyEngine. Email: \href{mailto:vahid@policyengine.org}{vahid@policyengine.org}.}}
 \date{\small August 2026}
 
@@ -30,35 +30,36 @@
 \input{generated_trade_benchmarks}
 \input{generated_lfs_selection}
 \input{generated_submission}
+\input{generated_factorial}
 \input{referee_macros}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-\noindent For the same aggregate earnings loss, the UK tax--benefit system
-cushions an intensive-margin adjustment far more than an extensive-margin
-one. Using the 2024--25 Family Resources Survey and PolicyEngine UK, I hold a
-common sector-specific earnings loss of roughly \pounds\FullWageGross\,million
-a year, calibrated from the 2025 US tariff schedule, fixed while varying its
-incidence across incumbent wage reductions, displacement, and mixed
-transition paths. Proportional wage cuts are cushioned at
-\FullWageCushion\ per cent, displacement at
-$\FullDisplacedCushion \pm \FullDisplacedCushionSD$ per cent: a gap of
-\PrimaryCushionDifference\ percentage points (household-bootstrap 95 per
-cent interval \BootstrapCushionDifferenceCILower--%
-\BootstrapCushionDifferenceCIUpper\ points), because in-work losses are
-relieved automatically at marginal tax rates while job loss relies on gated,
-means-tested, imperfectly claimed Universal Credit. An illustrative interior
-transition path yields \FullTransitionCushion\ per cent cushioning and an
-Exchequer cost of \pounds\FullTransitionExchequer\,million. Sensitivity
-analysis quantifies the pension-saving component of the gap and varies
-adjustment shares, spell-duration equivalents, worker selection, and benefit
-take-up.
+\noindent How much of an earnings loss the UK tax--benefit system absorbs
+depends on how the loss is distributed across workers and labour-market
+states, not only on its size. Using the 2024--25 Family Resources Survey
+and PolicyEngine UK, I hold an aggregate employee-earnings loss
+fixed---calibrated, as an application, from the 2025 US tariff schedule
+through a declared accounting bridge, not an estimated first stage---and
+vary its incidence factorially: diffuse wage cuts across all exposed
+workers, concentrated wage cuts imposing the displacement draw's
+worker-level losses without job loss, and displacement of the same workers.
+Diffuse cuts are cushioned at \SubmissionUnitWageCushion\ per cent,
+displacement at
+$\SubmissionUnitDisplacedCushion\pm\SubmissionUnitDisplacedCushionSD$: a
+\PrimaryCushionDifference-point gap, of which
+\FactorialConcStep\ points reflect loss concentration---which exhausts
+marginal-rate tax relief---and only \FactorialStateStep\ points the
+employment state itself. Record-resampling, leave-one-record-out and
+leave-one-sector-out audits bound the contrast without significance claims;
+sensitivity analysis varies pensions, take-up, duration equivalents,
+adjustment shares and worker selection.
 \end{abstract}
 
 \medskip
-\noindent\textbf{Keywords:} tariffs, trade shocks, microsimulation, poverty, inequality, public finances
+\noindent\textbf{Keywords:} automatic stabilisers, tariffs, trade shocks, microsimulation, poverty, inequality, public finances
 
 \smallskip
 \noindent\textbf{JEL codes:} F13, F16, H23, H24, I38, J65

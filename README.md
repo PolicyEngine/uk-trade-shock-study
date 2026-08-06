@@ -5,7 +5,9 @@ calibrated to the 2025 US tariffs on UK goods? The project imposes a
 reduced-form tariff-exposure-to-wage-bill bridge on FRS 2024-25 microdata and
 runs it through PolicyEngine UK. It does not model the intervening effects on
 prices, quantities, production, value added, productivity or labour demand.
-Adjustment scenarios include **displacement**, **wage cuts**, **inactivity**,
+Adjustment scenarios include **displacement**, **wage cuts**, a
+**concentrated wage cut** factorial middle cell (the displacement draw's
+exact worker-level losses without job loss), **inactivity**,
 **reallocation**, a common-loss **temporary transition** path (lagged
 re-employment plus survivor earnings cuts), and a factorial **mixed
 wage/job-loss** family. An Economic
@@ -48,6 +50,21 @@ The disposition of the referee audit is tracked in `REVISION_STATUS.md`.
 8. `analysis/write_submission_results.py` — validates all 50-draw submission
    artifacts, writes the primary manuscript table, paired margin contrasts
    and record-support diagnostics.
+9. `analysis/factorial_decomposition.py` — runs the concentrated-wage-cut
+   middle cell (the displacement draw's exact worker-level losses with no
+   job loss, paired seeds) and decomposes the headline wage-cut vs
+   displacement gap into a concentration/worker-selection step and an
+   employment-state step, with a channel split on common seeds.
+10. `analysis/leave_one_record_out.py` — removes each loss-contributing FRS
+    household from both margins and recomputes the primary contrast exactly
+    from the stored per-household bootstrap contributions.
+11. `analysis/write_factorial_results.py` — validates both new artifacts and
+    emits their manuscript macros.
+
+The manuscript builds as a short main paper (`paper/main.tex`) plus a
+standalone online supplement (`paper/supplement.tex`) carrying the HMRC
+event-study detail, LFS imputation benchmarks, EPD results detail and the
+exploratory sensitivity sections.
 
 The legacy scenario suite uses 100 assignment draws. The compact submission
 design uses 50 balanced draws; both specifications are declared explicitly.

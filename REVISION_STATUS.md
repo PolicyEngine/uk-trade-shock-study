@@ -1,9 +1,67 @@
 # Major-revision status
 
-Updated 29 July 2026 against `REFEREE_AUDIT.md` and the journal-readiness
-audit.
+Updated 6 August 2026 against `REFEREE_AUDIT.md`, the journal-readiness
+audit, and the August 2026 referee report (reject-and-resubmit).
 
-## Completed in code and manuscript
+## Completed for the August 2026 referee report
+
+- **Factorial decomposition (referee major point 1).** A new
+  `concentrated_wage_cut` margin imposes the displacement draw's exact
+  worker-level losses (paired seeds, balanced assignment) with no
+  employment-state change. At the unit 12-month stress the 10.0-point
+  wage-cut-minus-displacement gap decomposes into 9.9 points from
+  concentration/worker selection and 0.1 points from the employment state
+  itself (OBR anchor: 11.4 vs 0.1). The channel split locates the
+  concentration step in marginal-rate income-tax relief (+16.1pp),
+  partially offset by UC (-1.8pp). The manuscript's causal language was
+  revised accordingly: the gap is a loss-concentration effect within the
+  modelled statutory schedule, and the near-zero state step explicitly
+  measures the modelled annual rules (New Style JSA, monthly assessment,
+  conditionality are unmodelled). Artifacts:
+  `results/factorial_decomposition.json`,
+  `results/submission/submission_{obr,unit}_12m_concentrated_wage_cut.json`.
+- **Reframing (point 2).** New title (adjustment margins and tax-benefit
+  cushioning; tariffs as the application), abstract rewritten around the
+  factorial design with the calibration labelled a declared accounting
+  bridge, not an estimated first stage.
+- **Uncertainty presentation (point 3).** "Excludes zero" removed from the
+  abstract, introduction, results and discussion; the household bootstrap is
+  labelled a record-resampling sensitivity with an explicit list of what it
+  does not capture; no significance-style claims remain.
+- **Leave-one-record-out (point 4).** Exact LOO over all 194
+  loss-contributing FRS households from the stored per-household
+  contributions: the contrast stays in [10.3, 11.3]pp, always positive;
+  max single-record shift 0.6pp. Artifact:
+  `results/leave_one_record_out.json`.
+- **Interior transition scenario (point 7).** Removed from the abstract and
+  introduction headline; retained as one point on the response surface with
+  its parameters labelled assumptions.
+- **Number reconciliation (specific presentation problems).** All abstract
+  numbers now come from the single 50-draw paired submission estimator
+  (levels 43.9 / 34.0, paired-draw gap 10.0); an "estimator provenance"
+  note in the results section states which estimator generates each number
+  and distinguishes the 25-common-draw record-resampling contrast (10.7).
+- **Restructuring (point 8).** The standalone online supplement is
+  restored (`paper/supplement.tex` + `paper/sections/supplement_body.tex`):
+  HMRC event-study design and estimates, LFS imputation designs and tables,
+  EPD results detail, the exploratory grid/surface, reallocation, measured,
+  demographic, supply-chain and constituency sections all moved out of the
+  main paper.
+- **UC mechanism language (point 6).** The discussion now separates
+  statutory entitlement in PolicyEngine, entitlement under incomplete FRS
+  information (capital gates unexercised), modelled take-up conventions,
+  and actual post-displacement receipt.
+- **Pension channel on the primary estimator.** The pension-gross
+  sensitivity now runs on the balanced 50-draw unit 12-month design (was a
+  25-seed Bernoulli comparator), so its from-values match the headline
+  levels exactly: wage cut 43.9 -> 39.6, displacement 34.0 -> 29.1, gap
+  10.0 -> 10.5pp. `analysis/referee_fixes.py --only pension` recomputes it
+  standalone.
+- Monthly modelling (point 5) remains outside the estimand (see below);
+  the annualisation is presented as duration-equivalent stress with the
+  parameter-based bounding appendix retained in the main paper.
+
+## Completed in code and manuscript (July 2026 round)
 
 - UC take-up is triggered symmetrically by newly positive post-shock
   entitlement across all margins.

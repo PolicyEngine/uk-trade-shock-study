@@ -35,33 +35,17 @@ $x_j$ is US goods exports as a share of division turnover, built from HMRC trade
 
 \subsection{Public product--destination benchmark}\label{sec:method-trade-panel}
 
-To test whether post-policy US exports move differently from other UK export
-destinations, I build a monthly HMRC OTS panel from January 2018 to May 2026
-for the United States, Canada, Japan and Australia \citep{hmrcots2026}.
-Detailed HS8 rows are aggregated to HS4 and balanced across products,
-destinations and months, with absent flows set to zero. HMRC's separate
-two-digit aggregate rows are excluded. For product $p$ and month $t$, the
-outcome is
-\[
-g_{pt}=\log(1+V_{p,\mathrm{US},t})
--\frac{1}{3}\sum_{d\in\{\mathrm{CA,JP,AU}\}}\log(1+V_{pdt}).
-\]
-I regress this destination gap on a post-May-2025 indicator, HS4 product
-fixed effects, month-of-year effects and a linear trend. April 2025 is
-omitted as an announcement and anticipation month. The primary WLS weights
-are products' mean 2022--24 US export values, capped at the 99th percentile;
-standard errors are clustered by HS4. Uncapped value weights, equal product
-weights, individual destinations, later sample starts and pseudo-policy dates
-in May 2019--23 are reported as specification checks.
-
-This design controls for product shocks common across destinations but not
-US-specific demand, exchange rates, shipping, inventories, composition or
-other coincident policies. The high-tariff comparison groups HS chapters 72,
-73 and 87 as steel and automotive products; that broad mapping is a
-falsification check, not a complete product-level statutory tariff schedule.
-The panel is therefore not used to estimate $\varepsilon$ or $\pi$ in
-Equation~\eqref{eq:shock}. It tests whether the imposed bridge is consistent
-with destination-differential outturn patterns.
+A monthly HMRC OTS panel (January 2018--May 2026; US, Canada, Japan,
+Australia) tests whether post-policy US-bound exports move differently from
+the same HS4 products sent elsewhere. The design regresses a log
+destination gap on a post-May-2025 indicator with product and seasonal
+effects and a linear trend, weighting by capped pre-policy US export
+values, and reports control-destination, weighting, sample-start and
+placebo-date checks. It controls for product shocks common across
+destinations but not US-specific demand or other coincident policies, and
+it is not used to estimate the demand or incidence parameters of
+Equation~\eqref{eq:shock}; its role is falsification. The full design and
+all estimates are in the Online Supplement (Sections~S1--S2).
 
 \subsection{The tariff schedule and the EPD counterfactual}\label{sec:method-schedule}
 
@@ -101,6 +85,23 @@ the declared first-order probabilities exactly but has much larger
 allocation dispersion, is reported as the unbiased assignment-rule
 comparator; at the unit scale the two agree on cushioning to half a
 percentage point (Section~\ref{sec:results-cushioning}).
+\paragraph{Concentrated wage cut (factorial middle cell).} The headline
+wage-cut versus displacement contrast changes two things at once: the
+adjustment margin and the concentration and identity of the losers. To
+separate them, a third family imposes the displacement draw's exact
+worker-level losses---the same balanced draw on the same seeds, each drawn
+worker losing their entire annual earnings, with pension contributions and
+statutory pay scaling to zero exactly as for any in-work earnings
+change---while leaving every worker employed at baseline hours. Comparing
+the diffuse wage cut with this cell isolates concentration and worker
+selection at fixed employment state; comparing this cell with displacement
+isolates the employment-state change at fixed workers and worker-level
+losses. Because employment is binary, a ``diffuse displacement'' cell is
+undefined, so the sequential path diffuse $\rightarrow$ concentrated
+$\rightarrow$ displaced is the unique monotone decomposition of the gap and
+coincides with the Shapley allocation over the two factors
+(Section~\ref{sec:results-factorial}).
+
 \paragraph{Wage cuts with reallocation (Dauth/Traiberman long run).} No job loss; every employee in division $j$ takes a proportional cut of $s_j$, so the weighted aggregate earnings removed equals $\sum_j s_j B_j$ by construction---exact earnings-equivalence with the displacement family's expected removal. Employee pension and salary-sacrifice contributions are scaled proportionally with the cut, mirroring their zeroing under displacement; this lowers taxable pay (and hence tax relief) but also reduces the household's pension outflow, so under the HBAI disposable-income concept part of the earnings loss is absorbed by reduced retirement saving rather than by current income.
 \paragraph{Inactivity (Beatty--Fothergill UK history).} The displacement draw, but displaced workers aged 50 and over exit to economic inactivity, the benefit-financed route of UK deindustrialisation, rather than unemployment. The route is benefit-financed in the model, not just relabelled: every inactive worker is flagged as having limited capability for work-related activity, so their household's Universal Credit includes the LCWRA health element (\pounds 217.26 a month in 2026---the reduced rate applying to new claims from April 2026 under the Universal Credit Act 2025; existing claimants retain the higher pre-reform rate, and all modelled inactivity claims are new claims). In policyengine-uk 2.89.2 the survey-imputed \texttt{uc\_LCWRA\_element} is stored, so the post-shock benefit-unit value is set to the maximum of the stored amount and one annual statutory element; an existing recipient is never paid a second element, unaffected units are unchanged, and the run hard-errors if the element fails to reach a newly flagged person's benefit unit. This mirrors the \citet{beatty2007} route by which industrial job loss became incapacity-benefit inactivity. The strong assumption should be stated plainly: \emph{all} displaced workers aged 50 and over are assumed to pass the Work Capability Assessment, so the family is an upper bound on the health-element route; no partial-qualification sensitivity (for example, 50 per cent of the older displaced qualifying) has been simulated, which is a limitation of the present scenario set. Work-search conditionality carries no separate fiscal machinery in the model, so the LCWRA element is the entire modelled wedge between inactivity and unemployment.
 
@@ -179,53 +180,19 @@ entitlement per worker-month is identical by construction, the primary
 12-month contrast is unaffected, and the residual differences at 3- and
 6-month scales run through partial-year income tax and payment timing.
 
-The margin is the paper's central axis because the tax--benefit system treats the two poles asymmetrically: an in-work earnings reduction is offset automatically at marginal tax and taper rates, while a job loss moves the worker to the gated, means-tested extensive margin of the benefit system. How much each pole is cushioned, and---the question that turns out to discriminate between them---how much that cushioning depends on anyone doing anything, are empirical questions the microdata answer (Section~\ref{sec:results-cushioning}).
+The margin is the paper's central axis because the tax--benefit system treats the two poles differently: an in-work earnings reduction is offset automatically at marginal tax and taper rates, while a complete loss exhausts marginal-rate relief and lands on the means-tested part of the system. Whether that difference is driven by the employment-state change or by the concentration of the losses is precisely what the factorial middle cell measures rather than assumes (Section~\ref{sec:results-factorial}).
 
 \subsection{Longitudinal LFS imputation benchmark}\label{sec:method-lfs}
 
-The uniform within-division assignment in the central displacement family is
-transparent but suppresses observable worker heterogeneity. I therefore use
-UK Data Service Study 9490, the Labour Force Survey Five-Quarter Longitudinal
-Dataset covering July 2024--September 2025, as a donor benchmark. The donor
-population comprises respondents employed at wave 1. Job exit is observed at
-wave 5; log wage change is defined only for respondents employed with
-positive main-job pay at both endpoints. Negative UKDS sentinel values are
-missing, not zero. Public 2024 Nomis BRES employee totals rescale the
-manufacturing SIC composition before direct transition targets are computed.
-\citep{onslfs9490}
-
-The primary imputation maps SIC-division--sex--age cells to employed FRS
-receivers, shrinking sparse cells towards sector and manufacturing means.
-After matching, predicted exit risks are rescaled so their FRS-weighted mean
-equals the directly measured, BRES-composition-adjusted LFS manufacturing
-exit rate. Mean predicted log wage changes are centred on the corresponding
-LFS target. An income-tercile estimator supplies a transparent sensitivity
-specification.
-
-A regularised quantile/random-forest benchmark follows the calibrated
-imputation architecture in PolicyEngine's \texttt{young-worker-nics}
-project. It estimates model shape on all wave-1 employed adult donors using
-age, sex and annualised employment income. The binary outcome uses the
-random-forest event probability; the continuous outcome uses the QRF
-conditional mean. Forests use 500 trees and a minimum leaf size of 20; wage
-outcomes are winsorised at the donor 1st and 99th percentiles. Both receiver
-predictions are then calibrated to exactly the same manufacturing LFS
-targets as the cell estimator. This is a predictive baseline-transition
-benchmark, not an estimate of tariff-induced exits or wage changes. It is
-therefore reported as a robustness diagnostic and does not replace the
-declared central assignment rule.
-
-In a downstream allocation sensitivity, each receiver score $r_i$ is
-converted to a within-division displacement probability
-$p_i=\min(1,k_jr_i)$, where $k_j$ is solved numerically so
-\[
-\frac{\sum_{i\in j}p_i E_iw_i}{\sum_{i\in j}E_iw_i}=s_j.
-\]
-Thus cells, earnings bands and QRF change who is exposed while preserving
-each division's expected employee-wage-bill loss. Missing scores use the
-division mean. Common assignments then isolate sensitivity to incidence
-shape; they do not give the baseline transition model a causal tariff
-interpretation.
+Because uniform within-division assignment suppresses observable worker
+heterogeneity, longitudinal LFS Study 9490 supplies cell, earnings-band and
+regularised quantile/random-forest job-exit-risk models, each calibrated to
+the same BRES-composition-adjusted manufacturing transition targets and
+converted into within-division displacement probabilities that preserve
+every division's expected wage-bill loss. These are predictive
+baseline-transition benchmarks, not tariff-specific worker risks; their
+designs, distributions and fiscal sensitivity tables are in the Online
+Supplement (Sections~S3--S4).
 
 \subsection{Universal Credit take-up after the shock}\label{sec:method-takeup}
 

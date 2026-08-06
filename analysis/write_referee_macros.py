@@ -52,8 +52,9 @@ def main() -> None:
         "\\newcommand{\\SubmissionScenarioRowsThin}{%",
         thin_rows,
         "}",
-        # Pension channel (unit 12-month, Bernoulli comparator).
-        "\\newcommand{\\PensionSeeds}{25}",
+        # Pension channel (unit 12-month, balanced primary design).
+        f"\\newcommand{{\\PensionSeeds}}{{{pension.get('n_seeds', 25)}}}",
+        f"\\newcommand{{\\PensionWageCushionHBAI}}{{{pct(wc['cushioning_hbai']['mean'])}}}",
         f"\\newcommand{{\\WageCushionPensionGross}}{{{pct(wc['cushioning_pension_gross']['mean'])}}}",
         f"\\newcommand{{\\PensionDisplacedCushionHBAI}}{{{pct(disp['cushioning_hbai']['mean'])}}}",
         f"\\newcommand{{\\DisplacedCushionPensionGross}}{{{pct(disp['cushioning_pension_gross']['mean'])}}}",

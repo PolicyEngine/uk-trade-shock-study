@@ -46,6 +46,8 @@
     "notes": "UC entitlement per worker-month is identical by construction: m months at the full standard allowance equals probability m/12 of 12 months. Differences arise in income tax (convexity: the annual model overstates relief for partial-year spells at this earnings level, where zeroing a full year forgoes higher-rate relief while a partial-year earner loses basic/higher-rate slices) and in the 5-week payment wait, which shifts timing, not annual entitlement."
   },
   "pension_channel": {
+    "n_seeds": 50,
+    "selection_method": "balanced",
     "full_tariff_wage_cut": {
       "gross_earnings_loss": {
         "mean": 885749325.2499483,
@@ -74,34 +76,34 @@
     },
     "full_tariff_displacement": {
       "gross_earnings_loss": {
-        "mean": 803889656.1936979,
-        "sd": 426825266.7555173
+        "mean": 885383689.4362082,
+        "sd": 6103060.666934451
       },
       "disposable_loss_hbai": {
-        "mean": 532272906.24,
-        "sd": 263847355.19347897
+        "mean": 584678113.28,
+        "sd": 42603373.531972304
       },
       "pension_outflow_fall": {
-        "mean": 32006113.226670228,
-        "sd": 20864881.638231955
+        "mean": 43210902.22964539,
+        "sd": 18409462.42893687
       },
       "cushioning_hbai": {
-        "mean": 0.32987738933694183,
-        "sd": 0.04920132221707783
+        "mean": 0.3397274916112502,
+        "sd": 0.046683927049013356
       },
       "cushioning_pension_gross": {
-        "mean": 0.2872481073078232,
-        "sd": 0.055659079679050726
+        "mean": 0.2908892600539765,
+        "sd": 0.04012167648031259
       },
       "pension_share_of_gross_loss": {
-        "mean": 0.04262928202911869,
-        "sd": 0.02015351326265067
+        "mean": 0.04883823155727379,
+        "sd": 0.020940528647381485
       }
     },
     "contrast": {
-      "cushioning_gap_hbai_pp": 10.943146042158752,
-      "cushioning_gap_pension_gross_pp": 10.850008786554794,
-      "pension_channel_share_of_gap": 0.008511012760420544
+      "cushioning_gap_hbai_pp": 9.958135814727914,
+      "cushioning_gap_pension_gross_pp": 10.485893511939464,
+      "pension_channel_share_of_gap": -0.052997640023246806
     }
   },
   "takeup_headline": {

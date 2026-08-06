@@ -1036,3 +1036,40 @@ def test_concentrated_wage_cut_requires_matching_margin():
         apply_concentrated_wage_cut(
             persons, TradeShockScenario("w", "epd", "wage_cut")
         )
+
+
+def test_concentrated_wage_cut_scales_pensions_to_zero_without_status_change():
+    """The factorial middle cell's referee-facing contract: drawn workers'
+    earnings-linked deductions scale to zero via the earnings factor while
+    their employment status stays at baseline."""
+    from unittest import mock
+
+    from uk_trade_shock_study import shocks as shocks_module
+
+    persons = make_persons(n=500)
+    scenario = TradeShockScenario(
+        "c", "full_tariff", "concentrated_wage_cut"
+    )
+    table = apply_shocks(persons, scenario, seed=0)
+    drawn = table["earnings_changed"].to_numpy(bool)
+    assert drawn.any()
+
+    baseline_sim = _RecordingSim(persons)
+    shocked_sim = _RecordingSim(persons)
+    fake_pe = mock.MagicMock()
+    fake_pe.Microsimulation.return_value = shocked_sim
+    with mock.patch.dict("sys.modules", {"policyengine_uk": fake_pe}):
+        shocks_module.build_shocked_simulation(None, baseline_sim, table, 2026)
+
+    pensions = shocked_sim.stored["employee_pension_contributions"]
+    assert (pensions[drawn] == 0.0).all()
+    np.testing.assert_allclose(pensions[~drawn], 1_000.0)
+    sacrifice = shocked_sim.stored["pension_contributions_via_salary_sacrifice"]
+    assert (sacrifice[drawn] == 0.0).all()
+    np.testing.assert_allclose(sacrifice[~drawn], 1_000.0)
+    baseline_status = np.asarray(
+        baseline_sim.calculate("employment_status", period=2026, map_to="person").values,
+        dtype=str,
+    )
+    applied_status = np.asarray(shocked_sim.stored["employment_status"], dtype=str)
+    assert np.array_equal(applied_status, baseline_status)

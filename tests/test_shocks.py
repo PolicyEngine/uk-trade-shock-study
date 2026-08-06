@@ -1002,3 +1002,37 @@ def test_displaced_pension_contributions_still_zeroed():
     applied = shocked_sim.stored["employee_pension_contributions"]
     assert (applied[displaced] == 0.0).all()
     np.testing.assert_allclose(applied[~displaced], 1_000.0)
+
+
+def test_concentrated_wage_cut_pairs_with_displacement_draw():
+    persons = make_persons()
+    displacement = TradeShockScenario(
+        "d", "full_tariff", "displacement", selection_method="balanced"
+    )
+    concentrated = TradeShockScenario(
+        "c", "full_tariff", "concentrated_wage_cut", selection_method="balanced"
+    )
+    for seed in (0, 3):
+        drawn = draw_displaced(persons, displacement, seed=seed)
+        shocked = apply_shocks(persons, concentrated, seed=seed)
+        earnings = persons["employment_income"].to_numpy(float)
+        new = shocked["employment_income"].to_numpy(float)
+        # identical drawn set, identical worker-level losses ...
+        assert np.array_equal(shocked["earnings_changed"].to_numpy(bool), drawn)
+        assert (new[drawn] == 0.0).all()
+        assert np.array_equal(new[~drawn], earnings[~drawn])
+        # ... but nobody leaves employment
+        assert not shocked["displaced"].any()
+        assert not shocked["inactive"].any()
+        assert not shocked["lcwra"].any()
+        assert not shocked["reallocated"].any()
+
+
+def test_concentrated_wage_cut_requires_matching_margin():
+    from uk_trade_shock_study.shocks import apply_concentrated_wage_cut
+
+    persons = make_persons()
+    with pytest.raises(ValueError):
+        apply_concentrated_wage_cut(
+            persons, TradeShockScenario("w", "epd", "wage_cut")
+        )

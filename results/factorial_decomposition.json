@@ -1,0 +1,97 @@
+{
+  "design": {
+    "n_draws": 50,
+    "selection_method": "balanced",
+    "notes": "Concentrated wage cut imposes the displacement draw's exact worker-level losses (paired seeds, balanced assignment) with no employment-state change. Sequential decomposition broad->concentrated->displaced is the unique monotone path because diffuse displacement is undefined; it coincides with the Shapley allocation over the two factors."
+  },
+  "anchors": {
+    "obr": {
+      "valid_draws": 50,
+      "cushioning_percent": {
+        "wage_cut": 43.58313512020038,
+        "concentrated_wage_cut": 32.1388376905976,
+        "displacement": 32.033426910014306
+      },
+      "total_gap": {
+        "mean_pp": 11.549708210186072,
+        "assignment_sd_pp": 5.703475687821957
+      },
+      "concentration_and_selection_step": {
+        "mean_pp": 11.444297429602782,
+        "assignment_sd_pp": 5.685122505447129
+      },
+      "employment_state_step": {
+        "mean_pp": 0.1054107805832889,
+        "assignment_sd_pp": 0.35290536689362906
+      },
+      "employment_state_share_of_gap": 0.00912670507903599
+    },
+    "unit": {
+      "valid_draws": 50,
+      "cushioning_percent": {
+        "wage_cut": 43.93088497585293,
+        "concentrated_wage_cut": 34.06230873881094,
+        "displacement": 33.97274916112502
+      },
+      "total_gap": {
+        "mean_pp": 9.95813581472791,
+        "assignment_sd_pp": 4.668392704901335
+      },
+      "concentration_and_selection_step": {
+        "mean_pp": 9.868576237041996,
+        "assignment_sd_pp": 4.748416678686715
+      },
+      "employment_state_step": {
+        "mean_pp": 0.08955957768591283,
+        "assignment_sd_pp": 0.21346781436367113
+      },
+      "employment_state_share_of_gap": 0.0089936087790102,
+      "channel_split": {
+        "seeds": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "components_share_of_gross_loss": {
+          "wage_cut": {
+            "income_tax": 0.34502958798559874,
+            "employee_national_insurance": 0.04258938545418677,
+            "universal_credit": 0.014016632257056938,
+            "other_benefits": 6.170308977578112e-07,
+            "other_residual": 0.037672627030789156
+          },
+          "concentrated_wage_cut": {
+            "income_tax": 0.18359954303583517,
+            "employee_national_insurance": 0.047229507156148,
+            "universal_credit": 0.03190711761190375,
+            "other_benefits": -0.0030390299578281353,
+            "other_residual": 0.045065776840350874
+          },
+          "displacement": {
+            "income_tax": 0.18359954303583517,
+            "employee_national_insurance": 0.047229507156148,
+            "universal_credit": 0.029933465771761304,
+            "other_benefits": -0.0030390299578281353,
+            "other_residual": 0.04509036858549138
+          }
+        },
+        "concentration_and_selection_step_by_channel_pp": {
+          "income_tax": 16.143004494976356,
+          "employee_national_insurance": -0.46401217019612295,
+          "universal_credit": -1.789048535484681,
+          "other_benefits": 0.3039646988725893,
+          "other_residual": -0.7393149809561718
+        },
+        "employment_state_step_by_channel_pp": {
+          "income_tax": 0.0,
+          "employee_national_insurance": 0.0,
+          "universal_credit": 0.19736518401424452,
+          "other_benefits": 0.0,
+          "other_residual": -0.0024591745140509214
+        }
+      }
+    }
+  }
+}

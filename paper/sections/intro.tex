@@ -1,25 +1,44 @@
 \section{Introduction}\label{sec:intro}
 
-Who bears a trade shock when the same aggregate labour-income loss can be
-distributed through different labour-market margins? This paper answers that
-question for the United Kingdom. I hold a trade-exposure-calibrated loss in
-employee earnings---roughly \pounds\FullWageGross\,million a year, built from
-the 2025 US tariff schedule---fixed, and compare its fiscal and distributional
-consequences when it arrives as incumbent wage reductions, as displacement,
-or as mixtures of the two with re-employment penalties. The central finding
-is a large statutory asymmetry. Defining the cushioning rate as
+Who bears an earnings loss when the same aggregate amount can be
+distributed through different workers and labour-market states? This paper
+answers that question for the United Kingdom. I hold an aggregate loss in
+employee earnings---roughly \pounds\FullWageGross\,million a year in the
+application, calibrated from the 2025 US tariff schedule---fixed, and
+compare its fiscal and distributional consequences across a factorial
+family of incidence patterns: diffuse proportional wage cuts across all
+exposed workers, concentrated wage cuts imposing the displacement draw's
+exact worker-level losses without any job loss, displacement of the same
+selected workers into unemployment, and mixed transition paths with
+re-employment penalties. Defining the cushioning rate as
 $1-\Delta Y/\Delta E$, where $\Delta E$ is the gross employee-earnings loss
-and $\Delta Y$ the household disposable-income loss, proportional wage cuts
-are cushioned at \FullWageCushion\ per cent while displacement is cushioned
-at $\FullDisplacedCushion \pm \FullDisplacedCushionSD$ per cent---a gap of
-\PrimaryCushionDifference\ percentage points, with a household-bootstrap 95
-per cent interval of \BootstrapCushionDifferenceCILower\ to
-\BootstrapCushionDifferenceCIUpper\ points that excludes zero. The mechanism
-is institutional: an in-work earnings reduction is offset automatically at
-marginal income-tax and National Insurance rates, whereas whole-job loss is
-relieved nearer average rates and depends on Universal Credit, which is
-gated by means tests, capital rules, and claiming behaviour. The gap is not
-an artefact of the HBAI treatment of pension saving: recomputed under a
+and $\Delta Y$ the household disposable-income loss, diffuse wage cuts are
+cushioned at \SubmissionUnitWageCushion\ per cent while displacement is
+cushioned at
+$\SubmissionUnitDisplacedCushion \pm \SubmissionUnitDisplacedCushionSD$ per
+cent---a gap of \PrimaryCushionDifference\ percentage points. The two
+headline scenarios differ in more than the adjustment margin: they also
+concentrate the loss on different workers. The factorial middle cell
+separates the two channels, and the answer is one-sided. Concentrating the
+same aggregate loss on the displacement draw's workers, while keeping
+everyone employed, accounts for \FactorialConcStep\ points of the gap;
+moving those same workers, bearing the same worker-level losses, from
+employment into unemployment accounts for only the remaining
+\FactorialStateStep\ points (Section~\ref{sec:results-factorial}). The
+mechanism is therefore a loss-size effect inside the statutory schedule: a
+diffuse in-work reduction is offset automatically at marginal income-tax
+and National Insurance rates, whereas a complete earnings loss exhausts
+that relief and lands on means-tested Universal Credit---whose statutory
+entitlement responds to income, not employment status, so the state change
+itself adds almost nothing \emph{within the modelled annual system}. The
+institutions that do condition on employment status---New Style JSA,
+monthly assessment periods, waiting and claiming frictions, work-search
+conditionality---are exactly the ones outside the model, so the
+near-zero state component is a statement about the modelled statutory
+rules, not about the real-world experience of job loss. Actual receipt
+additionally depends on capital holdings and claiming behaviour that the
+survey data only partially observe. The gap is
+not an artefact of the HBAI treatment of pension saving: recomputed under a
 pension-gross income concept, both margins' cushioning falls by roughly four
 percentage points but the wage-minus-displacement contrast is essentially
 unchanged (Section~\ref{sec:results-cushioning}).
@@ -47,9 +66,11 @@ sector weights and shock magnitudes through a transparent accounting bridge
 $\times$ a wage-bill-incidence assumption); the bridge deliberately omits
 prices, quantities, imported inputs, productivity, profits, and firm entry.
 Reported $\pm$ values are assignment dispersion from the Monte Carlo
-allocation of displacement, not standard errors; survey-sampling uncertainty
-is scored separately by a household bootstrap. Mixed-path shares are
-disciplined by external evidence but not estimated.
+allocation of displacement, not standard errors; sensitivity of the primary
+contrast to which FRS records were sampled is scored separately by a
+household record-resampling exercise and a leave-one-record-out audit,
+neither of which is a design-based confidence interval. Mixed-path shares
+are disciplined by external evidence but not estimated.
 
 One negative result should be on the table from the outset. A monthly HMRC
 product--destination panel confirms a post-policy decline in US-bound
@@ -70,20 +91,21 @@ extensive relief.
 The second stage uses the 2024--25 Family Resources Survey and PolicyEngine
 UK to compute taxes, National Insurance, benefits, household disposable
 income, poverty, inequality, and Exchequer effects. I report a common
-aggregate loss under alternative adjustment paths, decompose the result by
+aggregate loss under alternative incidence patterns, decompose the result by
 tax and benefit channel, and show sensitivity to spell duration, worker
-selection, benefit take-up, and re-employment. Between the polar bounds, an
-illustrative interior transition path---70 per cent of the loss borne by
-workers who re-enter services jobs at an FRS-calibrated earnings penalty
-after a three-month lag, the rest by survivor wage cuts---yields
-\FullTransitionCushion\ per cent cushioning and an Exchequer cost of
-\pounds\FullTransitionExchequer\,million. The response surface around the
-bounds, not any single interior point, is the paper's central object.
+selection, benefit take-up, and re-employment. Between the polar bounds a
+transition surface varies the loss share borne by workers who re-enter
+services jobs after a lag; its interior points rest on assumed shares,
+lags and a cross-sectional earnings penalty, so the response surface, not
+any single interior calibration, is the reported object
+(Section~\ref{sec:results-cushioning}).
 
 The paper makes three contributions. First, it provides a reproducible UK
-microsimulation framework for mapping trade-exposure-calibrated earnings
-losses into fiscal and distributional outcomes. Second, it shows why the
-incidence margin matters even when aggregate lost earnings are identical.
+microsimulation framework for mapping earnings losses---here calibrated to
+trade exposure as an application---into fiscal and distributional outcomes.
+Second, it separates, factorially, how much of the wage-cut versus
+displacement cushioning gap reflects concentrating a fixed loss on selected
+workers and how much reflects the change in employment state itself.
 Third, it quantifies which statutory channels drive the differences and
 which assumptions---timing, take-up, pensions, and worker selection---are
 most important for policy conclusions. The remainder of the paper describes

@@ -56,6 +56,8 @@ submission-results:
 	$(PYTHON) analysis/run_submission_scenarios.py --n-draws 50
 	$(PYTHON) analysis/run_leave_one_sector_out.py --n-draws 20
 	$(PYTHON) analysis/bootstrap_uncertainty.py
+	$(PYTHON) analysis/factorial_decomposition.py --n-draws 50
+	$(PYTHON) analysis/leave_one_record_out.py
 	$(PYTHON) analysis/write_submission_results.py --expected-draws 50
 	$(PYTHON) analysis/referee_fixes.py
 
@@ -73,9 +75,11 @@ paper-values:
 	$(PYTHON) analysis/write_trade_benchmark_results.py
 	$(PYTHON) analysis/write_lfs_selection_results.py
 	$(PYTHON) analysis/write_submission_results.py --expected-draws 50
+	$(PYTHON) analysis/write_factorial_results.py --expected-draws 50
 	$(PYTHON) analysis/write_referee_macros.py
 
 paper: paper-values
 	cd paper && latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
+	cd paper && latexmk -pdf -interaction=nonstopmode -halt-on-error supplement.tex
 
 reproduce: check inputs results submission-results figures paper

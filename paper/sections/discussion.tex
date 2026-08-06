@@ -1,20 +1,34 @@
 \section{Discussion and conclusion}\label{sec:discussion}
 
 The central finding is that the UK tax--benefit system responds differently
-when a common aggregate earnings loss is distributed through alternative
-labour-market margins. Across two loss anchors and three duration-equivalent
-scales, the wage-cut and displacement bounds differ by
+when a common aggregate earnings loss is distributed differently across
+workers and labour-market states. Across two loss anchors and three
+duration-equivalent scales, the wage-cut and displacement bounds differ by
 \SubmissionCushionDifferenceMin--\SubmissionCushionDifferenceMax\ percentage
 points; at the unit twelve-month scale the difference is
-\PrimaryCushionDifference\ points, the wage-cut Exchequer cost is
-\pounds\PrimaryExchequerDifference\ million higher, and the household
-bootstrap places the difference at
-\BootstrapCushionDifference\ points with a 95 per cent interval of
-\BootstrapCushionDifferenceCILower--\BootstrapCushionDifferenceCIUpper\ points
-in the record-resampling interval. The mechanism is institutional: proportional cuts receive
-tax relief near marginal rates, while whole-job loss receives relief nearer
-average rates and relies more on UC---relief that is gated by means tests,
-capital rules and claiming behaviour. Two sensitivity results sharpen this
+\PrimaryCushionDifference\ points and the wage-cut Exchequer cost is
+\pounds\PrimaryExchequerDifference\ million higher. The factorial middle
+cell splits that difference into \FactorialConcStep\ points from
+concentrating the loss on selected workers and only
+\FactorialStateStep\ points from the employment-state change itself; the
+record-resampling exercise places the total contrast at
+\BootstrapCushionDifference\ points (sensitivity range
+\BootstrapCushionDifferenceCILower--\BootstrapCushionDifferenceCIUpper), and
+it survives the removal of any single loss-contributing record
+(\LOOMin--\LOOMax\ points). The mechanism is a loss-concentration effect
+inside the statutory schedule: diffuse cuts are relieved at marginal
+income-tax rates, complete individual losses exhaust that relief and land
+on means-tested UC, and the unemployment state itself adds almost nothing
+within the modelled annual rules---a bound on static statutory readings of
+the extensive margin, since the status-contingent institutions (New Style
+JSA, monthly assessment, waiting periods, conditionality) are unmodelled.
+On the UC side four objects must
+be kept distinct: statutory entitlement as represented by PolicyEngine;
+entitlement conditional on the incomplete household information in the FRS
+(no usable liquid-capital measure, so the capital gates are not exercised);
+modelled take-up, which is a scenario convention; and actual receipt
+following real job loss, which none of the above observes. The simulation
+evidence speaks to the first three. Two sensitivity results sharpen this
 reading. Under a pension-gross income concept the cushioning \emph{levels}
 fall by roughly four percentage points on both margins but the contrast is
 essentially unchanged, so the gap is a statutory asymmetry, not an artefact
@@ -35,9 +49,10 @@ by assignment and closely reproduces the Bernoulli mean at unit scale. It
 does not overcome sparse information: the unit displacement loss has only
 \UnitEffectiveLossRecords\ effective record contributions, and support is
 weaker at the smallest OBR-duration cells. Assignment SDs describe
-scenario-allocation sensitivity; sampling uncertainty is scored separately
-by the household bootstrap, which is a sensitivity interval rather than a
-design-based confidence interval. The sign also survives all
+scenario-allocation sensitivity; record-composition sensitivity is scored
+separately by the household resampling exercise and the leave-one-record-out
+audit, neither of which is a design-based confidence interval, and no
+significance claim is attached to any interval. The sign also survives all
 \LeaveSectorCount\ leave-one-division-out reruns,
 with a cushioning difference of \LeaveSectorCushionDifferenceMin--%
 \LeaveSectorCushionDifferenceMax\ points. This establishes sector robustness
@@ -83,7 +98,7 @@ policy. Worker selection is independent within broad SIC divisions; the
 longitudinal LFS models provide only weakly concordant predictive rankings;
 within-year benefit timing, New Style JSA, household labour supply, indirect
 taxes, exchange rates, retaliation, and general equilibrium remain outside the
-central specification. Constituency results in Appendix~\ref{app:support} are
+central specification. Constituency machinery in the Online Supplement is
 illustrative because local industry structure is not observed at the required
 level.
 

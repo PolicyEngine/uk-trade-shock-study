@@ -255,6 +255,18 @@ def main() -> None:
                 ],
                 0,
             ),
+            "SubmissionUnitDisplacedCushion": fmt(
+                diagnostics["scenarios"]["unit_12m_displacement"][
+                    "cushioning_mean_percent"
+                ],
+                1,
+            ),
+            "SubmissionUnitDisplacedCushionSD": fmt(
+                diagnostics["scenarios"]["unit_12m_displacement"][
+                    "cushioning_sd_pp"
+                ],
+                1,
+            ),
             "SubmissionCushionDifferenceMin": fmt(min(contrast_values), 1),
             "SubmissionCushionDifferenceMax": fmt(max(contrast_values), 1),
         }

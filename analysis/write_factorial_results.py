@@ -89,6 +89,57 @@ def main() -> None:
         ):
             macros[f"FactorialStateStep{label}"] = fmt(state[key])
             macros[f"FactorialConcStep{label}"] = fmt(conc[key])
+        # Channel LEVELS, not just steps.  The manuscript reconciles the
+        # displacement margin against the Dolls, Fuest and Peichl (2012) UK
+        # unemployment-shock decomposition, which reports the tax, social
+        # insurance and out-of-work benefit contributions separately; that
+        # comparison needs levels and must never be hand-typed.
+        levels = channels["components_share_of_gross_loss"]
+        macros["FactorialChannelSeeds"] = str(len(channels["seeds"]))
+        for margin, prefix in (
+            ("displacement", "DispChannel"),
+            ("wage_cut", "WageChannel"),
+        ):
+            share = levels[margin]
+            for key, label in (
+                ("income_tax", "IncomeTax"),
+                ("employee_national_insurance", "NI"),
+                ("universal_credit", "UC"),
+                ("other_benefits", "OtherBenefits"),
+                ("other_residual", "Residual"),
+            ):
+                macros[f"{prefix}{label}"] = fmt(100 * share[key])
+            # Benefits as a single block, the object Dolls et al. report.
+            macros[f"{prefix}Benefits"] = fmt(
+                100 * (share["universal_credit"] + share["other_benefits"])
+            )
+            macros[f"{prefix}TaxAndNI"] = fmt(
+                100 * (share["income_tax"] + share["employee_national_insurance"])
+            )
+            # The channel split runs on a handful of common seeds while the
+            # cushioning rates are estimated over the full paired design, so
+            # the components do NOT sum to the headline on the stochastic
+            # margins.  Emit the sum and the shortfall rather than letting the
+            # manuscript compare a decomposition that does not add up against
+            # Dolls, Fuest and Peichl's, which does.
+            channel_sum = 100 * sum(share.values())
+            macros[f"{prefix}Sum"] = fmt(channel_sum)
+            macros[f"{prefix}Shortfall"] = fmt(
+                unit["cushioning_percent"][margin] - channel_sum
+            )
+        # The factorial STEPS on the channel seeds, for the same reason: the
+        # manuscript must not present the 50-draw step and the 5-seed channel
+        # arithmetic as though they were the same decomposition.
+        sums = {
+            key: 100 * sum(levels[key].values())
+            for key in ("wage_cut", "concentrated_wage_cut", "displacement")
+        }
+        macros["FactorialConcStepChannelSeeds"] = fmt(
+            sums["wage_cut"] - sums["concentrated_wage_cut"]
+        )
+        macros["FactorialStateStepChannelSeeds"] = fmt(
+            sums["concentrated_wage_cut"] - sums["displacement"]
+        )
 
     loo = json.loads(args.loo.read_text())
     macros.update(

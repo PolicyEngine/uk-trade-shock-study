@@ -142,6 +142,37 @@ def main() -> None:
             _mean([d["gross_earnings_loss"] for d in fw["draws"]]), 1 / 1e6, 0
         ),
         "FullWageCushion": _fmt(fw["cushioning_rate_mean"], 100, 1),
+        # Appendix reconciliation of the cushioning identity against the
+        # Exchequer effect.  These were previously multiplied out by hand in
+        # the prose and went stale when the underlying runs were refreshed,
+        # so the products and wedges are generated here and the appendix now
+        # quotes macros only.
+        "FullWageImpliedOffset": _fmt(
+            fw["cushioning_rate_mean"]
+            * _mean([d["gross_earnings_loss"] for d in fw["draws"]]),
+            1 / 1e6,
+            0,
+        ),
+        "FullWageExchequerWedge": _fmt(
+            fw["exchequer_cost_mean"]
+            - fw["cushioning_rate_mean"]
+            * _mean([d["gross_earnings_loss"] for d in fw["draws"]]),
+            1 / 1e6,
+            0,
+        ),
+        "FullDisplacedImpliedOffset": _fmt(
+            fd["cushioning_rate_mean"]
+            * _mean([d["gross_earnings_loss"] for d in fd["draws"]]),
+            1 / 1e6,
+            0,
+        ),
+        "FullDisplacedExchequerWedge": _fmt(
+            fd["exchequer_cost_mean"]
+            - fd["cushioning_rate_mean"]
+            * _mean([d["gross_earnings_loss"] for d in fd["draws"]]),
+            1 / 1e6,
+            0,
+        ),
         "FullInactiveExchequer": _fmt(fi["exchequer_cost_mean"], 1 / 1e6, 0),
         "FullInactiveExchequerSD": _fmt(fi["exchequer_cost_sd"], 1 / 1e6, 0),
         "FullInactiveCushion": _fmt(fi["cushioning_rate_mean"], 100, 1),

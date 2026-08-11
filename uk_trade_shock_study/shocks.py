@@ -125,6 +125,42 @@ DEFAULT_UC_TAKEUP = 0.80
 #: the destination/LCWRA tuple streams, which use different second elements.
 UC_TAKEUP_SEED_OFFSET = 900_000
 
+#: WHICH CHANGED BENEFIT UNITS HAVE THEIR CLAIMING FLAG RE-DRAWN.
+#:
+#: ``new_entitlement`` (default, and the convention behind every stored
+#: result) re-draws only benefit units whose POTENTIAL UC award moves from
+#: zero at baseline to positive post-shock. It answers "what happens to
+#: families the shock pushes onto UC from scratch", and deliberately leaves
+#: already-entitled units on their stored flag so that a small wage cut does
+#: not silently impose a population-wide take-up reform.
+#:
+#: ``all_entitled`` re-draws EVERY changed benefit unit with a positive
+#: post-shock potential award, including those already entitled at baseline.
+#: This is the scope that binds empirically: in the exposed population most
+#: benefit units that end the shock with a positive potential award were
+#: ALREADY potentially entitled at baseline (in-work UC), so the
+#: ``new_entitlement`` set can be — and at the paper's calibration is —
+#: EMPTY, which makes a take-up grid run under it exactly inert. The
+#: ``all_entitled`` scope therefore bounds how much the claiming margin can
+#: move the headline cushioning rate. It is an upper bound on the claiming
+#: response, not a behavioural estimate: it assumes the shock re-opens the
+#: claiming decision for every affected entitled family.
+#:
+#: Both scopes consume the SAME independent tuple-seeded RNG stream
+#: (seed, UC_TAKEUP_SEED_OFFSET), drawn over all benefit units and then
+#: masked, so a given benefit unit's draw is identical across scopes and the
+#: labour-market draws are untouched in either case.
+UC_TAKEUP_SCOPES = ("new_entitlement", "all_entitled")
+DEFAULT_UC_TAKEUP_SCOPE = "new_entitlement"
+
+
+def _validate_uc_takeup_scope(scope: str) -> str:
+    if scope not in UC_TAKEUP_SCOPES:
+        raise ValueError(
+            f"uc_takeup_scope must be one of {UC_TAKEUP_SCOPES}; got {scope!r}"
+        )
+    return scope
+
 
 @dataclass(frozen=True)
 class TradeShockScenario:
@@ -145,6 +181,9 @@ class TradeShockScenario:
     #: post-shock UC take-up among AFFECTED benefit units (see
     #: DEFAULT_UC_TAKEUP for why the baseline stored flag is not usable).
     uc_takeup: float = DEFAULT_UC_TAKEUP
+    #: WHICH changed benefit units are re-drawn at ``uc_takeup``: see
+    #: UC_TAKEUP_SCOPES. The default preserves the published convention.
+    uc_takeup_scope: str = DEFAULT_UC_TAKEUP_SCOPE
     #: Mixed margin: share of each sector's expected earnings loss delivered
     #: through Bernoulli displacement; the remainder is a survivor wage cut.
     displacement_share: float = 0.5
@@ -175,6 +214,7 @@ class TradeShockScenario:
     def __post_init__(self):
         if not 0.0 <= self.uc_takeup <= 1.0:
             raise ValueError("uc_takeup must lie in [0, 1]")
+        _validate_uc_takeup_scope(self.uc_takeup_scope)
         if self.margin not in MARGINS:
             raise ValueError(f"unknown margin {self.margin!r}; use one of {MARGINS}")
         if not 0.0 <= self.reallocation_penalty < 1.0:
@@ -630,8 +670,9 @@ def apply_concentrated_wage_cut(
 
     Because employment is binary, "diffuse displacement" is not defined, so
     the sequential path broad -> concentrated -> displaced is the unique
-    monotone decomposition of the headline gap (it coincides with the Shapley
-    allocation over the two factors along the feasible lattice).
+    monotone decomposition of the headline gap.  It is NOT a Shapley
+    allocation: that would require valuing the undefined
+    diffuse-displacement coalition.
     """
     if scenario.margin != "concentrated_wage_cut":
         raise ValueError(
@@ -828,9 +869,13 @@ def apply_shocks(
         shocked = apply_reallocation(persons, scenario, seed=seed)
     else:
         shocked = _blank_reallocation(apply_displacement(persons, scenario, seed=seed))
-    # Carried to build_shocked_simulation, which needs the take-up rate and
-    # the draw seed to re-draw would_claim_uc for affected benefit units.
+    # Carried to build_shocked_simulation, which needs the take-up rate, the
+    # re-draw scope and the draw seed to re-draw would_claim_uc for affected
+    # benefit units.
     shocked.attrs["uc_takeup"] = float(scenario.uc_takeup)
+    shocked.attrs["uc_takeup_scope"] = _validate_uc_takeup_scope(
+        scenario.uc_takeup_scope
+    )
     shocked.attrs["seed"] = int(seed)
     return shocked
 
@@ -924,6 +969,55 @@ def _baseline_flag_values_and_rate(sim, period: int) -> tuple[np.ndarray, float]
     return np.asarray(weighted_flags.values, dtype=bool), float(weighted_flags.mean())
 
 
+#: Key under which ``redraw_uc_takeup`` records its redraw-set diagnostic on
+#: the shocked table's ``.attrs`` (and, as an attribute of the same name with
+#: a leading underscore, on the shocked simulation object).
+UC_TAKEUP_DIAGNOSTIC_KEY = "uc_takeup_redraw"
+
+
+def _benunit_weights(sim, period, n_benunits: int) -> np.ndarray | None:
+    """Benefit-unit weights, or None when the sim cannot supply them.
+
+    Unit-test stubs and reduced simulations have no ``benunit_weight``
+    variable; the diagnostic degrades to unweighted counts rather than
+    failing, so this helper never raises.
+    """
+    try:
+        values = np.asarray(
+            sim.calculate("benunit_weight", period=period, map_to="benunit").values,
+            dtype=float,
+        )
+    except Exception:  # noqa: BLE001 - any stub/engine failure means "no weights"
+        return None
+    if values.shape != (n_benunits,) or not np.isfinite(values).all():
+        return None
+    return values
+
+
+def uc_takeup_redraw_diagnostic(shocked_table) -> dict | None:
+    """Diagnostic recorded by the most recent ``redraw_uc_takeup`` call.
+
+    Exists because a take-up grid run over an EMPTY redraw set is silently
+    inert: every take-up value returns bit-identical results and the
+    experiment looks like a robustness finding ("take-up does not matter")
+    when it is actually a no-op. Callers should store ``n_redrawn`` alongside
+    any take-up sensitivity they report.
+    """
+    return getattr(shocked_table, "attrs", {}).get(UC_TAKEUP_DIAGNOSTIC_KEY)
+
+
+def _record_takeup_diagnostic(sim, shocked_table, diagnostic: dict) -> dict:
+    try:
+        shocked_table.attrs[UC_TAKEUP_DIAGNOSTIC_KEY] = diagnostic
+    except (AttributeError, TypeError):  # pragma: no cover - non-pandas caller
+        pass
+    try:
+        setattr(sim, f"_{UC_TAKEUP_DIAGNOSTIC_KEY}", diagnostic)
+    except AttributeError:  # pragma: no cover - slotted stub
+        pass
+    return diagnostic
+
+
 def redraw_uc_takeup(
     sim,
     baseline_sim,
@@ -932,27 +1026,41 @@ def redraw_uc_takeup(
     uc_takeup: float | None = None,
     seed: int | None = None,
     baseline_potential_award: np.ndarray | None = None,
+    uc_takeup_scope: str | None = None,
 ) -> np.ndarray:
     """Re-draw take-up for changed units with positive post-shock UC potential.
 
     See DEFAULT_UC_TAKEUP for the full justification: the baseline flag is a
     stored draw conditioned on PRE-SHOCK circumstances (and calibrated as a
     population-wide share, not take-up among the entitled). The same rule is
-    applied to every adjustment margin: a benefit unit is redrawn only if its
-    labour-market circumstances changed and its potential UC award moves from
-    zero at baseline to positive post-shock. The draw uses an independent RNG
-    stream, leaving labour-market draws, existing eligible units, and unchanged
-    or ineligible units untouched.
+    applied to every adjustment margin: a benefit unit is a candidate only if
+    its labour-market circumstances changed and its potential UC award is
+    positive post-shock. ``uc_takeup_scope`` then selects WHICH of those
+    candidates are re-drawn (see UC_TAKEUP_SCOPES):
 
-    Returns the benunit-level boolean flag actually applied. Hard-error
-    contract: a silently-rejected ``set_input`` would leave the stale flags in
-    place and change every downstream result, so the applied array is read back
-    and verified.
+    - ``new_entitlement`` (default): only units whose potential award moves
+      from zero at baseline to positive post-shock;
+    - ``all_entitled``: every changed unit with a positive post-shock
+      potential award, including units already entitled at baseline.
+
+    The draw uses an independent RNG stream in both cases, leaving
+    labour-market draws and unchanged or ineligible units untouched.
+
+    Returns the benunit-level boolean flag actually applied, and records a
+    redraw-set diagnostic retrievable via ``uc_takeup_redraw_diagnostic``.
+    Hard-error contract: a silently-rejected ``set_input`` would leave the
+    stale flags in place and change every downstream result, so the applied
+    array is read back and verified.
     """
     if uc_takeup is None:
         uc_takeup = float(shocked_table.attrs.get("uc_takeup", DEFAULT_UC_TAKEUP))
     if seed is None:
         seed = int(shocked_table.attrs.get("seed", 0))
+    if uc_takeup_scope is None:
+        uc_takeup_scope = str(
+            shocked_table.attrs.get("uc_takeup_scope", DEFAULT_UC_TAKEUP_SCOPE)
+        )
+    _validate_uc_takeup_scope(uc_takeup_scope)
     if not 0.0 <= uc_takeup <= 1.0:
         raise ValueError("uc_takeup must lie in [0, 1]")
 
@@ -970,7 +1078,37 @@ def redraw_uc_takeup(
     shocked_earnings = shocked_table["employment_income"].to_numpy(dtype=float)
     changed = ~np.isclose(shocked_earnings, baseline_earnings, rtol=0.0, atol=1e-8)
     changed |= affected_mask(shocked_table)
+
+    weights = _benunit_weights(sim, period, baseline_flag.size)
+
+    def _diagnostic(**fields) -> dict:
+        base = {
+            "uc_takeup": float(uc_takeup),
+            "uc_takeup_scope": uc_takeup_scope,
+            "seed": int(seed),
+            "n_benunits": int(baseline_flag.size),
+            "weights_available": weights is not None,
+        }
+        base.update(fields)
+        return base
+
+    def _weighted(mask) -> float | None:
+        if weights is None:
+            return None
+        return float(weights[np.asarray(mask, dtype=bool)].sum())
+
     if not changed.any():
+        _record_takeup_diagnostic(
+            sim,
+            shocked_table,
+            _diagnostic(
+                n_changed_benunits=0,
+                n_entitled_changed_benunits=0,
+                n_redrawn=0,
+                weighted_changed_benunits=0.0 if weights is not None else None,
+                weighted_redrawn=0.0 if weights is not None else None,
+            ),
+        )
         return baseline_flag
     changed_bu = (
         np.asarray(
@@ -1004,16 +1142,35 @@ def redraw_uc_takeup(
     if baseline_potential_award.shape != potential_award.shape:
         raise ValueError("baseline and post-shock potential UC awards must align")
 
-    # Apply the take-up draw only to benefit units that become newly entitled.
-    # Existing claimants and existing eligible non-claimants retain their
-    # baseline claiming state; otherwise a small wage cut would inadvertently
-    # impose a population-wide take-up reform on all already-entitled workers.
-    redraw_bu = (
-        changed_bu
-        & (baseline_potential_award <= 1e-8)
-        & (potential_award > 1e-8)
-    )
+    # Candidate set common to both scopes: a changed benefit unit that would
+    # actually receive something if it claimed.
+    entitled_changed_bu = changed_bu & (potential_award > 1e-8)
+    if uc_takeup_scope == "new_entitlement":
+        # Apply the take-up draw only to benefit units that become newly
+        # entitled. Existing claimants and existing eligible non-claimants
+        # retain their baseline claiming state; otherwise a small wage cut
+        # would inadvertently impose a population-wide take-up reform on all
+        # already-entitled workers. NOTE: this set is empty whenever every
+        # changed-and-entitled unit was already potentially entitled at
+        # baseline, in which case a take-up grid run under this scope is inert
+        # by construction — check ``n_redrawn`` in the diagnostic before
+        # reporting such a grid as a robustness result.
+        redraw_bu = entitled_changed_bu & (baseline_potential_award <= 1e-8)
+    else:  # "all_entitled" — validated above
+        # Re-open the claiming decision for every changed entitled unit,
+        # including baseline-entitled ones. Bounds the claiming margin.
+        redraw_bu = entitled_changed_bu
+
+    diagnostic_fields = {
+        "n_changed_benunits": int(changed_bu.sum()),
+        "n_entitled_changed_benunits": int(entitled_changed_bu.sum()),
+        "n_redrawn": int(redraw_bu.sum()),
+        "weighted_changed_benunits": _weighted(changed_bu),
+        "weighted_redrawn": _weighted(redraw_bu),
+    }
+
     if not redraw_bu.any():
+        _record_takeup_diagnostic(sim, shocked_table, _diagnostic(**diagnostic_fields))
         sim.set_input("would_claim_uc", period, baseline_flag)
         sim._invalidate_all_caches()
         _verify_uc_award_cache_flushed(sim, period, baseline_flag, potential_award)
@@ -1023,9 +1180,13 @@ def redraw_uc_takeup(
     # stream or the other tuple-seeded streams (destination (seed, 4_010_2026)
     # and LCWRA (seed, 7_002_026)) — an additive integer offset shares the
     # displacement seed space and overlaps it for seeds >= the offset.
+    # The draw is generated over ALL benefit units and then masked, so a given
+    # benefit unit's draw is identical across take-up scopes: switching scope
+    # changes WHICH units are re-drawn, never the underlying random numbers.
     rng = np.random.default_rng((int(seed), UC_TAKEUP_SEED_OFFSET))
     draw = rng.random(baseline_flag.size) < uc_takeup
     new_flag = np.where(redraw_bu, draw, baseline_flag)
+    _record_takeup_diagnostic(sim, shocked_table, _diagnostic(**diagnostic_fields))
     sim.set_input("would_claim_uc", period, new_flag)
     # universal_credit was evaluated under the temporary all-claim input.
     # Clear formula outputs while preserving the final user inputs so all

@@ -204,6 +204,13 @@
       "bernoulli_gross_loss_mean_million": 871.732581276175
     }
   },
+  "main_table_cells": {
+    "excluded_thin_cell": "obr_3m_wage_minus_displacement",
+    "n_main_table_contrasts": 5,
+    "cushioning_difference_min_pp": 9.755483404492603,
+    "cushioning_difference_max_pp": 11.698634297541021,
+    "thin_cell_cushioning_difference_pp": 12.829342137189553
+  },
   "leave_one_sector_out": {
     "division_count": 23,
     "cushioning_difference_min_pp": 7.6344408305293925,

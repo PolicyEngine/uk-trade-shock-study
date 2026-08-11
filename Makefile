@@ -1,4 +1,4 @@
-.PHONY: bootstrap test manifest check public-hmrc public-bres trade-event-study lfs-imputation lfs-qrf lfs-benchmarks inputs results submission-results figures paper-values uncertainty-design paper reproduce
+.PHONY: bootstrap test manifest check public-hmrc public-bres trade-event-study lfs-imputation lfs-qrf lfs-benchmarks inputs results submission-results figures paper-values uncertainty-design paper reproduce takeup-entitled bootstrap-summary
 
 PYTHON := .venv/bin/python
 
@@ -12,6 +12,20 @@ manifest:
 	$(PYTHON) analysis/validate_manifest.py
 
 check: test manifest paper-values
+
+# Re-runs BOTH take-up scopes at the current calibration.  The
+# new-entitlement grid is inert (its re-draw set is empty); the all-entitled
+# grid is the one that exercises the claiming margin, and the manuscript
+# currently quotes a superseded-vintage bound for it.  Needs licensed FRS data.
+takeup-entitled:
+	$(PYTHON) analysis/referee_fixes.py --only takeup
+	$(PYTHON) analysis/write_referee_macros.py
+
+# Rebuilds results/bootstrap_uncertainty.json (including the ratio-of-pooled-sums
+# estimator and the support diagnostics) from results/bootstrap_contributions.npz.
+# Needs no FRS file and no PolicyEngine when that cache is present.
+bootstrap-summary:
+	$(PYTHON) analysis/bootstrap_uncertainty.py
 
 public-hmrc:
 	$(PYTHON) analysis/download_hmrc_panel.py
@@ -76,6 +90,9 @@ paper-values:
 	$(PYTHON) analysis/write_lfs_selection_results.py
 	$(PYTHON) analysis/write_submission_results.py --expected-draws 50
 	$(PYTHON) analysis/write_factorial_results.py --expected-draws 50
+	$(PYTHON) analysis/write_validation_macros.py
+	# Pure statutory arithmetic; safe to recompute on every build.
+	$(PYTHON) analysis/referee_fixes.py --only jsa
 	$(PYTHON) analysis/write_referee_macros.py
 
 paper: paper-values

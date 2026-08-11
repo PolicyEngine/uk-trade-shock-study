@@ -12,7 +12,10 @@ everyone EMPLOYED — and decomposes the headline gap sequentially:
 
 Because employment is binary, "diffuse displacement" is not a definable
 cell, so this is the unique monotone path through the feasible factorial
-lattice (and coincides with the Shapley allocation over the two factors).
+lattice.  No Shapley interpretation is available or claimed: a Shapley
+value would require the undefined diffuse-displacement coalition to be
+valued, and the two factors are not symmetric (concentration is continuous,
+employment state is binary).
 
 Outputs
   results/submission/submission_{anchor}_12m_concentrated_wage_cut.json
@@ -163,8 +166,9 @@ def main() -> None:
             "worker-level losses (paired seeds, balanced assignment) with "
             "no employment-state change. Sequential decomposition "
             "broad->concentrated->displaced is the unique monotone path "
-            "because diffuse displacement is undefined; it coincides with "
-            "the Shapley allocation over the two factors."
+            "because diffuse displacement is undefined.  It carries no Shapley "
+            "interpretation: that would require the undefined "
+            "diffuse-displacement coalition to be valued."
         ),
     }, "anchors": {}}
     for anchor in args.anchors:

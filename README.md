@@ -102,6 +102,11 @@ interval, and can be consumed by an expensive licensed-data run.
   benchmark on all employed LFS adults for model shape, then calibrates its
   manufacturing level to the same direct LFS/BRES targets as the primary
   estimator. `make lfs-benchmarks LFS_TAB=/path/to/panel.tab` rebuilds both.
+  Both per-record outputs carry FRS person records (`person_id`, age, gender,
+  employment income, survey weight), so they are **gitignored and never
+  distributed**. The manuscript reads
+  `results/lfs_qrf_benchmark_summary.json`, an aggregate of weighted means
+  and deciles that the same script writes alongside them.
   These outputs are predictive imputations, not linked ASHE evidence or
   tariff-effect estimates.
 - `uk_trade_shock_study/shocks.py` — pure and mixed adjustment-margin families;

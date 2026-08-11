@@ -74,6 +74,12 @@ same 100-draw production specification and generates
 `paper/generated_results.tex`. The paper build fails rather than silently
 mixing exploratory and production results. The corresponding submission
 writer enforces 50 draws independently.
+`analysis/write_validation_macros.py` generates `paper/generated_validation.tex`
+so the trade-benchmark figures quoted in the manuscript come from
+`results/validation_sectors.json` rather than from prose; the customs totals
+additionally require `results/trade_build_totals.json`, written by
+`make inputs` from the raw HMRC/ONS inputs, and their macros are emitted only
+when that artifact exists.
 
 `make uncertainty-design` writes a seeded 500-draw Latin-hypercube design for
 elasticity, wage-bill incidence, UC take-up, reallocation penalty, and the
@@ -96,10 +102,21 @@ interval, and can be consumed by an expensive licensed-data run.
   benchmark on all employed LFS adults for model shape, then calibrates its
   manufacturing level to the same direct LFS/BRES targets as the primary
   estimator. `make lfs-benchmarks LFS_TAB=/path/to/panel.tab` rebuilds both.
+  Both per-record outputs carry FRS person records (`person_id`, age, gender,
+  employment income, survey weight), so they are **gitignored and never
+  distributed**. The manuscript reads
+  `results/lfs_qrf_benchmark_summary.json`, an aggregate of weighted means
+  and deciles that the same script writes alongside them.
   These outputs are predictive imputations, not linked ASHE evidence or
   tariff-effect estimates.
 - `uk_trade_shock_study/shocks.py` — pure and mixed adjustment-margin families;
-  hard-errors if the employment_status transition fails to apply.
+  hard-errors if the employment_status transition fails to apply. UC claiming
+  is re-drawn post-shock under a declared `uc_takeup_scope`: `new_entitlement`
+  (the default, and the specification behind every stored result) re-draws
+  only benefit units moving from zero to positive entitlement, which turns
+  out to be an **empty set** in production runs; `all_entitled` re-draws every
+  changed entitled unit and is the scope in which the claiming assumption
+  actually binds. `make takeup-entitled` runs both at the current calibration.
 - `uk_trade_shock_study/runner.py` — PolicyEngine UK runs: disposable income,
   relative/absolute BHC + AHC poverty, Gini, decile/region breakdowns,
   Exchequer effect, Monte Carlo support.

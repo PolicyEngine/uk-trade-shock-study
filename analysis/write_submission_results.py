@@ -12,6 +12,37 @@ ANCHORS = ("obr", "unit")
 MONTHS = (3, 6, 12)
 MARGINS = ("displacement", "wage_cut")
 
+#: THE ONE DEFINITION of the thin-support cell that the manuscript excludes
+#: from its main table and reports in the appendix instead: the OBR anchor at
+#: the three-month duration-equivalent stress, whose displacement draws rest
+#: on ~1.2 effective record contributions with the largest single record
+#: carrying ~92 per cent of the loss.
+#:
+#: Both consumers import it from here so they can never drift apart:
+#: - this script, for the headline cushioning-contrast range, which must be
+#:   computed over MAIN-TABLE cells only (quoting a range whose endpoint comes
+#:   from the cell the paper excludes on thin-support grounds is exactly the
+#:   inconsistency this constant exists to prevent);
+#: - analysis/write_referee_macros.py, for the main/appendix row split.
+THIN_CELL_ANCHOR = "obr"
+THIN_CELL_MONTHS = 3
+#: Row prefix as emitted into \SubmissionScenarioRows below.
+THIN_CELL_ROW_PREFIX = f"{THIN_CELL_ANCHOR.upper()} & {THIN_CELL_MONTHS} "
+#: Key used in ``diagnostics["contrasts"]``.
+THIN_CELL_CONTRAST_KEY = (
+    f"{THIN_CELL_ANCHOR}_{THIN_CELL_MONTHS}m_wage_minus_displacement"
+)
+
+
+def is_thin_support_row(row: str) -> bool:
+    """True for a generated table row belonging to the excluded thin cell."""
+    return row.startswith(THIN_CELL_ROW_PREFIX)
+
+
+def is_thin_support_contrast(key: str) -> bool:
+    """True for the ``contrasts`` key of the excluded thin cell."""
+    return key == THIN_CELL_CONTRAST_KEY
+
 
 def load(path: Path) -> dict:
     with path.open() as stream:
@@ -155,11 +186,23 @@ def main() -> None:
         }
 
     unit_12 = diagnostics["contrasts"]["unit_12m_wage_minus_displacement"]
+    # MAIN-TABLE CELLS ONLY. The excluded thin-support cell is quoted
+    # separately as \SubmissionThinCellCushionDifference for the appendix; it
+    # must not set the endpoint of the headline range, because the manuscript
+    # drops that cell from the main table on thin-support grounds.
     contrast_values = [
         item["cushioning_difference_pp"]
         for key, item in diagnostics["contrasts"].items()
-        if key.endswith("wage_minus_displacement")
+        if key.endswith("wage_minus_displacement") and not is_thin_support_contrast(key)
     ]
+    if not contrast_values:
+        raise ValueError("no main-table cushioning contrasts survived the thin-cell filter")
+    thin_contrast = diagnostics["contrasts"].get(THIN_CELL_CONTRAST_KEY)
+    if thin_contrast is None:
+        raise ValueError(
+            f"thin-support contrast {THIN_CELL_CONTRAST_KEY!r} not found; the "
+            "main-table exclusion rule and the scenario grid have drifted apart"
+        )
     macros.update(
         {
             "PrimaryCushionDifference": fmt(
@@ -269,8 +312,18 @@ def main() -> None:
             ),
             "SubmissionCushionDifferenceMin": fmt(min(contrast_values), 1),
             "SubmissionCushionDifferenceMax": fmt(max(contrast_values), 1),
+            "SubmissionThinCellCushionDifference": fmt(
+                thin_contrast["cushioning_difference_pp"], 1
+            ),
         }
     )
+    diagnostics["main_table_cells"] = {
+        "excluded_thin_cell": THIN_CELL_CONTRAST_KEY,
+        "n_main_table_contrasts": len(contrast_values),
+        "cushioning_difference_min_pp": min(contrast_values),
+        "cushioning_difference_max_pp": max(contrast_values),
+        "thin_cell_cushioning_difference_pp": thin_contrast["cushioning_difference_pp"],
+    }
     leave_out = load(args.leave_one_sector_out)
     leave_differences = [
         item["wage_cut_cushioning_percent"]
@@ -280,6 +333,11 @@ def main() -> None:
     macros["LeaveSectorCushionDifferenceMin"] = fmt(min(leave_differences), 1)
     macros["LeaveSectorCushionDifferenceMax"] = fmt(max(leave_differences), 1)
     macros["LeaveSectorCount"] = str(len(leave_differences))
+    # This audit runs at its own draw count, which is neither the submission
+    # design's nor the legacy production one.  The manuscript cites it as
+    # robustness for the headline, so the count must be stated rather than
+    # left for a reader to find in the artifact.
+    macros["LeaveSectorDraws"] = str(leave_out["n_draws"])
     diagnostics["leave_one_sector_out"] = {
         "division_count": len(leave_differences),
         "cushioning_difference_min_pp": min(leave_differences),

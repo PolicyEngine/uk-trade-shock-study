@@ -2,7 +2,7 @@
   "design": {
     "n_draws": 50,
     "selection_method": "balanced",
-    "notes": "Concentrated wage cut imposes the displacement draw's exact worker-level losses (paired seeds, balanced assignment) with no employment-state change. Sequential decomposition broad->concentrated->displaced is the unique monotone path because diffuse displacement is undefined; it coincides with the Shapley allocation over the two factors."
+    "notes": "Concentrated wage cut imposes the displacement draw's exact worker-level losses (paired seeds, balanced assignment) with no employment-state change. Sequential decomposition broad->concentrated->displaced is the unique monotone path because diffuse displacement is undefined.  It carries no Shapley interpretation: that would require the undefined diffuse-displacement coalition to be valued."
   },
   "anchors": {
     "obr": {

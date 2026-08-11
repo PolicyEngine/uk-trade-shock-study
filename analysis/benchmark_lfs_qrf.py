@@ -28,6 +28,10 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_BRES = ROOT / "data/public/bres_manufacturing_employment_2015_2024.csv"
 DEFAULT_FRS = ROOT / "results/lfs_imputed_frs_transition_parameters.csv.gz"
 DEFAULT_OUT = ROOT / "results/lfs_qrf_benchmark.csv.gz"
+#: Aggregate distribution summary. The per-record file above carries FRS
+#: person records and is gitignored; this summary is what the manuscript
+#: reads, so it must be written whenever the per-record file is.
+DEFAULT_SUMMARY = ROOT / "results/lfs_qrf_benchmark_summary.json"
 
 
 def weighted_mean(values: pd.Series, weights: pd.Series) -> float:
@@ -80,12 +84,66 @@ def qrf_impute(
     )
 
 
+#: The three risk models whose weighted distribution the manuscript tabulates.
+SUMMARY_MODELS = {
+    "cells": "job_exit_probability",
+    "income_terciles": "job_exit_probability_banded",
+    "qrf": "qrf_job_exit_calibrated",
+}
+
+
+def weighted_quantile(values, weights, quantiles=(0.1, 0.5, 0.9)):
+    order = np.argsort(values)
+    values = np.asarray(values)[order]
+    weights = np.asarray(weights)[order]
+    cumulative = np.cumsum(weights) - weights / 2
+    cumulative /= weights.sum()
+    return [float(x) for x in np.interp(quantiles, cumulative, values)]
+
+
+def write_summary(frame: pd.DataFrame, path: Path, source: Path) -> dict:
+    """Emit the aggregate distribution summary the manuscript reads.
+
+    The per-record frame carries FRS person records and is never committed, so
+    the summary has to be written whenever the frame is or the paper's table
+    goes stale against a file nobody can see.
+    """
+    models = {}
+    for key, column in SUMMARY_MODELS.items():
+        valid = frame[column].notna() & frame["weight"].gt(0)
+        values, weights = frame.loc[valid, column], frame.loc[valid, "weight"]
+        q10, q50, q90 = weighted_quantile(values, weights)
+        models[key] = {
+            "column": column,
+            "weighted_mean": float(np.average(values, weights=weights)),
+            "weighted_q10": q10,
+            "weighted_q50": q50,
+            "weighted_q90": q90,
+            "n_valid": int(valid.sum()),
+        }
+    summary = {
+        "description": (
+            "Weighted distribution summaries of the three LFS-shaped job-exit "
+            "risk models. Derived from the per-record benchmark file, which "
+            "carries person-level FRS records and is therefore never "
+            "committed. This summary is the only object the manuscript needs."
+        ),
+        "source": str(source.name),
+        "regenerate_with": "make lfs-benchmarks LFS_TAB=/path/to/panel.tab",
+        "n_records": int(len(frame)),
+        "models": models,
+    }
+    path.write_text(json.dumps(summary, indent=2) + "\n")
+    return summary
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--lfs-tab", type=Path, required=True)
     parser.add_argument("--bres", type=Path, default=DEFAULT_BRES)
     parser.add_argument("--frs-imputed", type=Path, default=DEFAULT_FRS)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUT)
+    parser.add_argument("--summary", type=Path, default=DEFAULT_SUMMARY)
     args = parser.parse_args()
 
     lfs = prepare_lfs_transitions(
@@ -147,6 +205,8 @@ def main() -> None:
     output["qrf_log_wage_change_calibrated"] = qrf_wage
     args.output.parent.mkdir(parents=True, exist_ok=True)
     output.to_csv(args.output, index=False)
+    write_summary(output, args.summary, args.output)
+    print(f"[written] {args.summary}")
 
     valid = output["job_exit_probability"].notna()
     w = output.loc[valid, "weight"]

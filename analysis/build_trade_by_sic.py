@@ -50,8 +50,11 @@ DENOMINATOR — division total turnover, ONS Annual Business Survey
   denominator, not domestic value added; intensity = US exports / turnover.
 
 Usage: .venv/bin/python analysis/build_trade_by_sic.py
-Writes the packaged CSV in place. Requires network on first run; raw API
-pulls are cached as JSON in data/.
+Writes the packaged CSV in place, plus results/trade_build_totals.json, which
+persists the customs-basis and mapped-to-division 2024 export totals so the
+manuscript can cite them as generated values rather than hardcoded prose
+(consumed by analysis/write_validation_macros.py). Requires network on first
+run; raw API pulls are cached as JSON in data/.
 """
 
 from __future__ import annotations
@@ -65,6 +68,7 @@ import requests
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
 OUT = ROOT / "uk_trade_shock_study" / "data" / "us_export_intensity_by_sic.csv"
+OUT_TOTALS = ROOT / "results" / "trade_build_totals.json"
 ABS_XLSX = DATA / "abssectionsas.xlsx"
 ABS_URL = (
     "https://www.ons.gov.uk/file?uri=/businessindustryandtrade/business/"
@@ -170,6 +174,20 @@ def _cached(name: str, url: str) -> list[dict]:
 
 def fetch_us_exports_by_division() -> dict[int, float]:
     """US goods exports 2024 (£) keyed by SIC 2007 division."""
+    return fetch_us_export_totals()[0]
+
+
+def fetch_us_export_totals() -> tuple[dict[int, float], float]:
+    """US goods exports 2024 (£): (by SIC 2007 division, customs-basis total).
+
+    The second element is the all-commodity RTS total for the same filter
+    *before* the crosswalk exclusions documented in the module docstring
+    (non-monetary precious metals, works of art, crude extraction and the
+    non-goods chapters). Its difference from ``sum(by_division.values())``
+    is exactly what those exclusions remove, which is the quantity the
+    manuscript appendix reports; ``main`` persists both to
+    ``results/trade_build_totals.json``.
+    """
     flt = (
         f"MonthId ge {YEAR}01 and MonthId le {YEAR}12 "
         f"and CountryId eq {US} and FlowTypeId eq {EXPORTS_NON_EU}"
@@ -205,7 +223,7 @@ def fetch_us_exports_by_division() -> dict[int, float]:
             raise AssertionError(
                 f"SITC {chapter}: OTS split {total3:.0f} != RTS {sitc2.get(chapter):.0f}"
             )
-    return by_div
+    return by_div, sum(sitc2.values())
 
 
 def abs_turnover_by_division() -> tuple[dict[int, float], int]:
@@ -233,10 +251,12 @@ def abs_turnover_by_division() -> tuple[dict[int, float], int]:
 
 def main() -> None:
     DATA.mkdir(exist_ok=True)
-    exports = fetch_us_exports_by_division()
+    exports, customs_total = fetch_us_export_totals()
     turnover, abs_year = abs_turnover_by_division()
 
     total = sum(exports.values())
+    print(f"US goods exports 2024, customs basis before exclusions: "
+          f"£{customs_total / 1e9:.1f}bn")
     print(f"US goods exports 2024 mapped to SIC divisions: £{total / 1e9:.1f}bn")
     print(f"  (sanity: autos div 29 £{exports.get(29, 0) / 1e9:.2f}bn, "
           f"pharma div 21 £{exports.get(21, 0) / 1e9:.2f}bn, "
@@ -252,18 +272,51 @@ def main() -> None:
         "# us_export_share = US exports of the division / division turnover.",
         "sic_division,description,us_export_share",
     ]
+    table_total = 0.0
     for div in sorted(DIVISION_NAMES):
         exp = exports.get(div, 0.0)
         turn = turnover.get(div)
         if not turn or exp <= 0:
             continue
         share = exp / turn
+        table_total += exp
         lines.append(f"{div},{DIVISION_NAMES[div]},{share:.4f}")
         print(f"  {div:>2} {DIVISION_NAMES[div][:42]:<42} "
               f"exports £{exp / 1e9:6.2f}bn / turnover £{turn / 1e9:6.1f}bn "
               f"= {share:.3f}")
     OUT.write_text("\n".join(lines) + "\n")
     print(f"wrote {OUT}")
+
+    # Persist the build's headline totals so the manuscript cites generated
+    # values instead of prose constants (analysis/write_validation_macros.py
+    # turns these into \TradeCustomsTotalMn / \TradeMappedTotalMn).
+    OUT_TOTALS.parent.mkdir(exist_ok=True)
+    OUT_TOTALS.write_text(
+        json.dumps(
+            {
+                "written_by": "analysis/build_trade_by_sic.py",
+                "source": (
+                    "HMRC uktradeinfo RTS/OTS API, UK goods exports to the "
+                    "United States, non-EU export flow"
+                ),
+                "vintage": f"calendar {YEAR}",
+                "customs_basis_total_gbp": customs_total,
+                "mapped_to_divisions_total_gbp": total,
+                "excluded_total_gbp": customs_total - total,
+                "intensity_table_total_gbp": table_total,
+                "abs_turnover_year": abs_year,
+                "exclusions": (
+                    "Non-monetary precious metals (SITC 971, 681), works of "
+                    "art (896), crude extraction (333) and the non-goods "
+                    "chapters 91/93/96/97, per the crosswalk documented in "
+                    "analysis/build_trade_by_sic.py"
+                ),
+            },
+            indent=2,
+        )
+        + "\n"
+    )
+    print(f"wrote {OUT_TOTALS}")
 
 
 if __name__ == "__main__":

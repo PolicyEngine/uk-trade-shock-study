@@ -71,10 +71,11 @@ fills absent flows with zeros under a $\log(1+V)$ outcome, so
 extensive-margin movement in the smaller comparison destinations enters the
 gap mechanically; a continuous-trade restriction and a Poisson
 pseudo-maximum-likelihood estimator on levels are likewise implemented but
-absent from this run. Both biases point the same way---towards overstating
-the US-specific decline---so the estimates below are ceilings, and
-re-running \texttt{make public-hmrc trade-event-study} is the second item of
-unfinished business in this paper.
+absent from this run. The two biases do not share a sign: the anticipation
+surge inflates the estimated decline, while zero-filled control flows lower
+the control term and so understate it. Their net direction is therefore not
+established, and re-running \texttt{make public-hmrc trade-event-study} is
+the second item of unfinished business in this paper.
 
 On tariff intensity, broad steel and auto chapters fall \HMRCHighTariffEffect\ per
 cent ($p=\HMRCHighTariffPValue$), compared with \HMRCOtherEffect\ per cent

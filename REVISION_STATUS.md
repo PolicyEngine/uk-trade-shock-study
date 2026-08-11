@@ -70,7 +70,7 @@ closed in code but need a licensed-data run to close in the manuscript.
   `redraw_uc_takeup` now returns a re-draw-set diagnostic;
   `write_referee_macros.py` warns loudly when the grid is inert. The
   manuscript now states the grid is empty and reports the entitled-scope
-  bound (`\TakeupEntitledSpread` = 7.1pp) as the claiming-margin sensitivity.
+  bound (`\TakeupEntitledSpread` = 7.0pp) as the claiming-margin sensitivity.
 - **M2 LFS selection compared against a stale baseline.** The prose said 36.8
   per cent under uniform assignment; the artifact says 34.1. New macros
   (`\LFSUniformCushion`, `\LFSSelectionShiftMin/Max`, `\LFSSelectionGapMin/Max`)
@@ -110,9 +110,10 @@ closed in code but need a licensed-data run to close in the manuscript.
   quote unrun specifications.
 - **R6/R7 bootstrap and inclusion probabilities.** The ratio-of-pooled-sums
   estimator, support-size count and the assignment-conditioning caveat are
-  implemented; the per-record balanced-versus-Bernoulli inclusion diagnostic
-  is a new script. Both need `data/` present. The manuscript states the
-  limitation rather than claiming the diagnostic.
+  implemented; the per-record balanced-versus-Bernoulli inclusion diagnostic is
+  `analysis/assignment_inclusion_diagnostic.py` (`make assignment-inclusion`).
+  Both need `data/` present. The manuscript states the limitation rather than
+  claiming a result.
 
 ### Known drift hazards not yet closed
 

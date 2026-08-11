@@ -222,10 +222,12 @@ conditioning on the wage-bill target changes record-level marginal inclusion
 probabilities away from the declared $s_j$, and with the largest record
 supplying \UnitMaxRecordLossShare\ per cent of the loss on average, a reader
 is entitled to know whether that record is selected at its nominal rate. The
-repository now emits a per-record empirical inclusion-probability diagnostic
-comparing the balanced and Bernoulli designs for exactly this purpose; it
-requires a licensed-data run and is not yet reported here, which is a gap in
-the present draft rather than a resolved question.
+repository emits a per-record empirical inclusion-probability diagnostic
+comparing the balanced and Bernoulli designs for exactly this purpose
+(\path{analysis/assignment_inclusion_diagnostic.py}, \texttt{make
+assignment-inclusion}); it requires a licensed-data run and is not yet
+reported here, which is a gap in the present draft rather than a resolved
+question.
 Across leave-each-sector-out reruns for all \LeaveSectorCount\ exposed
 divisions (\LeaveSectorDraws\ assignments each, a lighter design than the
 primary table's \SubmissionDraws), the wage-minus-displacement cushioning difference remains positive,
@@ -335,9 +337,11 @@ comparison destinations enters mechanically. An anticipation-window
 specification, a continuous-trade restriction and a Poisson estimator on
 levels have been implemented to address these two problems, but none of them
 appears in the stored run reported here; they await a re-download of the
-public HMRC panel. Both biases run in the direction of overstating the
-decline, so the \HMRCWeightedEffect\ per cent figure should be read as a
-ceiling.
+public HMRC panel. Their directions differ: the anticipation surge inflates
+the estimated decline, whereas zero-filled control destinations lower the
+control term and therefore \emph{understate} it. Only the first has a known
+sign, so the \HMRCWeightedEffect\ per cent figure is a ceiling with respect
+to anticipation alone and the net bias is unsigned.
 
 On the tariff-intensity ordering, the earlier claim that the falsification
 \emph{failed} over-read the evidence, and it is withdrawn. Broad steel and
@@ -390,7 +394,7 @@ The benefit side does not agree at all: all modelled benefits supply
 roughly six. One further term has no counterpart in their decomposition and
 should not be quietly absorbed: the \DispChannelResidual-point employee
 pension and salary-sacrifice outflow, which is a reduction in deferred
-saving rather than a public transfer and which does close to a fifth of the
+saving rather than a public transfer and which does about a seventh of the
 arithmetic. The benefit channel is nonetheless where the reversal
 sits, and four features of the present design account for it, three of
 them acknowledged limitations rather than findings. New Style JSA is not

@@ -25,3 +25,12 @@ results/bootstrap_contributions.npz
 # survives a correction.
 /paper/main.pdf
 /paper/supplement.pdf
+
+# LFS/FRS benchmark microdata: both carry person-level FRS records
+# (person_id, age, gender, employment_income, survey weight) and are licensed
+# under the UKDS end-user licence, so they must never be committed. The
+# manuscript reads results/lfs_qrf_benchmark_summary.json, an aggregate
+# derived from them. Rebuild both with
+# `make lfs-benchmarks LFS_TAB=/path/to/panel.tab`.
+/results/lfs_imputed_frs_transition_parameters.csv.gz
+/results/lfs_qrf_benchmark.csv.gz

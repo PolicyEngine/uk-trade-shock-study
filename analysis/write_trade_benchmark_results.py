@@ -1,16 +1,25 @@
 """Generate manuscript macros from the HMRC destination-panel benchmark.
 
-Two of the macros here are PROVENANCE macros rather than estimates:
+Several of the macros here are PROVENANCE macros rather than estimates:
 ``\\HMRCAnticipationSpec`` says which anticipation convention produced the
-stored point estimates, and ``\\HMRCFigureBase`` /
+stored point estimates, ``\\HMRCDofConvention`` says which degrees-of-freedom
+convention produced the stored standard errors, and ``\\HMRCFigureBase`` /
 ``\\HMRCFigureBaseIsAnticipation`` say which base period the STORED monthly
-figure is actually normalised on. Both exist because the artifacts and the
+figure is actually normalised on. All exist because the artifacts and the
 estimator can fall out of step: a stored CSV/PNG predating a change to
 ``NORMALISATION_BASE`` carries the OLD base under unchanged file names, and a
 hand-written caption that names the new base then contradicts the figure it
 sits under. Deriving the caption's base from the plotted data makes that
 contradiction impossible: if the figure is stale the macro says so, and the
 caption is stale with it rather than silently wrong.
+
+The same artifact is stale along three independent dimensions, so each gets
+its own macro rather than one "this is old" flag: the anticipation window
+moves the POINT ESTIMATES, the absorbed-fixed-effect degrees-of-freedom
+correction moves the STANDARD ERRORS (and with them every interval and
+p-value), and the normalisation base moves only the FIGURE. A re-run fixes
+all three at once, but until then the manuscript has to say which of them it
+is quoting.
 """
 
 from __future__ import annotations
@@ -75,6 +84,121 @@ def anticipation_spec_label(data: dict) -> str:
             "specification)"
         )
     return "January--April 2025 anticipation window"
+
+
+# ---------------------------------------------------------------------------
+# Which degrees-of-freedom convention produced the STORED standard errors?
+# ---------------------------------------------------------------------------
+
+#: Fields the corrected estimator writes into every fitted block. A block that
+#: carries them was fitted with the absorbed HS4 fixed effects added back to
+#: the residual degrees of freedom before the cluster-robust finite-sample
+#: correction; a block that carries neither predates that fix.
+DOF_CORRECTION_KEYS = ("absorbed_fixed_effects", "absorbed_dof_scale")
+
+DOF_CONVENTION_CORRECTED = "absorbed_dof_corrected"
+DOF_CONVENTION_LEGACY = "absorbed_dof_uncorrected"
+
+#: How the convention reads in the manuscript. An unrecognised state raises
+#: rather than being passed through, for the same reason as the entitled-scope
+#: and JSA-rate tokens in ``analysis/write_referee_macros.py``: the point of a
+#: provenance macro is that the prose states something the artifact vouches
+#: for, and a half-corrected artifact vouches for nothing.
+DOF_CONVENTION_PHRASES = {
+    DOF_CONVENTION_CORRECTED: (
+        "with the cluster-robust standard errors corrected for the HS4 fixed "
+        "effects absorbed by within-demeaning"
+    ),
+    DOF_CONVENTION_LEGACY: (
+        "on the superseded convention that counts residual degrees of freedom "
+        "without the absorbed HS4 fixed effects, so every standard error, "
+        "confidence interval and $p$-value quoted from this artifact is "
+        "slightly too tight (re-run \\texttt{make trade-event-study} for the "
+        "corrected inference)"
+    ),
+}
+
+
+def _fitted_blocks(node, path: str = "") -> list[tuple[str, dict]]:
+    """Every nested dict that is a fitted estimate, i.e. carries a standard error."""
+    found: list[tuple[str, dict]] = []
+    if isinstance(node, dict):
+        if "standard_error" in node:
+            found.append((path or "<root>", node))
+        for key, value in node.items():
+            found.extend(_fitted_blocks(value, f"{path}.{key}" if path else str(key)))
+    return found
+
+
+def dof_convention_state(data: dict) -> str:
+    """Token for the degrees-of-freedom convention the stored estimates use.
+
+    The corrected estimator stamps ``absorbed_fixed_effects`` and
+    ``absorbed_dof_scale`` on every block it fits, so the state is read off
+    the artifact rather than off a file date. Anything other than "all blocks
+    corrected" or "no block corrected" raises: a partially re-run artifact
+    would put corrected and uncorrected inference in the same table under one
+    macro, which is precisely the silent mismatch these macros exist to
+    prevent.
+    """
+    blocks = _fitted_blocks(data)
+    if not blocks:
+        raise ValueError(
+            "no fitted blocks (nothing carrying a standard_error) found in the "
+            "HMRC artifact, so its degrees-of-freedom convention cannot be "
+            "established."
+        )
+    corrected, legacy, partial = [], [], []
+    for path, block in blocks:
+        present = [key for key in DOF_CORRECTION_KEYS if key in block]
+        if len(present) == len(DOF_CORRECTION_KEYS):
+            corrected.append(path)
+        elif not present:
+            legacy.append(path)
+        else:
+            partial.append(path)
+    if partial:
+        raise ValueError(
+            f"HMRC artifact blocks {sorted(partial)} carry only part of "
+            f"{list(DOF_CORRECTION_KEYS)}, so the degrees-of-freedom "
+            "convention behind their standard errors is unrecognisable."
+        )
+    if corrected and legacy:
+        raise ValueError(
+            f"HMRC artifact mixes conventions: {len(corrected)} blocks carry "
+            f"the absorbed-fixed-effect correction and {len(legacy)} do not "
+            f"(uncorrected: {sorted(legacy)}). Re-run "
+            "`make trade-event-study` so one macro can describe the whole "
+            "artifact."
+        )
+    if legacy:
+        return DOF_CONVENTION_LEGACY
+    bad_scales = [
+        path
+        for path, block in blocks
+        if not (float(block["absorbed_dof_scale"]) >= 1.0)
+        or int(block["absorbed_fixed_effects"]) < 0
+    ]
+    if bad_scales:
+        raise ValueError(
+            f"HMRC artifact blocks {sorted(bad_scales)} record an absorbed "
+            "degrees-of-freedom scale below 1 (or a negative absorbed count), "
+            "which is not a state the correction can produce: the scale-up "
+            "for absorbed fixed effects is never a scale-down."
+        )
+    return DOF_CONVENTION_CORRECTED
+
+
+def dof_convention_label(data: dict) -> str:
+    """Render the degrees-of-freedom provenance, or raise on an unknown state."""
+    state = dof_convention_state(data)
+    if state not in DOF_CONVENTION_PHRASES:  # pragma: no cover - guarded above
+        raise KeyError(
+            f"HMRC standard errors resolved to convention {state!r}, which "
+            f"this writer has no manuscript phrasing for (known: "
+            f"{sorted(DOF_CONVENTION_PHRASES)})."
+        )
+    return DOF_CONVENTION_PHRASES[state]
 
 
 # ---------------------------------------------------------------------------
@@ -280,6 +404,7 @@ def main() -> None:
         "HMRCOtherEffect": f"{100 * other['proportional_effect']:.1f}",
         "HMRCOtherPValue": f"{other['p_value']:.3f}",
         "HMRCAnticipationSpec": anticipation_spec_label(data),
+        "HMRCDofConvention": dof_convention_label(data),
         "HMRCHighTariffTrendPValue": (
             f"{high['differential_linear_trend_p_value']:.3f}"
         ),
@@ -298,6 +423,14 @@ def main() -> None:
         f"[figure base] {MONTHLY.name}: {figure_base['HMRCFigureBase']} "
         f"(source: {base_source})"
     )
+    if dof_convention_state(data) == DOF_CONVENTION_LEGACY:
+        print(
+            "[dof] WARNING: the stored HMRC estimates predate the "
+            "absorbed-fixed-effect degrees-of-freedom correction, so every "
+            "standard error, confidence interval and p-value in "
+            f"{INPUT.name} is too tight. Re-run `make trade-event-study`; "
+            "until then the prose must carry \\HMRCDofConvention."
+        )
     if "inside" in figure_base["HMRCFigureBaseIsAnticipation"]:
         print(
             "[figure base] WARNING: the STORED figure is normalised on the "

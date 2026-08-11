@@ -24,6 +24,21 @@ from analysis.assignment_inclusion_diagnostic import (
 from uk_trade_shock_study.shocks import TradeShockScenario, _person_shock
 
 
+def _weighted_deviation_reference(
+    draws: np.ndarray, declared: np.ndarray, weight: np.ndarray, exposed: np.ndarray
+) -> np.ndarray:
+    """Per-draw weighted mean signed deviation, spelled out here in the test.
+
+    Deliberately NOT a call into ``_weighted_draw_deviations``: a reference
+    that reuses the implementation cannot fail when the implementation is
+    wrong, which is how the standard errors below came to be asserted only
+    ``> 0``.
+    """
+    w = np.asarray(weight, dtype=float)[exposed]
+    residuals = draws[:, exposed].astype(float) - np.asarray(declared, float)[exposed]
+    return np.array([float((row * w).sum() / w.sum()) for row in residuals])
+
+
 def _persons(n: int = 60) -> pd.DataFrame:
     rng = np.random.default_rng(0)
     return pd.DataFrame(
@@ -234,7 +249,86 @@ def test_noise_floor_is_the_realised_bernoulli_deviation() -> None:
     assert observed["weighted_mean_absolute_deviation"] == pytest.approx(
         floor["absolute"], rel=0.5
     )
-    assert floor["signed_standard_error"] > 0
+    # The signed floor is a standard error of a MEAN OVER DRAWS, so it must
+    # carry the 1/n_draws: at 120 draws the per-draw scale is ~11x too big.
+    w = weight[exposed]
+    p = declared[exposed]
+    assert floor["signed_standard_error"] == pytest.approx(
+        float(np.sqrt((w**2 * p * (1.0 - p)).sum() / 120)) / w.sum(), rel=1e-12
+    )
+
+
+def test_bernoulli_signed_standard_error_is_the_closed_form_and_scales_with_n() -> None:
+    """The signed floor pinned by value, not by sign.
+
+    Equal weights and a common declared probability collapse the weighted
+    formula to ``sqrt(p (1 - p) / (n k))``, so the expected number is a
+    literal. Dropping the ``/ n_draws`` (the mutation this replaces a bare
+    ``> 0`` to catch) is worth a factor ``sqrt(n)`` -- 10x here, ~14x at the
+    diagnostic's default 200 draws -- and also destroys the 1/sqrt(n) scaling
+    checked below.
+    """
+    equal = bernoulli_noise_floor(
+        np.full(4, 0.25), np.ones(4), np.ones(4, dtype=bool), 100
+    )
+    # sqrt(0.25 * 0.75 / (100 * 4))
+    assert equal["signed_standard_error"] == pytest.approx(
+        0.021650635094610966, rel=1e-12
+    )
+
+    # Unequal weights: the survey weights enter SQUARED, because this is the
+    # standard error of a weighted mean of independent record deviations.
+    # sqrt((1^2 * 0.2 * 0.8 + 3^2 * 0.5 * 0.5) / 25) / (1 + 3)
+    unequal = bernoulli_noise_floor(
+        np.array([0.2, 0.5]), np.array([1.0, 3.0]), np.ones(2, dtype=bool), 25
+    )
+    assert unequal["signed_standard_error"] == pytest.approx(
+        0.07762087348130012, rel=1e-12
+    )
+
+    # 1/sqrt(n_draws), the property the missing denominator would remove.
+    quadrupled = bernoulli_noise_floor(
+        np.full(4, 0.25), np.ones(4), np.ones(4, dtype=bool), 400
+    )
+    assert quadrupled["signed_standard_error"] == pytest.approx(
+        equal["signed_standard_error"] / 2.0, rel=1e-12
+    )
+
+    # ...and the closed form is the real sampling spread, checked by
+    # simulation rather than by re-spelling the algebra.
+    rng = np.random.default_rng(3)
+    p, w, n_draws = np.array([0.2, 0.5]), np.array([1.0, 3.0]), 25
+    realised = rng.binomial(n_draws, p, size=(60_000, 2)) / n_draws
+    simulated = ((realised - p) * w).sum(axis=1) / w.sum()
+    assert unequal["signed_standard_error"] == pytest.approx(
+        float(simulated.std(ddof=1)), rel=0.03
+    )
+
+
+def test_per_record_standard_error_uses_the_n_minus_one_denominator() -> None:
+    """``sqrt(f (1 - f) / (n - 1))``: the sample, not the population, form.
+
+    Reported beside every realised frequency and ratio, and asserted nowhere
+    until now -- an ``n`` denominator understates it by 12 per cent at five
+    draws and survives every other test in this file.
+    """
+    declared = np.array([0.1, 0.1, 0.1])
+    realised = np.array([0.1, 0.5, 0.05])
+    weight = np.ones(3)
+    exposed = np.ones(3, dtype=bool)
+
+    out = summarise(declared, realised, weight, exposed, n_draws=5)
+    assert out["max_absolute_deviation"] == pytest.approx(0.4)
+    assert out["max_absolute_deviation_declared_probability"] == pytest.approx(0.1)
+    # that record's realised frequency is 0.5: sqrt(0.25 / 4) = 0.25
+    assert out["max_absolute_deviation_standard_error"] == pytest.approx(0.25, rel=1e-12)
+    # the population denominator would give sqrt(0.25 / 5) = 0.2236...
+    assert out["max_absolute_deviation_standard_error"] != pytest.approx(
+        float(np.sqrt(0.25 / 5)), rel=1e-6
+    )
+    # ...and a single draw is clamped to 1 rather than dividing by zero
+    single = summarise(declared, realised, weight, exposed, n_draws=1)
+    assert single["max_absolute_deviation_standard_error"] == pytest.approx(0.5, rel=1e-12)
 
 
 def test_common_seed_contrast_differences_the_designs_draw_by_draw() -> None:
@@ -255,8 +349,99 @@ def test_common_seed_contrast_differences_the_designs_draw_by_draw() -> None:
         signed["balanced"] - signed["bernoulli"]
     )
     assert contrast["n_draws"] == 80
-    assert contrast["paired_standard_error"] > 0
-    assert contrast["unpaired_standard_error"] > 0
+    # The standard errors are pinned by VALUE against per-draw deviations
+    # recomputed in the test: the point estimate above is invariant to a
+    # broken paired standard error, so on its own it proves nothing about the
+    # precision the manuscript would quote.
+    balanced_deviations = _weighted_deviation_reference(
+        balanced, declared, weight, exposed
+    )
+    bernoulli_deviations = _weighted_deviation_reference(
+        bernoulli, declared, weight, exposed
+    )
+    difference = balanced_deviations - bernoulli_deviations
+    assert contrast["paired_standard_error"] == pytest.approx(
+        float(difference.std(ddof=1) / np.sqrt(80)), rel=1e-12
+    )
+    assert contrast["unpaired_standard_error"] == pytest.approx(
+        float(
+            np.sqrt(
+                balanced_deviations.var(ddof=1) / 80
+                + bernoulli_deviations.var(ddof=1) / 80
+            )
+        ),
+        rel=1e-12,
+    )
+    assert contrast["paired_t"] == pytest.approx(
+        contrast["paired_mean_signed_deviation_difference"]
+        / contrast["paired_standard_error"],
+        rel=1e-12,
+    )
+
+
+def test_common_seed_contrast_standard_errors_against_a_hand_worked_example() -> None:
+    """Both standard errors on four draws whose arithmetic is done by hand.
+
+    Two exposed records with declared probabilities 0.5 and 0.25 and survey
+    weights 1 and 3, so a draw's weighted mean signed deviation is
+    ``((i0 - 0.5) * 1 + (i1 - 0.25) * 3) / 4``:
+
+    ========  =========  ==========
+    draw      balanced   bernoulli
+    ========  =========  ==========
+    [1, 0]    -0.0625
+    [1, 1]     0.6875    (draw 2)
+    [0, 0]    -0.3125    (draws 2, 4)
+    [0, 1]     0.4375
+    ========  =========  ==========
+
+    giving per-draw differences (-0.75, 1.0, -0.25, 0.75). Every number below
+    follows from those four literals alone -- no call into the diagnostic's
+    own deviation helper -- so a broken pairing, a wrong ``ddof`` or a missing
+    ``sqrt(n)`` all move at least one of them.
+    """
+    declared = np.array([0.5, 0.25])
+    weight = np.array([1.0, 3.0])
+    exposed = np.ones(2, dtype=bool)
+    balanced = np.array([[1, 0], [1, 1], [0, 0], [0, 1]], dtype=bool)
+    bernoulli = np.array([[1, 1], [0, 0], [1, 0], [0, 0]], dtype=bool)
+
+    contrast = common_seed_contrast(
+        declared, weight, exposed, {"balanced": balanced, "bernoulli": bernoulli}
+    )
+    assert contrast["n_draws"] == 4
+    assert contrast["paired_mean_signed_deviation_difference"] == pytest.approx(
+        (-0.75 + 1.0 - 0.25 + 0.75) / 4, rel=1e-12
+    )
+    # sd([-0.75, 1.0, -0.25, 0.75], ddof=1) / sqrt(4)
+    assert contrast["paired_standard_error"] == pytest.approx(
+        0.41300474169997936, rel=1e-12
+    )
+    assert contrast["paired_t"] == pytest.approx(0.45398994507478646, rel=1e-12)
+    # sqrt(var(balanced, ddof=1) / 4 + var(bernoulli, ddof=1) / 4), which is a
+    # DIFFERENT number: the two must not be emitted from one expression.
+    assert contrast["unpaired_standard_error"] == pytest.approx(
+        0.32874445495957294, rel=1e-12
+    )
+    assert contrast["paired_standard_error"] != pytest.approx(
+        contrast["unpaired_standard_error"], rel=1e-3
+    )
+    # The pairing is by SEED: swapping the roles flips the mean and leaves
+    # both standard errors alone.
+    flipped = common_seed_contrast(
+        declared,
+        weight,
+        exposed,
+        {"balanced": balanced, "bernoulli": bernoulli},
+        treatment="bernoulli",
+        comparator="balanced",
+    )
+    assert flipped["paired_mean_signed_deviation_difference"] == pytest.approx(
+        -contrast["paired_mean_signed_deviation_difference"], rel=1e-12
+    )
+    assert flipped["paired_standard_error"] == pytest.approx(
+        contrast["paired_standard_error"], rel=1e-12
+    )
 
 
 def test_summarise_refuses_a_zero_weight_population() -> None:

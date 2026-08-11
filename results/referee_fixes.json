@@ -220,5 +220,21 @@
     "gross_loss": 48272.0,
     "cushion_points_of_gross_loss": 4.957946635730858,
     "notes": "New Style JSA is contribution-based and paid for a maximum of 182 days (26 weeks) at the standard personal allowance for claimants aged 25 or over. The figure is the MAXIMUM contribution-based entitlement over a full displacement spell for a representative displaced worker on the exposed-sector mean wage, expressed as percentage points of that worker's gross earnings loss. It is an UPPER BOUND on the net addition to cushioning for two reasons: New Style JSA is taxable, and it is deducted pound for pound from any Universal Credit award, so a displaced family already receiving UC gains nothing from it. It also assumes the claimant satisfies the class 1 contribution conditions and claims for the full 182 days. Reported to show the scale of an omitted institution, not as an estimate of what NS-JSA would add."
+  },
+  "schedule_benchmark": {
+    "parameters": {
+      "representative_earnings": 48272.0,
+      "personal_allowance": 12570.0,
+      "basic_rate": 0.2,
+      "ni_employee_main": 0.08,
+      "higher_rate_threshold": 50270.0
+    },
+    "taxable_income": 35702.0,
+    "income_tax": 7140.400000000001,
+    "employee_national_insurance": 2856.16,
+    "marginal_deduction_rate": 0.28,
+    "average_deduction_rate": 0.2070881670533643,
+    "implied_gap_percentage_points": 7.291183294663572,
+    "notes": "Single worker below the higher-rate threshold, tax and National Insurance only. The marginal rate is what a small diffuse cut is relieved at; the average rate is what a complete loss is relieved at, because zeroing the year also removes the untaxed personal allowance. The difference is the schedule's own prediction for the sign and rough size of the paper's headline contrast, with no benefit, pension or household effect in it."
   }
 }

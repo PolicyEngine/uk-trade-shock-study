@@ -728,6 +728,63 @@ def _jsa_weekly_rate() -> tuple[float, str, str, str]:
     )
 
 
+def schedule_benchmark_block(monthly: dict) -> dict:
+    """Marginal versus average deduction rate for a representative worker.
+
+    The paper's headline is that a diffuse earnings cut is cushioned more than
+    a complete loss of the same aggregate. That ordering is implied by the
+    statutory schedule alone, before any benefit, pension or household effect:
+    a marginal cut is relieved at the MARGINAL rate, a total loss at the
+    AVERAGE rate, and a personal allowance guarantees the former exceeds the
+    latter at every earnings level.
+
+    Reporting the one-worker arithmetic turns the simulated gap from something
+    a reader must take on trust into something checkable in three lines, and
+    it pre-empts the obvious objection that 43.9 per cent is impossible on a
+    20 per cent basic rate. The residual between this benchmark and the
+    simulated gap is what the microsimulation actually contributes: means-
+    tested support, pension contributions, household composition, and the
+    loss-weighted mix of marginal rates across the exposed population.
+    """
+    # Reuse the statutory parameters the monthly-UC block already resolved, so
+    # the two blocks can never disagree about the schedule and this one runs
+    # without policyengine when that block is already stored.
+    params = monthly["parameters"]
+    earnings = float(params["representative_earnings"])
+    allowance = float(params["personal_allowance"])
+    basic = float(params["basic_rate"])
+    ni = float(params["ni_employee_main"])
+    taxable = earnings - allowance
+    income_tax = basic * taxable
+    employee_ni = ni * taxable
+    marginal = basic + ni
+    average = (income_tax + employee_ni) / earnings
+    return {
+        "parameters": {
+            "representative_earnings": earnings,
+            "personal_allowance": allowance,
+            "basic_rate": basic,
+            "ni_employee_main": ni,
+            "higher_rate_threshold": 50_270.0,
+        },
+        "taxable_income": taxable,
+        "income_tax": income_tax,
+        "employee_national_insurance": employee_ni,
+        "marginal_deduction_rate": marginal,
+        "average_deduction_rate": average,
+        "implied_gap_percentage_points": 100.0 * (marginal - average),
+        "notes": (
+            "Single worker below the higher-rate threshold, tax and National "
+            "Insurance only. The marginal rate is what a small diffuse cut is "
+            "relieved at; the average rate is what a complete loss is relieved "
+            "at, because zeroing the year also removes the untaxed personal "
+            "allowance. The difference is the schedule's own prediction for "
+            "the sign and rough size of the paper's headline contrast, with no "
+            "benefit, pension or household effect in it."
+        ),
+    }
+
+
 def jsa_block() -> dict:
     """Bound the omitted New Style JSA channel (parameter arithmetic only).
 
@@ -793,14 +850,14 @@ def main() -> None:
     parser.add_argument(
         "--only",
         nargs="*",
-        choices=("monthly", "pension", "takeup", "jsa"),
+        choices=("monthly", "pension", "takeup", "jsa", "schedule"),
         help=(
             "recompute only the named blocks, merging into the existing "
             "results/referee_fixes.json (all blocks when omitted)"
         ),
     )
     args = parser.parse_args()
-    blocks = set(args.only or ("monthly", "pension", "takeup", "jsa"))
+    blocks = set(args.only or ("monthly", "pension", "takeup", "jsa", "schedule"))
 
     artifact = RESULTS / "referee_fixes.json"
     out = json.loads(artifact.read_text()) if args.only and artifact.exists() else {}
@@ -811,6 +868,14 @@ def main() -> None:
         out["monthly_uc_bounding"] = monthly_uc_block()
     if "jsa" in blocks:
         out["jsa_bounding"] = jsa_block()
+    if "schedule" in blocks:
+        monthly = out.get("monthly_uc_bounding")
+        if monthly is None:
+            raise SystemExit(
+                "schedule_benchmark reuses the monthly_uc_bounding parameters; "
+                "run `--only monthly schedule` or a full run first."
+            )
+        out["schedule_benchmark"] = schedule_benchmark_block(monthly)
     if "pension" in blocks:
         out["pension_channel"] = pension_block(dataset, baseline, persons)
     if "takeup" in blocks:

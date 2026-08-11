@@ -445,6 +445,7 @@ def main() -> None:
     contrast = pension["contrast"]
     takeup = d["takeup_headline"]["displacement"]
     uc = d["monthly_uc_bounding"]
+    sched = d["schedule_benchmark"]
     jsa = require(d, "jsa_bounding", where="referee_fixes.json")
     spell3 = uc["spells"]["3m"]
 
@@ -540,6 +541,12 @@ def main() -> None:
         f"\\newcommand{{\\JSARateSource}}{{{JSA_RATE_SOURCE_PHRASES[jsa_rate_source]}}}",
         f"\\newcommand{{\\JSAMaxSpellAmount}}{{{jsa['max_contribution_based_entitlement']:,.0f}}}",
         f"\\newcommand{{\\JSACushionPoints}}{{{jsa['cushion_points_of_gross_loss']:.1f}}}",
+        # Statutory schedule benchmark: the one-worker arithmetic that
+        # predicts the sign and rough size of the headline contrast before any
+        # simulation. Emitted so the manuscript can be checked in three lines.
+        f"\\newcommand{{\\ScheduleMarginalRate}}{{{100 * sched['marginal_deduction_rate']:.1f}}}",
+        f"\\newcommand{{\\ScheduleAverageRate}}{{{100 * sched['average_deduction_rate']:.1f}}}",
+        f"\\newcommand{{\\ScheduleImpliedGap}}{{{sched['implied_gap_percentage_points']:.1f}}}",
         # Monthly-versus-annual UC bounding.
         f"\\newcommand{{\\MonthlyUCStandardAllowance}}{{{uc['parameters']['standard_allowance_single_25_plus_month']:.2f}}}",
         f"\\newcommand{{\\MonthlyUCTaxMonthlyThree}}{{{spell3['tax_relief_monthly_correct']:,.0f}}}",

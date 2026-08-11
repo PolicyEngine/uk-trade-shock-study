@@ -183,5 +183,29 @@
         }
       }
     }
+  },
+  "jsa_bounding": {
+    "parameters": {
+      "jsa_weekly_rate_25_plus": 92.05,
+      "jsa_max_days": 182,
+      "jsa_max_weeks": 26.0,
+      "representative_earnings": 48272.0,
+      "rate_source": "statutory_fallback",
+      "rate_source_options": [
+        "policyengine_parameter",
+        "statutory_fallback"
+      ],
+      "statutory_fallback_rate": 92.05,
+      "weekly_rate_plausible_range": [
+        60.0,
+        200.0
+      ],
+      "source": "DWP benefit and pension rates 2025 to 2026: New Style (contribution-based) Jobseeker's Allowance, personal allowance, aged 25 or over (policyengine-uk parameter tree unavailable here: ModuleNotFoundError)",
+      "rate_vintage": "2025-26 statutory rate; 2026-27 uprating not applied"
+    },
+    "max_contribution_based_entitlement": 2393.2999999999997,
+    "gross_loss": 48272.0,
+    "cushion_points_of_gross_loss": 4.957946635730858,
+    "notes": "New Style JSA is contribution-based and paid for a maximum of 182 days (26 weeks) at the standard personal allowance for claimants aged 25 or over. The figure is the MAXIMUM contribution-based entitlement over a full displacement spell for a representative displaced worker on the exposed-sector mean wage, expressed as percentage points of that worker's gross earnings loss. It is an UPPER BOUND on the net addition to cushioning for two reasons: New Style JSA is taxable, and it is deducted pound for pound from any Universal Credit award, so a displaced family already receiving UC gains nothing from it. It also assumes the claimant satisfies the class 1 contribution conditions and claims for the full 182 days. Reported to show the scale of an omitted institution, not as an estimate of what NS-JSA would add."
   }
 }

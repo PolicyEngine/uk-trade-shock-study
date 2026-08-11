@@ -85,6 +85,19 @@ TAKEUP_SEEDS_WAGE_CUT = 5
 #: new-entitlement grid stays at the top level of ``takeup_headline`` so every
 #: previously published path is unchanged.
 ALL_ENTITLED_KEY = "all_entitled_scope"
+#: Enum-like provenance labels for the entitled-scope bound the manuscript
+#: quotes as \TakeupEntitledStale/Full/Spread. Recorded under
+#: ``takeup_headline.entitled_scope_source`` and rendered into
+#: \TakeupEntitledSource by analysis/write_referee_macros.py, exactly as
+#: ``jsa_bounding.parameters.rate_source`` is rendered into \JSARateSource.
+#: Which one applies DEPENDS ON THE ARTIFACT: the writer falls back to the
+#: legacy results/takeup_diagnosis.json whenever this file carries no
+#: ``all_entitled_scope`` block, and that fallback silently changes the
+#: calibration behind three printed numbers, so it has to be recorded rather
+#: than inferred from a build log.
+ENTITLED_SCOPE_SOURCE_CURRENT = "referee_fixes_all_entitled_scope"
+ENTITLED_SCOPE_SOURCE_LEGACY = "takeup_diagnosis_legacy_vintage"
+ENTITLED_SCOPE_SOURCES = (ENTITLED_SCOPE_SOURCE_CURRENT, ENTITLED_SCOPE_SOURCE_LEGACY)
 EXPOSED_MEAN_EARNINGS = 48_272.0  # FRS exposed-goods-division weighted mean
 
 
@@ -255,6 +268,49 @@ def _summarise_diagnostics(diagnostics: list[dict]) -> dict:
     return out
 
 
+def _apply_stale_baseline_flag(sim, stale_flag, period: int = PERIOD) -> None:
+    """Force the pre-fix claiming convention onto ``sim``, and VERIFY it took.
+
+    The stale-baseline-flag cell overwrites the post-shock ``would_claim_uc``
+    wholesale with the pre-shock draw. ``shocks.redraw_uc_takeup`` reads its
+    own ``set_input`` back and hard-errors on a mismatch; this sibling call
+    did not, and the failure mode is worse here. A silently-rejected
+    ``set_input`` would leave the simulation carrying the RE-DRAWN post-shock
+    flag, so the stale-flag cell would reproduce the re-drawn cell's number
+    and the grid would report all four claiming conventions agreeing — i.e. it
+    would manufacture precisely the "take-up convention does not matter"
+    result the manuscript quotes, out of an input that was never applied.
+
+    Raising is the only safe behaviour: there is no correct number to fall
+    back to.
+    """
+    expected = np.asarray(stale_flag, dtype=bool)
+    sim.set_input("would_claim_uc", period, stale_flag)
+    # The award was evaluated under the post-shock flag; drop formula outputs
+    # so every downstream metric recomputes under the stale draw.
+    sim._invalidate_all_caches()
+    applied = np.asarray(
+        sim.calculate("would_claim_uc", period=period, map_to="benunit").values,
+        dtype=bool,
+    )
+    if applied.shape != expected.shape or not np.array_equal(applied, expected):
+        n_wrong = (
+            int((applied != expected).sum())
+            if applied.shape == expected.shape
+            else applied.size
+        )
+        raise RuntimeError(
+            "stale-baseline-flag convention not applied: would_claim_uc read "
+            f"back from the shocked simulation differs from the pre-shock draw "
+            f"in {n_wrong} of {expected.size} benefit units (read-back shape "
+            f"{applied.shape}, expected {expected.shape}). The cell would "
+            "otherwise report the RE-DRAWN post-shock flag's cushioning rate "
+            "under the stale-flag label, making all four claiming conventions "
+            "agree by accident. Same hard-error contract as "
+            "shocks.redraw_uc_takeup."
+        )
+
+
 def _takeup_grid(
     dataset,
     baseline,
@@ -341,8 +397,7 @@ def _takeup_grid(
             for seed in range(n_seeds):
                 table = apply_shocks(persons, scen, seed=seed)
                 sim = build_shocked_simulation(dataset, baseline, table, PERIOD)
-                sim.set_input("would_claim_uc", PERIOD, stale_flag)
-                sim._invalidate_all_caches()
+                _apply_stale_baseline_flag(sim, stale_flag)
                 rows.append(_one_draw(table, sim))
                 del sim
             cell = _summarise(rows)
@@ -453,6 +508,14 @@ def takeup_block(dataset, baseline, persons) -> dict:
         f"takeup_headline.{ALL_ENTITLED_KEY}.displacement.stale_baseline_flag"
     )
     out[ALL_ENTITLED_KEY] = entitled
+    # Stamp the provenance of the entitled-scope bound INTO the artifact. A
+    # run that reaches this line has just computed that grid at the current
+    # calibration, so \TakeupEntitledStale/Full/Spread are current-vintage
+    # numbers; write_referee_macros re-resolves and re-records this field when
+    # it reads an artifact that predates the block, so the manuscript never has
+    # to infer the vintage from a build log.
+    out["entitled_scope_source"] = ENTITLED_SCOPE_SOURCE_CURRENT
+    out["entitled_scope_source_options"] = list(ENTITLED_SCOPE_SOURCES)
     out[ALL_ENTITLED_KEY]["notes"] = (
         "Re-draws the claiming flag for EVERY changed benefit unit with a "
         "positive post-shock potential UC award, including units already "
@@ -461,6 +524,43 @@ def takeup_block(dataset, baseline, persons) -> dict:
         "stored at the top level of takeup_headline."
     )
     return out
+
+
+#: How the monthly-versus-annual comparison actually works, stated so that it
+#: agrees with the block's own ``cushion_share_*`` fields.
+#:
+#: The earlier text had this exactly backwards. At the representative earnings
+#: of GBP 48,272 the whole taxable slice sits in the basic-rate band (taxable
+#: income 35,702 against a basic-rate limit of 37,700), so there is NO
+#: higher-rate income to forgo on either side of the comparison. What differs
+#: is the RATE AT WHICH the lost earnings are relieved: a three-month loss of
+#: 12,068 comes off the top of the year's earnings and is relieved at the 20
+#: per cent marginal rate (2,413.60), while zeroing a whole year and scaling by
+#: the probability m/12 relieves the same loss at the year's AVERAGE rate of
+#: 14.79 per cent (7,140.40 x 0.25 = 1,785.10), because a full-year zeroing
+#: also gives up the untaxed personal allowance. Less relief means less
+#: measured cushioning, so the annual model UNDERSTATES cushioning at
+#: sub-annual durations (31.3 against 36.5 per cent at three and six months)
+#: and is exact at twelve, where the two constructions coincide.
+MONTHLY_UC_NOTES = (
+    "UC entitlement per worker-month is identical by construction: m months "
+    "at the full standard allowance equals probability m/12 of 12 months, and "
+    "employee National Insurance is likewise proportional above the primary "
+    "threshold. The difference is income tax, and it runs in ONE direction: "
+    "the annual duration-equivalent stress zeroes a FULL year of earnings and "
+    "scales by m/12, which spreads the loss across the untaxed personal "
+    "allowance as well as the taxed slices and therefore relieves it at the "
+    "year's AVERAGE tax rate, whereas a genuine partial-year loss comes off "
+    "the top of the year's earnings and is relieved at the MARGINAL rate. At "
+    "the representative earnings used here the entire taxable slice is "
+    "basic-rate, so no higher-rate relief arises on either construction. "
+    "Average-rate relief is the smaller of the two, so the annual model "
+    "UNDERSTATES tax relief and hence understates cushioning at sub-annual "
+    "durations (compare cushion_share_annual_equivalent with "
+    "cushion_share_monthly_correct for the 3- and 6-month spells); the two "
+    "coincide exactly at twelve months, where the constructions are the same. "
+    "The 5-week payment wait shifts timing, not annual entitlement."
+)
 
 
 def monthly_uc_block() -> dict:
@@ -532,16 +632,7 @@ def monthly_uc_block() -> dict:
             "representative_earnings": e,
         },
         "spells": rows,
-        "notes": (
-            "UC entitlement per worker-month is identical by construction: "
-            "m months at the full standard allowance equals probability m/12 "
-            "of 12 months. Differences arise in income tax (convexity: the "
-            "annual model overstates relief for partial-year spells at this "
-            "earnings level, where zeroing a full year forgoes higher-rate "
-            "relief while a partial-year earner loses basic/higher-rate "
-            "slices) and in the 5-week payment wait, which shifts timing, "
-            "not annual entitlement."
-        ),
+        "notes": MONTHLY_UC_NOTES,
     }
 
 

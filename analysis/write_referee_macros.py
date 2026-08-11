@@ -57,6 +57,65 @@ JSA_RATE_SOURCE_PHRASES = {
     ),
 }
 
+#: Provenance tokens for the entitled-scope bound, mirroring
+#: ``analysis/referee_fixes.ENTITLED_SCOPE_SOURCES`` (pinned equal by
+#: tests/test_paper_results.py). Duplicated rather than imported for the same
+#: reason as the JSA tokens: analysis/referee_fixes.py imports the simulation
+#: stack, which this writer must never need.
+ENTITLED_SCOPE_SOURCE_CURRENT = "referee_fixes_all_entitled_scope"
+ENTITLED_SCOPE_SOURCE_LEGACY = "takeup_diagnosis_legacy_vintage"
+#: How ``takeup_headline.entitled_scope_source`` reads in the manuscript.
+#: \TakeupEntitledStale, \TakeupEntitledFull and \TakeupEntitledSpread come
+#: from whichever artifact this writer could resolve, and the two artifacts
+#: were produced at DIFFERENT calibrations, so the vintage has to be printed
+#: beside the numbers rather than announced in a build log that no reader of
+#: the paper ever sees. An unknown token raises: see JSA_RATE_SOURCE_PHRASES.
+#:
+#: File names are set with ``\texttt`` and an ESCAPED underscore, not with
+#: ``\path``/``\url``: these phrases become ``\newcommand`` bodies, which TeX
+#: tokenises at definition time, fixing a raw ``_`` as a subscript before
+#: url.sty's verbatim catcode handling could ever run. It is also the
+#: manuscript's own convention (e.g. \texttt{new\_entitlement}).
+ENTITLED_SCOPE_SOURCE_PHRASES = {
+    ENTITLED_SCOPE_SOURCE_CURRENT: (
+        "the all-entitled re-draw grid in "
+        "\\texttt{results/referee\\_fixes.json}, computed at the current "
+        "calibration"
+    ),
+    ENTITLED_SCOPE_SOURCE_LEGACY: (
+        "the legacy \\texttt{results/takeup\\_diagnosis.json} grid, which "
+        "applies the same all-changed-units convention at a "
+        "\\emph{superseded} calibration---the former $\\varepsilon=2$ high "
+        "case, whose seed-0 "
+        "gross earnings loss of \\pounds 1.70 billion is roughly twice the "
+        "\\pounds 0.886 billion of the current unit stress"
+    ),
+}
+
+#: Tokens for HOW the new-entitlement grid's inertness was established.
+INERT_BASIS_MEASURED = "redraw_diagnostic"
+INERT_BASIS_INFERRED = "convention_spread"
+#: How the manuscript may state that basis. The two are NOT equivalent claims.
+#: A measured ``n_redrawn`` of zero says no benefit unit was ever re-drawn. A
+#: zero convention spread is only one-directional evidence for that: a
+#: NON-empty re-draw set whose units all end up with a negligible award would
+#: also return bit-identical cushioning, which is exactly the case the
+#: diagnostic was built to separate. The macro therefore states which of the
+#: two the printed grid actually rests on.
+TAKEUP_INERT_BASIS_PHRASES = {
+    INERT_BASIS_MEASURED: (
+        "measured directly: the re-draw diagnostic stored with the grid "
+        "records no benefit unit re-drawn in any seed"
+    ),
+    INERT_BASIS_INFERRED: (
+        "inferred from bit-identical cushioning across all four claiming "
+        "conventions; the direct re-draw count is not present in this artifact"
+    ),
+}
+#: Field carrying the per-cell re-draw diagnostic written by
+#: analysis/referee_fixes.py (``_summarise_diagnostics``).
+REDRAW_DIAGNOSTIC_KEY = "redraw_diagnostic"
+
 
 def split_submission_rows() -> tuple[str, str]:
     text = (PAPER / "generated_submission.tex").read_text()
@@ -93,11 +152,13 @@ def takeup_convention_spread_pp(block: dict, where: str) -> float:
     """Max absolute cushioning difference (pp) across claiming conventions.
 
     A spread of EXACTLY ZERO is the expected current state under the
-    ``new_entitlement`` scope and is emitted faithfully: the re-draw set is
-    empty at this calibration, so the grid is inert by construction and every
-    convention returns a bit-identical rate. The macro exists precisely so the
-    manuscript quotes that zero instead of implying the grid tested something.
-    What is NOT tolerated is a missing field — that raises.
+    ``new_entitlement`` scope and is emitted faithfully, so the manuscript
+    quotes that zero instead of implying the grid tested something. Note what
+    the zero does and does not establish: an empty re-draw set forces it, but
+    it does not by itself PROVE the set was empty — a non-empty set whose
+    units all end with a negligible award reads identically. Use
+    ``takeup_inert_basis`` to say which of the two grounds the artifact
+    actually supports. What is NOT tolerated is a missing field — that raises.
     """
     rates = [
         float(require(block, key, "cushioning_rate", "mean", where=where))
@@ -107,7 +168,7 @@ def takeup_convention_spread_pp(block: dict, where: str) -> float:
 
 
 def entitled_scope_bound(referee: dict, diagnosis: dict) -> tuple[float, float, str]:
-    """(stale cushioning %, full-take-up cushioning %, source label).
+    """(stale cushioning %, full-take-up cushioning %, source token).
 
     Prefers an ``all_entitled`` grid computed at the CURRENT calibration by
     analysis/referee_fixes.py. Falls back to the legacy
@@ -115,6 +176,12 @@ def entitled_scope_bound(referee: dict, diagnosis: dict) -> tuple[float, float, 
     convention but an OLDER calibration vintage (the former epsilon = 2 high
     case: seed-0 gross loss 1.70bn against the current unit-stress 0.886bn),
     and must therefore always be labelled as such in the manuscript.
+
+    The third element is one of ``ENTITLED_SCOPE_SOURCE_PHRASES``' keys, not
+    prose: the caller renders it through that table into \\TakeupEntitledSource
+    and records it in the artifact. The fallback used to be announced only by a
+    ``print()``, which meant three legacy-vintage numbers could ship in the
+    macros with a clean exit code and nothing in the emitted file saying so.
     """
     scope = referee.get("takeup_headline", {}).get(ALL_ENTITLED_KEY)
     if isinstance(scope, dict) and "displacement" in scope:
@@ -124,28 +191,181 @@ def entitled_scope_bound(referee: dict, diagnosis: dict) -> tuple[float, float, 
             require(block, "stale_baseline_flag", "cushioning_rate", "mean", where=where)
         )
         full = float(require(block, "1.00", "cushioning_rate", "mean", where=where))
-        return 100.0 * stale, 100.0 * full, "referee_fixes.json (current calibration)"
+        return 100.0 * stale, 100.0 * full, ENTITLED_SCOPE_SOURCE_CURRENT
 
     where = "takeup_diagnosis.json results.full_tariff_displacement"
     block = require(diagnosis, "results", "full_tariff_displacement", where=where)
     stale = float(require(block, "current_stale_flag", "cushioning_mean", where=where))
     full = float(require(block, "takeup_100", "cushioning_mean", where=where))
-    return 100.0 * stale, 100.0 * full, "takeup_diagnosis.json (legacy calibration vintage)"
+    return 100.0 * stale, 100.0 * full, ENTITLED_SCOPE_SOURCE_LEGACY
+
+
+def entitled_scope_source_phrase(source: str) -> str:
+    """Render the entitled-scope provenance, or raise on an unknown token."""
+    if source not in ENTITLED_SCOPE_SOURCE_PHRASES:
+        raise KeyError(
+            f"entitled-scope bound resolved to source {source!r}, which this "
+            f"writer has no manuscript phrasing for (known: "
+            f"{sorted(ENTITLED_SCOPE_SOURCE_PHRASES)}). Add the phrasing "
+            "rather than emitting three cushioning numbers with an unlabelled "
+            "calibration vintage."
+        )
+    return ENTITLED_SCOPE_SOURCE_PHRASES[source]
+
+
+def takeup_inert_basis(block: dict, convention_spread_pp: float, where: str) -> str:
+    """Token naming HOW the new-entitlement grid was shown to be inert.
+
+    The manuscript's central take-up claim is that no benefit unit is ever
+    re-drawn under the published ``new_entitlement`` scope. There are two very
+    different grounds for saying so, and the paper should not print one while
+    holding the other:
+
+    * MEASURED — every cell carries the ``redraw_diagnostic`` that
+      shocks.uc_takeup_redraw_diagnostic produced, and its ``n_redrawn`` is
+      zero in every seed. This is a direct observation of the re-draw set.
+    * INFERRED — the artifact has no diagnostic and inertness is read off an
+      exact-zero spread of simulated cushioning rates. That inference runs one
+      way only: an empty re-draw set implies a zero spread, but a zero spread
+      does NOT imply an empty re-draw set (a non-empty set whose units all end
+      with a negligible award gives the same zero).
+
+    The diagnostic wins whenever it is present. A diagnostic that CONTRADICTS
+    inertness, or a missing diagnostic beside a non-zero spread, raises: in
+    neither case is the grid inert, so there is no honest phrase to emit.
+    """
+    diagnostics = {
+        key: block[key][REDRAW_DIAGNOSTIC_KEY]
+        for key in TAKEUP_CONVENTIONS
+        if isinstance(block.get(key), dict)
+        and isinstance(block[key].get(REDRAW_DIAGNOSTIC_KEY), dict)
+    }
+    if diagnostics:
+        if len(diagnostics) != len(TAKEUP_CONVENTIONS):
+            raise KeyError(
+                f"{where}: only {sorted(diagnostics)} of the "
+                f"{len(TAKEUP_CONVENTIONS)} claiming conventions carry a "
+                f"{REDRAW_DIAGNOSTIC_KEY!r}. 'No benefit unit is re-drawn in "
+                "any seed' cannot be measured from a subset of the grid; "
+                "re-run analysis/referee_fixes.py --only takeup."
+            )
+        counts = {
+            key: int(require(diag, "n_redrawn_max", where=f"{where} {key}"))
+            for key, diag in diagnostics.items()
+        }
+        live = {key: n for key, n in counts.items() if n > 0}
+        if live:
+            raise RuntimeError(
+                f"{where}: the re-draw diagnostic reports a NON-EMPTY re-draw "
+                f"set ({live}), so the take-up grid is not inert and the "
+                "manuscript's claim that no benefit unit is ever re-drawn is "
+                "false at this calibration. Rewrite the claim; do not emit a "
+                "macro asserting inertness."
+            )
+        if convention_spread_pp != 0.0:
+            raise RuntimeError(
+                f"{where}: the diagnostic says nothing was ever re-drawn, yet "
+                f"the conventions differ by {convention_spread_pp:.6f}pp. An "
+                "empty re-draw set forces bit-identical cushioning, so the "
+                "artifact is internally inconsistent — re-run the take-up "
+                "grid rather than reporting either number."
+            )
+        return INERT_BASIS_MEASURED
+    if convention_spread_pp != 0.0:
+        raise RuntimeError(
+            f"{where}: this artifact carries no {REDRAW_DIAGNOSTIC_KEY!r}, and "
+            f"the conventions differ by {convention_spread_pp:.6f}pp, so the "
+            "grid is NOT inert on the only evidence available. The manuscript "
+            "cannot claim an empty re-draw set here; report the spread."
+        )
+    return INERT_BASIS_INFERRED
+
+
+def takeup_inert_basis_phrase(basis: str) -> str:
+    """Render the inertness basis, or raise on an unknown token."""
+    if basis not in TAKEUP_INERT_BASIS_PHRASES:
+        raise KeyError(
+            f"unknown take-up inertness basis {basis!r} (known: "
+            f"{sorted(TAKEUP_INERT_BASIS_PHRASES)})."
+        )
+    return TAKEUP_INERT_BASIS_PHRASES[basis]
 
 
 def check_entitled_scope_macros(
-    stale_s: str, full_s: str, spread_s: str, nd: int = ENTITLED_DECIMALS
+    stale_s: str,
+    full_s: str,
+    spread_s: str,
+    *,
+    stale: float,
+    full: float,
+    nd: int = ENTITLED_DECIMALS,
 ) -> None:
-    """Raise unless the three PRINTED entitled-scope numbers add up.
+    """Raise unless the three PRINTED entitled-scope numbers are BOTH
+    self-consistent and faithful to the unrounded artifact values.
 
     The manuscript quotes \\TakeupEntitledStale, \\TakeupEntitledFull and
     \\TakeupEntitledSpread in one sentence, so a reader subtracts the printed
     endpoints and expects the printed spread. Rounding all three independently
     from the unrounded values does not deliver that: 34.4505 and 41.5331 print
     as 34.5 and 41.5, whose difference is 7.0, while the unrounded spread
-    7.0826 prints as 7.1. The check runs on the emitted STRINGS, so it holds
-    whatever a future edit does to the individual format specs.
+    7.0826 prints as 7.1. So the emitter derives the printed spread from the
+    printed endpoints.
+
+    That makes the printed-subtraction identity TRUE BY CONSTRUCTION as this
+    module calls it, and a guard that re-derives its own input can never fire.
+    The unrounded ``stale`` and ``full`` are therefore required arguments and
+    the real work here is checking the printed strings against THEM:
+
+    1. each string carries exactly ``nd`` decimals — the precision the
+       tolerances below are tied to;
+    2. each printed endpoint is within half a unit in the last place of its
+       unrounded source, i.e. it really is that value rounded to ``nd``;
+    3. the printed spread is within ONE unit in the last place of the exact
+       ``full - stale`` — the worst case when both endpoints move half a unit
+       in opposite directions. A spread that drifted further has stopped
+       describing the artifact;
+    4. and only then, that the printed numbers still subtract correctly.
+
+    Checks 2 and 3 are the ones with teeth: they fail if a future edit prints
+    an endpoint from the wrong field, at the wrong scale (a rate rather than a
+    percentage), or from a stale variable.
     """
+    ulp = 10.0 ** (-nd)
+    # 1e-9 absorbs binary representation error only; it is far below the ulp.
+    half_ulp = ulp / 2.0 + 1e-9
+    for name, text in (
+        ("\\TakeupEntitledStale", stale_s),
+        ("\\TakeupEntitledFull", full_s),
+        ("\\TakeupEntitledSpread", spread_s),
+    ):
+        decimals = text.split(".")[1] if "." in text else ""
+        if len(decimals) != nd:
+            raise RuntimeError(
+                f"entitled-scope macro {name} prints {text!r} with "
+                f"{len(decimals)} decimal places, not {nd}. The tolerances "
+                "that check these numbers against the artifact are tied to "
+                "the print precision, so the precision cannot drift silently."
+            )
+    for name, text, source in (
+        ("\\TakeupEntitledStale", stale_s, stale),
+        ("\\TakeupEntitledFull", full_s, full),
+    ):
+        if abs(float(text) - source) > half_ulp:
+            raise RuntimeError(
+                f"entitled-scope macro {name} prints {text}, which is not "
+                f"{source!r} rounded to {nd} decimal places (off by "
+                f"{abs(float(text) - source):.6f}, tolerance {ulp / 2.0:g}). "
+                "The printed endpoint has stopped describing the artifact "
+                "value it claims to report."
+            )
+    exact_spread = full - stale
+    if abs(float(spread_s) - exact_spread) > ulp + 1e-9:
+        raise RuntimeError(
+            f"\\TakeupEntitledSpread prints {spread_s}, but the unrounded "
+            f"endpoints differ by {exact_spread:.6f} — further than the "
+            f"{ulp:g} that rounding both endpoints to {nd} decimal places can "
+            "explain. The printed spread is not this artifact's spread."
+        )
     if round(float(full_s) - float(stale_s), nd) != round(float(spread_s), nd):
         raise RuntimeError(
             "entitled-scope macros are not self-consistent: "
@@ -163,15 +383,57 @@ def entitled_scope_macro_values(
     """Render (stale, full, spread) at ``nd`` places so the sentence adds up.
 
     The spread is formed from the PRINTED endpoints rather than from the
-    unrounded values, and the identity is then re-checked on the emitted
-    strings by ``check_entitled_scope_macros`` — so the inconsistency can never
+    unrounded values, and the emitted strings are then checked back against
+    the UNROUNDED inputs by ``check_entitled_scope_macros`` — so neither the
+    inconsistency nor a printed number that has drifted off the artifact can
     ship silently.
     """
     stale_s = f"{stale:.{nd}f}"
     full_s = f"{full:.{nd}f}"
     spread_s = f"{float(full_s) - float(stale_s):.{nd}f}"
-    check_entitled_scope_macros(stale_s, full_s, spread_s, nd)
+    check_entitled_scope_macros(stale_s, full_s, spread_s, stale=stale, full=full, nd=nd)
     return stale_s, full_s, spread_s
+
+
+#: Fields ``record_takeup_provenance`` stamps under ``takeup_headline``.
+ENTITLED_SCOPE_SOURCE_FIELD = "entitled_scope_source"
+INERT_BASIS_FIELD = "inert_basis"
+
+
+def takeup_provenance_fields(source: str, basis: str) -> dict:
+    """The provenance block recorded under ``takeup_headline``.
+
+    Rendering the provenance into the macros puts it in front of a reader of
+    the PAPER; this puts it in front of a reader of the ARTIFACT. Both matter,
+    because the artifact outlives any one build and the fallback that chooses
+    ``source`` leaves no other trace in it.
+    """
+    return {
+        ENTITLED_SCOPE_SOURCE_FIELD: source,
+        f"{ENTITLED_SCOPE_SOURCE_FIELD}_options": sorted(ENTITLED_SCOPE_SOURCE_PHRASES),
+        f"{ENTITLED_SCOPE_SOURCE_FIELD}_detail": entitled_scope_source_phrase(source),
+        INERT_BASIS_FIELD: basis,
+        f"{INERT_BASIS_FIELD}_options": sorted(TAKEUP_INERT_BASIS_PHRASES),
+        f"{INERT_BASIS_FIELD}_detail": takeup_inert_basis_phrase(basis),
+        "provenance_recorded_by": "analysis/write_referee_macros.py",
+    }
+
+
+def record_takeup_provenance(path: Path, source: str, basis: str) -> bool:
+    """Stamp the resolved provenance into results/referee_fixes.json in place.
+
+    Returns True when the file changed. Everything else in the artifact is
+    round-tripped untouched, and re-running with the same inputs is a no-op,
+    so this never churns the file.
+    """
+    artifact = json.loads(path.read_text())
+    headline = artifact.setdefault("takeup_headline", {})
+    fields = takeup_provenance_fields(source, basis)
+    if all(headline.get(k) == v for k, v in fields.items()):
+        return False
+    headline.update(fields)
+    path.write_text(json.dumps(artifact, indent=2))
+    return True
 
 
 def main() -> None:
@@ -198,8 +460,15 @@ def main() -> None:
     convention_spread = takeup_convention_spread_pp(
         takeup, "referee_fixes.json takeup_headline.displacement"
     )
+    # How the "the grid is inert" claim is established for THIS artifact:
+    # a measured re-draw count when one is stored, otherwise the weaker
+    # inference from an exactly-zero convention spread.
+    inert_basis = takeup_inert_basis(
+        takeup, convention_spread, "referee_fixes.json takeup_headline.displacement"
+    )
     # The binding claiming margin (all-entitled re-draw scope).
     entitled_stale, entitled_full, entitled_source = entitled_scope_bound(d, diagnosis)
+    entitled_source_phrase = entitled_scope_source_phrase(entitled_source)
     stale_str, full_str, spread_str = entitled_scope_macro_values(
         entitled_stale, entitled_full
     )
@@ -250,15 +519,21 @@ def main() -> None:
         f"\\newcommand{{\\TakeupSeeds}}{{{takeup_seeds}}}",
         f"\\newcommand{{\\TakeupDisplacedCentral}}{{{pct(takeup['0.80']['cushioning_rate']['mean'])}}}",
         # Spread across the four new-entitlement claiming conventions. Zero
-        # means the re-draw set is empty and the grid is inert, not that
-        # take-up has been shown not to matter.
+        # means the grid is inert, not that take-up has been shown not to
+        # matter; \TakeupInertBasis states how that inertness was established.
         f"\\newcommand{{\\TakeupConventionSpread}}{{{convention_spread:.3f}}}",
+        # HOW that zero was established: measured re-draw count, or inferred
+        # from the spread. The two are different claims (see
+        # takeup_inert_basis) and the manuscript must state which it holds.
+        f"\\newcommand{{\\TakeupInertBasis}}{{{takeup_inert_basis_phrase(inert_basis)}}}",
         # Binding claiming margin: all-entitled re-draw scope. The spread is
         # the difference of the two PRINTED endpoints, so the sentence that
         # quotes all three adds up (see entitled_scope_macro_values).
         f"\\newcommand{{\\TakeupEntitledStale}}{{{stale_str}}}",
         f"\\newcommand{{\\TakeupEntitledFull}}{{{full_str}}}",
         f"\\newcommand{{\\TakeupEntitledSpread}}{{{spread_str}}}",
+        # ...and WHICH artifact, at which calibration, those three came from.
+        f"\\newcommand{{\\TakeupEntitledSource}}{{{entitled_source_phrase}}}",
         f"\\newcommand{{\\TakeupZeroUCNonTakeupShare}}{{{100 * zero_uc_non_takeup:.1f}}}",
         # New Style JSA bound (statutory parameters, no simulation).
         f"\\newcommand{{\\JSAWeeklyRate}}{{{jsa['parameters']['jsa_weekly_rate_25_plus']:.2f}}}",
@@ -276,17 +551,48 @@ def main() -> None:
     ]
     (PAPER / "referee_macros.tex").write_text("\n".join(lines) + "\n")
     print("[written] paper/referee_macros.tex")
+    # The provenance now travels with the artifact as well as the macros, so a
+    # legacy-vintage fallback is visible to a reader of either.
+    changed = record_takeup_provenance(
+        RESULTS / "referee_fixes.json", entitled_source, inert_basis
+    )
+    print(
+        f"[written] results/referee_fixes.json takeup_headline provenance "
+        f"({'updated' if changed else 'already current'})"
+    )
     print(f"[takeup] entitled-scope bound source: {entitled_source}")
+    print(f"[takeup]   \\TakeupEntitledSource: {entitled_source_phrase}")
+    if entitled_source == ENTITLED_SCOPE_SOURCE_LEGACY:
+        print(
+            "[takeup] WARNING: \\TakeupEntitledStale/Full/Spread are "
+            "LEGACY-VINTAGE numbers from results/takeup_diagnosis.json (the "
+            "superseded epsilon=2 high case, seed-0 gross loss 1.70bn against "
+            "the current unit stress 0.886bn). results/referee_fixes.json "
+            f"carries no takeup_headline.{ALL_ENTITLED_KEY} block; re-run "
+            "analysis/referee_fixes.py --only takeup to replace them. The "
+            "manuscript must quote \\TakeupEntitledSource beside them."
+        )
     print(
         f"[takeup] new-entitlement convention spread: {convention_spread:.3f}pp "
         f"over {len(TAKEUP_CONVENTIONS)} conventions, {takeup_seeds} draws"
     )
+    print(f"[takeup] inertness basis: {inert_basis}")
+    print(f"[takeup]   \\TakeupInertBasis: {takeup_inert_basis_phrase(inert_basis)}")
     if convention_spread == 0.0:
         print(
             "[takeup] WARNING: the new-entitlement take-up grid is INERT at "
             "this calibration (identical cushioning across every convention "
             "=> empty re-draw set). Report \\TakeupEntitledSpread as the "
             "claiming-margin bound, not this zero."
+        )
+    if inert_basis == INERT_BASIS_INFERRED:
+        print(
+            "[takeup] WARNING: that zero is INFERRED, not measured. This "
+            "artifact stores no redraw_diagnostic, and a zero spread is only "
+            "one-directional evidence for an empty re-draw set (a non-empty "
+            "set whose units all end with a negligible award reads the same). "
+            "Re-run analysis/referee_fixes.py --only takeup to record "
+            "n_redrawn directly."
         )
     exact_spread = entitled_full - entitled_stale
     if round(exact_spread, ENTITLED_DECIMALS) != float(spread_str):

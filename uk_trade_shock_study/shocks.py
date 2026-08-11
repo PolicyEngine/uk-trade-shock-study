@@ -975,23 +975,51 @@ def _baseline_flag_values_and_rate(sim, period: int) -> tuple[np.ndarray, float]
 UC_TAKEUP_DIAGNOSTIC_KEY = "uc_takeup_redraw"
 
 
-def _benunit_weights(sim, period, n_benunits: int) -> np.ndarray | None:
-    """Benefit-unit weights, or None when the sim cannot supply them.
+#: Errors that mean "this simulation cannot LOOK UP benunit_weight" (a stub or
+#: a reduced simulation), as opposed to an engine failure part-way through a
+#: calculation, which is a regression and must not be swallowed. policyengine
+#: raises a ``VariableNotFoundError``; the class is also matched by name so a
+#: re-parented exception still degrades gracefully instead of aborting a run.
+_MISSING_VARIABLE_ERRORS = (
+    AttributeError,
+    KeyError,
+    TypeError,
+    ValueError,
+    NotImplementedError,
+)
+
+
+def _benunit_weights(
+    sim, period, n_benunits: int
+) -> tuple[np.ndarray | None, str | None]:
+    """Benefit-unit weights and, when they are unavailable, the reason why.
 
     Unit-test stubs and reduced simulations have no ``benunit_weight``
     variable; the diagnostic degrades to unweighted counts rather than
-    failing, so this helper never raises.
+    failing. A blanket ``except Exception`` would also swallow a genuine
+    engine regression (a broken weight column, a failed period conversion)
+    and report it as the innocuous ``weights_available: False``, so only
+    lookup-style failures are caught, and the reason is recorded in the
+    diagnostic either way.
     """
     try:
         values = np.asarray(
             sim.calculate("benunit_weight", period=period, map_to="benunit").values,
             dtype=float,
         )
-    except Exception:  # noqa: BLE001 - any stub/engine failure means "no weights"
-        return None
-    if values.shape != (n_benunits,) or not np.isfinite(values).all():
-        return None
-    return values
+    except _MISSING_VARIABLE_ERRORS as error:
+        return None, f"{type(error).__name__}: {error}"
+    except Exception as error:  # noqa: BLE001 - re-raised unless clearly a lookup
+        if "NotFound" not in type(error).__name__:
+            raise
+        return None, f"{type(error).__name__}: {error}"
+    if values.shape != (n_benunits,):
+        return None, (
+            f"benunit_weight has shape {values.shape}, expected ({n_benunits},)"
+        )
+    if not np.isfinite(values).all():
+        return None, "benunit_weight contains non-finite values"
+    return values, None
 
 
 def uc_takeup_redraw_diagnostic(shocked_table) -> dict | None:
@@ -1016,6 +1044,96 @@ def _record_takeup_diagnostic(sim, shocked_table, diagnostic: dict) -> dict:
     except AttributeError:  # pragma: no cover - slotted stub
         pass
     return diagnostic
+
+
+def measure_all_claim_uc_award(sim, period, stored_flag) -> np.ndarray:
+    """Potential UC award per benefit unit with claiming forced ON for all.
+
+    ``would_claim_uc`` gates the award, so entitlement is unobservable from
+    the award itself: it can only be measured by overriding the stored flag.
+    Both sides of the take-up machinery need that measurement — the baseline
+    potential award in :func:`build_shocked_simulation` and the post-shock
+    potential award in :func:`redraw_uc_takeup` — and both must therefore obey
+    the same contract, which is why they share this function.
+
+    The contract has two halves, and the reason for each is the same one given
+    in :func:`_verify_uc_award_cache_flushed`: ``set_input`` is NOT trusted to
+    drop a cached award.
+
+    1. The formula cache is invalidated BEFORE the measurement. A simulation
+       cloned from a baseline whose UC has already been materialised (which is
+       always the case in production: ``run_monte_carlo_prepared`` computes the
+       baseline metrics before cloning) carries that baseline award with it,
+       and without the flush this pass returns the BASELINE award — gated by
+       the stored flag — rather than the all-claim entitlement. Post-shock that
+       empties the re-draw set and makes a take-up grid silently inert; on the
+       baseline side it reads every entitled non-claimant as unentitled and so
+       inflates the "newly entitled" set instead.
+
+    2. The measurement is read back and verified. Recomputing the award with
+       claiming forced OFF for everyone must return zero for every benefit
+       unit; an award served from a stale cache is unmoved by the input and
+       fails that test. This costs one extra award evaluation per measurement,
+       which is the price of not trusting the cache — the failure it rules out
+       is silent and changes every downstream number.
+
+    The stored flag is restored (and the caches invalidated again) before
+    returning, so the simulation is left exactly as it was found.
+    """
+    stored_flag = np.asarray(stored_flag, dtype=bool)
+    n_benunits = int(stored_flag.size)
+
+    sim.set_input("would_claim_uc", period, np.ones(n_benunits, dtype=bool))
+    sim._invalidate_all_caches()
+    enabled = np.asarray(
+        sim.calculate("would_claim_uc", period=period, map_to="benunit").values,
+        dtype=bool,
+    )
+    if not enabled.all():
+        raise RuntimeError(
+            "UC entitlement measurement pass not applied: temporary entitlement "
+            "calculation could not enable would_claim_uc."
+        )
+    award = np.asarray(
+        sim.calculate("universal_credit", period=period, map_to="benunit").values,
+        dtype=float,
+    )
+    if award.shape != stored_flag.shape:
+        raise RuntimeError(
+            "UC entitlement measurement pass returned an award of shape "
+            f"{award.shape}, expected {stored_flag.shape}."
+        )
+
+    # Positive read-back: with nobody claiming, nobody can be paid.  Any
+    # positive award here is an award that did not respond to the input, i.e.
+    # exactly the stale value the measurement above would have returned.
+    sim.set_input("would_claim_uc", period, np.zeros(n_benunits, dtype=bool))
+    sim._invalidate_all_caches()
+    withheld = np.asarray(
+        sim.calculate("universal_credit", period=period, map_to="benunit").values,
+        dtype=float,
+    )
+    if (withheld > 1e-8).any():
+        raise RuntimeError(
+            "UC entitlement measurement pass is not responding to would_claim_uc: "
+            f"{int((withheld > 1e-8).sum())} benefit units still receive a "
+            "positive award with claiming switched off for everyone, so the "
+            "measured all-claim award is a stale cached value — the simulation "
+            "cache was not flushed (_invalidate_all_caches no-op?)."
+        )
+
+    sim.set_input("would_claim_uc", period, stored_flag)
+    sim._invalidate_all_caches()
+    restored = np.asarray(
+        sim.calculate("would_claim_uc", period=period, map_to="benunit").values,
+        dtype=bool,
+    )
+    if not np.array_equal(restored, stored_flag):
+        raise RuntimeError(
+            "UC entitlement measurement pass could not restore would_claim_uc "
+            "to its stored value."
+        )
+    return award
 
 
 def redraw_uc_takeup(
@@ -1079,7 +1197,9 @@ def redraw_uc_takeup(
     changed = ~np.isclose(shocked_earnings, baseline_earnings, rtol=0.0, atol=1e-8)
     changed |= affected_mask(shocked_table)
 
-    weights = _benunit_weights(sim, period, baseline_flag.size)
+    weights, weights_unavailable_reason = _benunit_weights(
+        sim, period, baseline_flag.size
+    )
 
     def _diagnostic(**fields) -> dict:
         base = {
@@ -1088,6 +1208,7 @@ def redraw_uc_takeup(
             "seed": int(seed),
             "n_benunits": int(baseline_flag.size),
             "weights_available": weights is not None,
+            "weights_unavailable_reason": weights_unavailable_reason,
         }
         base.update(fields)
         return base
@@ -1120,20 +1241,11 @@ def redraw_uc_takeup(
     # Measure post-shock potential UC with claiming switched on.  The stored
     # would_claim_uc input gates the award, so the observed award cannot be
     # used to determine entitlement without this temporary all-True override.
-    sim.set_input("would_claim_uc", period, np.ones(baseline_flag.size, dtype=bool))
-    enabled = np.asarray(
-        sim.calculate("would_claim_uc", period=period, map_to="benunit").values,
-        dtype=bool,
-    )
-    if not enabled.all():
-        raise RuntimeError(
-            "post-shock UC take-up re-draw not applied: temporary entitlement "
-            "calculation could not enable would_claim_uc."
-        )
-    potential_award = np.asarray(
-        sim.calculate("universal_credit", period=period, map_to="benunit").values,
-        dtype=float,
-    )
+    # measure_all_claim_uc_award owns the cache-flush and read-back contract:
+    # the shocked simulation is a CLONE of a baseline whose UC award has
+    # already been materialised, so an unflushed pass here would return that
+    # baseline award and empty the re-draw set without raising.
+    potential_award = measure_all_claim_uc_award(sim, period, baseline_flag)
     if baseline_potential_award is None:
         # Unit-level callers without a full dataset treat the baseline as not
         # entitled. Production callers provide the all-claim baseline award.
@@ -1214,6 +1326,13 @@ def _verify_uc_award_cache_flushed(sim, period, flag, potential_award) -> None:
     downstream metric would silently score the all-claim award. Verify the
     flush by recomputing the award: any unit with a positive potential award
     whose final flag is False must now score zero UC (referee point M5).
+
+    This is the RESTORE half of the contract. The MEASUREMENT half lives in
+    :func:`measure_all_claim_uc_award`, which flushes before the all-claim
+    pass and verifies it the same way. The two must stay symmetric: a stale
+    measurement is exactly as silent as a stale restore, and empties the
+    re-draw set (post-shock) or inflates it (baseline) instead of inflating
+    the award.
     """
     award = np.asarray(
         sim.calculate("universal_credit", period=period, map_to="benunit").values,
@@ -1400,14 +1519,14 @@ def build_shocked_simulation(dataset, baseline_sim, shocked_table, period):
             ).values,
             dtype=bool,
         )
-        potential_sim.set_input(
-            "would_claim_uc", period, np.ones(baseline_flag.size, dtype=bool)
-        )
-        baseline_potential_award = np.asarray(
-            potential_sim.calculate(
-                "universal_credit", period=period, map_to="benunit"
-            ).values,
-            dtype=float,
+        # Same contract as the post-shock pass in redraw_uc_takeup, and for
+        # the same reason: potential_sim is a clone of a baseline whose UC
+        # award is already materialised, so an unflushed measurement would
+        # return that stored-flag-gated award and read every entitled
+        # NON-claimant as unentitled at baseline — which then misclassifies
+        # them as newly entitled post-shock and inflates the re-draw set.
+        baseline_potential_award = measure_all_claim_uc_award(
+            potential_sim, period, baseline_flag
         )
         baseline_sim._trade_shock_uc_potential_award = baseline_potential_award
     redraw_uc_takeup(

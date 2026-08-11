@@ -182,7 +182,20 @@
           "sd": 6.355287432313019e-14
         }
       }
-    }
+    },
+    "entitled_scope_source": "takeup_diagnosis_legacy_vintage",
+    "entitled_scope_source_options": [
+      "referee_fixes_all_entitled_scope",
+      "takeup_diagnosis_legacy_vintage"
+    ],
+    "entitled_scope_source_detail": "the legacy \\texttt{results/takeup\\_diagnosis.json} grid, which applies the same all-changed-units convention at a \\emph{superseded} calibration---the former $\\varepsilon=2$ high case, whose seed-0 gross earnings loss of \\pounds 1.70 billion is roughly twice the \\pounds 0.886 billion of the current unit stress",
+    "inert_basis": "convention_spread",
+    "inert_basis_options": [
+      "convention_spread",
+      "redraw_diagnostic"
+    ],
+    "inert_basis_detail": "inferred from bit-identical cushioning across all four claiming conventions; the direct re-draw count is not present in this artifact",
+    "provenance_recorded_by": "analysis/write_referee_macros.py"
   },
   "jsa_bounding": {
     "parameters": {

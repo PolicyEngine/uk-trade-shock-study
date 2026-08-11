@@ -6,7 +6,10 @@ workers and labour-market states. Across the main-table cells---both loss
 anchors at the duration-equivalent scales that survive the support
 screen---the wage-cut and displacement bounds differ by
 \SubmissionCushionDifferenceMin--\SubmissionCushionDifferenceMax\ percentage
-points; at the unit twelve-month scale the difference is
+points, though the top of that range comes from the three- and six-month
+cells, which are exactly the ones the annualisation bounding of
+Appendix~\ref{app:monthlyuc} shows to be conservative by about
+\MonthlyUCCushionGap\ points; at the unit twelve-month scale the difference is
 \PrimaryCushionDifference\ points and the wage-cut Exchequer cost is
 \pounds\PrimaryExchequerDifference\ million higher. (The excluded OBR
 three-month cell, whose displacement draw rests on
@@ -53,11 +56,11 @@ sensitivities under which it does not shrink. The
 claiming convention, by contrast, is not settled and the paper should not
 pretend otherwise. The new-entitlement take-up grid returns numerically
 identical results under every rate and under the stale flag---identical to
-machine precision, because no benefit unit satisfies its zero-to-positive
-entitlement condition---so it tests an empty set rather than establishing
-insensitivity. The convention that does bind is the frozen claiming state of
-already-entitled non-claimers. On the superseded $\varepsilon=2$ diagnostic
----the only calibration at which either quantity has been measured---that
+machine precision, which is only possible if its re-draw set is empty, a
+conclusion \TakeupInertBasis---so it tests an empty set rather than
+establishing insensitivity. The convention that does bind is the frozen
+claiming state of already-entitled non-claimers. On \TakeupEntitledSource,
+the only source at which either quantity has been measured, that
 convention zeroes UC for \TakeupZeroUCNonTakeupShare\ per cent of the
 displaced by weight, and re-drawing it moves displacement cushioning by
 \TakeupEntitledSpread\ percentage points. A
@@ -159,8 +162,14 @@ whether the highest-weight exposed records are selected at their nominal
 rates, is implemented but unrun. And the household bootstrap holds
 the original assignment fixed, so its interval is conditional on which records
 those draws selected and is narrower than a fully re-drawn bootstrap would be.
-None of the five changes the sign of the reported contrast; the first and
-third could move its magnitude, and the second bears only on the trade
+None of the five is \emph{known} to change the sign of the reported
+contrast, which is a weaker statement than that none of them would. The
+claiming grid alone moved displacement cushioning by
+\TakeupEntitledSpread\ points at the calibration where it was last run,
+against a \PrimaryCushionDifference-point gap; adding the worker-selection
+shift and the omitted New Style JSA, all three pointing the same way, would
+leave a contrast of a few points rather than ten. The sign is likely to
+survive and the magnitude is not. The second item bears only on the trade
 benchmark rather than on the cushioning estimand.
 
 The framework nevertheless provides a useful platform for subsequent work.

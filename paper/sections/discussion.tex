@@ -2,26 +2,45 @@
 
 The central finding is that the UK tax--benefit system responds differently
 when a common aggregate earnings loss is distributed differently across
-workers and labour-market states. Across two loss anchors and three
-duration-equivalent scales, the wage-cut and displacement bounds differ by
+workers and labour-market states. Across the main-table cells---both loss
+anchors at the duration-equivalent scales that survive the support
+screen---the wage-cut and displacement bounds differ by
 \SubmissionCushionDifferenceMin--\SubmissionCushionDifferenceMax\ percentage
-points; at the unit twelve-month scale the difference is
+points. That range is not ordered by duration---its widest cell is a
+three-month one and its narrowest a six-month one, with a twelve-month cell
+second widest---so it should not be read as an annualisation artefact, even
+though Appendix~\ref{app:monthlyuc} shows the sub-annual cells to be
+conservative by about \MonthlyUCCushionGap\ points; at the unit twelve-month scale the difference is
 \PrimaryCushionDifference\ points and the wage-cut Exchequer cost is
-\pounds\PrimaryExchequerDifference\ million higher. The factorial middle
-cell splits that difference into \FactorialConcStep\ points from
-concentrating the loss on selected workers and only
-\FactorialStateStep\ points from the employment-state change itself; the
-record-resampling exercise places the total contrast at
+\pounds\PrimaryExchequerDifference\ million higher. (The excluded OBR
+three-month cell, whose displacement draw rests on
+\OBRThreeMonthEffectiveLossRecords\ effective record contributions, gives
+\SubmissionThinCellCushionDifference\ points and is reported in
+Appendix~\ref{app:mc} as sensitivity evidence only, and is excluded from the
+headline range for the same support reason that excludes it from the table.) The factorial middle cell splits that difference into
+\FactorialConcStep\ points from concentrating the loss on selected workers
+and only \FactorialStateStep\ points from the employment-state change
+itself; the record-resampling exercise places the total contrast at
 \BootstrapCushionDifference\ points (sensitivity range
 \BootstrapCushionDifferenceCILower--\BootstrapCushionDifferenceCIUpper), and
 it survives the removal of any single loss-contributing record
 (\LOOMin--\LOOMax\ points). The mechanism is a loss-concentration effect
 inside the statutory schedule: diffuse cuts are relieved at marginal
-income-tax rates, complete individual losses exhaust that relief and land
-on means-tested UC, and the unemployment state itself adds almost nothing
-within the modelled annual rules---a bound on static statutory readings of
-the extensive margin, since the status-contingent institutions (New Style
-JSA, monthly assessment, waiting periods, conditionality) are unmodelled.
+income-tax rates while complete individual losses exhaust that relief and
+land on means-tested UC.
+
+The near-zero employment-state step carries much weaker information than the
+concentration step, and the paper does not rest on it. Every
+status-contingent institution---New Style JSA, monthly assessment periods,
+the five-week wait, claiming frictions, conditionality---sits outside the
+annual model, so the two cells being compared differ only by a label no
+modelled formula reads. New Style JSA alone would be worth up to
+\JSACushionPoints\ percentage points of cushioning for a representative
+displaced worker, tens of times the step actually measured. The
+decomposition therefore bounds what a static statutory model can attribute
+to the extensive margin; it is not evidence that job loss and an equivalent
+in-work earnings collapse are fiscally alike in the United Kingdom.
+
 On the UC side four objects must
 be kept distinct: statutory entitlement as represented by PolicyEngine;
 entitlement conditional on the incomplete household information in the FRS
@@ -29,16 +48,27 @@ entitlement conditional on the incomplete household information in the FRS
 modelled take-up, which is a scenario convention; and actual receipt
 following real job loss, which none of the above observes. The simulation
 evidence speaks to the first three. Two sensitivity results sharpen this
-reading. Under a pension-gross income concept the cushioning \emph{levels}
-fall by roughly four percentage points on both margins but the contrast is
-essentially unchanged, so the gap is a statutory asymmetry, not an artefact
-of the HBAI treatment of pension saving. And the take-up grid shows the gap
-is not an artefact of the claiming convention either: varying the
-new-entitlement rate from 0.55 to 1.00, or restoring the stale pre-shock
-flag, leaves the unit-stress displacement cushioning unchanged to within
-0.1 points, because most displaced households are already UC-entitled in
-work. The contrast is pre-specified and conditional: it prices a statutory
-asymmetry, not the tariffs' total causal incidence. The annualisation of
+reading in opposite directions. Under a pension-gross income concept the
+cushioning \emph{levels} fall by four to five percentage points on both
+margins while the contrast widens slightly, from \GapHBAIPension\ to
+\GapPensionGross\ points, so the gap is a schedule effect rather than an
+artefact of the HBAI treatment of pension saving---and this is one of the
+sensitivities under which it does not shrink. The
+claiming convention, by contrast, is not settled and the paper should not
+pretend otherwise. The new-entitlement take-up grid returns numerically
+identical results under every rate and under the stale flag---identical to
+machine precision, which is only possible if its re-draw set is empty, a
+conclusion \TakeupInertBasis---so it tests an empty set rather than
+establishing insensitivity. The convention that does bind is the frozen
+claiming state of already-entitled non-claimers. On \TakeupEntitledSource,
+the only source at which either quantity has been measured, that
+convention zeroes UC for \TakeupZeroUCNonTakeupShare\ per cent of the
+displaced by weight, and re-drawing it moves displacement cushioning by
+\TakeupEntitledSpread\ percentage points. A
+spread of that order is comparable to the headline gap itself. The contrast
+is pre-specified and conditional: it prices a statutory schedule effect, not
+the tariffs' total causal incidence, and its magnitude is conditional on a
+claiming rule the survey data cannot pin down. The annualisation of
 unemployment spells is conservative for it: the parameter-based bounding in
 Appendix~\ref{app:monthlyuc} shows that correct monthly UC and partial-year
 PAYE accounting would raise displacement cushioning at sub-annual durations
@@ -53,19 +83,30 @@ scenario-allocation sensitivity; record-composition sensitivity is scored
 separately by the household resampling exercise and the leave-one-record-out
 audit, neither of which is a design-based confidence interval, and no
 significance claim is attached to any interval. The sign also survives all
-\LeaveSectorCount\ leave-one-division-out reruns,
+\LeaveSectorCount\ leave-one-division-out reruns at \LeaveSectorDraws\ assignments,
 with a cushioning difference of \LeaveSectorCushionDifferenceMin--%
 \LeaveSectorCushionDifferenceMax\ points. This establishes sector robustness
 within the imposed bridge, not causal robustness of that bridge.
 
-Calibrated longitudinal-LFS allocation sensitivities leave the central
-extensive-margin conclusion broadly unchanged: cushioning spans 36.0--37.4
-per cent across cell, earnings-band and regularised-QRF risk shapes, compared
-with 36.8 per cent under uniform assignment. This robustness is conditional
-and limited. The imputation models agree weakly person by person, and the
-available LFS manufacturing target has only \LFSManufacturingDonors\ donors;
-stability of an aggregate fiscal ratio is not evidence that tariff-specific
-worker selection has been identified.
+Calibrated longitudinal-LFS allocation sensitivities preserve the sign of the
+contrast but not its magnitude. Displacement cushioning spans
+\LFSSelectionCushionMin--\LFSSelectionCushionMax\ per cent across cell,
+earnings-band and regularised-QRF risk shapes, against
+\LFSUniformCushion\ per cent under the uniform assignment used elsewhere in
+the paper. Every LFS-shaped model raises cushioning
+(\LFSSelectionShiftMin--\LFSSelectionShiftMax\ points) and so narrows the
+headline gap to \LFSSelectionGapMin--\LFSSelectionGapMax\ points---a
+narrowing of a fifth to a third of the contrast. This exercise locates a
+first-order sensitivity rather than establishing robustness. One accounting
+point travels with it: the selection runs and their uniform benchmark use
+the 100-draw Bernoulli design, whose own wage-minus-displacement gap is
+\LFSSelectionBaselineGap\ points, not the 50-draw balanced
+\PrimaryCushionDifference\ of the primary table; the narrowing is measured
+within the former. The models agree closely with each other
+but weakly person by person, and the available LFS manufacturing target has
+only \LFSManufacturingDonors\ donors, so stability of an aggregate fiscal
+ratio across three imputations is not evidence that tariff-specific worker
+selection has been identified.
 
 National poverty changes remain near zero because the exposed population is
 small and often above the poverty line. They are not precise population
@@ -98,9 +139,46 @@ policy. Worker selection is independent within broad SIC divisions; the
 longitudinal LFS models provide only weakly concordant predictive rankings;
 within-year benefit timing, New Style JSA, household labour supply, indirect
 taxes, exchange rates, retaliation, and general equilibrium remain outside the
-central specification. Constituency machinery in the Online Supplement is
+central specification. The shock reaches employees only, so self-employed
+workers in the exposed divisions have no counterpart margin here.
+Constituency machinery in the Online Supplement is
 illustrative because local industry structure is not observed at the required
 level.
+
+Five items of unfinished business should be named rather than left for a
+reader to discover. The \texttt{all\_entitled} take-up grid, which is the
+specification in which the claiming assumption actually binds, has been
+implemented but not yet run at the unit-stress calibration; the manuscript
+quotes a superseded-vintage bound for it. The product--destination panel has
+not been regenerated under the anticipation-window, continuous-trade or
+Poisson specifications now implemented in its estimator, so the reported
+trade estimates retain an anticipation bias of known sign and a zero-fill
+bias of unknown sign, and its figure retains a base period inside the
+anticipation window. The channel decomposition still runs
+on \FactorialChannelSeeds\ seeds against a \FactorialDraws-draw headline, and
+should be re-run at the full count so the two reconcile. The per-record
+balanced-versus-Bernoulli inclusion-probability diagnostic
+(\path{analysis/assignment_inclusion_diagnostic.py}), which would show
+whether the highest-weight exposed records are selected at their nominal
+rates, is implemented but unrun. And the household bootstrap holds
+the original assignment fixed, so its interval is conditional on which records
+those draws selected and is narrower than a fully re-drawn bootstrap would be.
+None of the five is \emph{known} to change the sign of the reported
+contrast, but that is a weaker statement than it may appear, and the
+arithmetic should be set out rather than left implicit. Three of them raise
+displacement cushioning and so narrow the gap: the claiming convention by
+\TakeupEntitledSpread\ points at the calibration where it was last run,
+worker selection by \LFSSelectionShiftMin--\LFSSelectionShiftMax, and the
+omitted New Style JSA by up to \JSACushionPoints. Taken at face value and
+added, those exceed the \PrimaryCushionDifference-point gap outright. They
+should not be added---they are measured on different designs, different
+calibrations and, in the JSA case, on a representative worker rather than
+the population, and each is an upper bound on its own channel---but the
+exercise establishes that the magnitude of the contrast is not robust, and
+that its sign is asserted here on the strength of the concentration
+mechanism rather than demonstrated against these three together. The second
+item bears only on the trade benchmark rather than on the cushioning
+estimand.
 
 The framework nevertheless provides a useful platform for subsequent work.
 The next empirical step is to combine product- or firm-level evidence on

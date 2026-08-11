@@ -1,54 +1,54 @@
-"""Generate manuscript macros and table rows from LFS benchmark artifacts."""
+"""Generate manuscript macros and table rows from LFS benchmark artifacts.
+
+Reads the AGGREGATE summary rather than the per-record benchmark file. The
+latter carries person-level FRS records (person_id, age, gender, earnings,
+survey weight) and is licensed microdata, so it is never committed; the
+weighted mean and deciles this table reports are the only things the
+manuscript needs, and `analysis/benchmark_lfs_qrf.py` emits them alongside
+the microdata on a licensed run.
+"""
 
 from __future__ import annotations
 
 import json
 from pathlib import Path
 
-import numpy as np
-import pandas as pd
-
-
 ROOT = Path(__file__).resolve().parents[1]
-DATA = ROOT / "results/lfs_qrf_benchmark.csv.gz"
+SUMMARY = ROOT / "results/lfs_qrf_benchmark_summary.json"
 DIAGNOSTICS = ROOT / "results/lfs_qrf_benchmark.diagnostics.json"
 OUTPUT = ROOT / "paper/generated_lfs_benchmarks.tex"
 
 
-def weighted_quantile(values, weights, quantiles=(0.1, 0.5, 0.9)):
-    order = np.argsort(values)
-    values = np.asarray(values)[order]
-    weights = np.asarray(weights)[order]
-    cumulative = np.cumsum(weights) - weights / 2
-    cumulative /= weights.sum()
-    return np.interp(quantiles, cumulative, values)
-
-
-def row(label: str, values: pd.Series, weights: pd.Series) -> str:
-    valid = values.notna() & weights.gt(0)
-    mean = np.average(values[valid], weights=weights[valid])
-    q10, q50, q90 = weighted_quantile(values[valid], weights[valid])
+def row(label: str, model: dict) -> str:
+    """One table row from a model's stored weighted distribution summary."""
+    for key in ("weighted_mean", "weighted_q10", "weighted_q50", "weighted_q90"):
+        if key not in model:
+            raise KeyError(
+                f"{SUMMARY.name} is missing {key!r}; regenerate it with "
+                "`make lfs-benchmarks LFS_TAB=/path/to/panel.tab`"
+            )
     return (
-        f"{label} & {100 * mean:.2f} & {100 * q10:.2f} & "
-        f"{100 * q50:.2f} & {100 * q90:.2f} \\\\"
+        f"{label} & {100 * model['weighted_mean']:.2f} & "
+        f"{100 * model['weighted_q10']:.2f} & "
+        f"{100 * model['weighted_q50']:.2f} & "
+        f"{100 * model['weighted_q90']:.2f} \\\\"
     )
 
 
 def main() -> None:
-    data = pd.read_csv(DATA)
+    if not SUMMARY.exists():
+        raise SystemExit(
+            f"{SUMMARY} not found. It is derived from the per-record benchmark "
+            "file, which is licensed microdata and is not distributed. Run "
+            "`make lfs-benchmarks LFS_TAB=/path/to/panel.tab` to rebuild both."
+        )
+    summary = json.loads(SUMMARY.read_text())
     diagnostics = json.loads(DIAGNOSTICS.read_text())
+    models = summary["models"]
     rows = [
-        row("Calibrated SIC--sex--age cells", data["job_exit_probability"], data["weight"]),
-        row(
-            "Calibrated income terciles",
-            data["job_exit_probability_banded"],
-            data["weight"],
-        ),
-        row(
-            "Regularised QRF benchmark",
-            data["qrf_job_exit_calibrated"],
-            data["weight"],
-        ),
+        row("Calibrated SIC--sex--age cells", models["cells"]),
+        row("Calibrated income terciles", models["income_terciles"]),
+        row("Regularised QRF benchmark", models["qrf"]),
     ]
     content = "\n".join(
         [

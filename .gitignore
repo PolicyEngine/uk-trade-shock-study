@@ -13,3 +13,24 @@ paper/supplement.log
 paper/supplement.out
 paper/supplement.toc
 results/bootstrap_contributions.npz
+
+# Per-record inclusion diagnostic: carries person-level FRS survey weights
+# and earnings for individually ranked records, so it is a licensed-microdata
+# derivative and must never be committed. Regenerate with
+# `make assignment-inclusion`.
+/results/assignment_inclusion_diagnostic.json
+
+# Compiled manuscript: a build product of `make paper`. Tracking it lets a
+# stale PDF ship beside corrected sources, which is how a withdrawn claim
+# survives a correction.
+/paper/main.pdf
+/paper/supplement.pdf
+
+# LFS/FRS benchmark microdata: both carry person-level FRS records
+# (person_id, age, gender, employment_income, survey weight) and are licensed
+# under the UKDS end-user licence, so they must never be committed. The
+# manuscript reads results/lfs_qrf_benchmark_summary.json, an aggregate
+# derived from them. Rebuild both with
+# `make lfs-benchmarks LFS_TAB=/path/to/panel.tab`.
+/results/lfs_imputed_frs_transition_parameters.csv.gz
+/results/lfs_qrf_benchmark.csv.gz

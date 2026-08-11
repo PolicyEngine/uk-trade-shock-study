@@ -142,6 +142,28 @@ def main() -> None:
             _mean([d["gross_earnings_loss"] for d in fw["draws"]]), 1 / 1e6, 0
         ),
         "FullWageCushion": _fmt(fw["cushioning_rate_mean"], 100, 1),
+        # Appendix reconciliation of the cushioning identity against the
+        # Exchequer effect.  These were previously multiplied out by hand in
+        # the prose and went stale when the underlying runs were refreshed,
+        # so the products and wedges are generated here and the appendix now
+        # quotes macros only.
+        #
+        # The identity is (1 - dY/dE) * dE = dE - dY, which must be averaged
+        # PER DRAW.  Using mean(cushioning) * mean(gross) instead computes
+        # E[c]E[g], and c and g are correlated across draws because a
+        # small-gross draw carries an extreme ratio -- the same pathology the
+        # bootstrap's ratio-of-pooled-sums estimator exists to avoid.  On the
+        # displacement margin that error was worth GBP 6.5m on the offset and
+        # 8 per cent on the wedge; the wage-cut margin is unaffected because
+        # its gross loss is deterministic.
+        "FullWageImpliedOffset": _fmt(_implied_offset(fw), 1 / 1e6, 0),
+        "FullWageExchequerWedge": _fmt(
+            fw["exchequer_cost_mean"] - _implied_offset(fw), 1 / 1e6, 0
+        ),
+        "FullDisplacedImpliedOffset": _fmt(_implied_offset(fd), 1 / 1e6, 0),
+        "FullDisplacedExchequerWedge": _fmt(
+            fd["exchequer_cost_mean"] - _implied_offset(fd), 1 / 1e6, 0
+        ),
         "FullInactiveExchequer": _fmt(fi["exchequer_cost_mean"], 1 / 1e6, 0),
         "FullInactiveExchequerSD": _fmt(fi["exchequer_cost_sd"], 1 / 1e6, 0),
         "FullInactiveCushion": _fmt(fi["cushioning_rate_mean"], 100, 1),
@@ -273,6 +295,22 @@ def _sample_sd(values: list[float]) -> float:
         return 0.0
     mean = sum(values) / len(values)
     return (sum((value - mean) ** 2 for value in values) / (len(values) - 1)) ** 0.5
+
+
+def _implied_offset(result: dict) -> float:
+    """Household-side offset dE - dY, averaged over draws.
+
+    The cushioning identity (1 - dY/dE) * dE collapses to dE - dY exactly, so
+    the offset must be formed draw by draw and then averaged.  Averaging the
+    ratio and the gross loss separately is not the same statistic when the
+    two are correlated across draws, which they are on any stochastic margin.
+    """
+    draws = result["draws"]
+    if not draws:
+        raise ValueError("cannot compute the implied offset with no draws")
+    return _mean(
+        [d["gross_earnings_loss"] - d["net_disposable_loss"] for d in draws]
+    )
 
 
 def _mean(values: list[float]) -> float:

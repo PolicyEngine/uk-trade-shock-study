@@ -19,7 +19,8 @@ $\SubmissionUnitDisplacedCushion \pm \SubmissionUnitDisplacedCushionSD$ per
 cent---a gap of \PrimaryCushionDifference\ percentage points. The two
 headline scenarios differ in more than the adjustment margin: they also
 concentrate the loss on different workers. The factorial middle cell
-separates the two channels, and the answer is one-sided. Concentrating the
+separates the two channels, and within the modelled annual system the answer
+is one-sided. Concentrating the
 same aggregate loss on the displacement draw's workers, while keeping
 everyone employed, accounts for \FactorialConcStep\ points of the gap;
 moving those same workers, bearing the same worker-level losses, from
@@ -30,18 +31,43 @@ diffuse in-work reduction is offset automatically at marginal income-tax
 and National Insurance rates, whereas a complete earnings loss exhausts
 that relief and lands on means-tested Universal Credit---whose statutory
 entitlement responds to income, not employment status, so the state change
-itself adds almost nothing \emph{within the modelled annual system}. The
-institutions that do condition on employment status---New Style JSA,
+itself adds almost nothing \emph{within the modelled annual system}.
+
+The two halves of that sentence should not be given equal weight, and this
+paper does not. The concentration result is a substantive property of the UK
+schedule; the near-zero state component is close to mechanical, because
+every institution that conditions on employment status---New Style JSA,
 monthly assessment periods, waiting and claiming frictions, work-search
-conditionality---are exactly the ones outside the model, so the
-near-zero state component is a statement about the modelled statutory
-rules, not about the real-world experience of job loss. Actual receipt
-additionally depends on capital holdings and claiming behaviour that the
-survey data only partially observe. The gap is
+conditionality---is exactly what the annual model omits. The two cells being
+compared differ only by a label no modelled formula reads. To fix the order
+of magnitude: New Style JSA alone would be worth up to
+\JSACushionPoints\ percentage points of cushioning for a representative
+displaced worker---tens of times the step the decomposition records, on
+either of the two seed bases reported in
+Section~\ref{sec:results-factorial}. The
+extensive-margin result is thus a bound on what a static statutory reading
+can attribute to employment status, not a claim about the experience of job
+loss. Actual receipt additionally depends on capital holdings and claiming
+behaviour that the survey data only partially observe, and
+Section~\ref{sec:results-takeup} shows the claiming convention alone
+moves displacement cushioning by an amount comparable to the headline gap.
+The gap is
 not an artefact of the HBAI treatment of pension saving: recomputed under a
-pension-gross income concept, both margins' cushioning falls by roughly four
-percentage points but the wage-minus-displacement contrast is essentially
-unchanged (Section~\ref{sec:results-cushioning}).
+pension-gross income concept, both margins' cushioning falls by four to five
+percentage points and the wage-minus-displacement contrast widens slightly,
+from \GapHBAIPension\ to \GapPensionGross\ points
+(Section~\ref{sec:results-pension}).
+
+The scale of the exercise should be clear from the outset, because it governs
+which results can carry weight. That fixed loss is borne under displacement by
+about \FullDisplacedWorkers\ thousand represented workers---small relative to
+national aggregates, and drawn from a pool of roughly a thousand exposed
+Family Resources Survey records of which only about ten are selected in any
+one assignment. National poverty and inequality movements are consequently
+near zero everywhere in this paper and carry no information; the object of
+study is the \emph{composition} of the fiscal response to a given loss, not
+its aggregate size, and no subgroup, regional or constituency reading of the
+displacement scenarios is supportable at this level of survey support.
 
 The comparison matters because the UK tax--benefit system is nonlinear. For
 an equal aggregate loss, a broad reduction in earnings leaves most households
@@ -73,15 +99,18 @@ neither of which is a design-based confidence interval. Mixed-path shares
 are disciplined by external evidence but not estimated.
 
 One negative result should be on the table from the outset. A monthly HMRC
-product--destination panel confirms a post-policy decline in US-bound
-exports, but at sector rank the calibration fails its own falsification
-test: the rank correlation between predicted and realised sector export
-falls among the ten largest exposed divisions is zero
-(Section~\ref{sec:results-benchmarks}). This failure bounds the paper's
-claims---the sector calibration must not be read as measured tariff
-incidence---but it does not touch the cushioning comparison, which
-conditions on a declared loss rather than on the bridge. The
-leave-one-division-out audit across all \LeaveSectorCount\ exposed divisions
+product--destination panel shows a post-policy decline in US-bound exports
+concentrated in large products, but the calibration earns no credit at sector
+rank: the rank correlation between predicted and realised export falls among
+the ten largest exposed divisions is \RankCorrTopTen\
+(Section~\ref{sec:results-benchmarks}). With ten divisions and an
+underpowered product-level intensity split, this is better described as an
+absence of corroboration than as a decisive refutation---but the practical
+consequence is the same and it bounds the paper's claims: the sector
+calibration must not be read as measured tariff incidence. It does not touch
+the cushioning comparison, which conditions on a declared loss rather than on
+the bridge. The
+leave-one-division-out audit (\LeaveSectorDraws\ assignments) across all \LeaveSectorCount\ exposed divisions
 shows the wage-minus-displacement contrast surviving every rerun
 (range \LeaveSectorCushionDifferenceMin--%
 \LeaveSectorCushionDifferenceMax\ points): the calibration determines
@@ -98,17 +127,25 @@ transition surface varies the loss share borne by workers who re-enter
 services jobs after a lag; its interior points rest on assumed shares,
 lags and a cross-sectional earnings penalty, so the response surface, not
 any single interior calibration, is the reported object
-(Section~\ref{sec:results-cushioning}).
+(Section~\ref{sec:results-transition}).
 
 The paper makes three contributions. First, it provides a reproducible UK
 microsimulation framework for mapping earnings losses---here calibrated to
 trade exposure as an application---into fiscal and distributional outcomes.
 Second, it separates, factorially, how much of the wage-cut versus
 displacement cushioning gap reflects concentrating a fixed loss on selected
-workers and how much reflects the change in employment state itself.
-Third, it quantifies which statutory channels drive the differences and
-which assumptions---timing, take-up, pensions, and worker selection---are
-most important for policy conclusions. The remainder of the paper describes
+workers, and bounds how much a static statutory model can attribute to the
+change in employment state itself.
+Third, it quantifies which statutory channels drive the difference and which
+assumptions are most important for policy conclusions---and reports plainly
+that two of them dominate: within-division worker selection moves the
+headline contrast by a fifth to a third of its size, and the Universal Credit
+claiming convention moves the displacement margin by an amount comparable to
+the whole contrast, while pension accounting and duration equivalence do
+not. A companion reconciliation against the UK cells of
+\citet{dolls2012}---whose ordering of income and unemployment shocks is the
+reverse of the one found here---locates that discrepancy principally in the
+out-of-work benefit channel (Section~\ref{sec:results-benchmarks}). The remainder of the paper describes
 the evidence and scenario design, presents the polar bounds and mixed paths,
 reports policy counterfactuals, and discusses limitations and
 reproducibility.

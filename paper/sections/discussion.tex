@@ -148,11 +148,13 @@ implemented but not yet run at the unit-stress calibration; the manuscript
 quotes a superseded-vintage bound for it. The product--destination panel has
 not been regenerated under the anticipation-window, continuous-trade or
 Poisson specifications now implemented in its estimator, so the reported
-trade estimates retain a known upward bias and its figure retains a base
-period inside the anticipation window. The channel decomposition still runs
+trade estimates retain an anticipation bias of known sign and a zero-fill
+bias of unknown sign, and its figure retains a base period inside the
+anticipation window. The channel decomposition still runs
 on \FactorialChannelSeeds\ seeds against a \FactorialDraws-draw headline, and
 should be re-run at the full count so the two reconcile. The per-record
-balanced-versus-Bernoulli inclusion-probability diagnostic, which would show
+balanced-versus-Bernoulli inclusion-probability diagnostic
+(\path{analysis/assignment_inclusion_diagnostic.py}), which would show
 whether the highest-weight exposed records are selected at their nominal
 rates, is implemented but unrun. And the household bootstrap holds
 the original assignment fixed, so its interval is conditional on which records

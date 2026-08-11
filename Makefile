@@ -1,4 +1,4 @@
-.PHONY: bootstrap test manifest check public-hmrc public-bres trade-event-study lfs-imputation lfs-qrf lfs-benchmarks inputs results submission-results figures paper-values uncertainty-design paper reproduce takeup-entitled bootstrap-summary
+.PHONY: bootstrap test manifest check public-hmrc public-bres trade-event-study lfs-imputation lfs-qrf lfs-benchmarks inputs results submission-results figures paper-values uncertainty-design paper reproduce takeup-entitled bootstrap-summary assignment-inclusion
 
 PYTHON := .venv/bin/python
 
@@ -26,6 +26,11 @@ takeup-entitled:
 # Needs no FRS file and no PolicyEngine when that cache is present.
 bootstrap-summary:
 	$(PYTHON) analysis/bootstrap_uncertainty.py
+
+# Per-record empirical inclusion probabilities under the balanced primary
+# design versus the Bernoulli comparator.  Needs licensed FRS data.
+assignment-inclusion:
+	$(PYTHON) analysis/assignment_inclusion_diagnostic.py
 
 public-hmrc:
 	$(PYTHON) analysis/download_hmrc_panel.py

@@ -19,3 +19,9 @@ results/bootstrap_contributions.npz
 # derivative and must never be committed. Regenerate with
 # `make assignment-inclusion`.
 /results/assignment_inclusion_diagnostic.json
+
+# Compiled manuscript: a build product of `make paper`. Tracking it lets a
+# stale PDF ship beside corrected sources, which is how a withdrawn claim
+# survives a correction.
+/paper/main.pdf
+/paper/supplement.pdf

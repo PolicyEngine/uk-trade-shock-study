@@ -1,10 +1,10 @@
 # Major-revision status
 
 Updated 11 August 2026 against `REFEREE_AUDIT.md`, the journal-readiness
-audit, the August 2026 referee report (reject-and-resubmit), and the
-second-round referee report of 11 August 2026 (`REFEREE_REPORT_2026-08-11.md`).
+audit, the August 2026 referee report (reject-and-resubmit), and three
+further rounds of independent review on 11 August 2026.
 
-## Third-round disposition (11 August 2026, `REFEREE_REPORT_ROUND2.md`)
+## Third-round disposition (11 August 2026)
 
 A full trace of every quantitative claim back to its artifact, plus an adversarial
 review of the second-round code, found a new failure mode: **prose written against

@@ -31,6 +31,7 @@
 \input{generated_lfs_selection}
 \input{generated_submission}
 \input{generated_factorial}
+\input{generated_validation}
 \input{referee_macros}
 
 \begin{document}
@@ -38,24 +39,23 @@
 
 \begin{abstract}
 \noindent How much of an earnings loss the UK tax--benefit system absorbs
-depends on how the loss is distributed across workers and labour-market
-states, not only on its size. Using the 2024--25 Family Resources Survey
-and PolicyEngine UK, I hold an aggregate employee-earnings loss
-fixed---calibrated, as an application, from the 2025 US tariff schedule
-through a declared accounting bridge, not an estimated first stage---and
-vary its incidence factorially: diffuse wage cuts across all exposed
-workers, concentrated wage cuts imposing the displacement draw's
-worker-level losses without job loss, and displacement of the same workers.
-Diffuse cuts are cushioned at \SubmissionUnitWageCushion\ per cent,
-displacement at
+depends on how it is distributed, not only on its size. Using the
+2024--25 Family Resources Survey and PolicyEngine UK, I hold an aggregate
+employee-earnings loss fixed---calibrated from the 2025 US tariff schedule
+through a declared accounting bridge, not an estimated first stage---and vary
+its incidence factorially: diffuse wage cuts, concentrated cuts imposing the
+displacement draw's worker-level losses without job loss, and displacing
+those same workers. Diffuse cuts are cushioned at
+\SubmissionUnitWageCushion\ per cent, displacement at
 $\SubmissionUnitDisplacedCushion\pm\SubmissionUnitDisplacedCushionSD$: a
-\PrimaryCushionDifference-point gap, of which
-\FactorialConcStep\ points reflect loss concentration---which exhausts
-marginal-rate tax relief---and only \FactorialStateStep\ points the
-employment state itself. Record-resampling, leave-one-record-out and
-leave-one-sector-out audits bound the contrast without significance claims;
-sensitivity analysis varies pensions, take-up, duration equivalents,
-adjustment shares and worker selection.
+\PrimaryCushionDifference-point gap, of which \FactorialConcStep\ points
+reflect loss concentration exhausting marginal-rate tax relief and only
+\FactorialStateStep\ points the employment state---a near-zero measuring
+annual statutory rules, since status-contingent institutions lie outside the
+model. Two sensitivities dominate: worker selection narrows the gap to
+\LFSSelectionGapMin--\LFSSelectionGapMax\ points, and the claiming convention
+moves displacement further. Against those the gap is an upper bound; the
+pension-gross concept and other anchors widen it.
 \end{abstract}
 
 \medskip

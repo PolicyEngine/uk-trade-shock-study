@@ -168,9 +168,11 @@ def test_takeup_macros_are_emitted_from_artifacts() -> None:
     for name in (
         "TakeupSeeds",
         "TakeupConventionSpread",
+        "TakeupInertBasis",
         "TakeupEntitledStale",
         "TakeupEntitledFull",
         "TakeupEntitledSpread",
+        "TakeupEntitledSource",
         "TakeupZeroUCNonTakeupShare",
         "JSAWeeklyRate",
         "JSARateSource",
@@ -254,10 +256,369 @@ def test_entitled_scope_check_rejects_the_pre_fix_emission() -> None:
 
     from analysis.write_referee_macros import check_entitled_scope_macros
 
+    live = {"stale": 34.4505, "full": 41.5331}
     with pytest.raises(RuntimeError, match="not self-consistent"):
-        check_entitled_scope_macros("34.5", "41.5", "7.1")
+        check_entitled_scope_macros("34.5", "41.5", "7.1", **live)
     # the emitted triple passes
-    check_entitled_scope_macros("34.5", "41.5", "7.0")
+    check_entitled_scope_macros("34.5", "41.5", "7.0", **live)
+
+
+def test_entitled_scope_check_validates_against_the_unrounded_sources() -> None:
+    """The guard must be capable of failing on the values it is called with.
+
+    It used to take only the three printed strings, and the sole thing it
+    checked was that the printed spread equalled the printed difference — an
+    identity the emitter had just constructed. As called it could never fire.
+    It now takes the UNROUNDED artifact values and checks the printed strings
+    against THEM, which is a claim about the world rather than about its own
+    arithmetic.
+    """
+    import pytest
+
+    from analysis.write_referee_macros import check_entitled_scope_macros
+
+    # a printed endpoint that is not the rounding of its source: the wrong
+    # field, the wrong scale (a rate rather than a percentage), a stale
+    # variable. The old guard passed all of these without complaint.
+    with pytest.raises(RuntimeError, match="not .* rounded to 1 decimal places"):
+        check_entitled_scope_macros("30.0", "41.5", "11.5", stale=34.4505, full=41.5331)
+    with pytest.raises(RuntimeError, match="not .* rounded to 1 decimal places"):
+        check_entitled_scope_macros("34.5", "50.0", "15.5", stale=34.4505, full=41.5331)
+    # a self-consistent triple that describes a DIFFERENT pair of endpoints
+    with pytest.raises(RuntimeError, match="not .* rounded to 1 decimal places"):
+        check_entitled_scope_macros("10.0", "17.0", "7.0", stale=34.4505, full=41.5331)
+    # ...and the same triple is accepted once the sources match it
+    check_entitled_scope_macros("10.0", "17.0", "7.0", stale=10.0, full=17.0)
+
+
+def test_entitled_scope_check_bounds_the_printed_spread_by_the_print_precision() -> None:
+    """The tolerance is tied to the last printed place, not hand-picked.
+
+    Rounding both endpoints can move the printed spread by at most one unit in
+    the last place (half a unit each, in opposite directions). Anything beyond
+    that is no longer this artifact's spread.
+    """
+    import pytest
+
+    from analysis.write_referee_macros import check_entitled_scope_macros
+
+    # worst legitimate case: endpoints round in opposite directions, so the
+    # printed spread sits a full unit in the last place from the exact one
+    check_entitled_scope_macros("34.5", "41.5", "7.0", stale=34.4501, full=41.5499)
+    # a spread printed from somewhere other than these endpoints — both of
+    # which round correctly — cannot be explained by rounding at all
+    with pytest.raises(RuntimeError, match="not this artifact's spread"):
+        check_entitled_scope_macros("34.5", "41.5", "7.2", stale=34.5, full=41.5)
+
+
+def test_entitled_scope_check_pins_the_print_precision() -> None:
+    """The tolerances assume ``nd`` decimals; the strings must carry them."""
+    import pytest
+
+    from analysis.write_referee_macros import check_entitled_scope_macros
+
+    with pytest.raises(RuntimeError, match="decimal places, not 1"):
+        check_entitled_scope_macros("34.45", "41.53", "7.08", stale=34.45, full=41.53)
+
+
+def test_entitled_scope_macros_match_the_artifact_they_are_read_from() -> None:
+    """End-to-end: the three printed numbers describe the resolved source."""
+    import json
+
+    from analysis.write_referee_macros import (
+        check_entitled_scope_macros,
+        entitled_scope_bound,
+    )
+
+    referee = json.loads(Path("results/referee_fixes.json").read_text())
+    diagnosis = json.loads(Path("results/takeup_diagnosis.json").read_text())
+    stale, full, _ = entitled_scope_bound(referee, diagnosis)
+
+    macros = Path("paper/referee_macros.tex").read_text()
+    check_entitled_scope_macros(
+        _macro(macros, "TakeupEntitledStale"),
+        _macro(macros, "TakeupEntitledFull"),
+        _macro(macros, "TakeupEntitledSpread"),
+        stale=stale,
+        full=full,
+    )
+
+
+# ---------------------------------------------------------------------------
+# Which artifact, at which calibration, the entitled-scope bound came from
+# ---------------------------------------------------------------------------
+
+
+def test_entitled_scope_source_is_an_enum_shared_with_the_producer() -> None:
+    from analysis.referee_fixes import ENTITLED_SCOPE_SOURCES
+    from analysis.write_referee_macros import ENTITLED_SCOPE_SOURCE_PHRASES
+
+    assert set(ENTITLED_SCOPE_SOURCE_PHRASES) == set(ENTITLED_SCOPE_SOURCES)
+
+
+def test_entitled_scope_bound_labels_the_legacy_vintage_fallback() -> None:
+    """The fallback used to leave no trace outside a print().
+
+    \\TakeupEntitledStale/Full/Spread come from results/takeup_diagnosis.json
+    whenever referee_fixes.json has no all_entitled_scope block, and that
+    artifact was produced at a SUPERSEDED calibration. Nothing in the emitted
+    macros said so, and `make paper-values` re-emitted them with a clean exit
+    code.
+    """
+    import json
+
+    from analysis.write_referee_macros import (
+        ALL_ENTITLED_KEY,
+        ENTITLED_SCOPE_SOURCE_CURRENT,
+        ENTITLED_SCOPE_SOURCE_LEGACY,
+        entitled_scope_bound,
+    )
+
+    diagnosis = json.loads(Path("results/takeup_diagnosis.json").read_text())
+    legacy_stale, legacy_full, source = entitled_scope_bound({}, diagnosis)
+    assert source == ENTITLED_SCOPE_SOURCE_LEGACY
+
+    current = {
+        "takeup_headline": {
+            ALL_ENTITLED_KEY: {
+                "displacement": {
+                    "stale_baseline_flag": {"cushioning_rate": {"mean": 0.30}},
+                    "1.00": {"cushioning_rate": {"mean": 0.41}},
+                }
+            }
+        }
+    }
+    stale, full, source = entitled_scope_bound(current, diagnosis)
+    assert source == ENTITLED_SCOPE_SOURCE_CURRENT
+    assert (stale, full) == (30.0, 41.0)
+    # the two vintages are genuinely different numbers, which is the point
+    assert (stale, full) != (legacy_stale, legacy_full)
+
+
+def test_entitled_scope_source_phrases_name_the_calibration() -> None:
+    from analysis.write_referee_macros import (
+        ENTITLED_SCOPE_SOURCE_CURRENT,
+        ENTITLED_SCOPE_SOURCE_LEGACY,
+        ENTITLED_SCOPE_SOURCE_PHRASES,
+    )
+
+    legacy = ENTITLED_SCOPE_SOURCE_PHRASES[ENTITLED_SCOPE_SOURCE_LEGACY]
+    assert "superseded" in legacy
+    assert r"takeup\_diagnosis.json" in legacy
+    assert "varepsilon=2" in legacy  # the calibration it was produced at
+    assert "1.70" in legacy and "0.886" in legacy  # and how far off it is
+
+    current = ENTITLED_SCOPE_SOURCE_PHRASES[ENTITLED_SCOPE_SOURCE_CURRENT]
+    assert "current calibration" in current
+    assert "superseded" not in current
+
+
+def test_emitted_macro_bodies_survive_being_newcommand_bodies() -> None:
+    """No raw underscore may reach a generated \\newcommand body.
+
+    These phrases are emitted as macro definitions, so TeX tokenises them at
+    definition time: a raw ``_`` is fixed as a subscript there, which is why
+    ``\\path``/``\\url`` cannot be used inside them and why file names are set
+    with ``\\texttt`` and ``\\_``. Checked on the emitted file so it also
+    covers anything else the writer starts printing.
+    """
+    macros = Path("paper/referee_macros.tex").read_text()
+    for line in macros.splitlines():
+        if not line.startswith("\\newcommand") or "&" in line:
+            continue  # table rows carry their own maths
+        assert not re.search(r"(?<!\\)_", line), f"raw underscore in: {line}"
+        assert "\\path{" not in line and "\\url{" not in line
+
+
+def test_entitled_scope_source_phrase_rejects_an_unknown_token() -> None:
+    import pytest
+
+    from analysis.write_referee_macros import entitled_scope_source_phrase
+
+    with pytest.raises(KeyError, match="no manuscript phrasing"):
+        entitled_scope_source_phrase("vibes")
+
+
+def test_entitled_scope_source_reaches_the_manuscript_and_the_artifact() -> None:
+    """The provenance must travel with BOTH the macros and the JSON."""
+    import json
+
+    from analysis.write_referee_macros import (
+        ENTITLED_SCOPE_SOURCE_FIELD,
+        ENTITLED_SCOPE_SOURCE_PHRASES,
+        entitled_scope_bound,
+    )
+
+    referee = json.loads(Path("results/referee_fixes.json").read_text())
+    diagnosis = json.loads(Path("results/takeup_diagnosis.json").read_text())
+    _, _, source = entitled_scope_bound(referee, diagnosis)
+
+    recorded = referee["takeup_headline"][ENTITLED_SCOPE_SOURCE_FIELD]
+    assert recorded == source
+
+    macros = Path("paper/referee_macros.tex").read_text()
+    assert _macro(macros, "TakeupEntitledSource") == ENTITLED_SCOPE_SOURCE_PHRASES[source]
+
+
+def test_recorded_provenance_round_trips_and_is_idempotent(tmp_path) -> None:
+    import json
+
+    from analysis.write_referee_macros import (
+        ENTITLED_SCOPE_SOURCE_CURRENT,
+        ENTITLED_SCOPE_SOURCE_LEGACY,
+        INERT_BASIS_INFERRED,
+        INERT_BASIS_MEASURED,
+        record_takeup_provenance,
+    )
+
+    path = tmp_path / "referee_fixes.json"
+    path.write_text(
+        json.dumps({"jsa_bounding": {"keep": 1}, "takeup_headline": {"displacement": {}}})
+    )
+
+    assert record_takeup_provenance(
+        path, ENTITLED_SCOPE_SOURCE_LEGACY, INERT_BASIS_INFERRED
+    )
+    stamped = json.loads(path.read_text())
+    assert stamped["jsa_bounding"] == {"keep": 1}  # nothing else disturbed
+    assert stamped["takeup_headline"]["displacement"] == {}
+    assert stamped["takeup_headline"]["entitled_scope_source"] == (
+        ENTITLED_SCOPE_SOURCE_LEGACY
+    )
+    assert stamped["takeup_headline"]["inert_basis"] == INERT_BASIS_INFERRED
+    assert "superseded" in stamped["takeup_headline"]["entitled_scope_source_detail"]
+
+    # re-running changes nothing...
+    assert not record_takeup_provenance(
+        path, ENTITLED_SCOPE_SOURCE_LEGACY, INERT_BASIS_INFERRED
+    )
+    # ...but a re-run at the current calibration overwrites the stale label
+    assert record_takeup_provenance(
+        path, ENTITLED_SCOPE_SOURCE_CURRENT, INERT_BASIS_MEASURED
+    )
+    updated = json.loads(path.read_text())["takeup_headline"]
+    assert updated["entitled_scope_source"] == ENTITLED_SCOPE_SOURCE_CURRENT
+    assert "superseded" not in updated["entitled_scope_source_detail"]
+
+
+# ---------------------------------------------------------------------------
+# HOW the "the take-up grid is inert" claim is established
+# ---------------------------------------------------------------------------
+
+
+def _grid(spread: float = 0.0, diagnostic: dict | None = None, cells=None) -> dict:
+    """A four-convention displacement block, optionally carrying diagnostics."""
+    from analysis.write_referee_macros import TAKEUP_CONVENTIONS
+
+    rates = dict.fromkeys(TAKEUP_CONVENTIONS, 0.33)
+    rates["1.00"] = 0.33 + spread / 100.0
+    block = {}
+    for key, rate in rates.items():
+        cell = {"cushioning_rate": {"mean": rate}}
+        diag = (cells or {}).get(key, diagnostic)
+        if diag is not None:
+            cell["redraw_diagnostic"] = diag
+        block[key] = cell
+    return block
+
+
+def test_inert_basis_prefers_a_measured_redraw_count() -> None:
+    from analysis.write_referee_macros import INERT_BASIS_MEASURED, takeup_inert_basis
+
+    block = _grid(diagnostic={"n_redrawn_max": 0, "redraw_set_empty_in_every_seed": True})
+    assert takeup_inert_basis(block, 0.0, "test") == INERT_BASIS_MEASURED
+
+
+def test_inert_basis_falls_back_to_the_weaker_inference() -> None:
+    from analysis.write_referee_macros import INERT_BASIS_INFERRED, takeup_inert_basis
+
+    assert takeup_inert_basis(_grid(), 0.0, "test") == INERT_BASIS_INFERRED
+
+
+def test_inert_basis_catches_what_a_zero_spread_cannot() -> None:
+    """THE reason the diagnostic must be preferred over the inference.
+
+    A non-empty re-draw set whose units all end with a negligible award also
+    yields a zero convention spread. Inferring inertness from that zero would
+    print "no benefit unit is ever re-drawn" over a grid that re-drew 12 of
+    them; the measured count makes the two cases distinguishable, so it must
+    refuse rather than be overruled by the spread.
+    """
+    import pytest
+
+    from analysis.write_referee_macros import takeup_inert_basis
+
+    live = _grid(diagnostic={"n_redrawn_max": 12})
+    with pytest.raises(RuntimeError, match="NON-EMPTY re-draw set"):
+        takeup_inert_basis(live, 0.0, "test")
+
+
+def test_inert_basis_refuses_to_infer_from_a_non_zero_spread() -> None:
+    import pytest
+
+    from analysis.write_referee_macros import takeup_inert_basis
+
+    with pytest.raises(RuntimeError, match="NOT inert"):
+        takeup_inert_basis(_grid(spread=0.4), 0.4, "test")
+
+
+def test_inert_basis_rejects_a_partially_diagnosed_grid() -> None:
+    """"No unit in ANY seed" cannot be measured from a subset of the grid."""
+    import pytest
+
+    from analysis.write_referee_macros import takeup_inert_basis
+
+    partial = _grid(cells={"0.55": {"n_redrawn_max": 0}})
+    with pytest.raises(KeyError, match="of the 4 claiming conventions"):
+        takeup_inert_basis(partial, 0.0, "test")
+
+
+def test_inert_basis_rejects_a_diagnostic_without_a_count() -> None:
+    import pytest
+
+    from analysis.write_referee_macros import takeup_inert_basis
+
+    with pytest.raises(KeyError, match="n_redrawn_max"):
+        takeup_inert_basis(
+            _grid(diagnostic={"redraw_set_empty_in_every_seed": True}), 0.0, "test"
+        )
+
+
+def test_inert_basis_rejects_an_internally_inconsistent_artifact() -> None:
+    """Nothing re-drawn but the conventions differ: one of the two is wrong."""
+    import pytest
+
+    from analysis.write_referee_macros import takeup_inert_basis
+
+    with pytest.raises(RuntimeError, match="internally inconsistent"):
+        takeup_inert_basis(_grid(spread=0.4, diagnostic={"n_redrawn_max": 0}), 0.4, "test")
+
+
+def test_inert_basis_reaches_the_manuscript_and_the_artifact() -> None:
+    import json
+
+    from analysis.write_referee_macros import (
+        INERT_BASIS_FIELD,
+        TAKEUP_INERT_BASIS_PHRASES,
+        takeup_convention_spread_pp,
+        takeup_inert_basis,
+    )
+
+    referee = json.loads(Path("results/referee_fixes.json").read_text())
+    block = referee["takeup_headline"]["displacement"]
+    basis = takeup_inert_basis(
+        block, takeup_convention_spread_pp(block, "test"), "test"
+    )
+    assert referee["takeup_headline"][INERT_BASIS_FIELD] == basis
+
+    macros = Path("paper/referee_macros.tex").read_text()
+    assert _macro(macros, "TakeupInertBasis") == TAKEUP_INERT_BASIS_PHRASES[basis]
+    # the phrases are different CLAIMS, and must read as such
+    assert "measured directly" in TAKEUP_INERT_BASIS_PHRASES["redraw_diagnostic"]
+    assert "inferred" in TAKEUP_INERT_BASIS_PHRASES["convention_spread"]
+    assert "not present in this artifact" in (
+        TAKEUP_INERT_BASIS_PHRASES["convention_spread"]
+    )
 
 
 # ---------------------------------------------------------------------------

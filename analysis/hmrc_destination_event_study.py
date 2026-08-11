@@ -232,6 +232,42 @@ def continuity_months(
     return [month for month in months if month <= end_month]
 
 
+def _absorbed_dof_scale(df_resid: float, n_absorbed: int) -> float:
+    """Standard-error scale-up for fixed effects absorbed by within-demeaning.
+
+    Demeaning the design by ``hs4`` removes the product fixed effects before
+    the fit, so the estimator never sees them and counts ``n - k_free``
+    residual degrees of freedom where an explicit-dummy fit counts
+    ``n - k_free - n_absorbed``. The cluster-robust covariance carries a
+    ``(n - 1) / df_resid`` finite-sample correction, so the absorbed
+    parameters have to be added back by hand — otherwise the reported standard
+    error is too small by exactly this factor. :func:`_cluster_covariance`
+    does the same thing for the PPML path through its ``n_absorbed``
+    argument; the two estimators in this file must not use different
+    conventions.
+    """
+    if n_absorbed <= 0:
+        return 1.0
+    corrected = df_resid - n_absorbed
+    if corrected <= 0:
+        raise ValueError(
+            f"absorbing {n_absorbed} fixed effects exhausts the residual "
+            f"degrees of freedom ({df_resid:.0f})"
+        )
+    return float(np.sqrt(df_resid / corrected))
+
+
+def _normal_p_value(estimate: float, standard_error: float) -> float:
+    """Two-sided normal p-value, matching statsmodels' cluster-robust default.
+
+    Recomputed rather than taken from the fit because the standard error is
+    rescaled for the absorbed fixed effects after the fit returns.
+    """
+    if not standard_error > 0:
+        return float("nan")
+    return float(2.0 * stats.norm.sf(abs(estimate) / standard_error))
+
+
 def fit_post_model(
     panel: pd.DataFrame,
     weights: pd.Series,
@@ -246,6 +282,16 @@ def fit_post_model(
     ``excluded_months`` are dropped from the estimation sample: a single month
     reproduces the original specification, the anticipation window removes the
     front-running episode as well.
+
+    The product fixed effects are absorbed by within-demeaning, which is
+    numerically identical to an explicit-dummy fit for the coefficients (the
+    weights are constant within ``hs4``) but not for the standard errors:
+    statsmodels applies its finite-sample correction on the residual degrees
+    of freedom it can see. ``_absorbed_dof_scale`` adds the absorbed
+    parameters back, so the reported standard error, p-value and interval
+    agree with a WLS fit carrying explicit HS4 dummies. Without it the
+    headline standard error is understated -- by 1.2 per cent at 1,194
+    products, and by more in any smaller sample.
     """
     dropped = _as_month_list(excluded_months)
     data = panel[panel["hs4"].isin(weights.index)].copy()
@@ -270,12 +316,15 @@ def fit_post_model(
     result = sm.WLS(data[outcome], design, weights=data["weight"]).fit(
         cov_type="cluster", cov_kwds={"groups": data["hs4"]}
     )
+    n_absorbed = int(data["hs4"].nunique())
+    scale = _absorbed_dof_scale(float(result.df_resid), n_absorbed)
     beta = float(result.params["post"])
-    standard_error = float(result.bse["post"])
+    standard_error = float(result.bse["post"]) * scale
+    trend_standard_error = float(result.bse["trend"]) * scale
     return {
         "log_effect": beta,
         "standard_error": standard_error,
-        "p_value": float(result.pvalues["post"]),
+        "p_value": _normal_p_value(beta, standard_error),
         "ci_lower": beta - 1.96 * standard_error,
         "ci_upper": beta + 1.96 * standard_error,
         "proportional_effect": float(np.expm1(beta)),
@@ -285,9 +334,13 @@ def fit_post_model(
             weights.sum() ** 2 / weights.pow(2).sum()
         ),
         "months_excluded": dropped,
+        "absorbed_fixed_effects": n_absorbed,
+        "absorbed_dof_scale": scale,
         "differential_linear_trend": float(result.params["trend"]),
-        "differential_linear_trend_standard_error": float(result.bse["trend"]),
-        "differential_linear_trend_p_value": float(result.pvalues["trend"]),
+        "differential_linear_trend_standard_error": trend_standard_error,
+        "differential_linear_trend_p_value": _normal_p_value(
+            float(result.params["trend"]), trend_standard_error
+        ),
     }
 
 
@@ -328,10 +381,12 @@ def _backtracking_line_search(
     near the optimum, which is where the search spends most of its time.
 
     Returns ``(accepted, beta, loglik, extra, damping)``. ``damping`` is the
-    factor that was actually applied to the accepted candidate, so the caller
-    can test convergence on the step it really took. If nothing is accepted the
-    caller's own iterate is returned unchanged with ``damping = 0.0``: a
-    rejected candidate has a worse log-likelihood and must never be adopted.
+    factor that was actually applied to the accepted candidate; it is reported
+    for diagnostics, NOT as the convergence measure (see :func:`_ppml_irls`:
+    a heavily damped move is small because the search shortened it, not
+    because the iterate is stationary). If nothing is accepted the caller's own
+    iterate is returned unchanged with ``damping = 0.0``: a rejected candidate
+    has a worse log-likelihood and must never be adopted.
     """
     threshold = loglik - (loglik_atol + loglik_rtol * abs(loglik))
     damping = 1.0
@@ -410,7 +465,15 @@ def _ppml_irls(
             line_search_failed = True
             break
         beta, loglik, mu = candidate, candidate_loglik, candidate_mu
-        if np.max(np.abs(damping * step)) < tolerance:
+        # Convergence is judged on the UNDAMPED Newton step -- the score in the
+        # natural (Hessian) metric, and so a stationarity test. Judging it on
+        # ``damping * step`` conflates "the iterate has stopped moving" with
+        # "the line search shortened this move": the smallest damping the
+        # search can accept is 2**-29 ~ 1.9e-9, so a step of up to ~0.54 in
+        # coefficient units would pass a 1e-9 threshold at a point that is not
+        # stationary at all. The undamped step is >= the damped one, so this
+        # is strictly the more conservative test and never converges earlier.
+        if np.max(np.abs(step)) < tolerance:
             converged = True
             break
     demeaned = _weighted_group_demean(design, group_index, mu, n_groups)

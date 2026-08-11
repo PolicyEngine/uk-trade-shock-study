@@ -282,7 +282,7 @@ The regenerated grid spans $\varepsilon\in\{0.4,1,2,3\}$ and $\pi\in\{0.5,0.75,1
 The exploratory scenario surface separates the aggregate export-demand
 calibration from the assumed composition of labour-market adjustment. Each
 cell uses the full tariff schedule and five common assignments. The wage-cut
-endpoint is stable: cushioning is 40.6--41.3 per cent over the four
+endpoint is stable: cushioning is 40.6--41.3 per cent---a stale vintage, roughly three points below the \SubmissionUnitWageCushion\ per cent that the current production runs give for the identical deterministic scenario, so these levels should be read only for the shape of the surface over the four
 calibrations. Moving towards displacement generally lowers cushioning, but
 the small-shock cells are especially noisy because a few high-weight FRS
 records dominate five Bernoulli assignments. These cells are stress
@@ -336,6 +336,13 @@ artifact is therefore a diagnostic rather than an inferential table.
 
 The input--output scenario adds upstream requirements using the ONS domestic Leontief inverse. The accounting shock has a 1.95 direct-plus-upstream factor. It is not a lower bound and is not multiplied by local-employment multipliers. In the exploratory ten-assignment microsimulation, displacement affects 29,700 weighted workers on average, costs the Exchequer \pounds $680\pm310$ million and raises relative BHC poverty by 0.028 percentage points. The wage-cut variant costs \pounds 955 million and leaves measured relative poverty unchanged. These figures are accounting sensitivities, not all-channel causal estimates.
 
-\section{Constituency machinery}\label{supp:constituency}
+\section{Constituency machinery}
+
+One scope note before the design: unlike every other result in this paper,
+this layer runs on the enhanced FRS 2023--24 at period 2025 rather than the
+plain FRS 2024--25 at period 2026, because constituency weights are attached
+only to the enhanced file. Its levels are therefore not comparable with the
+main results.
+\label{supp:constituency}
 
 The enhanced-FRS constituency layer uses imputed industries rather than observed local industry structure. Its outputs are averaged over 20 paired worker-assignment draws (seeds 0--19), with each household's disposable-income change divided by household size before constituency means are constructed; the CSV artifact reports both the draw mean and the assignment-draw standard deviation. Because the constituency weights contain no observed local industry mix and the SIC imputation is held fixed, the outputs are synthetic demographic and income projections, not constituency exposure estimates. No map or seat-level figures are reported in the main paper; the machinery is documented here so that future work can populate it with observed local industry data.

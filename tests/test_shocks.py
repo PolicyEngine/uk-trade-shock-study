@@ -840,23 +840,36 @@ def test_uc_takeup_hard_error_when_flag_is_dropped():
     sim = SilentSim(n, 2, np.zeros(n // 2, dtype=bool))
     base_sim = _TakeupSim(n, 2, np.zeros(n // 2, dtype=bool))
     table = _takeup_table(n, [0, 1, 2], uc_takeup=1.0)
-    with pytest.raises(RuntimeError, match="take-up re-draw not applied"):
+    # The first set_input a dropped-input simulation meets is the all-claim
+    # override of the entitlement measurement pass, so that is where it is
+    # caught; either way a silently ignored set_input must never be survivable.
+    with pytest.raises(RuntimeError, match="not applied"):
         redraw_uc_takeup(sim, base_sim, table, 2026)
 
 
 class _CachingTakeupSim(_TakeupSim):
     """Stub that CACHES universal_credit like the real engine (referee M5).
 
-    The first universal_credit calculation (the temporary all-claim
-    entitlement pass inside redraw_uc_takeup) is cached and served until
+    A universal_credit calculation is cached and served until
     ``_invalidate_all_caches`` is called. ``flush_works=False`` models a
     policyengine upgrade turning the private cache-flush into a no-op.
+
+    ``warm_cache=True`` starts the stub with the award ALREADY materialised
+    under its stored claiming flag, which is what production always looks
+    like: ``run_monte_carlo_prepared`` computes the baseline metrics (and so
+    the baseline UC award) before any shocked simulation is cloned from it, so
+    every measurement pass meets a pre-populated cache. A stub that starts at
+    ``_uc_cache = None`` cannot model that, and therefore cannot see a
+    measurement pass that forgets to invalidate.
     """
 
-    def __init__(self, *args, flush_works=True, **kwargs):
+    def __init__(self, *args, flush_works=True, warm_cache=False, **kwargs):
         super().__init__(*args, **kwargs)
         self.flush_works = flush_works
         self._uc_cache = None
+        if warm_cache:
+            # The award as the baseline run left it: gated by the stored flag.
+            self._uc_cache = self.potential_uc * np.asarray(self.flag, dtype=float)
 
     def calculate(self, var, period=None, map_to=None):
         import types
@@ -899,6 +912,154 @@ def test_uc_award_cache_flush_is_verified_after_redraw():
         redraw_uc_takeup(
             broken, base_sim, _takeup_table(n, affected, uc_takeup=0.0), 2026
         )
+
+
+class _CloningUcSim(_CachingTakeupSim):
+    """Baseline-sim double shaped like production for build_shocked_simulation.
+
+    Adds the two things the real Microsimulation has and the plain take-up
+    stubs do not: a working ``clone()`` (so the shocked and potential-award
+    simulations inherit the baseline's cached award, exactly as they do in a
+    real run) and a served ``employment_status``.
+    """
+
+    def calculate(self, var, period=None, map_to=None):
+        import types
+
+        if var == "employment_status":
+            values = self.stored.get(
+                var, np.array(["FT_EMPLOYED"] * self.n, dtype=object)
+            )
+            return types.SimpleNamespace(values=np.asarray(values))
+        if var != "would_claim_uc" and var in self.stored:
+            return types.SimpleNamespace(values=self.stored[var])
+        return super().calculate(var, period, map_to)
+
+    def clone(self):
+        twin = type(self)(
+            self.n,
+            self.k,
+            np.asarray(self.flag).copy(),
+            np.asarray(self.potential_uc).copy(),
+            flush_works=self.flush_works,
+        )
+        twin.stored = {key: np.asarray(v).copy() for key, v in self.stored.items()}
+        twin._uc_cache = (
+            None if self._uc_cache is None else np.asarray(self._uc_cache).copy()
+        )
+        return twin
+
+
+def test_entitlement_pass_ignores_a_prepopulated_award_cache():
+    """The post-shock entitlement pass must MEASURE entitlement, not inherit it.
+
+    With a warm cache (the production case: the baseline award is materialised
+    before any draw is cloned) an entitlement pass that does not invalidate
+    first reads back the stale BASELINE award. Every newly displaced family
+    then looks unentitled, the re-draw set is empty and the take-up experiment
+    is silently inert — no exception, just a no-op.
+    """
+    from uk_trade_shock_study.shocks import (
+        redraw_uc_takeup,
+        uc_takeup_redraw_diagnostic,
+    )
+
+    n = 40
+    baseline = np.zeros(n // 2, dtype=bool)  # nobody claims at baseline
+    potential = np.full(n // 2, 100.0)  # everybody would be paid if they did
+    affected = list(range(0, n, 2))  # every benefit unit displaced
+
+    runs = {}
+    for label, warm in (("warm", True), ("cold", False)):
+        sim = _CachingTakeupSim(
+            n, 2, baseline.copy(), potential.copy(), warm_cache=warm
+        )
+        base_sim = _TakeupSim(n, 2, baseline.copy(), potential.copy())
+        table = _takeup_table(n, affected, uc_takeup=1.0)
+        runs[label] = (redraw_uc_takeup(sim, base_sim, table, 2026), table)
+
+    flags, table = runs["warm"]
+    diagnostic = uc_takeup_redraw_diagnostic(table)
+    assert diagnostic["n_entitled_changed_benunits"] == n // 2
+    assert diagnostic["n_redrawn"] == n // 2  # 0 before the fix
+    assert flags.all()  # uc_takeup = 1.0, so every re-drawn unit claims
+    # A warm cache must not change the answer at all.
+    np.testing.assert_array_equal(flags, runs["cold"][0])
+    assert diagnostic["n_redrawn"] == uc_takeup_redraw_diagnostic(runs["cold"][1])[
+        "n_redrawn"
+    ]
+
+
+def test_entitlement_pass_hard_errors_on_an_unflushable_warm_cache():
+    """A warm cache the engine refuses to drop must raise, not be measured."""
+    from uk_trade_shock_study.shocks import redraw_uc_takeup
+
+    n = 40
+    baseline = np.zeros(n // 2, dtype=bool)
+    baseline[: n // 4] = True  # half the units claim, so the stale award is > 0
+    potential = np.full(n // 2, 100.0)
+    sim = _CachingTakeupSim(
+        n, 2, baseline.copy(), potential.copy(), flush_works=False, warm_cache=True
+    )
+    base_sim = _TakeupSim(n, 2, baseline.copy(), potential.copy())
+    with pytest.raises(RuntimeError, match="cache was not flushed"):
+        redraw_uc_takeup(
+            sim, base_sim, _takeup_table(n, list(range(0, n, 2)), uc_takeup=1.0), 2026
+        )
+
+
+def test_baseline_potential_award_is_measured_under_all_claim():
+    """The BASELINE entitlement pass has the mirror-image failure mode.
+
+    A stale baseline pass reports zero potential award for every unit that is
+    entitled but does not claim, so those units are misclassified as NEWLY
+    entitled post-shock and the re-draw set is inflated instead of emptied.
+    """
+    from uk_trade_shock_study.shocks import (
+        build_shocked_simulation,
+        uc_takeup_redraw_diagnostic,
+    )
+
+    n = 40
+    n_bu = n // 2
+    baseline = np.zeros(n_bu, dtype=bool)
+    baseline[: n_bu // 2] = True  # half claim; the other half are entitled non-claimants
+    potential = np.full(n_bu, 100.0)
+    baseline_sim = _CloningUcSim(
+        n, 2, baseline.copy(), potential.copy(), warm_cache=True
+    )
+    table = _takeup_table(n, list(range(n)), uc_takeup=1.0)
+
+    build_shocked_simulation(None, baseline_sim, table, 2026)
+
+    # Measured under all-claim, not read off the stored-flag-gated cache.
+    np.testing.assert_allclose(
+        baseline_sim._trade_shock_uc_potential_award, potential
+    )
+    # Nobody is NEWLY entitled here: every unit was already entitled at
+    # baseline. Before the fix the ten non-claiming units read as newly
+    # entitled and were re-drawn.
+    assert uc_takeup_redraw_diagnostic(table)["n_redrawn"] == 0
+
+
+def test_baseline_potential_award_hard_errors_on_an_unflushable_cache():
+    from uk_trade_shock_study.shocks import build_shocked_simulation
+
+    n = 40
+    n_bu = n // 2
+    baseline = np.zeros(n_bu, dtype=bool)
+    baseline[: n_bu // 2] = True
+    baseline_sim = _CloningUcSim(
+        n,
+        2,
+        baseline.copy(),
+        np.full(n_bu, 100.0),
+        flush_works=False,
+        warm_cache=True,
+    )
+    table = _takeup_table(n, list(range(n)), uc_takeup=1.0)
+    with pytest.raises(RuntimeError, match="cache was not flushed"):
+        build_shocked_simulation(None, baseline_sim, table, 2026)
 
 
 def test_uc_takeup_stream_uses_tuple_seeding():

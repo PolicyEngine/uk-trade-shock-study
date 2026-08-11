@@ -70,6 +70,95 @@ def test_post_model_recovers_known_destination_gap():
     assert np.isclose(result["log_effect"], -0.2, atol=0.02)
 
 
+def _gap_panel(n_products: int = 30, noise: float = 0.3, seed: int = 0):
+    """Product-month gap panel with product, season, trend and post structure."""
+    rng = np.random.default_rng(seed)
+    products = [f"{value:04d}" for value in range(n_products)]
+    months = pd.period_range("2022-01", "2024-12", freq="M")
+    rows = [
+        {
+            "hs4": product,
+            "month": int(period.strftime("%Y%m")),
+            "gap": product_index / 100
+            + 0.01 * period.month
+            - 0.2 * (int(period.strftime("%Y%m")) >= 202401)
+            + rng.normal(0, noise),
+        }
+        for product_index, product in enumerate(products)
+        for period in months
+    ]
+    weights = pd.Series(np.linspace(1.0, 5.0, n_products), index=products)
+    return pd.DataFrame(rows), weights
+
+
+def _explicit_dummy_reference(panel: pd.DataFrame, weights: pd.Series):
+    """The same WLS with HS4 carried as explicit dummies rather than absorbed."""
+    data = panel.copy()
+    data["weight"] = data["hs4"].map(weights)
+    date = pd.to_datetime(data["month"].astype(str), format="%Y%m")
+    data["trend"] = (date.dt.year - date.dt.year.min()) * 12 + date.dt.month - 1
+    data["post"] = data["month"].ge(202401).astype(float)
+    seasonal = pd.get_dummies(date.dt.month, prefix="month", drop_first=True, dtype=float)
+    design = pd.concat(
+        [data[["trend", "post"]], seasonal, pd.get_dummies(data["hs4"], dtype=float)],
+        axis=1,
+    )
+    return sm.WLS(data["gap"], design, weights=data["weight"]).fit(
+        cov_type="cluster", cov_kwds={"groups": data["hs4"]}
+    )
+
+
+def test_post_model_inference_matches_an_explicit_dummy_fit():
+    """Absorbed product FE must still be counted in the degrees of freedom.
+
+    Within-demeaning hides the product fixed effects from statsmodels, whose
+    cluster-robust correction then divides by too many residual degrees of
+    freedom and understates the standard error, the interval and the p-value
+    of the headline coefficient. The PPML path already adds ``n_absorbed``
+    back (``_cluster_covariance``); this pins the WLS path to the same
+    convention by comparing against an explicit-dummy fit of the identical
+    specification.
+    """
+    panel, weights = _gap_panel()
+    fitted = fit_post_model(panel, weights, 202401)
+    reference = _explicit_dummy_reference(panel, weights)
+
+    assert fitted["absorbed_fixed_effects"] == 30
+    assert fitted["log_effect"] == pytest.approx(reference.params["post"], rel=1e-10)
+    assert fitted["standard_error"] == pytest.approx(reference.bse["post"], rel=1e-10)
+    assert fitted["p_value"] == pytest.approx(reference.pvalues["post"], rel=1e-10)
+    assert fitted["differential_linear_trend_standard_error"] == pytest.approx(
+        reference.bse["trend"], rel=1e-10
+    )
+    assert fitted["differential_linear_trend_p_value"] == pytest.approx(
+        reference.pvalues["trend"], rel=1e-10
+    )
+    assert fitted["ci_lower"] == pytest.approx(
+        fitted["log_effect"] - 1.96 * reference.bse["post"], rel=1e-10
+    )
+
+
+def test_absorbed_dof_correction_widens_the_interval_and_scales_with_the_panel():
+    """The correction is not cosmetic: it always widens, and bites hardest
+    where the absorbed effects are a large share of the sample."""
+    from analysis.hmrc_destination_event_study import _absorbed_dof_scale
+
+    wide, wide_weights = _gap_panel(n_products=8)
+    narrow, narrow_weights = _gap_panel(n_products=60)
+    few = fit_post_model(wide, wide_weights, 202401)
+    many = fit_post_model(narrow, narrow_weights, 202401)
+    # More products per observation absorbed -> bigger correction.
+    assert few["absorbed_dof_scale"] > many["absorbed_dof_scale"] > 1.0
+    assert few["ci_upper"] - few["ci_lower"] > 0
+
+    # The factor itself: sqrt(df / (df - absorbed)), and 1.0 when nothing is
+    # absorbed, never a shrinkage.
+    assert _absorbed_dof_scale(100.0, 0) == 1.0
+    assert _absorbed_dof_scale(100.0, 20) == pytest.approx(np.sqrt(100 / 80))
+    with pytest.raises(ValueError, match="exhausts the residual"):
+        _absorbed_dof_scale(10.0, 10)
+
+
 def test_previous_month_handles_year_boundary():
     assert previous_month(202501) == 202412
 
@@ -354,6 +443,44 @@ def test_irls_reports_a_failed_line_search_and_keeps_the_last_accepted_iterate(
     # nor the candidate the search rejected.
     assert np.array_equal(beta, accepted_betas[0])
     assert not np.allclose(beta, np.zeros_like(beta))
+
+
+def test_convergence_is_judged_on_the_undamped_newton_step(monkeypatch):
+    """A heavily damped move is a small move, not a stationary point.
+
+    The smallest damping the line search can accept is 2**-29 ~ 1.9e-9, so
+    ``max|damping * step| < 1e-9`` is satisfiable at a point with a Newton
+    step of up to ~0.54 in coefficient units -- convergence declared where the
+    score is nowhere near zero. Convergence is therefore judged on the
+    undamped step.
+    """
+    y, design, group_index, n_groups = _poisson_irls_inputs()
+    reference, *_ = _ppml_irls(y, design, group_index, n_groups)
+    real_search = event_study._backtracking_line_search
+    damped_moves: list[float] = []
+    crawl = 2.0**-29
+
+    def crawling(objective, beta, step, loglik, **kwargs):
+        # Accept, but only ever move by crawl * step: the iterate barely
+        # changes while the Newton step itself stays far from zero.
+        damped_moves.append(float(np.max(np.abs(crawl * step))))
+        accepted, candidate, candidate_loglik, extra, _ = real_search(
+            objective, beta, crawl * step, loglik, **kwargs
+        )
+        return accepted, candidate, candidate_loglik, extra, crawl
+
+    monkeypatch.setattr(event_study, "_backtracking_line_search", crawling)
+    beta, _, _, _, converged, iterations, line_search_failed = _ppml_irls(
+        y, design, group_index, n_groups, max_iter=5
+    )
+
+    assert not line_search_failed
+    # The move actually taken satisfies the OLD criterion at every iteration...
+    assert damped_moves and max(damped_moves) < 1e-9
+    # ...and yet the fit has gone nowhere, so it must not be called converged.
+    assert not converged
+    assert iterations == 5
+    assert np.max(np.abs(beta - reference)) > 1e-3
 
 
 def test_irls_converges_without_a_failed_line_search_on_a_clean_problem():

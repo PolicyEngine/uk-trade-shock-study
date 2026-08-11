@@ -86,7 +86,13 @@ class _ScopeSim:
             values = self.potential_uc * np.asarray(claim)
         elif var == "benunit_weight":
             if self.weights is None:
-                raise ValueError("benunit_weight is not available in this simulation")
+                # A stub that does not KNOW about benunit_weight, which is
+                # what shocks._benunit_weights degrades on. It deliberately no
+                # longer swallows every exception (that would report a genuine
+                # engine regression as an innocuous "no weights"), so this
+                # must be a lookup-style error: policyengine's
+                # VariableNotFoundError inherits from KeyError.
+                raise KeyError("benunit_weight is not available in this simulation")
             values = self.weights
         else:
             values = np.zeros(self.n)
@@ -472,3 +478,193 @@ def test_shared_stale_cell_is_relabelled_for_the_scope_it_is_reported_under():
     # and the source cell is not mutated by being shared
     assert source["redraw_diagnostic"]["uc_takeup_scope"] == "new_entitlement"
     assert "shared_from" not in source
+
+
+# ---------------------------------------------------------------------------
+# The stale-baseline-flag convention must VERIFY its set_input
+#
+# referee_fixes._takeup_grid overwrites would_claim_uc wholesale with the
+# pre-shock draw to reproduce the pre-fix convention. shocks.redraw_uc_takeup
+# reads its own set_input back and hard-errors; this sibling call did not, and
+# a silently-rejected input here would leave the RE-DRAWN post-shock flag in
+# place, so the stale-flag cell would report the re-drawn cell's number and the
+# grid would show all four claiming conventions agreeing — the very result the
+# manuscript quotes, manufactured out of an input that never landed.
+# ---------------------------------------------------------------------------
+
+
+class _FlagSim:
+    """Minimal sim stub for the stale-flag read-back contract.
+
+    ``accepts`` False models an engine that ignores ``set_input`` (the failure
+    mode being guarded against); ``drop`` drops one element, modelling a
+    read-back at the wrong entity level.
+    """
+
+    def __init__(self, post_shock_flag, accepts=True, drop=False):
+        self.current = np.asarray(post_shock_flag, dtype=bool)
+        self.accepts = accepts
+        self.drop = drop
+        self.invalidated = 0
+        self.set_calls = []
+
+    def set_input(self, var, period, values):
+        self.set_calls.append((var, period, np.asarray(values)))
+        if self.accepts:
+            self.current = np.asarray(values, dtype=bool)
+
+    def _invalidate_all_caches(self):
+        self.invalidated += 1
+
+    def calculate(self, var, period=None, map_to=None):
+        import types
+
+        assert var == "would_claim_uc"
+        assert map_to == "benunit"
+        values = self.current[:-1] if self.drop else self.current
+        return types.SimpleNamespace(values=values)
+
+
+def test_stale_flag_convention_applies_and_verifies_the_flag():
+    from analysis.referee_fixes import _apply_stale_baseline_flag
+
+    stale = np.array([True, False, True, False])
+    sim = _FlagSim(post_shock_flag=[False, True, False, True])
+
+    _apply_stale_baseline_flag(sim, stale, period=2026)
+
+    assert sim.set_calls[0][0] == "would_claim_uc"
+    assert sim.set_calls[0][1] == 2026
+    np.testing.assert_array_equal(sim.current, stale)
+    # the award was computed under the post-shock flag: the cache must go
+    assert sim.invalidated == 1
+
+
+def test_stale_flag_convention_hard_errors_when_the_input_is_rejected():
+    """The defect: no read-back meant a rejected input was indistinguishable
+    from a successful one, and the cell would silently equal the re-drawn cell.
+    """
+    from analysis.referee_fixes import _apply_stale_baseline_flag
+
+    stale = np.array([True, False, True, False])
+    redrawn = np.array([False, True, False, True])
+    sim = _FlagSim(post_shock_flag=redrawn, accepts=False)
+
+    with pytest.raises(RuntimeError, match="stale-baseline-flag convention not applied"):
+        _apply_stale_baseline_flag(sim, stale, period=2026)
+    # and the simulation is left carrying the re-drawn flag, which is exactly
+    # why returning normally here would have manufactured the paper's result
+    np.testing.assert_array_equal(sim.current, redrawn)
+
+
+def test_stale_flag_convention_hard_errors_on_a_shape_mismatch():
+    from analysis.referee_fixes import _apply_stale_baseline_flag
+
+    stale = np.array([True, False, True, False])
+    sim = _FlagSim(post_shock_flag=stale, drop=True)
+
+    with pytest.raises(RuntimeError, match="stale-baseline-flag convention not applied"):
+        _apply_stale_baseline_flag(sim, stale, period=2026)
+
+
+def test_stale_flag_convention_matches_the_shocks_read_back_contract():
+    """Both siblings must fail the same way, for the same reason."""
+    import inspect
+
+    from analysis.referee_fixes import _apply_stale_baseline_flag
+    from uk_trade_shock_study import shocks
+
+    grid = inspect.getsource(shocks.redraw_uc_takeup)
+    assert "np.array_equal(applied, new_flag)" in grid  # the sibling's read-back
+    ours = inspect.getsource(_apply_stale_baseline_flag)
+    assert "np.array_equal" in ours and "raise RuntimeError" in ours
+    # the grid no longer sets the flag without checking it
+    assert "_apply_stale_baseline_flag" in inspect.getsource(
+        __import__("analysis.referee_fixes", fromlist=["_takeup_grid"])._takeup_grid
+    )
+
+
+# ---------------------------------------------------------------------------
+# The monthly-versus-annual note must agree with its own numbers
+# ---------------------------------------------------------------------------
+
+
+def test_monthly_uc_note_states_the_direction_its_own_numbers_show():
+    """The stored note used to be mechanically backwards.
+
+    It claimed the annual model OVERSTATES relief for partial-year spells, and
+    attributed it to forgone HIGHER-RATE relief. Both halves are wrong. At the
+    representative earnings the whole taxable slice is basic-rate, and zeroing
+    a full year spreads the loss across the untaxed personal allowance too, so
+    the annual construction relieves at the AVERAGE rate while a partial-year
+    loss is relieved at the MARGINAL rate. Average-rate relief is smaller, so
+    the annual model UNDERSTATES cushioning below twelve months — which is
+    what the block's own cushion_share fields say.
+    """
+    import json
+    from pathlib import Path
+
+    from analysis.referee_fixes import MONTHLY_UC_NOTES
+
+    note = MONTHLY_UC_NOTES.lower()
+    assert "understates" in note
+    assert "overstates" not in note
+    assert "average" in note and "marginal" in note
+    # the fictional higher-rate story must be gone; a denial of it is fine
+    assert "forgoes higher-rate" not in note
+
+    block = json.loads(Path("results/referee_fixes.json").read_text())[
+        "monthly_uc_bounding"
+    ]
+    spells = block["spells"]
+    for m in ("3m", "6m"):
+        monthly = spells[m]["cushion_share_monthly_correct"]
+        annual = spells[m]["cushion_share_annual_equivalent"]
+        # the direction the note now states
+        assert annual < monthly
+        # ...driven entirely by income tax: UC and NI are equal by construction
+        assert spells[m]["uc_annual_equivalent"] == pytest.approx(
+            spells[m]["uc_monthly_correct"]
+        )
+        assert spells[m]["ni_relief_annual_equivalent"] == pytest.approx(
+            spells[m]["ni_relief_monthly_correct"]
+        )
+        assert spells[m]["tax_relief_annual_equivalent"] < spells[m][
+            "tax_relief_monthly_correct"
+        ]
+    # exact at twelve months, where the two constructions coincide
+    twelve = spells["12m"]
+    assert twelve["cushion_share_annual_equivalent"] == pytest.approx(
+        twelve["cushion_share_monthly_correct"]
+    )
+
+
+def test_monthly_uc_tax_relief_is_marginal_versus_average_rate():
+    """The mechanism, checked against the stored arithmetic.
+
+    Partial-year relief is the MARGINAL rate on the slice lost; the annual
+    equivalent is the year's AVERAGE rate on the same slice. No higher-rate
+    income exists at these earnings, so neither figure can involve it.
+    """
+    import json
+    from pathlib import Path
+
+    block = json.loads(Path("results/referee_fixes.json").read_text())[
+        "monthly_uc_bounding"
+    ]
+    parameters = block["parameters"]
+    earnings = parameters["representative_earnings"]
+    basic = parameters["basic_rate"]
+    taxable = earnings - parameters["personal_allowance"]
+    annual_tax = basic * taxable
+    average_rate = annual_tax / earnings
+    assert average_rate < basic  # the personal allowance dilutes it
+
+    three = block["spells"]["3m"]
+    lost = three["gross_loss"]
+    assert three["tax_relief_monthly_correct"] == pytest.approx(basic * lost)
+    assert three["tax_relief_annual_equivalent"] == pytest.approx(average_rate * lost)
+    # no higher-rate band is reached: the whole taxable slice is basic-rate
+    assert basic * taxable == pytest.approx(block["spells"]["12m"][
+        "tax_relief_monthly_correct"
+    ])

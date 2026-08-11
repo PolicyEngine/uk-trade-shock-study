@@ -12,8 +12,13 @@ g_{pt}=\log(1+V_{p,\mathrm{US},t})
 -\frac{1}{3}\sum_{d\in\{\mathrm{CA,JP,AU}\}}\log(1+V_{pdt}).
 \]
 The destination gap is regressed on a post-May-2025 indicator, HS4 product
-fixed effects, month-of-year effects and a linear trend. April 2025 is
-omitted as an announcement and anticipation month. The primary WLS weights
+fixed effects, month-of-year effects and a linear trend. The estimates
+reported below omit April 2025 alone (\HMRCAnticipationSpec). The estimator
+also supports omitting a wider anticipation window---January--April 2025 by
+default, covering both the announcement month and the preceding front-running
+quarter---and retains the April-only rule as a specification check so the two
+conventions can be compared, but that option post-dates the stored panel and
+is not exercised here. The primary WLS weights
 are products' mean 2022--24 US export values, capped at the 99th percentile;
 standard errors are clustered by HS4. Uncapped value weights, equal product
 weights, individual destinations, later sample starts and pseudo-policy dates
@@ -34,25 +39,72 @@ Across \HMRCPanelProducts\ HS4 products, the capped value-weighted
 specification estimates a \HMRCWeightedEffect\ per cent change in exports to
 the US relative to the same products sent to the three comparison
 destinations (95 per cent interval \HMRCWeightedCILower\ to
-\HMRCWeightedCIUpper\ per cent, $p=\HMRCWeightedPValue$). Results have
+\HMRCWeightedCIUpper\ per cent, $p=\HMRCWeightedPValue$). The anticipation
+convention behind the stored estimates is: \HMRCAnticipationSpec. That
+provenance is generated rather than asserted, because the estimator's
+anticipation rule changed after these estimates were produced and a stale
+artifact would otherwise be silently relabelled. Results have
 similar signs against each destination, and May 2019--23 pseudo-policy
 estimates are individually insignificant. This is not robust evidence of a
 common product effect: equal product weights give \HMRCEqualEffect\ per cent
 ($p=\HMRCEqualPValue$), and restricting the sample to 2023 onward gives
 \HMRCRecentEffect\ per cent ($p=\HMRCRecentPValue$). The estimated
-differential trend is itself borderline ($p=\HMRCTrendPValue$). Most
-importantly, broad steel and auto chapters fall \HMRCHighTariffEffect\ per
+differential trend is itself borderline ($p=\HMRCTrendPValue$), and the
+estimate shrinks monotonically as the pre-period is shortened, so the post
+indicator is plausibly absorbing part of a differential trend rather than a
+level break.
+
+Two further design issues are known and are \emph{not} resolved in the run
+reported here. This section states them rather than leaving them implicit,
+and is explicit that the corrections exist only in code.
+
+First, UK goods exports to the United States surged
+through the first quarter of 2025 ahead of the April schedule; omitting only
+April 2025---which is the convention behind every estimate in this
+supplement (\HMRCAnticipationSpec)---leaves that anticipation surge inside
+the pre-period, where it inflates any estimated post-policy fall. The
+estimator now supports a configurable anticipation \emph{window}
+(January--April 2025 by default) alongside the original single-month
+omission, but the stored panel predates that option and has not been
+regenerated. Second, the balanced panel
+fills absent flows with zeros under a $\log(1+V)$ outcome, so
+extensive-margin movement in the smaller comparison destinations enters the
+gap mechanically; a continuous-trade restriction and a Poisson
+pseudo-maximum-likelihood estimator on levels are likewise implemented but
+absent from this run. Both biases point the same way---towards overstating
+the US-specific decline---so the estimates below are ceilings, and
+re-running \texttt{make public-hmrc trade-event-study} is the second item of
+unfinished business in this paper.
+
+On tariff intensity, broad steel and auto chapters fall \HMRCHighTariffEffect\ per
 cent ($p=\HMRCHighTariffPValue$), compared with \HMRCOtherEffect\ per cent
-for other products ($p=\HMRCOtherPValue$): the tariff-intensity ordering
-fails. Figure~\ref{fig:hmrc-destination} displays the monthly gap. The panel
-supports a post-policy decline concentrated in large US export products, but
-it cannot attribute that decline to tariffs or validate the tariff-rate
-mapping.
+for other products ($p=\HMRCOtherPValue$). It is tempting to read this as a
+failed falsification of the tariff-intensity ordering, but that reading is not
+available: the high-tariff
+group rests on fewer than eight effective products against roughly a hundred
+for the comparison group, so the contrast is underpowered rather than
+informative in either direction: at the group's standard error the minimum
+effect detectable at conventional power is roughly 0.59 in logs, well above
+the 0.22 estimate itself. A second, independent
+disqualification is that the steel and auto group carries its own significant
+differential pre-trend ($p=\HMRCHighTariffTrendPValue$), so even a
+well-powered post-period contrast in that group would not identify a tariff
+effect. The stored diagnostics record each group's effective product count,
+standard error and confidence interval; the interval width, the minimum
+detectable effect and a formal test of the high-minus-other difference are
+computed by the revised estimator but, like the specifications above, are
+absent from this run, so the power figures quoted in this paragraph are
+derived by hand from the stored standard errors.
+
+Figure~\ref{fig:hmrc-destination} displays the monthly gap. The panel is
+consistent with a post-policy decline concentrated in large US export
+products, but it cannot attribute that decline to tariffs and it does not
+validate the tariff-rate mapping.
 
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=.94\textwidth]{../results/figures/hmrc_destination_event_study.png}
-\caption{Monthly capped-value-weighted gap between UK HS4 exports to the United States and mean exports of the same products to Canada, Japan and Australia, normalised to January--March 2025.}
+\caption{Monthly capped-value-weighted gap between UK HS4 exports to the United States and mean exports of the same products to Canada, Japan and Australia, normalised to \HMRCFigureBase---a base period that falls \HMRCFigureBaseIsAnticipation. The base is detected from the stored monthly series rather than asserted here, so this caption cannot drift from the figure it labels.}
 \label{fig:hmrc-destination}
 \end{figure}
 
@@ -158,11 +210,18 @@ tariff effects.
 \paragraph{Fiscal sensitivity to worker-risk shape.} Table~\ref{tab:lfs-selection}
 uses each calibrated risk model to vary selection within SIC divisions while
 holding every division's expected weighted wage-bill loss at the original
-shock. The cell model nearly reproduces uniform assignment. Across all three
-LFS-shaped models, mean cushioning ranges from 36.0 to 37.4 per cent,
+shock. Across all three
+LFS-shaped models, mean cushioning ranges from
+\LFSSelectionCushionMin\ to \LFSSelectionCushionMax\ per cent,
 Exchequer cost from \pounds384 million to \pounds425 million, and measured
-poverty change from 0.024 to 0.028 percentage points. This model spread is
-smaller than the assignment SD within any specification. Weighted displaced
+poverty change from 0.024 to 0.028 percentage points. The spread \emph{among}
+the three models is smaller than the assignment SD within any specification,
+which is a statement about their agreement with each other. Their agreement
+with the uniform assignment used in the main text is a separate and less
+comfortable matter: all three lie
+\LFSSelectionShiftMin--\LFSSelectionShiftMax\ percentage points above the
+uniform value of \LFSUniformCushion\ per cent, so the choice of selection
+model shifts the level materially even though the models concur. Weighted displaced
 headcount changes because calibration preserves the wage bill, not a
 headcount quota. The QRF mean gross loss is \pounds847 million rather than
 the \pounds886 million expectation, but its \pounds397 million assignment SD
@@ -274,7 +333,7 @@ artifact is therefore a diagnostic rather than an inferential table.
 
 \section{Supply-chain sensitivity}\label{supp:supplychain}
 
-The input--output scenario adds upstream requirements using the ONS domestic Leontief inverse. The accounting shock has a 1.95 direct-plus-upstream factor. It is not a lower bound and is not multiplied by local-employment multipliers. In the exploratory ten-assignment microsimulation, displacement affects 29,700 weighted workers on average, costs the Exchequer \pounds $680\pm310$ million and raises relative BHC poverty by 0.028 percentage points. The wage-cut variant costs \pounds 960 million and leaves measured relative poverty unchanged. These figures are accounting sensitivities, not all-channel causal estimates.
+The input--output scenario adds upstream requirements using the ONS domestic Leontief inverse. The accounting shock has a 1.95 direct-plus-upstream factor. It is not a lower bound and is not multiplied by local-employment multipliers. In the exploratory ten-assignment microsimulation, displacement affects 29,700 weighted workers on average, costs the Exchequer \pounds $680\pm310$ million and raises relative BHC poverty by 0.028 percentage points. The wage-cut variant costs \pounds 955 million and leaves measured relative poverty unchanged. These figures are accounting sensitivities, not all-channel causal estimates.
 
 \section{Constituency machinery}\label{supp:constituency}
 

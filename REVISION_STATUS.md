@@ -1,7 +1,131 @@
 # Major-revision status
 
-Updated 6 August 2026 against `REFEREE_AUDIT.md`, the journal-readiness
-audit, and the August 2026 referee report (reject-and-resubmit).
+Updated 11 August 2026 against `REFEREE_AUDIT.md`, the journal-readiness
+audit, the August 2026 referee report (reject-and-resubmit), and the
+second-round referee report of 11 August 2026 (`REFEREE_REPORT_2026-08-11.md`).
+
+## Third-round disposition (11 August 2026, `REFEREE_REPORT_ROUND2.md`)
+
+A full trace of every quantitative claim back to its artifact, plus an adversarial
+review of the second-round code, found a new failure mode: **prose written against
+the code rather than against the artifact**. The estimator was rewritten; the stored
+event-study panel could not be regenerated without the HMRC data; and the manuscript
+then described specifications that had never been run.
+
+### Corrected
+
+- **Claims of unrun analyses.** The methodology, results and supplement now state that
+  the reported estimates omit April 2025 alone (via the generated
+  `\HMRCAnticipationSpec`), and that the anticipation window, continuous-trade and
+  Poisson specifications are implemented but absent from this run. The
+  minimum-detectable-effect and high-minus-other test claims are labelled as hand
+  arithmetic on stored standard errors.
+- **The figure caption contradicted its own figure.** The stored PNG/CSV are normalised
+  on January--March 2025 -- the front-running window -- while the caption claimed a 2024
+  base. The caption is now generated from the plotted series itself
+  (`\HMRCFigureBase`, `\HMRCFigureBaseIsAnticipation`), so it cannot drift again.
+- **Directional errors.** The capital test and higher claiming push the gap in
+  *opposite* directions; `results.tex` said they aligned. `policy.tex` claimed all three
+  unmodelled gates reduce protection, when non-claiming and the absent New Style JSA
+  mean the model *understates* it. Both corrected.
+- **"Upper bound" over-claimed.** The headline cell is the second-smallest of six; the
+  pension-gross concept widens the gap (10.0 to 10.5). The abstract now names what the
+  bound is with respect to.
+- **The channel split does not reconcile to the headline.** New macros report the
+  five-seed sums and the shortfall (displacement 30.3 against 34.0; the deterministic
+  wage cut reconciles exactly, isolating the cause as seed-subset drift). The Dolls et
+  al. comparison now states its seed basis and stops absorbing the pension residual
+  silently.
+- **Undisclosed designs.** The leave-one-division-out audit's draw count is now emitted
+  and quoted; the LFS selection family's own Bernoulli baseline gap is emitted and used
+  instead of the balanced primary; the take-up grid's 33.0 is reconciled against the
+  34.0 headline.
+- **Vintage caveats** added everywhere a superseded epsilon = 2 number appears, including
+  its seed-0 provenance.
+- **pi = 1** self-contradiction between methodology and results resolved; the unsourced
+  theta range withdrawn.
+- **Response-letter narration** removed from the manuscript, except the take-up
+  subsection where the superseded convention motivates the current one.
+
+### Code defects fixed
+
+The PPML solver declared convergence after a failed line search and adopted the
+rejected step; rank-deficient and separated fits still emitted point estimates;
+the continuous-trade restriction selected on post-treatment outcomes; the bootstrap's
+partial-cache resume path was unreachable; several diagnostics defaulted to their own
+alarm values. See the round-two report for the full list.
+
+## Second-round referee report (11 August 2026)
+
+Ten points were raised. Eight are closed in code and manuscript; two are
+closed in code but need a licensed-data run to close in the manuscript.
+
+### Closed
+
+- **M1 take-up grid was vacuous.** The new-entitlement re-draw set is empty,
+  so all four claiming conventions returned bit-identical results and the
+  paper reported an inert experiment as robustness. `shocks.py` gains a
+  documented `uc_takeup_scope` option (`new_entitlement`, preserving every
+  stored result, and `all_entitled`, which exercises the margin that binds);
+  `redraw_uc_takeup` now returns a re-draw-set diagnostic;
+  `write_referee_macros.py` warns loudly when the grid is inert. The
+  manuscript now states the grid is empty and reports the entitled-scope
+  bound (`\TakeupEntitledSpread` = 7.1pp) as the claiming-margin sensitivity.
+- **M2 LFS selection compared against a stale baseline.** The prose said 36.8
+  per cent under uniform assignment; the artifact says 34.1. New macros
+  (`\LFSUniformCushion`, `\LFSSelectionShiftMin/Max`, `\LFSSelectionGapMin/Max`)
+  make the comparison generated rather than typed. Corrected reading: every
+  LFS-shaped model raises displacement cushioning by 2.0-3.3 points and
+  narrows the headline gap to 6.5-7.9 points. Reported as a first-order
+  sensitivity, not as robustness.
+- **M3 employment-state step is near-mechanically zero.** A `jsa_bounding`
+  block quantifies the omission (New Style JSA worth up to 5.0 points of
+  cushioning, ~50x the measured step). Intro, results and discussion now
+  rest the contribution on the concentration channel.
+- **M4 analytic benchmark.** The marginal-versus-average-rate derivation is
+  stated before the simulation result, with the three reasons the simulation
+  is not a restatement of it.
+- **M5 Dolls et al. (2012) sign reversal.** New reconciliation subsection:
+  the tax side agrees (23.1 vs 25.2 per cent) and the entire reversal sits in
+  the out-of-work benefit channel (2.7 vs 16.3 per cent).
+- **M6 pi = 1 mischaracterised.** Derivation added: pi = 1 is the
+  constant-wage-share benchmark, not full wage incidence (which would need
+  pi ~ 3-5). The turnover-versus-GVA denominator offset is stated.
+- **M7 Shapley claim withdrawn** from the manuscript and from
+  `factorial_decomposition.json`'s design note: the diffuse-displacement
+  coalition is undefined, so no Shapley value exists.
+- **R1-R5 stale and hardcoded numbers.** `paper/generated_validation.tex` is
+  new; the appendix reconciliation arithmetic is generated
+  (`\FullWageImpliedOffset` etc.); `\TakeupSeeds` replaces the reused
+  `\PensionSeeds`; `\SubmissionCushionDifferenceMax` now excludes the thin
+  OBR three-month cell (12.8 -> 11.7) with `\SubmissionThinCellCushionDifference`
+  for the appendix.
+
+### Closed in code, pending a licensed-data run
+
+- **M8 event study.** Anticipation-window exclusion (Jan-Apr 2025), figure
+  re-normalisation to a 2024 base, continuous-trade and Poisson
+  specifications, and per-group power diagnostics are implemented. The stored
+  estimates predate them; the manuscript reports the caveats and does not
+  quote unrun specifications.
+- **R6/R7 bootstrap and inclusion probabilities.** The ratio-of-pooled-sums
+  estimator, support-size count and the assignment-conditioning caveat are
+  implemented; the per-record balanced-versus-Bernoulli inclusion diagnostic
+  is a new script. Both need `data/` present. The manuscript states the
+  limitation rather than claiming the diagnostic.
+
+### Known drift hazards not yet closed
+
+- The customs totals (£55,600m / £52,500m) are not persisted until
+  `make inputs` runs on raw HMRC/ONS inputs; `build_trade_by_sic.py` now
+  writes `results/trade_build_totals.json` and
+  `write_validation_macros.py` emits the macros only when it exists.
+- `34,966` person records, `12,800` with employee earnings and the
+  "above 19 thousand" largest person weight in the methodology section have
+  no backing artifact.
+- The `all_entitled` take-up grid quoted in the manuscript comes from the
+  superseded epsilon = 2 calibration and is labelled as such. Re-running
+  `make takeup-entitled` at the unit stress is the first outstanding item.
 
 ## Completed for the August 2026 referee report
 

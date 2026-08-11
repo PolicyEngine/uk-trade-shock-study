@@ -888,7 +888,16 @@ class _CachingTakeupSim(_TakeupSim):
 def test_uc_award_cache_flush_is_verified_after_redraw():
     """redraw_uc_takeup must FAIL HARD if _invalidate_all_caches is a no-op:
     the UC award would otherwise silently retain the temporary all-claim
-    entitlement pass for units drawn to NOT claim (referee point M5)."""
+    entitlement pass for units drawn to NOT claim (referee point M5).
+
+    WHICH guard fires is asserted, not just that one does. Both halves of the
+    contract raise "cache was not flushed", but on an unflushable cache the
+    MEASUREMENT half (measure_all_claim_uc_award's claiming-off read-back)
+    always reaches it first, so matching the shared phrase alone would not
+    show that the restore-half guard is doing anything. That guard's own
+    contract is exercised directly in
+    ``test_uc_award_cache_flush_guard_rejects_a_contaminated_award``.
+    """
     from uk_trade_shock_study.shocks import redraw_uc_takeup
 
     n = 40
@@ -908,9 +917,69 @@ def test_uc_award_cache_flush_is_verified_after_redraw():
 
     broken = _CachingTakeupSim(n, 2, baseline.copy(), flush_works=False)
     base_sim = _TakeupSim(n, 2, baseline.copy())
-    with pytest.raises(RuntimeError, match="cache was not flushed"):
+    with pytest.raises(RuntimeError, match="not responding to would_claim_uc") as raised:
         redraw_uc_takeup(
             broken, base_sim, _takeup_table(n, affected, uc_takeup=0.0), 2026
+        )
+    assert "cache was not flushed" in str(raised.value)
+
+
+def test_uc_award_cache_flush_guard_rejects_a_contaminated_award():
+    """The RESTORE half of the cache contract, exercised on its own terms.
+
+    ``_verify_uc_award_cache_flushed`` is unreachable in production with a
+    stale award: ``measure_all_claim_uc_award`` reads the award back with
+    claiming switched off for everyone and raises first on any cache that
+    cannot be flushed. That makes the guard a defence against a NARROWER
+    failure -- a cache that responds to the measurement pass but not to the
+    final restore -- which no end-to-end stub reaches, so it is called here
+    directly with a hand-built contaminated award. Without this the guard
+    could be deleted outright and the suite would stay green.
+    """
+    import types
+
+    from uk_trade_shock_study.shocks import _verify_uc_award_cache_flushed
+
+    class _AwardSim:
+        """Serves one fixed universal_credit vector, whatever is asked."""
+
+        def __init__(self, award):
+            self.award = np.asarray(award, dtype=float)
+
+        def calculate(self, var, period=None, map_to=None):
+            assert (var, map_to) == ("universal_credit", "benunit")
+            return types.SimpleNamespace(values=self.award)
+
+    potential = np.array([300.0, 120.0, 250.0])
+    flag = np.array([True, False, False])
+
+    # Clean restore: the two non-claimants score zero, the claimant is paid.
+    _verify_uc_award_cache_flushed(
+        _AwardSim([300.0, 0.0, 0.0]), 2026, flag, potential
+    )
+    # Contaminated restore: a unit drawn NOT to claim is still being paid its
+    # all-claim entitlement, which is exactly the stale award the guard exists
+    # to catch. One such unit is enough.
+    with pytest.raises(RuntimeError, match="cache was not flushed"):
+        _verify_uc_award_cache_flushed(
+            _AwardSim([300.0, 0.0, 250.0]), 2026, flag, potential
+        )
+    # A claimant's positive award is not contamination...
+    _verify_uc_award_cache_flushed(
+        _AwardSim([300.0, 0.0, 0.0]), 2026, np.array([True, True, True]), potential
+    )
+    # ...and neither is a non-claimant with no potential entitlement to leak:
+    # the guard is scoped to units the all-claim pass could have inflated.
+    _verify_uc_award_cache_flushed(
+        _AwardSim([5.0, 5.0, 5.0]), 2026, np.zeros(3, dtype=bool), np.zeros(3)
+    )
+    # Floating-point zero is zero: 1e-9 is below the tolerance, 1e-7 is not.
+    _verify_uc_award_cache_flushed(
+        _AwardSim([300.0, 0.0, 1e-9]), 2026, flag, potential
+    )
+    with pytest.raises(RuntimeError, match="cache was not flushed"):
+        _verify_uc_award_cache_flushed(
+            _AwardSim([300.0, 0.0, 1e-7]), 2026, flag, potential
         )
 
 

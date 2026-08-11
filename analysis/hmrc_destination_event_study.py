@@ -290,8 +290,11 @@ def fit_post_model(
     of freedom it can see. ``_absorbed_dof_scale`` adds the absorbed
     parameters back, so the reported standard error, p-value and interval
     agree with a WLS fit carrying explicit HS4 dummies. Without it the
-    headline standard error is understated -- by 1.2 per cent at 1,194
-    products, and by more in any smaller sample.
+    headline standard error is understated -- by about 0.5 per cent at the
+    stored sample's 1,194 products over roughly 119,000 rows, and by more in
+    any smaller sample, since the scale is
+    ``sqrt(df_resid / (df_resid - n_absorbed))`` and ``df_resid`` falls with
+    the row count while ``n_absorbed`` does not.
     """
     dropped = _as_month_list(excluded_months)
     data = panel[panel["hs4"].isin(weights.index)].copy()

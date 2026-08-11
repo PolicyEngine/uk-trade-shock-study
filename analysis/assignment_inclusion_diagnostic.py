@@ -191,6 +191,17 @@ def _weighted_draw_deviations(
     return (deviations * w).sum(axis=1) / w.sum()
 
 
+def per_record_standard_error(realised: np.ndarray, n_draws: int) -> np.ndarray:
+    """Standard error of each record's realised selection frequency.
+
+    Uses the ``n - 1`` denominator: the frequency is estimated from the same
+    draws, so the naive ``n`` denominator understates the spread. Clamped at
+    one draw, where no spread is estimable.
+    """
+    realised = np.asarray(realised, dtype=float)
+    return np.sqrt(realised * (1.0 - realised) / max(n_draws - 1, 1))
+
+
 def summarise(
     declared: np.ndarray,
     realised: np.ndarray,
@@ -239,7 +250,7 @@ def summarise(
         standard_error_basis = "independent Bernoulli"
 
     mean_absolute = float(np.average(absolute, weights=w))
-    per_record_se = np.sqrt(realised * (1.0 - realised) / max(n_draws - 1, 1))
+    per_record_se = per_record_standard_error(realised, n_draws)
     return {
         "n_draws": int(n_draws),
         "n_exposed_records": int(exposed.sum()),
@@ -350,9 +361,7 @@ def main() -> None:
     }
     realised = {design: matrix.mean(axis=0) for design, matrix in draws.items()}
     per_record_se = {
-        design: np.sqrt(
-            realised[design] * (1.0 - realised[design]) / max(args.n_draws - 1, 1)
-        )
+        design: per_record_standard_error(realised[design], args.n_draws)
         for design in DESIGNS
     }
 

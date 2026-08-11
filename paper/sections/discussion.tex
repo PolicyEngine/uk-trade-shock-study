@@ -6,10 +6,11 @@ workers and labour-market states. Across the main-table cells---both loss
 anchors at the duration-equivalent scales that survive the support
 screen---the wage-cut and displacement bounds differ by
 \SubmissionCushionDifferenceMin--\SubmissionCushionDifferenceMax\ percentage
-points, though the top of that range comes from the three- and six-month
-cells, which are exactly the ones the annualisation bounding of
-Appendix~\ref{app:monthlyuc} shows to be conservative by about
-\MonthlyUCCushionGap\ points; at the unit twelve-month scale the difference is
+points. That range is not ordered by duration---its widest cell is a
+three-month one and its narrowest a six-month one, with a twelve-month cell
+second widest---so it should not be read as an annualisation artefact, even
+though Appendix~\ref{app:monthlyuc} shows the sub-annual cells to be
+conservative by about \MonthlyUCCushionGap\ points; at the unit twelve-month scale the difference is
 \PrimaryCushionDifference\ points and the wage-cut Exchequer cost is
 \pounds\PrimaryExchequerDifference\ million higher. (The excluded OBR
 three-month cell, whose displacement draw rests on
@@ -48,7 +49,7 @@ modelled take-up, which is a scenario convention; and actual receipt
 following real job loss, which none of the above observes. The simulation
 evidence speaks to the first three. Two sensitivity results sharpen this
 reading in opposite directions. Under a pension-gross income concept the
-cushioning \emph{levels} fall by roughly four percentage points on both
+cushioning \emph{levels} fall by four to five percentage points on both
 margins while the contrast widens slightly, from \GapHBAIPension\ to
 \GapPensionGross\ points, so the gap is a schedule effect rather than an
 artefact of the HBAI treatment of pension saving---and this is one of the
@@ -163,14 +164,21 @@ rates, is implemented but unrun. And the household bootstrap holds
 the original assignment fixed, so its interval is conditional on which records
 those draws selected and is narrower than a fully re-drawn bootstrap would be.
 None of the five is \emph{known} to change the sign of the reported
-contrast, which is a weaker statement than that none of them would. The
-claiming grid alone moved displacement cushioning by
+contrast, but that is a weaker statement than it may appear, and the
+arithmetic should be set out rather than left implicit. Three of them raise
+displacement cushioning and so narrow the gap: the claiming convention by
 \TakeupEntitledSpread\ points at the calibration where it was last run,
-against a \PrimaryCushionDifference-point gap; adding the worker-selection
-shift and the omitted New Style JSA, all three pointing the same way, would
-leave a contrast of a few points rather than ten. The sign is likely to
-survive and the magnitude is not. The second item bears only on the trade
-benchmark rather than on the cushioning estimand.
+worker selection by \LFSSelectionShiftMin--\LFSSelectionShiftMax, and the
+omitted New Style JSA by up to \JSACushionPoints. Taken at face value and
+added, those exceed the \PrimaryCushionDifference-point gap outright. They
+should not be added---they are measured on different designs, different
+calibrations and, in the JSA case, on a representative worker rather than
+the population, and each is an upper bound on its own channel---but the
+exercise establishes that the magnitude of the contrast is not robust, and
+that its sign is asserted here on the strength of the concentration
+mechanism rather than demonstrated against these three together. The second
+item bears only on the trade benchmark rather than on the cushioning
+estimand.
 
 The framework nevertheless provides a useful platform for subsequent work.
 The next empirical step is to combine product- or firm-level evidence on

@@ -204,7 +204,7 @@ fiscally alike in the United Kingdom, and the paper's contribution rests on
 the concentration channel, which is well identified within the model, rather
 than on the state channel, which this design cannot measure.
 
-\paragraph{Assignment-design and record-support audit.} At the unit 12-month
+\paragraph{Assignment-design and record-support audit.}\label{sec:results-assignment} At the unit 12-month
 stress, balanced and Bernoulli integration agree closely: cushioning is
 \BalancedUnitCushion\ versus \BernoulliUnitCushion\ per cent and Exchequer
 cost is \pounds\BalancedUnitExchequer\ versus
@@ -235,7 +235,7 @@ ranging from \LeaveSectorCushionDifferenceMin\ to
 \LeaveSectorCushionDifferenceMax\ percentage points. No single division
 creates or reverses the primary contrast.
 
-\paragraph{Record-resampling sensitivity.} Assignment SDs do not measure
+\paragraph{Record-resampling sensitivity.}\label{sec:results-bootstrap} Assignment SDs do not measure
 sensitivity to which households the FRS sampled, so the primary contrast is
 additionally scored with a household record-resampling exercise:
 \BootstrapReplicates\ multinomial resamples of the
@@ -288,9 +288,9 @@ moves it by \LOOMaxShift\ points. No individual FRS household creates the
 headline gap, although the sparse support continues to rule out subgroup,
 regional and constituency readings of the displacement scenarios.
 
-\paragraph{Pension-contribution channel.} The HBAI disposable-income concept treats employee pension and salary-sacrifice contributions as an outflow, so a hypothesis worth testing is that part of the headline gap is reduced retirement saving rather than tax--benefit insurance. It is not. Recomputing both margins under a pension-gross income concept (disposable income plus employee pension and salary-sacrifice contributions, unit 12-month stress, the primary balanced design over \PensionSeeds\ paired assignments) lowers wage-cut cushioning from \PensionWageCushionHBAI\ to \WageCushionPensionGross\ per cent and displacement cushioning from \PensionDisplacedCushionHBAI\ to \DisplacedCushionPensionGross\ per cent---the pension outflow falls by close to the same share of the gross loss on both margins (\PensionShareWage\ and \PensionShareDisplaced\ per cent respectively; wage cuts scale contributions, displacement zeroes them)---so the wage-minus-displacement gap moves only from \GapHBAIPension\ to \GapPensionGross\ percentage points. The headline contrast is a tax--benefit schedule effect, not a pension-accounting artefact. What the pension channel does affect is the \emph{level} of measured cushioning on both margins, and the implied loss of deferred retirement consumption is not captured by the cushioning rate.
+\paragraph{Pension-contribution channel.}\label{sec:results-pension} The HBAI disposable-income concept treats employee pension and salary-sacrifice contributions as an outflow, so a hypothesis worth testing is that part of the headline gap is reduced retirement saving rather than tax--benefit insurance. It is not. Recomputing both margins under a pension-gross income concept (disposable income plus employee pension and salary-sacrifice contributions, unit 12-month stress, the primary balanced design over \PensionSeeds\ paired assignments) lowers wage-cut cushioning from \PensionWageCushionHBAI\ to \WageCushionPensionGross\ per cent and displacement cushioning from \PensionDisplacedCushionHBAI\ to \DisplacedCushionPensionGross\ per cent---the pension outflow falls by close to the same share of the gross loss on both margins (\PensionShareWage\ and \PensionShareDisplaced\ per cent respectively; wage cuts scale contributions, displacement zeroes them)---so the wage-minus-displacement gap moves only from \GapHBAIPension\ to \GapPensionGross\ percentage points. (As with the headline contrast, that gap is the mean of the per-draw differences rather than the difference of the rounded levels printed beside it; see the estimator-provenance note in Section~\ref{sec:results-cushioning}.) The headline contrast is a tax--benefit schedule effect, not a pension-accounting artefact. What the pension channel does affect is the \emph{level} of measured cushioning on both margins, and the implied loss of deferred retirement consumption is not captured by the cushioning rate.
 
-\paragraph{Mixed and transition paths.} The illustrative interior
+\paragraph{Mixed and transition paths.}\label{sec:results-transition} The illustrative interior
 calibration is the transition-equivalent path: 70 per cent of each sector's
 declared loss is assigned to workers whose annual earnings and hours embody
 a three-month re-employment lag before entering a services job at the FRS
@@ -467,7 +467,7 @@ distributions and tables are in the Online Supplement
 
 The realised displacement output is also consistent with the allocation design but too sparse for precise empirical incidence: the expected 9.7 selected FRS records per assignment produce \FullDisplacedWorkers{} thousand represented displaced workers and \pounds $\FullDisplacedGross\pm\FullDisplacedGrossSD$ million of gross loss. The gross-loss SD is nearly half its mean, and Exchequer-cost SD exceeds half its mean. The 100-assignment average is numerically more stable than an individual assignment, but it remains conditional on the observed 1,018 exposed records and the uniform within-division selection rule.
 
-\paragraph{Take-up: an empty grid, and the margin that binds.} Because the
+\paragraph{Take-up: an empty grid, and the margin that binds.}\label{sec:results-takeup} Because the
 displacement-side cushion runs through UC, the claiming convention was
 scored over \TakeupSeeds\ assignments at new-entitlement rates of 0.55, 0.80
 and 1.00, with the stale pre-shock flag restored as a fourth convention.

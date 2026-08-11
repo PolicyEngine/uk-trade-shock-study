@@ -854,3 +854,234 @@ def test_takeup_convention_spread_emits_zero_faithfully() -> None:
     assert takeup_convention_spread_pp(flat, "unit test") == 0.0
     moved = dict(flat, **{"1.00": {"cushioning_rate": {"mean": 0.4}}})
     assert takeup_convention_spread_pp(moved, "unit test") > 0.0
+
+
+# ---------------------------------------------------------------------------
+# The cushioning identity: (1 - dY/dE) * dE must be formed DRAW BY DRAW
+# ---------------------------------------------------------------------------
+
+
+def test_implied_offset_averages_the_per_draw_difference() -> None:
+    """``_implied_offset`` is mean(dE - dY), not mean(c) * mean(dE).
+
+    The two estimators coincide only when the per-draw cushioning ratio and
+    the per-draw gross loss are uncorrelated. They are correlated on any
+    stochastic margin (a small-gross draw carries an extreme ratio), so the
+    fixture below makes them correlated on purpose: without that, a test of
+    this helper proves nothing about the number the appendix prints.
+    """
+    import pytest
+
+    from analysis.write_paper_results import _implied_offset
+
+    draws = [
+        {"gross_earnings_loss": 100e6, "net_disposable_loss": 90e6},   # c = 0.10
+        {"gross_earnings_loss": 300e6, "net_disposable_loss": 210e6},  # c = 0.30
+    ]
+    # The runner stores the MEAN OF THE PER-DRAW RATIOS in cushioning_rate_mean
+    # (pinned against the live artifact in the test below), so the pre-fix
+    # estimator is exactly mean(c) * mean(gross).
+    result = {"draws": draws, "cushioning_rate_mean": (0.10 + 0.30) / 2}
+
+    per_draw = [d["gross_earnings_loss"] - d["net_disposable_loss"] for d in draws]
+    assert _implied_offset(result) == pytest.approx(sum(per_draw) / len(per_draw))
+    assert _implied_offset(result) == pytest.approx(50e6)
+
+    product_of_means = result["cushioning_rate_mean"] * (
+        sum(d["gross_earnings_loss"] for d in draws) / len(draws)
+    )
+    assert product_of_means == pytest.approx(40e6)  # the reverted estimator
+    assert _implied_offset(result) != pytest.approx(product_of_means)
+
+    # Sanity check on the fixture itself: with the ratio held constant across
+    # draws the two agree, which is why an uncorrelated fixture cannot tell
+    # the fixed estimator from the reverted one.
+    flat = {
+        "draws": [
+            {"gross_earnings_loss": 100e6, "net_disposable_loss": 80e6},
+            {"gross_earnings_loss": 300e6, "net_disposable_loss": 240e6},
+        ],
+        "cushioning_rate_mean": 0.20,
+    }
+    assert _implied_offset(flat) == pytest.approx(
+        flat["cushioning_rate_mean"]
+        * sum(d["gross_earnings_loss"] for d in flat["draws"])
+        / len(flat["draws"])
+    )
+
+    with pytest.raises(ValueError, match="no draws"):
+        _implied_offset({"draws": []})
+
+
+def test_implied_offset_macros_are_emitted_from_the_per_draw_difference(
+    tmp_path, monkeypatch
+) -> None:
+    """The published appendix numbers, checked against the live artifact.
+
+    ``\\FullDisplacedImpliedOffset`` and ``\\FullDisplacedExchequerWedge`` are
+    quoted in the appendix reconciliation. On the committed displacement
+    artifact the two conventions differ by GBP 6.5m on the offset (307 against
+    300) and by 8 per cent on the wedge (81 against 87), so the emitted macros
+    pin which convention actually ran — the writer is invoked here rather than
+    the generated file being read, so reverting the helper fails this test
+    whether or not anyone regenerates the .tex.
+    """
+    import json
+    import sys
+
+    import pytest
+
+    from analysis import write_paper_results
+
+    artifact = json.loads(Path("results/full_tariff_displacement.json").read_text())
+    draws = artifact["draws"]
+    mean_gross = sum(d["gross_earnings_loss"] for d in draws) / len(draws)
+    per_draw_offset = sum(
+        d["gross_earnings_loss"] - d["net_disposable_loss"] for d in draws
+    ) / len(draws)
+    product_of_means = artifact["cushioning_rate_mean"] * mean_gross
+
+    # The stored cushioning mean IS the mean of the per-draw ratios, so the
+    # reverted estimator is reconstructible from the artifact alone.
+    assert artifact["cushioning_rate_mean"] == pytest.approx(
+        sum(d["cushioning_rate"] for d in draws) / len(draws)
+    )
+    # The two conventions must disagree at the printed precision, or this test
+    # would pass under the reversion it exists to catch.
+    assert f"{per_draw_offset / 1e6:.0f}" != f"{product_of_means / 1e6:.0f}"
+
+    output = tmp_path / "generated_results.tex"
+    monkeypatch.setattr(
+        sys, "argv", ["write_paper_results.py", "--output", str(output)]
+    )
+    write_paper_results.main()
+    emitted = output.read_text()
+
+    exchequer = artifact["exchequer_cost_mean"]
+    assert _macro(emitted, "FullDisplacedImpliedOffset") == f"{per_draw_offset / 1e6:.0f}"
+    assert _macro(emitted, "FullDisplacedImpliedOffset") != f"{product_of_means / 1e6:.0f}"
+    assert _macro(emitted, "FullDisplacedExchequerWedge") == (
+        f"{(exchequer - per_draw_offset) / 1e6:.0f}"
+    )
+    assert _macro(emitted, "FullDisplacedExchequerWedge") != (
+        f"{(exchequer - product_of_means) / 1e6:.0f}"
+    )
+
+    # ...and the committed file the manuscript \inputs says the same thing.
+    committed = Path("paper/generated_results.tex").read_text()
+    for name in ("FullDisplacedImpliedOffset", "FullDisplacedExchequerWedge"):
+        assert _macro(committed, name) == _macro(emitted, name)
+
+
+# ---------------------------------------------------------------------------
+# The THIRD staleness dimension of the HMRC artifact: the SEs, not the point
+# estimates (anticipation window) and not the figure (normalisation base)
+# ---------------------------------------------------------------------------
+
+
+def _hmrc_artifact() -> dict:
+    import json
+
+    from analysis.write_trade_benchmark_results import INPUT
+
+    return json.loads(INPUT.read_text())
+
+
+def test_hmrc_dof_convention_macro_describes_the_stored_standard_errors() -> None:
+    """The stored artifact predates the absorbed-fixed-effect dof correction.
+
+    Every HMRC standard error, confidence interval and p-value the manuscript
+    quotes therefore comes from the superseded convention, and the macro has
+    to say so — the other two staleness dimensions of the same artifact
+    (\\HMRCAnticipationSpec, \\HMRCFigureBase) already do.
+    """
+    from analysis.write_trade_benchmark_results import (
+        DOF_CONVENTION_LEGACY,
+        dof_convention_label,
+        dof_convention_state,
+    )
+
+    data = _hmrc_artifact()
+    # No block carries the correction: it is a pre-fix artifact throughout.
+    assert dof_convention_state(data) == DOF_CONVENTION_LEGACY
+    phrase = dof_convention_label(data)
+    assert "superseded" in phrase and "too tight" in phrase
+
+    macros = Path("paper/generated_trade_benchmarks.tex").read_text()
+    assert _macro(macros, "HMRCDofConvention") == phrase
+
+
+def test_hmrc_dof_convention_flips_when_the_artifact_carries_the_correction() -> None:
+    """The macro must track the artifact, not a hard-coded staleness claim."""
+    import copy
+
+    from analysis.write_trade_benchmark_results import (
+        DOF_CONVENTION_CORRECTED,
+        DOF_CORRECTION_KEYS,
+        _fitted_blocks,
+        dof_convention_label,
+        dof_convention_state,
+    )
+
+    corrected = copy.deepcopy(_hmrc_artifact())
+    blocks = _fitted_blocks(corrected)
+    assert len(blocks) > 1  # the artifact really does carry many fitted blocks
+    for _, block in blocks:
+        block["absorbed_fixed_effects"] = int(block["product_count"])
+        block["absorbed_dof_scale"] = 1.005
+    assert dof_convention_state(corrected) == DOF_CONVENTION_CORRECTED
+    phrase = dof_convention_label(corrected)
+    assert "absorbed" in phrase and "superseded" not in phrase
+    assert phrase != dof_convention_label(_hmrc_artifact())
+    assert set(DOF_CORRECTION_KEYS) <= set(blocks[0][1])
+
+
+def test_hmrc_dof_convention_refuses_an_unrecognised_state() -> None:
+    """Half-corrected, half-stamped or empty: raise rather than pass through."""
+    import copy
+
+    import pytest
+
+    from analysis.write_trade_benchmark_results import (
+        _fitted_blocks,
+        dof_convention_state,
+    )
+
+    mixed = copy.deepcopy(_hmrc_artifact())
+    path, block = _fitted_blocks(mixed)[0]
+    block["absorbed_fixed_effects"] = 1194
+    block["absorbed_dof_scale"] = 1.005
+    with pytest.raises(ValueError, match="mixes conventions"):
+        dof_convention_state(mixed)
+
+    half = copy.deepcopy(_hmrc_artifact())
+    for _, item in _fitted_blocks(half):
+        item["absorbed_fixed_effects"] = 1194  # ...but no absorbed_dof_scale
+    with pytest.raises(ValueError, match="only part of"):
+        dof_convention_state(half)
+
+    scaled_down = copy.deepcopy(_hmrc_artifact())
+    for _, item in _fitted_blocks(scaled_down):
+        item["absorbed_fixed_effects"] = 1194
+        item["absorbed_dof_scale"] = 0.9  # a scale-up is never a scale-down
+    with pytest.raises(ValueError, match="never a scale-down"):
+        dof_convention_state(scaled_down)
+
+    with pytest.raises(ValueError, match="no fitted blocks"):
+        dof_convention_state({"source": "nothing fitted here"})
+
+
+def test_hmrc_dof_correction_keys_are_the_ones_the_estimator_writes() -> None:
+    """The detection keys must be the estimator's, or the macro reads nothing.
+
+    Both fitted paths stamp them: the WLS ``fit_post_model`` and the PPML
+    ``_cluster_covariance`` route through the same convention.
+    """
+    import inspect
+
+    from analysis import hmrc_destination_event_study
+    from analysis.write_trade_benchmark_results import DOF_CORRECTION_KEYS
+
+    source = inspect.getsource(hmrc_destination_event_study.fit_post_model)
+    for key in DOF_CORRECTION_KEYS:
+        assert f'"{key}"' in source

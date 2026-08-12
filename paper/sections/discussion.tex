@@ -1,33 +1,19 @@
 \section{Discussion and conclusion}\label{sec:discussion}
 
-The central finding is that the UK tax--benefit system responds differently
-when a common aggregate earnings loss is distributed differently across
-workers and labour-market states. Across the main-table cells---both loss
-anchors at the duration-equivalent scales that survive the support
-screen---the wage-cut and displacement bounds differ by
+The central finding is about measurement. The comparison on which the
+automatic-stabiliser literature rests---a proportional income shock set
+against an unemployment shock---does not identify what its label claims.
+Holding the aggregate fixed and varying only incidence, the wage-cut and
+displacement bounds differ by
 \SubmissionCushionDifferenceMin--\SubmissionCushionDifferenceMax\ percentage
-points. That range is not ordered by duration---its widest cell is a
-three-month one and its narrowest a six-month one, with a twelve-month cell
-second widest---so it should not be read as an annualisation artefact, even
-though Appendix~\ref{app:monthlyuc} shows the sub-annual cells to be
-conservative by about \MonthlyUCCushionGap\ points; at the unit twelve-month scale the difference is
-\PrimaryCushionDifference\ points and the wage-cut Exchequer cost is
-\pounds\PrimaryExchequerDifference\ million higher. (The excluded OBR
-three-month cell, whose displacement draw rests on
-\OBRThreeMonthEffectiveLossRecords\ effective record contributions, gives
-\SubmissionThinCellCushionDifference\ points and is reported in
-Appendix~\ref{app:mc} as sensitivity evidence only, and is excluded from the
-headline range for the same support reason that excludes it from the table.) The factorial middle cell splits that difference into
+points across the main-table cells, \PrimaryCushionDifference\ points at the
+unit twelve-month scale. The factorial middle cell splits that into
 \FactorialConcStep\ points from concentrating the loss on selected workers
-and only \FactorialStateStep\ points from the employment-state change
-itself; the record-resampling exercise places the total contrast at
-\BootstrapCushionDifference\ points (sensitivity range
-\BootstrapCushionDifferenceCILower--\BootstrapCushionDifferenceCIUpper), and
-it survives the removal of any single loss-contributing record
-(\LOOMin--\LOOMax\ points). The mechanism is a loss-concentration effect
-inside the statutory schedule: diffuse cuts are relieved at marginal
-income-tax rates while complete individual losses exhaust that relief and
-land on means-tested UC.
+and \FactorialStateStep\ points from the employment-state change. The first
+is a progressivity effect: a marginal loss is relieved at the marginal rate,
+a complete loss at the average rate, and the wage-bill-weighted wedge between
+them is \ScheduleWedgeWeighted\ points before any household enters. The
+second is not an effect at all in a model of this class.
 
 The near-zero employment-state step carries much weaker information than the
 concentration step, and the paper does not rest on it. Every
@@ -39,7 +25,13 @@ modelled formula reads. New Style JSA alone would be worth up to
 displaced worker, tens of times the step actually measured. The
 decomposition therefore bounds what a static statutory model can attribute
 to the extensive margin; it is not evidence that job loss and an equivalent
-in-work earnings collapse are fiscally alike in the United Kingdom.
+in-work earnings collapse are fiscally alike in the United Kingdom. The
+generalisation is the point: no annual static microsimulation can identify
+the extensive margin, because the object that distinguishes the two states in
+such a model is a label rather than a rule. Every published
+income-versus-unemployment stabilisation comparison built on one inherits
+that limit, and what it is measuring instead is the progressivity of the
+schedule at the earnings distribution it was evaluated on.
 
 On the UC side four objects must
 be kept distinct: statutory entitlement as represented by PolicyEngine;
@@ -73,6 +65,17 @@ unemployment spells is conservative for it: the parameter-based bounding in
 Appendix~\ref{app:monthlyuc} shows that correct monthly UC and partial-year
 PAYE accounting would raise displacement cushioning at sub-annual durations
 and leave the 12-month contrast exact.
+
+One statement about precision should govern how every number in this paper
+is read. The displacement side of the contrast rests on
+\UnitEffectiveLossRecords\ effective record contributions, and the
+resampling standard error of \BootstrapCushionDifferenceSE\ points sits
+beside structural sensitivities---worker selection, the claiming convention,
+the omitted contributory benefit---that are individually two to seven times
+larger. The contrast should be read as being of order ten points with
+structural uncertainty of the same order, not as a figure known to a decimal
+place. The decimals are retained only so that the arithmetic between
+quantities can be checked.
 
 Balanced integration makes the common aggregate loss comparable assignment
 by assignment and closely reproduces the Bernoulli mean at unit scale. It
@@ -145,8 +148,13 @@ Constituency machinery in the Online Supplement is
 illustrative because local industry structure is not observed at the required
 level.
 
-Five items of unfinished business should be named rather than left for a
-reader to discover. The \texttt{all\_entitled} take-up grid, which is the
+Seven items of unfinished business should be named rather than left for a
+reader to discover. Two are new and are the most important: the continuous
+concentration sweep, which is the natural central object of this design and
+would separate concentration from worker selection
+(\texttt{make concentration-sweep}); and the conditional-on-affected welfare
+statistics, which exist only at an exploratory five draws
+(\texttt{make poverty-gap-production}). The remaining five are as follows. The \texttt{all\_entitled} take-up grid, which is the
 specification in which the claiming assumption actually binds, has been
 implemented but not yet run at the unit-stress calibration; the manuscript
 quotes a superseded-vintage bound for it. The product--destination panel has
@@ -163,7 +171,7 @@ whether the highest-weight exposed records are selected at their nominal
 rates, is implemented but unrun. And the household bootstrap holds
 the original assignment fixed, so its interval is conditional on which records
 those draws selected and is narrower than a fully re-drawn bootstrap would be.
-None of the five is \emph{known} to change the sign of the reported
+None of the seven is \emph{known} to change the sign of the reported
 contrast, but that is a weaker statement than it may appear, and the
 arithmetic should be set out rather than left implicit. Three of them raise
 displacement cushioning and so narrow the gap: the claiming convention by

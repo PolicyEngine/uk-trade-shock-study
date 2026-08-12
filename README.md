@@ -16,8 +16,8 @@ Prosperity Deal counterfactual
 relief, pharma exempt) prices the deal for households and the Exchequer.
 
 Companion to [uk-ai-study](../uk-ai-study), whose conventions this repo
-mirrors. Literature and scenario design: `tariff_paper_lit_review.md`.
-The disposition of the referee audit is tracked in `REVISION_STATUS.md`.
+mirrors. The disposition of successive referee rounds is tracked in
+`REVISION_STATUS.md`.
 
 ## Pipeline
 

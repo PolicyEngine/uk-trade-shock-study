@@ -70,8 +70,14 @@ consistent up to rounding of the unrounded underlying estimates. The
 record-resampling contrast reported below
 (\BootstrapCushionDifference\ points) is a different estimator---the
 draw-averaged contrast over the \BootstrapDraws\ common assignment draws
-retained in the resampling cache---and is labelled as such wherever it
-appears.
+retained in the resampling cache---and the worker-selection family runs on a
+third, the \LFSSelectionDraws-draw Bernoulli design, whose own baseline gap
+is \LFSSelectionBaselineGap\ points. Three estimators of one contrast is two
+too many for comfortable reading, so the convention is: the
+\PrimaryCushionDifference-point figure is primary and every other is labelled
+at the point of use. None of the three differs from another by as much as the
+structural sensitivities reported below, which is the more important fact
+about all of them.
 
 \subsection{Factorial decomposition of the gap}\label{sec:results-factorial}
 
@@ -123,24 +129,45 @@ so the share of the gross loss absorbed by the state is $m(E)$; a complete
 loss of the same earnings removes every slice of the schedule, so the
 absorbed share is $a(E)$. Under any progressive schedule with a personal
 allowance, $m(E)>a(E)$, and the wedge $m(E)-a(E)$ is exactly the
-concentration effect: it is large for a worker whose earnings straddle the
+concentration effect. It is also a familiar object: in the log-linear tax
+function of \citet{heathcote2017} the progressivity parameter $\tau$
+satisfies $1-m=(1-\tau)(1-a)$, so $\tau$ \emph{is} this wedge, and the
+cushioning rate estimated here is an estimate of the effective wedge of the
+UK schedule at the exposed-earnings distribution
+(Section~\ref{sec:lit-progressivity}). It is large for a worker whose earnings straddle the
 higher-rate threshold, and it vanishes for a worker taxed at a single rate
 from the first pound.
 
-The benchmark is worth making numerical, because it can then be checked in
-three lines. For a single worker on the exposed-sector mean of
+The benchmark is worth making numerical, because it can then be checked
+directly. For a single worker on the exposed-sector mean of
 \pounds 48{,}272 under the 2026 schedule, income tax and employee National
 Insurance take \ScheduleMarginalRate\ per cent of a marginal pound but only
 \ScheduleAverageRate\ per cent of the whole year's earnings, because zeroing
-the year also removes the untaxed personal allowance. The schedule alone
-therefore predicts a gap of \ScheduleImpliedGap\ percentage points, against
-the \PrimaryCushionDifference\ points the simulation returns. The sign and
-the order of magnitude of this paper's headline are settled before any
-household enters the calculation; what the microsimulation adds is the
-remaining couple of points and the composition behind them. The channel split
-confirms the mechanism rather than a coincidence of the same sign---income tax
-alone supplies \FactorialConcStepIncomeTax\ points of the concentration step,
-which is larger than the step itself.
+the year also removes the untaxed personal allowance---a wedge of
+\ScheduleImpliedGap\ percentage points.
+
+That single-worker figure is the wrong weight, however, and correcting it is
+what makes the exercise informative. The object being compared is a
+\emph{wage-bill-weighted} aggregate, and the exposed population is far more
+concentrated above the higher-rate and upper-earnings-limit thresholds than a
+worker on the mean. Weighted as the comparison actually is, income tax and
+employee National Insurance relieve \WageChannelTaxAndNI\ per cent of the
+diffuse loss against \DispChannelTaxAndNI\ per cent of the concentrated
+one---a schedule wedge of \ScheduleWedgeWeighted\ points, roughly twice the
+single-worker figure. The realised concentration step on the same seeds is
+\FactorialConcStepChannelSeeds\ points.
+
+So the simulation does not add a couple of points to the schedule's
+prediction; it \emph{subtracts} \ScheduleWedgeOffsets. The household system
+works against the tax schedule here, and identifying where those offsets come
+from is the quantitative contribution of the exercise: Universal Credit
+supplies most of them, because a complete loss draws a means-tested award
+that a marginal cut does not, with employee National Insurance above the
+upper earnings limit and the pension-contribution residual accounting for the
+rest. Both figures in this comparison are computed on the
+\FactorialChannelSeeds\ channel seeds; comparing the weighted wedge against
+the \FactorialDraws-draw step would mix bases and overstate the offsets by
+more than a factor of two.
 
 Three things prevent the simulation from being a restatement of that
 arithmetic, and they are what the exercise contributes. First, the
@@ -182,6 +209,25 @@ channel share and a headline rate in the same sentence, the seed basis is
 stated. Re-running the split at the full draw count would dissolve the
 problem and is inexpensive; it is listed among the outstanding items in
 Section~\ref{sec:discussion}.
+
+One limit of this design should be stated before the readings. With the
+aggregate held fixed and concentrated on the ten records a displacement draw
+selects, those records lose everything by construction, so the
+``concentration and selection'' step confounds \emph{how concentrated} the
+loss is with \emph{who} bears it; there is no free variation between them in
+a three-cell design. A continuous sweep separates them: impose each
+division's declared loss $s_j$ as a proportional cut of fraction $\phi$ on a
+randomly selected $s_j/\phi$ share of its exposed employees, so the expected
+wage-bill loss is invariant in $\phi$ by construction while its concentration
+varies from fully diffuse to total. That sweep nests both endpoints of the
+present design---at $\phi\le\min_j s_j$ it reproduces the diffuse wage cut
+record for record, and at $\phi=1$ it reproduces the concentrated cell
+exactly under Bernoulli assignment---and traces the curvature of the
+effective schedule between them.
+\path{analysis/concentration_sweep.py} implements it
+(\texttt{make concentration-sweep}); it requires a licensed-data run and is
+not reported here. It is the natural central object of this design and its
+absence is the largest gap in the present draft.
 
 Two readings follow, and the second constrains the first. The
 concentration step is a genuine result about the UK statutory schedule:
@@ -347,50 +393,21 @@ The frozen HMRC customs build totals \pounds55.6 billion of 2024 US-bound goods 
 
 Sector agreement is much weaker. The stored validation artifact reports a rank correlation of \RankCorrTopTen\ between the full-schedule predicted and realised falls among the ten largest exposed divisions, and a correlation of \ShockRateCorrAll\ between full-schedule and observed downside shock rates across all mapped divisions. Ten divisions is a small enough set that neither figure is decisive on its own; taken with the underpowered product-level split below, the fair summary is that the sector mapping receives no corroboration rather than that it has been refuted. Machinery and motor vehicles decline broadly in the expected direction, while aerospace, electrical equipment and basic metals do not. The aggregate match can therefore be coincidental and must not be used to validate Equation~\eqref{eq:shock}. As a separate policy benchmark, the OBR's March 2025 scenario uses a demand elasticity of 0.4, implying an 8 per cent export-demand fall after a 20 percentage-point tariff and a direct export-demand effect just under 0.2 per cent of GDP \citep{obr2025}. The paper's $\varepsilon=1$ reference is 2.5 times that elasticity, at the constant-wage-share benchmark $\pi=1$ (Section~\ref{sec:method-primitives}); the demand calibration, not the incidence assumption, is what makes it a strong stress rather than a central forecast.
 
-\paragraph{Product--destination panel.} The monthly HMRC panel
-(Online Supplement, Sections~S1--S2) shows a post-policy decline concentrated
-in large US export products---the capped value-weighted specification
-estimates a \HMRCWeightedEffect\ per cent change in US-bound exports
-relative to the same products sent to Canada, Japan and Australia---while
-equal product weights give only \HMRCEqualEffect\ per cent
-($p=\HMRCEqualPValue$). Three qualifications matter more than the headline
-coefficient. The estimate shrinks monotonically as the pre-period is
-shortened and the differential trend is borderline
-($p=\HMRCTrendPValue$), so the post indicator is partly absorbing a trend.
-The pre-period contains the Q1 2025 front-running surge ahead of the April
-schedule---the reported estimates omit April 2025 alone
-(\HMRCAnticipationSpec)---which inflates any estimated post-policy fall by an
-amount this run cannot quantify. And the outcome is a zero-filled
-$\log(1+V)$ destination gap, so extensive-margin movement in the small
-comparison destinations enters mechanically. An anticipation-window
-specification, a continuous-trade restriction and a Poisson estimator on
-levels have been implemented to address these two problems, but none of them
-appears in the stored run reported here; they await a re-download of the
-public HMRC panel. The two biases do not share a sign. The anticipation
-surge inflates the estimated decline. The zero-fill works the other way
-whenever it bites on a comparison destination, since a zero control flow
-lowers the control term and raises the measured gap, but its net effect
-depends on how zeros are distributed across the US and comparison series and
-is not signed by this design. The \HMRCWeightedEffect\ per cent figure is
-therefore a ceiling with respect to anticipation, and the net bias is
-unresolved.
-
-On the tariff-intensity ordering, the earlier claim that the falsification
-\emph{failed} over-read the evidence, and it is withdrawn. Broad steel and
-auto chapters fall \HMRCHighTariffEffect\ per cent
-($p=\HMRCHighTariffPValue$) against \HMRCOtherEffect\ per cent for other
-products, but the high-tariff cell rests on fewer than eight effective
-products: the comparison is underpowered rather than decisive, and it can
-neither corroborate nor refute the tariff ordering. What can be said is
-weaker and still sufficient---the panel provides no support for reading
-Equation~\eqref{eq:shock} as an estimated first stage. That limitation
-constrains the bridge, not the estimand: the cushioning comparison conditions
-on a declared loss identical across margins by construction, and the
-leave-one-division-out audit (all \LeaveSectorCount\ divisions at
-\LeaveSectorDraws\ assignments, contrast
-range \LeaveSectorCushionDifferenceMin--%
-\LeaveSectorCushionDifferenceMax\ points) confirms that sector composition
-does not create or reverse it.
+\paragraph{Product--destination panel.} A monthly HMRC HS4
+product--destination panel (Online Supplement, Sections~S1--S2) is the
+strongest external test available of the sector calibration, and it does not
+pass it. The capped value-weighted specification puts US-bound exports
+\HMRCWeightedEffect\ per cent below the same products sent to Canada, Japan
+and Australia, but equal product weights give \HMRCEqualEffect\ per cent
+($p=\HMRCEqualPValue$); the estimate shrinks monotonically as the pre-period
+is shortened; the differential trend is borderline ($p=\HMRCTrendPValue$);
+and the tariff-intensity split that would make it a falsification test rests
+on fewer than eight effective products and carries its own significant
+pre-trend. The reported inference is computed \HMRCDofConvention, and the
+anticipation convention is \HMRCAnticipationSpec. None of this supports
+reading Equation~\eqref{eq:shock} as an estimated first stage, which is the
+only claim the paper needs it not to support. The supplement gives the design,
+the specification checks and the corrections that are implemented but unrun.
 
 \paragraph{Reconciliation with Dolls, Fuest and Peichl (2012).} The closest
 published comparator reverses this paper's ordering, and the reversal is
@@ -577,16 +594,29 @@ decile profile shows a broad reduction in disposable income, with the largest
 losses concentrated towards the upper end of the distribution where exposed
 earnings are concentrated. This pattern is consistent with a progressive
 tax--benefit response that cushions lower-income households more strongly than
-the gross earnings measure. These figures are distributional diagnostics rather
-than population-wide poverty forecasts. Figure~\ref{fig:decile-results} shows
-the decile profile.
+the gross earnings measure. The national figures are the wrong object, and reporting them at all is a
+concession to convention. What matters for welfare is the loss
+\emph{conditional on being affected}: the same aggregate concentrated on ten
+workers is far worse than spread over a thousand, and the system offsets less
+of it, so a cushioning rate that falls as concentration rises understates the
+insurance loss rather than measuring it. The repository computes the
+conditional statistics---poverty among affected households at baseline and
+post-shock, and the affected population---in \path{analysis/poverty_gap.py},
+but only at an exploratory five draws whose standard deviation exceeds its
+mean. \path{analysis/write_welfare_results.py} emits them as manuscript
+macros and refuses to do so below \SubmissionDraws\ draws, so they are
+withheld here rather than quoted at a precision the run cannot support
+(\texttt{make poverty-gap-production}). This is the second substantial gap
+in the present draft.
 
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=.85\textwidth]{../results/figures/decile_by_margin_full_tariff.png}
-\caption{Per-capita disposable-income change by baseline income decile in the full-schedule scenarios. Shading denotes assignment dispersion.}
-\label{fig:decile-results}
-\end{figure}
+The national figures below are therefore distributional diagnostics rather
+than population-wide forecasts, and the decile profile that earlier versions
+plotted has been withdrawn: on a
+representative stored draw six of the ten deciles record a disposable-income
+change of exactly zero, so the profile's shape is an artefact of which
+handful of records the draw selected rather than a feature of the
+distribution.
+
 
 A constituency-level surface was produced in earlier drafts but is not
 reported: it rests on imputed industry assignments rather than observed
@@ -615,14 +645,3 @@ shows the assignment distribution.
 \caption{Annual Exchequer cost across regenerated assignments. The spread is assignment dispersion from the Monte Carlo allocation of displacement, not sampling uncertainty.}
 \label{fig:exchequer-results}
 \end{figure}
-
-\subsection{EPD counterfactual}\label{sec:results-epd}
-
-On paired seeds, full minus EPD displacement differs by
-$\EPDWorkerDifferenceThousands\pm\EPDWorkerDifferenceSDThousands$ thousand
-workers and \pounds $\EPDExchequerDifference\pm\EPDExchequerDifferenceSD$
-million of Exchequer cost, driven primarily by the lower auto tariff and the
-pharmaceutical exemption. It prices a change in the declared sector shock
-with the household model and draws held fixed, not the deal's causal effect;
-the paired comparison and its caveats are in the Online Supplement
-(Section~S5).

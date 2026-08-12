@@ -647,6 +647,7 @@ def apply_concentrated_wage_cut(
     persons: pd.DataFrame,
     scenario: TradeShockScenario,
     seed: int = 0,
+    zero_hours: bool = False,
 ) -> pd.DataFrame:
     """Concentrated wage cut: the displacement draw's losses without job loss.
 
@@ -664,9 +665,29 @@ def apply_concentrated_wage_cut(
     - broad wage cut vs concentrated wage cut  = concentration + worker
       selection, holding employment state fixed at EMPLOYED;
     - concentrated wage cut vs displacement    = the incremental effect of
-      the employment-state change itself (status flag, hours zeroing, and
-      the benefit rules they activate), holding the loss-bearing workers and
+      the employment-state change, holding the loss-bearing workers and
       their worker-level losses fixed.
+
+    WHAT THAT SECOND COMPARISON ACTUALLY MEASURES. Not the status flag.
+    ``employment_status`` is read by NO tax or benefit formula in
+    policyengine-uk; its only consumer is a behavioural labour-supply module
+    this design does not run. The cells differ in ``hours_worked``, which
+    this one leaves at baseline and displacement zeroes, and hours ARE
+    load-bearing -- through exactly one Universal Credit path,
+    ``hours_worked`` -> ``in_work`` -> ``uc_childcare_work_condition`` ->
+    ``uc_childcare_element``, because ``in_work`` is an OR of positive hours
+    and positive earnings. A displaced worker has neither, so the childcare
+    work condition fails and the element drops to zero; a worker here has
+    zero earnings but positive hours, so it is retained. Two smaller
+    hours-sensitive gates sit outside UC: the Housing Benefit worker
+    disregard and the council-tax-reduction non-dependant deduction.
+
+    So the measured "employment-state" step is an HOURS effect on
+    childcare-linked entitlement. ``zero_hours`` makes the comparison
+    status-only by zeroing hours here as well, which should drive the
+    residual to zero and isolate the (inert) status flag. It defaults to
+    False so every stored result reproduces; the option exists so the next
+    licensed-data run can test the claim rather than assert it.
 
     Because employment is binary, "diffuse displacement" is not defined, so
     the sequential path broad -> concentrated -> displaced is the unique
@@ -682,6 +703,18 @@ def apply_concentrated_wage_cut(
     drawn = draw_displaced(persons, scenario, seed=seed)
     earnings = shocked["employment_income"].to_numpy(dtype=float)
     shocked["employment_income"] = np.where(drawn, 0.0, earnings)
+    if zero_hours:
+        # Isolate the status flag by removing the hours channel described
+        # above. Only meaningful when the caller also zeroes hours on the
+        # displacement side, which build_shocked_simulation already does.
+        if "hours_worked" not in shocked:
+            raise KeyError(
+                "zero_hours requires an hours_worked column on the person "
+                "frame; the concentrated cell cannot isolate the status flag "
+                "without it"
+            )
+        hours = shocked["hours_worked"].to_numpy(dtype=float)
+        shocked["hours_worked"] = np.where(drawn, 0.0, hours)
     shocked["displaced"] = np.zeros(len(persons), dtype=bool)
     shocked["inactive"] = np.zeros(len(persons), dtype=bool)
     shocked["lcwra"] = np.zeros(len(persons), dtype=bool)

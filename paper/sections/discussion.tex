@@ -26,12 +26,20 @@ displaced worker, tens of times the step actually measured. The
 decomposition therefore bounds what a static statutory model can attribute
 to the extensive margin; it is not evidence that job loss and an equivalent
 in-work earnings collapse are fiscally alike in the United Kingdom. The
-generalisation is the point: no annual static microsimulation can identify
-the extensive margin, because the object that distinguishes the two states in
-such a model is a label rather than a rule. Every published
-income-versus-unemployment stabilisation comparison built on one inherits
-that limit, and what it is measuring instead is the progressivity of the
-schedule at the earnings distribution it was evaluated on.
+scope of that statement matters, and earlier drafts overreached it. Annual
+static microsimulation \emph{can} identify the extensive margin: EUROMOD and
+UKMOD simulate contributory unemployment benefit from constructed earnings
+and contribution histories, \citet{figari2011} impose
+employment-to-unemployment transitions and find the entitlement rules bite
+heterogeneously across countries, and \citet{dolls2012} recover an
+out-of-work benefit response five times the size of their income-shock one
+from an annual static model. What is true here is narrower and still worth
+saying: a pipeline that leaves status-contingent rules inactive---as this one
+does, carrying New Style Jobseeker's Allowance as survey data rather than a
+simulated rule---measures loss concentration and reports it under the
+employment margin's name. Whether a given published estimate is affected is a
+question about its implementation, and one the literature does not currently
+ask of itself.
 
 On the UC side four objects must
 be kept distinct: statutory entitlement as represented by PolicyEngine;
@@ -173,7 +181,8 @@ the original assignment fixed, so its interval is conditional on which records
 those draws selected and is narrower than a fully re-drawn bootstrap would be.
 None of the seven is \emph{known} to change the sign of the reported
 contrast, but that is a weaker statement than it may appear, and the
-arithmetic should be set out rather than left implicit. Three of them raise
+arithmetic should be set out rather than left implicit. Three \emph{separate}
+sensitivities---only the first of which is on the list above---raise
 displacement cushioning and so narrow the gap: the claiming convention by
 \TakeupEntitledSpread\ points at the calibration where it was last run,
 worker selection by \LFSSelectionShiftMin--\LFSSelectionShiftMax, and the
@@ -195,11 +204,15 @@ household microsimulation. Such evidence would replace the imposed earnings
 bridge with an estimated transmission mechanism while retaining the adjustment
 margin and fiscal-incidence decomposition developed here.
 
-The main conclusion is that, conditional on a common earnings loss, the
-labour-market margin materially changes the distribution of tax relief, benefit
-support, poverty effects, and public-finance costs. Wage-cut and displacement
-specifications are transparent bounds; the mixed and transition-equivalent
-paths show how intermediate adjustment patterns alter those outcomes. The
-results therefore speak directly to the fiscal consequences of labour-market
-adjustment, while leaving the size and composition of the underlying trade
+The main conclusion is that, conditional on a common earnings loss, it is the
+\emph{concentration} of that loss across workers rather than the
+labour-market margin that changes the distribution of tax relief and
+public-finance costs. The margin contributes \FactorialStateStep\ points of
+a \PrimaryCushionDifference-point gap here, and does so only because this
+pipeline leaves status-contingent rules inactive. Wage-cut and displacement
+specifications are transparent bounds on the concentration dimension; the
+mixed and transition paths in the supplement show how intermediate patterns
+sit between them. The results therefore speak to how the fiscal response
+depends on the distribution of a loss, while leaving the size and composition
+of the underlying trade
 shock as an empirical question for future research.

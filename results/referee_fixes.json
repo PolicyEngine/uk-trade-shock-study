@@ -1,12 +1,24 @@
 {
   "monthly_uc_bounding": {
     "parameters": {
-      "standard_allowance_single_25_plus_month": 424.9,
-      "personal_allowance": 12570.0,
       "basic_rate": 0.2,
+      "basic_rate_limit": 37700.0,
       "higher_rate": 0.4,
+      "higher_rate_threshold": 50270.0,
+      "ni_employee_above_uel": 0.02,
       "ni_employee_main": 0.08,
-      "representative_earnings": 48272.0
+      "ni_primary_threshold_annual": 12570.0,
+      "ni_upper_earnings_limit_annual": 50270.0,
+      "personal_allowance": 12570.0,
+      "representative_earnings": 48272.0,
+      "standard_allowance_single_25_plus_month": 424.9,
+      "parameter_source": "statutory_fallback",
+      "parameter_source_options": [
+        "policyengine_parameter",
+        "statutory_fallback"
+      ],
+      "parameter_source_detail": "documented statutory constants (policyengine-uk parameter tree unavailable here: ModuleNotFoundError: No module named 'policyengine_uk')",
+      "parameter_vintage": "HMRC 2025-26 income tax and class 1 NI parameters (annual thresholds as published) with the PERIOD Universal Credit standard allowance recorded from the frozen policyengine-uk build; no 2026-27 uprating applied to the tax schedule"
     },
     "spells": {
       "3m": {
@@ -14,36 +26,36 @@
         "uc_annual_equivalent": 1274.6999999999998,
         "tax_relief_monthly_correct": 2413.6000000000004,
         "tax_relief_annual_equivalent": 1785.1000000000001,
-        "ni_relief_monthly_correct": 714.0408,
-        "ni_relief_annual_equivalent": 714.0408,
+        "ni_relief_monthly_correct": 714.04,
+        "ni_relief_annual_equivalent": 714.04,
         "gross_loss": 12068.0,
-        "cushion_share_monthly_correct": 0.3647945641365595,
-        "cushion_share_annual_equivalent": 0.3127146834603911
+        "cushion_share_monthly_correct": 0.36479449784554197,
+        "cushion_share_annual_equivalent": 0.31271461716937354
       },
       "6m": {
         "uc_monthly_correct": 2549.3999999999996,
         "uc_annual_equivalent": 2549.3999999999996,
         "tax_relief_monthly_correct": 4827.200000000001,
         "tax_relief_annual_equivalent": 3570.2000000000003,
-        "ni_relief_monthly_correct": 1428.0816,
-        "ni_relief_annual_equivalent": 1428.0816,
+        "ni_relief_monthly_correct": 1428.08,
+        "ni_relief_annual_equivalent": 1428.08,
         "gross_loss": 24136.0,
-        "cushion_share_monthly_correct": 0.3647945641365595,
-        "cushion_share_annual_equivalent": 0.3127146834603911
+        "cushion_share_monthly_correct": 0.36479449784554197,
+        "cushion_share_annual_equivalent": 0.31271461716937354
       },
       "12m": {
         "uc_monthly_correct": 5098.799999999999,
         "uc_annual_equivalent": 5098.799999999999,
         "tax_relief_monthly_correct": 7140.400000000001,
         "tax_relief_annual_equivalent": 7140.400000000001,
-        "ni_relief_monthly_correct": 2856.1632,
-        "ni_relief_annual_equivalent": 2856.1632,
+        "ni_relief_monthly_correct": 2856.16,
+        "ni_relief_annual_equivalent": 2856.16,
         "gross_loss": 48272.0,
-        "cushion_share_monthly_correct": 0.3127146834603911,
-        "cushion_share_annual_equivalent": 0.3127146834603911
+        "cushion_share_monthly_correct": 0.31271461716937354,
+        "cushion_share_annual_equivalent": 0.31271461716937354
       }
     },
-    "notes": "UC entitlement per worker-month is identical by construction: m months at the full standard allowance equals probability m/12 of 12 months. Differences arise in income tax (convexity: the annual model overstates relief for partial-year spells at this earnings level, where zeroing a full year forgoes higher-rate relief while a partial-year earner loses basic/higher-rate slices) and in the 5-week payment wait, which shifts timing, not annual entitlement."
+    "notes": "UC entitlement per worker-month is identical by construction: m months at the full standard allowance equals probability m/12 of 12 months, and employee National Insurance is likewise proportional above the primary threshold. The difference is income tax, and it runs in ONE direction: the annual duration-equivalent stress zeroes a FULL year of earnings and scales by m/12, which spreads the loss across the untaxed personal allowance as well as the taxed slices and therefore relieves it at the year's AVERAGE tax rate, whereas a genuine partial-year loss comes off the top of the year's earnings and is relieved at the MARGINAL rate. At the representative earnings used here the entire taxable slice is basic-rate, so no higher-rate relief arises on either construction. Average-rate relief is the smaller of the two, so the annual model UNDERSTATES tax relief and hence understates cushioning at sub-annual durations (compare cushion_share_annual_equivalent with cushion_share_monthly_correct for the 3- and 6-month spells); the two coincide exactly at twelve months, where the constructions are the same. The 5-week payment wait shifts timing, not annual entitlement."
   },
   "pension_channel": {
     "n_seeds": 50,
@@ -226,15 +238,30 @@
       "representative_earnings": 48272.0,
       "personal_allowance": 12570.0,
       "basic_rate": 0.2,
+      "higher_rate": 0.4,
+      "basic_rate_limit": 37700.0,
+      "higher_rate_threshold": 50270.0,
       "ni_employee_main": 0.08,
-      "higher_rate_threshold": 50270.0
+      "ni_employee_above_uel": 0.02,
+      "ni_primary_threshold_annual": 12570.0,
+      "ni_upper_earnings_limit_annual": 50270.0,
+      "parameter_source": "statutory_fallback",
+      "parameter_vintage": "HMRC 2025-26 income tax and class 1 NI parameters (annual thresholds as published) with the PERIOD Universal Credit standard allowance recorded from the frozen policyengine-uk build; no 2026-27 uprating applied to the tax schedule",
+      "valid_earnings_range": [
+        12570.0,
+        100000.0
+      ]
     },
     "taxable_income": 35702.0,
     "income_tax": 7140.400000000001,
     "employee_national_insurance": 2856.16,
+    "national_insurance_main_rate_band": 35702.0,
+    "national_insurance_above_uel_band": 0.0,
+    "income_tax_band": "basic-rate",
+    "national_insurance_band": "main-rate",
     "marginal_deduction_rate": 0.28,
     "average_deduction_rate": 0.2070881670533643,
     "implied_gap_percentage_points": 7.291183294663572,
-    "notes": "Single worker below the higher-rate threshold, tax and National Insurance only. The marginal rate is what a small diffuse cut is relieved at; the average rate is what a complete loss is relieved at, because zeroing the year also removes the untaxed personal allowance. The difference is the schedule's own prediction for the sign and rough size of the paper's headline contrast, with no benefit, pension or household effect in it."
+    "notes": "Single worker on 48,272 of employment income: basic-rate for income tax, main-rate for employee National Insurance. Tax and National Insurance only, computed from the full band structure (personal allowance, basic rate to the higher-rate threshold, higher rate above it; NI at the main rate between the primary threshold and the upper earnings limit and at the reduced rate above it). The NI primary threshold is read as its own parameter: it coincides with the personal allowance only by arithmetic coincidence in some years, and aliasing the two silently misstates both rates when they diverge. The marginal rate is what a small diffuse cut is relieved at; the average rate is what a complete loss is relieved at, because zeroing the year also removes the untaxed personal allowance. The difference is the schedule's own prediction for the sign and rough size of the paper's headline contrast, with no benefit, pension or household effect in it. Valid for earnings strictly between 12,570 and 100,000; outside that the personal allowance taper and the additional rate apply and this block raises rather than emitting a rate."
   }
 }

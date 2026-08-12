@@ -45,9 +45,20 @@ D. New Style JSA bounding. The factorial decomposition attributes almost
 Writes results/referee_fixes.json.
 Usage: uv run python analysis/referee_fixes.py [--only pension takeup monthly jsa]
 
-Note on runnability: the ``monthly`` block needs policyengine-uk's parameter
-tree and the ``pension``/``takeup`` blocks need the licensed FRS microdata,
-but ``--only jsa`` is pure arithmetic and runs anywhere.
+Note on runnability: the ``pension`` and ``takeup`` blocks need the licensed
+FRS microdata, but ``--only jsa``, ``--only monthly`` and ``--only schedule``
+are pure statutory arithmetic and run anywhere. The ``monthly`` block prefers
+policyengine-uk's parameter tree and falls back to documented statutory
+constants, recording which branch ran as
+``monthly_uc_bounding.parameters.parameter_source``. That matters: the block's
+prose NOTE is a module constant, and before the fallback existed the note could
+only reach results/referee_fixes.json on a machine with policyengine-uk
+installed, so a corrected note sat unshipped in the source while the artifact
+carried the superseded (and inverted) one.
+
+`make paper-values` currently re-runs only ``--only jsa``. Adding
+``--only monthly schedule`` alongside it keeps every parameter-only block in
+the artifact current on each build at no extra dependency cost.
 """
 
 from __future__ import annotations
@@ -526,6 +537,341 @@ def takeup_block(dataset, baseline, persons) -> dict:
     return out
 
 
+# ---------------------------------------------------------------------------
+# Statutory band structure shared by the two representative-worker blocks
+# ---------------------------------------------------------------------------
+#
+# ``monthly_uc_block`` and ``schedule_benchmark_block`` both need income tax and
+# employee National Insurance for a single representative worker. They used to
+# implement the schedule TWICE, differently: the monthly block read the NI
+# primary threshold from its own parameter node, while the schedule block
+# aliased the INCOME TAX personal allowance as the NI threshold and ignored the
+# higher-rate band and the upper earnings limit altogether. Those two
+# constructions agree only for earnings between the personal allowance and the
+# higher-rate threshold, in a year where the personal allowance and the NI
+# primary threshold happen to coincide. Both blocks now call the same band
+# functions over the same parameter dict, so they cannot disagree.
+
+#: Machine-readable provenance for the statutory parameters, mirroring the
+#: contract ``jsa_bounding.parameters.rate_source`` already carries: which of
+#: the two branches produced the numbers DEPENDS ON THE MACHINE, because
+#: policyengine-uk is an optional dependency, so the artifact has to say.
+PARAMETER_SOURCE_POLICYENGINE = "policyengine_parameter"
+PARAMETER_SOURCE_FALLBACK = "statutory_fallback"
+PARAMETER_SOURCES = (PARAMETER_SOURCE_POLICYENGINE, PARAMETER_SOURCE_FALLBACK)
+
+#: Documented statutory values used when policyengine-uk's parameter tree is
+#: not importable here. Sources, field by field:
+#:
+#: - ``personal_allowance``, ``basic_rate``, ``higher_rate``,
+#:   ``basic_rate_limit``: HMRC income tax rates and allowances, frozen at the
+#:   2025-26 values (GBP 12,570 allowance, 20/40 per cent, GBP 37,700
+#:   basic-rate limit on TAXABLE income).
+#: - ``ni_employee_main``, ``ni_employee_above_uel``: class 1 employee rates,
+#:   8 per cent between the primary threshold and the upper earnings limit and
+#:   2 per cent above it.
+#: - ``ni_primary_threshold_annual``, ``ni_upper_earnings_limit_annual``:
+#:   HMRC's own PUBLISHED ANNUAL figures (GBP 12,570 and GBP 50,270), not
+#:   weekly figures multiplied by 52. HMRC quotes the primary threshold as
+#:   GBP 242 per week AND GBP 12,570 per year; 242 x 52 = 12,584 is an
+#:   artefact of the weekly quote, and policyengine-uk resolves the same node
+#:   to 241.73 per week = 12,569.96 per year. The three conventions differ by
+#:   at most GBP 15 of earnings, i.e. GBP 1.20 of NI on the representative
+#:   worker, which is below the precision of every macro this file feeds.
+#: - ``standard_allowance_single_25_plus_month``: the UC standard allowance for
+#:   a single claimant aged 25 or over that policyengine-uk resolves for
+#:   PERIOD, recorded from the frozen build.
+#:
+#: A fallback is legitimate here for the same reason it is for the JSA rate:
+#: these are published statutory constants, the block is pure arithmetic over
+#: them, and the branch that ran is recorded in the artifact. What is NOT
+#: legitimate is mixing the branches, so resolution is all-or-nothing.
+FALLBACK_SCHEDULE_PARAMETERS = {
+    "standard_allowance_single_25_plus_month": 424.90,
+    "personal_allowance": 12_570.0,
+    "basic_rate": 0.20,
+    "higher_rate": 0.40,
+    "basic_rate_limit": 37_700.0,
+    "ni_employee_main": 0.08,
+    "ni_employee_above_uel": 0.02,
+    "ni_primary_threshold_annual": 12_570.0,
+    "ni_upper_earnings_limit_annual": 50_270.0,
+}
+FALLBACK_SCHEDULE_PARAMETERS_VINTAGE = (
+    "HMRC 2025-26 income tax and class 1 NI parameters (annual thresholds as "
+    "published) with the PERIOD Universal Credit standard allowance recorded "
+    "from the frozen policyengine-uk build; no 2026-27 uprating applied to the "
+    "tax schedule"
+)
+
+#: Parameters BOTH representative-worker blocks require. A missing entry is a
+#: hard failure, not a default: the schedule block used to carry an unread
+#: ``higher_rate_threshold`` in its parameters dict, which looked like a guard
+#: and acted as nothing.
+SCHEDULE_REQUIRED_PARAMETERS = (
+    "representative_earnings",
+    "personal_allowance",
+    "basic_rate",
+    "higher_rate",
+    "basic_rate_limit",
+    "higher_rate_threshold",
+    "ni_employee_main",
+    "ni_employee_above_uel",
+    "ni_primary_threshold_annual",
+    "ni_upper_earnings_limit_annual",
+)
+
+#: Earnings at which the personal allowance starts to taper (GBP 1 withdrawn
+#: per GBP 2 of income), producing a 60 per cent marginal band that these
+#: blocks do NOT model. Together with the additional rate above it, this is
+#: the upper end of the range the arithmetic here is valid over.
+PERSONAL_ALLOWANCE_TAPER_THRESHOLD = 100_000.0
+
+#: Plausible ranges for the periodicity each node is READ AS. See
+#: ``_check_periodic_amount``: the JSA block already refused to accept a rate
+#: whose periodicity could not be weekly, and every other periodic node this
+#: file converts now gets the same treatment.
+NI_PRIMARY_THRESHOLD_WEEKLY_RANGE = (150.0, 400.0)
+NI_UPPER_EARNINGS_LIMIT_WEEKLY_RANGE = (700.0, 1_400.0)
+UC_STANDARD_ALLOWANCE_MONTHLY_RANGE = (300.0, 700.0)
+#: Annual figures are not converted, but a range still catches a node that
+#: silently changed periodicity in the other direction.
+PERSONAL_ALLOWANCE_ANNUAL_RANGE = (5_000.0, 30_000.0)
+BASIC_RATE_LIMIT_ANNUAL_RANGE = (20_000.0, 80_000.0)
+WEEKS_PER_YEAR = 52.0
+MONTHS_PER_YEAR = 12.0
+
+
+def _check_periodic_amount(
+    value: float,
+    *,
+    where: str,
+    what: str,
+    periodicity: str,
+    plausible_range: tuple[float, float],
+    used_as: str,
+) -> float:
+    """Hard-fail an amount whose magnitude contradicts its assumed periodicity.
+
+    Generalises the guard the JSA rate already had. A monthly or annual node
+    read as weekly is wrong by a factor of 4.33 or 52, a weekly node read as
+    monthly by 4.33, and nothing downstream would notice: the arithmetic is
+    linear and the result is a plausible-looking number. The ranges are chosen
+    so that every OTHER periodicity the node could plausibly carry falls
+    outside them.
+    """
+    low, high = plausible_range
+    if not np.isfinite(value) or not low <= value <= high:
+        raise RuntimeError(
+            f"{where} returned {value!r} for {what}, outside the plausible "
+            f"{periodicity} range {plausible_range}. This is what a periodicity "
+            "change looks like (a monthly or annual node read as weekly is "
+            "wrong by a factor of 4.33 or 52, and vice versa), and this block "
+            f"{used_as}. Fix the parameter path or the range; do not accept "
+            "the value."
+        )
+    return float(value)
+
+
+def income_tax(earnings: float, p: dict) -> float:
+    """Annual income tax on ``earnings`` from the actual band structure.
+
+    Personal allowance, then the basic rate up to ``basic_rate_limit`` of
+    TAXABLE income, then the higher rate. The additional rate and the personal
+    allowance taper are outside the validated range (see
+    ``_check_schedule_validity``).
+    """
+    taxable = max(0.0, earnings - p["personal_allowance"])
+    basic_slice = min(taxable, p["basic_rate_limit"])
+    higher_slice = max(0.0, taxable - p["basic_rate_limit"])
+    return p["basic_rate"] * basic_slice + p["higher_rate"] * higher_slice
+
+
+def employee_ni(earnings: float, p: dict) -> float:
+    """Annual class 1 employee NI from the actual band structure.
+
+    Main rate between the primary threshold and the upper earnings limit, the
+    reduced rate above the UEL. Aliasing the income tax personal allowance as
+    the primary threshold, and dropping the UEL, is what this replaces.
+    """
+    pt = p["ni_primary_threshold_annual"]
+    uel = p["ni_upper_earnings_limit_annual"]
+    main_slice = max(0.0, min(earnings, uel) - pt)
+    upper_slice = max(0.0, earnings - uel)
+    return p["ni_employee_main"] * main_slice + p["ni_employee_above_uel"] * upper_slice
+
+
+def marginal_income_tax_rate(earnings: float, p: dict) -> float:
+    if earnings <= p["personal_allowance"]:
+        return 0.0
+    if earnings <= p["personal_allowance"] + p["basic_rate_limit"]:
+        return p["basic_rate"]
+    return p["higher_rate"]
+
+
+def marginal_employee_ni_rate(earnings: float, p: dict) -> float:
+    if earnings <= p["ni_primary_threshold_annual"]:
+        return 0.0
+    if earnings <= p["ni_upper_earnings_limit_annual"]:
+        return p["ni_employee_main"]
+    return p["ni_employee_above_uel"]
+
+
+def _require_schedule_parameters(params: dict, where: str) -> dict:
+    """Return the validated parameter dict, or raise naming what is missing."""
+    missing = [k for k in SCHEDULE_REQUIRED_PARAMETERS if params.get(k) is None]
+    if missing:
+        raise RuntimeError(
+            f"{where} is missing statutory parameters {missing} (has "
+            f"{sorted(params)}). The representative-worker arithmetic reads the "
+            "full band structure — personal allowance, basic-rate limit, higher "
+            "rate, NI primary threshold, NI upper earnings limit and the "
+            "above-UEL rate — and every one of them changes the emitted "
+            "marginal and average deduction rates. Substituting a default, or "
+            "aliasing one parameter for another, is how the block silently "
+            "emitted wrong rates before. Re-run "
+            "`analysis/referee_fixes.py --only monthly schedule`."
+        )
+    resolved = {k: float(params[k]) for k in SCHEDULE_REQUIRED_PARAMETERS}
+    implied = resolved["personal_allowance"] + resolved["basic_rate_limit"]
+    if abs(resolved["higher_rate_threshold"] - implied) > 1.0:
+        raise RuntimeError(
+            f"{where} is internally inconsistent: higher_rate_threshold "
+            f"{resolved['higher_rate_threshold']} is not the personal allowance "
+            f"plus the basic-rate limit ({implied}). These are two conventions "
+            "for the same boundary — one on GROSS earnings, one on TAXABLE "
+            "income — and mixing them shifts the higher-rate band by the "
+            "allowance."
+        )
+    return resolved
+
+
+def _check_schedule_validity(earnings: float, p: dict) -> dict:
+    """Hard-fail representative earnings outside the block's valid range.
+
+    At or below the LOWER of the personal allowance and the NI primary
+    threshold neither instrument bites, both the marginal and the average rate
+    are zero, and the marginal-versus-average contrast the block exists to
+    state is degenerate. Above the personal allowance taper the true marginal
+    rate is 60 per cent (and the additional rate follows above that), neither
+    of which this arithmetic models.
+    """
+    floor = min(p["personal_allowance"], p["ni_primary_threshold_annual"])
+    ceiling = PERSONAL_ALLOWANCE_TAPER_THRESHOLD
+    if not floor < earnings < ceiling:
+        raise RuntimeError(
+            f"representative earnings {earnings!r} fall outside the range this "
+            f"schedule benchmark is valid over, ({floor}, {ceiling}). At or "
+            "below the lower of the personal allowance and the NI primary "
+            "threshold both the marginal and the average deduction rate are "
+            "zero, so the marginal-versus-average contrast the block reports is "
+            "degenerate. At or above the personal allowance taper the true "
+            "marginal rate is 60 per cent and the additional rate follows, "
+            "neither of which this block models. Extend the band structure "
+            "rather than widening the range."
+        )
+    return {"valid_earnings_range": [floor, ceiling]}
+
+
+def _resolve_schedule_parameters() -> tuple[dict, str, str, str]:
+    """(parameters, source, detail, vintage) for the statutory band structure.
+
+    Prefers policyengine-uk so the figures are the ones the model itself would
+    apply. Resolution is ALL-OR-NOTHING: if any node is missing or moved, the
+    whole documented fallback set is used rather than a half-policyengine,
+    half-constant hybrid that no reader could reconstruct. Every periodic node
+    is periodicity-checked before it is annualised.
+    """
+    try:
+        from policyengine_uk.system import system
+
+        inst = f"{PERIOD}-01-01"
+        gov = system.parameters.gov
+        sa_month = _check_periodic_amount(
+            float(gov.dwp.universal_credit.standard_allowance.amount.SINGLE_OLD(inst)),
+            where="policyengine-uk gov.dwp.universal_credit.standard_allowance"
+            ".amount.SINGLE_OLD",
+            what="the UC standard allowance for a single claimant aged 25 or over",
+            periodicity="monthly",
+            plausible_range=UC_STANDARD_ALLOWANCE_MONTHLY_RANGE,
+            used_as="multiplies the figure by the number of months out of work",
+        )
+        brackets = gov.hmrc.income_tax.rates.uk.brackets
+        pa = _check_periodic_amount(
+            float(gov.hmrc.income_tax.allowances.personal_allowance.amount(inst)),
+            where="policyengine-uk gov.hmrc.income_tax.allowances.personal_allowance",
+            what="the income tax personal allowance",
+            periodicity="annual",
+            plausible_range=PERSONAL_ALLOWANCE_ANNUAL_RANGE,
+            used_as="subtracts the figure from annual earnings",
+        )
+        basic = float(brackets[0].rate(inst))
+        higher = float(brackets[1].rate(inst))
+        basic_rate_limit = _check_periodic_amount(
+            float(brackets[1].threshold(inst)),
+            where="policyengine-uk gov.hmrc.income_tax.rates.uk.brackets[1].threshold",
+            what="the basic-rate limit on taxable income",
+            periodicity="annual",
+            plausible_range=BASIC_RATE_LIMIT_ANNUAL_RANGE,
+            used_as="splits annual taxable income between the basic and higher rates",
+        )
+        ni_rates = gov.hmrc.national_insurance.class_1.rates.employee
+        ni_thresholds = gov.hmrc.national_insurance.class_1.thresholds
+        ni_main = float(ni_rates.main(inst))
+        ni_above_uel = float(ni_rates.additional(inst))
+        ni_pt_week = _check_periodic_amount(
+            float(ni_thresholds.primary_threshold(inst)),
+            where="policyengine-uk gov.hmrc.national_insurance.class_1.thresholds"
+            ".primary_threshold",
+            what="the class 1 primary threshold",
+            periodicity="weekly",
+            plausible_range=NI_PRIMARY_THRESHOLD_WEEKLY_RANGE,
+            used_as=f"multiplies the figure by {WEEKS_PER_YEAR:.0f} weeks",
+        )
+        ni_uel_week = _check_periodic_amount(
+            float(ni_thresholds.upper_earnings_limit(inst)),
+            where="policyengine-uk gov.hmrc.national_insurance.class_1.thresholds"
+            ".upper_earnings_limit",
+            what="the class 1 upper earnings limit",
+            periodicity="weekly",
+            plausible_range=NI_UPPER_EARNINGS_LIMIT_WEEKLY_RANGE,
+            used_as=f"multiplies the figure by {WEEKS_PER_YEAR:.0f} weeks",
+        )
+    except _PARAMETER_LOOKUP_ERRORS as exc:
+        params = dict(FALLBACK_SCHEDULE_PARAMETERS)
+        params["higher_rate_threshold"] = (
+            params["personal_allowance"] + params["basic_rate_limit"]
+        )
+        return (
+            params,
+            PARAMETER_SOURCE_FALLBACK,
+            "documented statutory constants (policyengine-uk parameter tree "
+            f"unavailable here: {type(exc).__name__}: {exc})",
+            FALLBACK_SCHEDULE_PARAMETERS_VINTAGE,
+        )
+    params = {
+        "standard_allowance_single_25_plus_month": sa_month,
+        "personal_allowance": pa,
+        "basic_rate": basic,
+        "higher_rate": higher,
+        "basic_rate_limit": basic_rate_limit,
+        "higher_rate_threshold": pa + basic_rate_limit,
+        "ni_employee_main": ni_main,
+        "ni_employee_above_uel": ni_above_uel,
+        "ni_primary_threshold_annual": ni_pt_week * WEEKS_PER_YEAR,
+        "ni_upper_earnings_limit_annual": ni_uel_week * WEEKS_PER_YEAR,
+        "ni_primary_threshold_weekly": ni_pt_week,
+        "ni_upper_earnings_limit_weekly": ni_uel_week,
+    }
+    return (
+        params,
+        PARAMETER_SOURCE_POLICYENGINE,
+        "policyengine-uk parameter tree: gov.hmrc.income_tax, "
+        "gov.hmrc.national_insurance.class_1, gov.dwp.universal_credit",
+        f"policyengine-uk parameter values for {PERIOD}",
+    )
+
+
 #: How the monthly-versus-annual comparison actually works, stated so that it
 #: agrees with the block's own ``cushion_share_*`` fields.
 #:
@@ -563,48 +909,56 @@ MONTHLY_UC_NOTES = (
 )
 
 
-def monthly_uc_block() -> dict:
+def monthly_uc_block(parameters: dict | None = None) -> dict:
     """Parameter-based bounding of the annual model against a monthly UC
     assessment for a representative single displaced worker (aged 25+,
     no children, no housing element, capital below the lower limit).
+
+    ``parameters`` lets a caller re-derive the block from a parameter set that
+    is already stored (see ``--only monthly`` and the ``schedule`` block);
+    passing None resolves them, preferring policyengine-uk and falling back to
+    the documented statutory constants so this block — and therefore the
+    corrected note it carries — can be regenerated on a machine without
+    policyengine-uk installed.
     """
-    from policyengine_uk.system import system
-
-    inst = f"{PERIOD}-01-01"
-    gov = system.parameters.gov
-    sa_month = float(gov.dwp.universal_credit.standard_allowance.amount.SINGLE_OLD(inst))
-    pa = float(gov.hmrc.income_tax.allowances.personal_allowance.amount(inst))
-    brackets = gov.hmrc.income_tax.rates.uk.brackets
-    basic = float(brackets[0].rate(inst))
-    higher = float(brackets[1].rate(inst))
-    higher_threshold = float(brackets[1].threshold(inst))
-    ni_main = float(gov.hmrc.national_insurance.class_1.rates.employee.main(inst))
-    ni_pt_week = float(gov.hmrc.national_insurance.class_1.thresholds.primary_threshold(inst))
-    e = EXPOSED_MEAN_EARNINGS
-
-    def income_tax(y: float) -> float:
-        taxable = max(0.0, y - pa)
-        return basic * min(taxable, higher_threshold) + higher * max(
-            0.0, taxable - higher_threshold
+    if parameters is None:
+        params, source, detail, vintage = _resolve_schedule_parameters()
+    else:
+        params, source, detail, vintage = (
+            dict(parameters),
+            str(parameters.get("parameter_source", PARAMETER_SOURCE_FALLBACK)),
+            str(parameters.get("parameter_source_detail", "supplied by caller")),
+            str(parameters.get("parameter_vintage", "supplied by caller")),
         )
-
-    def ni_annualised(y: float) -> float:
-        return ni_main * max(0.0, y - ni_pt_week * 52)
+    e = EXPOSED_MEAN_EARNINGS
+    params.setdefault("representative_earnings", e)
+    p = _require_schedule_parameters(params, "resolved statutory parameters")
+    sa_month = _check_periodic_amount(
+        float(params["standard_allowance_single_25_plus_month"]),
+        where="resolved statutory parameters",
+        what="the UC standard allowance for a single claimant aged 25 or over",
+        periodicity="monthly",
+        plausible_range=UC_STANDARD_ALLOWANCE_MONTHLY_RANGE,
+        used_as="multiplies the figure by the number of months out of work",
+    )
+    _check_schedule_validity(e, p)
 
     rows = {}
     for m in (3, 6, 12):
-        f = m / 12
+        f = m / MONTHS_PER_YEAR
         # Monthly-correct: m months out of work at full standard allowance
         # (zero earned income), (12-m) months at earnings that taper UC to
         # zero; PAYE reconciles to annual tax on partial-year earnings.
         uc_monthly = m * sa_month
-        tax_relief_monthly = income_tax(e) - income_tax((1 - f) * e)
-        ni_relief_monthly = ni_main * max(0.0, e / 12 - ni_pt_week * 52 / 12) * m
+        tax_relief_monthly = income_tax(e, p) - income_tax((1 - f) * e, p)
+        # NI is assessed per pay period, so m months of relief is m twelfths of
+        # the annual liability: every band boundary scales by the same 1/12.
+        ni_relief_monthly = m * (employee_ni(e, p) / MONTHS_PER_YEAR)
         # Annual duration-equivalent stress: probability f of a coherent
         # full-year displaced state; expectations per exposed worker.
-        uc_annual = f * 12 * sa_month
-        tax_relief_annual = f * income_tax(e)
-        ni_relief_annual = f * ni_annualised(e)
+        uc_annual = f * MONTHS_PER_YEAR * sa_month
+        tax_relief_annual = f * income_tax(e, p)
+        ni_relief_annual = f * employee_ni(e, p)
         rows[f"{m}m"] = {
             "uc_monthly_correct": uc_monthly,
             "uc_annual_equivalent": uc_annual,
@@ -622,15 +976,18 @@ def monthly_uc_block() -> dict:
             )
             / (f * e),
         }
+    stored = {k: params[k] for k in sorted(params) if not k.startswith("parameter_")}
+    stored.update(p)
+    stored["standard_allowance_single_25_plus_month"] = sa_month
+    stored["representative_earnings"] = e
+    # Provenance travels with the numbers, exactly as it does for the JSA rate:
+    # which branch resolved these parameters depends on the build machine.
+    stored["parameter_source"] = source
+    stored["parameter_source_options"] = list(PARAMETER_SOURCES)
+    stored["parameter_source_detail"] = detail
+    stored["parameter_vintage"] = vintage
     return {
-        "parameters": {
-            "standard_allowance_single_25_plus_month": sa_month,
-            "personal_allowance": pa,
-            "basic_rate": basic,
-            "higher_rate": higher,
-            "ni_employee_main": ni_main,
-            "representative_earnings": e,
-        },
+        "parameters": stored,
         "spells": rows,
         "notes": MONTHLY_UC_NOTES,
     }
@@ -674,19 +1031,20 @@ _PARAMETER_LOOKUP_ERRORS = (ImportError, AttributeError, KeyError, TypeError)
 
 
 def _check_weekly_rate(rate: float, where: str) -> float:
-    """Hard-fail a rate that cannot be a weekly NS-JSA personal allowance."""
-    low, high = JSA_WEEKLY_RATE_PLAUSIBLE_RANGE
-    if not np.isfinite(rate) or not low <= rate <= high:
-        raise RuntimeError(
-            f"{where} returned {rate!r}, outside the plausible weekly NS-JSA "
-            f"range {JSA_WEEKLY_RATE_PLAUSIBLE_RANGE} for a claimant aged 25 "
-            "or over. This is what a periodicity change looks like (a monthly "
-            "or annual node read as weekly is wrong by a factor of 4.33 or "
-            "52), and the JSA bound multiplies this figure by "
-            f"{JSA_MAX_DAYS / 7:.0f} weeks. Fix the parameter path or the "
-            "range; do not accept the value."
-        )
-    return rate
+    """Hard-fail a rate that cannot be a weekly NS-JSA personal allowance.
+
+    Thin wrapper over the general periodicity guard, kept because this is the
+    one the JSA block's error message is written for. Every other periodic node
+    this file converts goes through ``_check_periodic_amount`` directly.
+    """
+    return _check_periodic_amount(
+        rate,
+        where=where,
+        what="the NS-JSA personal allowance for a claimant aged 25 or over",
+        periodicity="weekly NS-JSA",
+        plausible_range=JSA_WEEKLY_RATE_PLAUSIBLE_RANGE,
+        used_as=f"multiplies this figure by {JSA_MAX_DAYS / 7:.0f} weeks",
+    )
 
 
 def _jsa_weekly_rate() -> tuple[float, str, str, str]:
@@ -749,38 +1107,91 @@ def schedule_benchmark_block(monthly: dict) -> dict:
     # Reuse the statutory parameters the monthly-UC block already resolved, so
     # the two blocks can never disagree about the schedule and this one runs
     # without policyengine when that block is already stored.
-    params = monthly["parameters"]
-    earnings = float(params["representative_earnings"])
-    allowance = float(params["personal_allowance"])
-    basic = float(params["basic_rate"])
-    ni = float(params["ni_employee_main"])
-    taxable = earnings - allowance
-    income_tax = basic * taxable
-    employee_ni = ni * taxable
-    marginal = basic + ni
-    average = (income_tax + employee_ni) / earnings
+    #
+    # It computes the full band structure. The previous implementation aliased
+    # the income tax personal allowance as the NI primary threshold, ignored the
+    # higher-rate band and the upper earnings limit, and stored a
+    # ``higher_rate_threshold`` it never read — a guard that acted on nothing.
+    # Those three faults cancel only for earnings between the allowance and the
+    # higher-rate threshold in a year where the allowance and the NI primary
+    # threshold coincide, and nothing raised outside that window.
+    stored = monthly["parameters"]
+    p = _require_schedule_parameters(
+        stored, "referee_fixes.json monthly_uc_bounding.parameters"
+    )
+    earnings = p["representative_earnings"]
+    validity = _check_schedule_validity(earnings, p)
+
+    tax = income_tax(earnings, p)
+    ni = employee_ni(earnings, p)
+    marginal = marginal_income_tax_rate(earnings, p) + marginal_employee_ni_rate(
+        earnings, p
+    )
+    average = (tax + ni) / earnings
+    if not marginal > average:
+        raise RuntimeError(
+            f"the schedule benchmark computed a marginal deduction rate "
+            f"{marginal!r} that does not exceed the average rate {average!r}. "
+            "The block exists to state that a progressive schedule relieves a "
+            "marginal cut at more than a total loss; a non-positive gap means "
+            "the parameters no longer describe a progressive schedule and the "
+            "emitted \\ScheduleImpliedGap would contradict the manuscript's "
+            "mechanism argument."
+        )
+    band = (
+        "basic-rate"
+        if earnings <= p["higher_rate_threshold"]
+        else "higher-rate"
+    )
+    ni_band = (
+        "main-rate"
+        if earnings <= p["ni_upper_earnings_limit_annual"]
+        else "above the upper earnings limit"
+    )
     return {
         "parameters": {
-            "representative_earnings": earnings,
-            "personal_allowance": allowance,
-            "basic_rate": basic,
-            "ni_employee_main": ni,
-            "higher_rate_threshold": 50_270.0,
+            **p,
+            "parameter_source": stored.get("parameter_source"),
+            "parameter_vintage": stored.get("parameter_vintage"),
+            **validity,
         },
-        "taxable_income": taxable,
-        "income_tax": income_tax,
-        "employee_national_insurance": employee_ni,
+        "taxable_income": max(0.0, earnings - p["personal_allowance"]),
+        "income_tax": tax,
+        "employee_national_insurance": ni,
+        "national_insurance_main_rate_band": max(
+            0.0,
+            min(earnings, p["ni_upper_earnings_limit_annual"])
+            - p["ni_primary_threshold_annual"],
+        ),
+        "national_insurance_above_uel_band": max(
+            0.0, earnings - p["ni_upper_earnings_limit_annual"]
+        ),
+        "income_tax_band": band,
+        "national_insurance_band": ni_band,
         "marginal_deduction_rate": marginal,
         "average_deduction_rate": average,
         "implied_gap_percentage_points": 100.0 * (marginal - average),
         "notes": (
-            "Single worker below the higher-rate threshold, tax and National "
-            "Insurance only. The marginal rate is what a small diffuse cut is "
-            "relieved at; the average rate is what a complete loss is relieved "
-            "at, because zeroing the year also removes the untaxed personal "
-            "allowance. The difference is the schedule's own prediction for "
-            "the sign and rough size of the paper's headline contrast, with no "
-            "benefit, pension or household effect in it."
+            f"Single worker on {earnings:,.0f} of employment income: {band} for "
+            f"income tax, {ni_band} for employee National Insurance. Tax and "
+            "National Insurance only, computed from the full band structure "
+            "(personal allowance, basic rate to the higher-rate threshold, "
+            "higher rate above it; NI at the main rate between the primary "
+            "threshold and the upper earnings limit and at the reduced rate "
+            "above it). The NI primary threshold is read as its own parameter: "
+            "it coincides with the personal allowance only by arithmetic "
+            "coincidence in some years, and aliasing the two silently "
+            "misstates both rates when they diverge. The marginal rate is what "
+            "a small diffuse cut is relieved at; the average rate is what a "
+            "complete loss is relieved at, because zeroing the year also "
+            "removes the untaxed personal allowance. The difference is the "
+            "schedule's own prediction for the sign and rough size of the "
+            "paper's headline contrast, with no benefit, pension or household "
+            "effect in it. Valid for earnings strictly between "
+            f"{validity['valid_earnings_range'][0]:,.0f} and "
+            f"{validity['valid_earnings_range'][1]:,.0f}; outside that the "
+            "personal allowance taper and the additional rate apply and this "
+            "block raises rather than emitting a rate."
         ),
     }
 
@@ -865,7 +1276,24 @@ def main() -> None:
     if blocks & {"pension", "takeup"}:
         dataset, baseline, persons = _baseline_and_persons(DATASET, None, PERIOD)
     if "monthly" in blocks:
+        # Runs anywhere: statutory arithmetic over parameters that come from
+        # policyengine-uk when it is installed and from the documented
+        # constants otherwise. This is what lets the block's NOTE — which was
+        # shipped stale and INVERTED in the artifact for want of a rerun — be
+        # regenerated from code rather than hand-edited into the JSON.
         out["monthly_uc_bounding"] = monthly_uc_block()
+        source = out["monthly_uc_bounding"]["parameters"]["parameter_source"]
+        print(f"[monthly] statutory parameter source: {source}")
+        if source == PARAMETER_SOURCE_FALLBACK:
+            print(
+                "[monthly] WARNING: policyengine-uk was not importable here, so "
+                "monthly_uc_bounding.parameters are the documented statutory "
+                "constants rather than the model's own parameter tree. The "
+                "difference is at most a few pounds of National Insurance on "
+                "the representative worker (see FALLBACK_SCHEDULE_PARAMETERS), "
+                "below the precision of every macro this block feeds, and the "
+                "branch that ran is recorded as parameters.parameter_source."
+            )
     if "jsa" in blocks:
         out["jsa_bounding"] = jsa_block()
     if "schedule" in blocks:

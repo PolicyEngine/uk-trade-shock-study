@@ -61,8 +61,10 @@ comparisons, not confidence intervals for tariff effects. The mixed grid
 below is the conceptual centre of the design; the bounds make its composition
 effect transparent.
 
-\emph{Estimator provenance.} Every headline number in the abstract and this
-section comes from the same 50-assignment paired-draw design: the wage-cut
+\emph{Estimator provenance.} The cushioning levels and the gap in the
+abstract and in this section come from one 50-assignment paired-draw design;
+the wedge and offset quoted alongside them do not, and come from the
+\FactorialChannelSeeds-seed channel split described below. Specifically: the wage-cut
 and displacement cushioning levels are draw means of the two unit 12-month
 scenarios, and the \PrimaryCushionDifference-point gap is the mean of the
 per-draw differences on paired seeds, so the displayed levels and gap are
@@ -225,10 +227,13 @@ selects, those records lose everything by construction, so the
 ``concentration and selection'' step confounds \emph{how concentrated} the
 loss is with \emph{who} bears it; there is no free variation between them in
 a three-cell design. A continuous sweep separates them: impose each
-division's declared loss $s_j$ as a proportional cut of fraction $\phi$ on a
-randomly selected $s_j/\phi$ share of its exposed employees, so the expected
-wage-bill loss is invariant in $\phi$ by construction while its concentration
-varies from fully diffuse to total. That sweep nests both endpoints of the
+division's declared loss $s_j$ as a proportional cut of fraction
+$\phi^{\text{eff}}_j=\max(\phi,s_j)$ on a randomly selected
+$s_j/\phi^{\text{eff}}_j$ share of its exposed employees, so the expected
+wage-bill loss is invariant by construction while its concentration varies
+from fully diffuse to total. The clip matters: below its own $s_j$ a division
+cannot concentrate further without under-delivering its aggregate, so it sits
+at its diffuse endpoint until the grid reaches it. That sweep nests both endpoints of the
 present design---at $\phi\le\min_j s_j$ it reproduces the diffuse wage cut
 record for record, and at $\phi=1$ it reproduces the concentrated cell
 exactly under Bernoulli assignment---and traces the curvature of the
@@ -259,7 +264,36 @@ income tax and National Insurance are identical by construction, and on the
 \FactorialChannelSeeds\ channel seeds the entire step is a
 \FactorialStateStepUC-point Universal Credit residual---those seeds giving a
 step of \FactorialStateStepChannelSeeds\ points against the
-\FactorialStateStep\ points of the full design. The magnitude of what is
+\FactorialStateStep\ points of the full design.
+
+That residual is not the employment-status label, and tracing it changes what
+the step measures. Within policyengine-uk the \texttt{employment\_status}
+variable is read by no tax or benefit formula at all: its only consumer is a
+behavioural labour-supply module that this design switches off. What the two
+cells actually differ in is \texttt{hours\_worked}, which the concentrated
+cell leaves at baseline and displacement zeroes. Hours are load-bearing
+through exactly one Universal Credit path---%
+\texttt{hours\_worked} $\rightarrow$ \texttt{in\_work} $\rightarrow$
+\texttt{uc\_childcare\_work\_condition} $\rightarrow$
+\texttt{uc\_childcare\_element}---because \texttt{in\_work} is an
+\emph{or} of positive hours and positive earnings. A displaced worker has
+neither, so the childcare work condition fails and the childcare element
+drops to zero; a concentrated-cut worker has zero earnings but positive
+hours, so it is retained in full. Two further hours-sensitive gates lie
+outside Universal Credit: the Housing Benefit worker disregard and the
+council-tax-reduction non-dependant deduction.
+
+The measured step is therefore an \emph{hours} effect operating on
+childcare and two smaller in-work gates, not an employment-status effect. It
+is small because childcare costs affect a minority of the exposed benefit
+units, though the per-unit amounts are large. This sharpens rather than
+weakens the reading below: the statutory system's response to job loss, as
+implemented here, runs through hours-contingent entitlement rather than
+through employment status, and the status label contributes exactly nothing.
+Making the two cells differ in employment state alone would require zeroing
+hours in both---an option the code now carries but which has not been run at
+the licensed-data calibration, so the residual reported here remains an
+hours effect. The magnitude of what is
 missing dwarfs what is measured on either basis. New Style
 JSA alone, at \pounds\JSAWeeklyRate\ a week for its 182-day maximum---taken
 from \JSARateSource, with no 2026--27 uprating applied---is worth
@@ -452,8 +486,9 @@ The benefit side does not agree at all: all modelled benefits supply
 roughly six. One further term has no counterpart in their decomposition and
 should not be quietly absorbed: the \DispChannelResidual-point employee
 pension and salary-sacrifice outflow, which is a reduction in deferred
-saving rather than a public transfer and which does about a seventh of the
-reconciliation's arithmetic---the same term that supplies about an eighth of
+saving rather than a public transfer and which is about a seventh of the
+displacement channel sum, or two-fifths of the 11.2-point difference against
+Dolls et al.---the same term that supplies about an eighth of
 measured cushioning on the displacement margin (Section~\ref{sec:results-mechanism}). The benefit channel is nonetheless where the reversal
 sits, and four features of the present design account for it, three of
 them acknowledged limitations rather than findings. New Style JSA is not
@@ -513,7 +548,8 @@ selection-model sensitivity---not tariff-specific worker risk. Full designs,
 distributions and tables are in the Online Supplement
 (Sections~S3--S4).
 
-One labelling point governs the rest of this subsection and the appendix reconciliation. The \ProductionDraws-draw legacy scenarios are run under the \emph{Bernoulli comparator}, not the balanced design of Table~\ref{tab:cushioning}; that is why their gross-loss dispersion is an order of magnitude wider than the table's. Figures from the two designs are not interchangeable and are labelled at the point of use. The realised displacement output is consistent with the allocation design but too sparse for precise empirical incidence: the expected 9.7 selected FRS records per assignment produce \FullDisplacedWorkers{} thousand represented displaced workers and \pounds $\FullDisplacedGross\pm\FullDisplacedGrossSD$ million of gross loss. The gross-loss SD is nearly half its mean, and Exchequer-cost SD exceeds half its mean. The 100-assignment average is numerically more stable than an individual assignment, but it remains conditional on the observed 1,018 exposed records and the uniform within-division selection rule.
+One labelling point governs the rest of this subsection and the appendix reconciliation. The \ProductionDraws-draw legacy scenarios are run under the \emph{Bernoulli comparator}, not the balanced design of Table~\ref{tab:cushioning}. That is read from the scenario definitions in the source rather than from the artifacts, which predate the field that records it; the build now carries a guard that will check it once those families are re-run, and warns until then.
+The consequence of the design difference is visible: that is why their gross-loss dispersion is an order of magnitude wider than the table's. Figures from the two designs are not interchangeable and are labelled at the point of use. The realised displacement output is consistent with the allocation design but too sparse for precise empirical incidence: the expected 9.7 selected FRS records per assignment produce \FullDisplacedWorkers{} thousand represented displaced workers and \pounds $\FullDisplacedGross\pm\FullDisplacedGrossSD$ million of gross loss. The gross-loss SD is nearly half its mean, and Exchequer-cost SD exceeds half its mean. The 100-assignment average is numerically more stable than an individual assignment, but it remains conditional on the observed 1,018 exposed records and the uniform within-division selection rule.
 
 \paragraph{Take-up: an empty grid, and the margin that binds.}\label{sec:results-takeup} Because the
 displacement-side cushion runs through UC, the claiming convention was
@@ -561,8 +597,8 @@ test pushes the other way---redundancy payments against thresholds frozen
 since 2006 would extinguish awards, lowering displacement cushioning and
 \emph{widening} the gap---and the two effects are not commensurable with the
 data in hand (Section~\ref{sec:discussion}). Re-running the \texttt{all\_entitled}
-grid at the unit stress is the first item of unfinished business in this
-paper; the code and the \texttt{make takeup-entitled} target are in place and
+grid at the unit stress is among the outstanding items listed in
+Section~\ref{sec:discussion}; the code and the \texttt{make takeup-entitled} target are in place and
 require only a licensed-data run. Wage-cut results are take-up-insensitive
 because few wage-cut households change UC entitlement at all.
 

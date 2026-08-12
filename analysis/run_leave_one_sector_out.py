@@ -11,19 +11,10 @@ import numpy as np
 
 from uk_trade_shock_study.runner import (
     _baseline_and_persons,
+    json_value as clean,
     run_monte_carlo_prepared,
 )
 from uk_trade_shock_study.shocks import TradeShockScenario, _person_shock
-
-
-def clean(value):
-    if isinstance(value, dict):
-        return {key: clean(item) for key, item in value.items()}
-    if isinstance(value, list):
-        return [clean(item) for item in value]
-    if isinstance(value, (float, np.floating)) and not np.isfinite(value):
-        return None
-    return value
 
 
 def main() -> None:
@@ -104,7 +95,9 @@ def main() -> None:
             f"excluded SIC {value}: £{contribution / 1e6:.0f}m target removed",
             flush=True,
         )
-    args.output.write_text(json.dumps(clean(output), indent=2) + "\n")
+    args.output.write_text(
+        json.dumps(clean(output), indent=2, allow_nan=False) + "\n"
+    )
 
 
 if __name__ == "__main__":

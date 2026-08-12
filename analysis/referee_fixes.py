@@ -749,25 +749,26 @@ def _require_schedule_parameters(params: dict, where: str) -> dict:
 def _check_schedule_validity(earnings: float, p: dict) -> dict:
     """Hard-fail representative earnings outside the block's valid range.
 
-    Below the greater of the personal allowance and the NI primary threshold
-    neither instrument bites, the marginal-versus-average contrast the block
-    exists to state is degenerate, and the emitted gap would be zero. Above the
-    personal allowance taper the true marginal rate is 60 per cent (and the
-    additional rate follows), neither of which this arithmetic models.
+    At or below the LOWER of the personal allowance and the NI primary
+    threshold neither instrument bites, both the marginal and the average rate
+    are zero, and the marginal-versus-average contrast the block exists to
+    state is degenerate. Above the personal allowance taper the true marginal
+    rate is 60 per cent (and the additional rate follows above that), neither
+    of which this arithmetic models.
     """
-    floor = max(p["personal_allowance"], p["ni_primary_threshold_annual"])
+    floor = min(p["personal_allowance"], p["ni_primary_threshold_annual"])
     ceiling = PERSONAL_ALLOWANCE_TAPER_THRESHOLD
     if not floor < earnings < ceiling:
         raise RuntimeError(
             f"representative earnings {earnings!r} fall outside the range this "
-            f"schedule benchmark is valid over, ({floor}, {ceiling}). Below the "
-            "greater of the personal allowance and the NI primary threshold "
-            "both the marginal and the average deduction rate are zero, so the "
-            "marginal-versus-average contrast the block reports is degenerate. "
-            "At or above the personal allowance taper the true marginal rate is "
-            "60 per cent and the additional rate follows, neither of which this "
-            "block models. Extend the band structure rather than widening the "
-            "range."
+            f"schedule benchmark is valid over, ({floor}, {ceiling}). At or "
+            "below the lower of the personal allowance and the NI primary "
+            "threshold both the marginal and the average deduction rate are "
+            "zero, so the marginal-versus-average contrast the block reports is "
+            "degenerate. At or above the personal allowance taper the true "
+            "marginal rate is 60 per cent and the additional rate follows, "
+            "neither of which this block models. Extend the band structure "
+            "rather than widening the range."
         )
     return {"valid_earnings_range": [floor, ceiling]}
 

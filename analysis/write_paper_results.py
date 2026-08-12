@@ -1,8 +1,20 @@
 """Generate LaTeX macros for the paper's central numerical results.
 
-The paper must never silently mix Monte Carlo runs with different draw counts.
-This script reads the eight central artifacts, checks that they share the
-declared production draw count, and writes a small generated LaTeX file.
+The paper must never silently mix Monte Carlo runs with different draw counts
+OR different assignment designs. This script reads the eight central
+artifacts, checks that they share the declared production draw count AND the
+declared record-selection design, and writes a small generated LaTeX file.
+
+Why the second check exists. ``shocks.PRESETS`` builds every scenario in
+``CENTRAL``, ``ANCHORS`` and ``REQUIRED_TRANSITION`` from
+``TradeShockScenario``'s DEFAULT ``selection_method="bernoulli"``, while the
+50-draw submission design (``analysis/run_submission_scenarios.py``,
+``analysis/factorial_decomposition.py``, ``analysis/bootstrap_uncertainty.py``,
+the pension block of ``analysis/referee_fixes.py``) passes
+``selection_method="balanced"`` explicitly. The two designs have different
+assignment variance by construction, so a draw-count check alone cannot tell
+that two artifacts are comparable: 100 Bernoulli draws and 50 balanced draws
+are different estimators, not the same estimator at different precision.
 """
 
 from __future__ import annotations
@@ -38,10 +50,118 @@ ANCHORS = (
 )
 
 
+#: Where a scenario artifact may record the record-selection design. The first
+#: is the shape ``uk_trade_shock_study.runner.write_result`` would produce if
+#: ``MonteCarloResult`` carried the field; the second is the shape the
+#: hand-written design blocks already use
+#: (``results/factorial_decomposition.json``'s ``design.selection_method``).
+SELECTION_METHOD_KEYS = ("selection_method", ("design", "selection_method"))
+
+#: What ``TradeShockScenario`` uses when a caller does not say. Recorded here
+#: only to be named in the warning below — it is deliberately NOT used as a
+#: default for an artifact that is silent, because assuming the default is
+#: exactly the inference that would paper over a mixed-design comparison.
+SCENARIO_DEFAULT_SELECTION_METHOD = "bernoulli"
+
+#: Where the field SHOULD be recorded, quoted verbatim in the warning so the
+#: fix is actionable rather than a complaint.
+SELECTION_METHOD_PROVENANCE_FIX = (
+    "Add `selection_method` to `uk_trade_shock_study.runner.MonteCarloResult` "
+    "and set it from `scenario.selection_method` in `run_monte_carlo_prepared`, "
+    "so `runner.write_result` serialises it into every results/*.json alongside "
+    "`n_draws`. Until then this guard can only verify artifacts that already "
+    "carry it, and the manuscript's cross-design comparisons are unchecked."
+)
+
+
 def _load(results_dir: Path, name: str) -> dict:
     path = results_dir / f"{name}.json"
     with path.open() as f:
         return json.load(f)
+
+
+def _selection_method(item: dict) -> str | None:
+    """Recorded record-selection design, or None when the artifact is silent.
+
+    Returns None rather than the scenario default: an artifact that does not
+    say which design produced it has not been checked, and treating silence as
+    "bernoulli" would let a balanced-design artifact pass the guard it exists
+    to trip.
+    """
+    for key in SELECTION_METHOD_KEYS:
+        if isinstance(key, tuple):
+            value = item
+            for part in key:
+                value = value.get(part) if isinstance(value, dict) else None
+            if isinstance(value, str):
+                return value
+            continue
+        value = item.get(key)
+        if isinstance(value, str):
+            return value
+    return None
+
+
+def check_selection_methods(
+    artifacts: dict[str, dict], expected: str | None = None
+) -> dict[str, str | None]:
+    """Fail when compared artifacts disagree about the assignment design.
+
+    Three outcomes:
+
+    - two or more artifacts record DIFFERENT designs: raise. They are different
+      estimators and the macros this script emits are quoted side by side.
+    - some record a design and it is uniform (and matches ``expected`` when one
+      is given): pass.
+    - none record a design: warn, loudly and specifically. The check cannot be
+      performed, and saying so is the honest outcome; inventing the field, or
+      inferring it from the draw count, would manufacture a provenance the
+      artifacts do not carry.
+    """
+    recorded = {name: _selection_method(item) for name, item in artifacts.items()}
+    present = {name: value for name, value in recorded.items() if value is not None}
+    distinct = set(present.values())
+    if len(distinct) > 1:
+        details = ", ".join(f"{k}={v}" for k, v in sorted(present.items()))
+        raise ValueError(
+            "Central artifacts must all use the same record-selection design; "
+            f"found {sorted(distinct)}: {details}. A balanced assignment and a "
+            "Bernoulli assignment are different estimators with different "
+            "assignment variance, so their means and SDs cannot be quoted "
+            "beside each other without labelling which design produced which. "
+            "Re-run the odd artifacts under one design, or label them "
+            "explicitly in the manuscript."
+        )
+    if expected is not None:
+        if distinct and distinct != {expected}:
+            raise ValueError(
+                f"Central artifacts record selection_method {sorted(distinct)}, "
+                f"but --expected-selection-method is {expected!r}."
+            )
+        if not distinct:
+            print(
+                f"WARNING: --expected-selection-method={expected!r} cannot be "
+                "verified: no central artifact records selection_method. "
+                f"{SELECTION_METHOD_PROVENANCE_FIX}"
+            )
+    if not present:
+        print(
+            "WARNING: no central artifact records `selection_method`, so the "
+            "assignment-design guard did not run. These artifacts are built "
+            "from `shocks.PRESETS`, which takes TradeShockScenario's default "
+            f"({SCENARIO_DEFAULT_SELECTION_METHOD!r}), whereas the 50-draw "
+            "submission design passes 'balanced' explicitly — the two are "
+            "compared in the manuscript. That is an inference from the source, "
+            f"not a fact recorded in the artifacts. {SELECTION_METHOD_PROVENANCE_FIX}"
+        )
+    elif len(present) < len(recorded):
+        silent = sorted(set(recorded) - set(present))
+        print(
+            f"WARNING: {len(present)} of {len(recorded)} central artifacts record "
+            f"`selection_method` (all {sorted(distinct)[0]!r}); silent: {silent}. "
+            f"{SELECTION_METHOD_PROVENANCE_FIX}"
+        )
+    return recorded
 
 
 def _fmt(value: float, scale: float = 1.0, digits: int = 1) -> str:
@@ -55,6 +175,16 @@ def main() -> None:
         "--output", type=Path, default=Path("paper/generated_results.tex")
     )
     parser.add_argument("--expected-draws", type=int, default=100)
+    parser.add_argument(
+        "--expected-selection-method",
+        default=None,
+        help=(
+            "assert every central artifact that records a record-selection "
+            "design used this one (e.g. 'bernoulli' for the 100-draw legacy "
+            "artifacts, 'balanced' for the submission design). Artifacts that "
+            "do not record the field cannot be checked and are reported."
+        ),
+    )
     args = parser.parse_args()
 
     data = {name: _load(args.results_dir, name) for name in CENTRAL}
@@ -71,15 +201,17 @@ def main() -> None:
                 f"`make results` or `python analysis/run_scenarios.py "
                 f"--n-draws 100 --scenarios {name}`."
             )
-    draw_counts = {
-        name: item["n_draws"]
-        for name, item in {**data, **anchor_data, **transition_data, **optional_data}.items()
-    }
+    compared = {**data, **anchor_data, **transition_data, **optional_data}
+    draw_counts = {name: item["n_draws"] for name, item in compared.items()}
     if set(draw_counts.values()) != {args.expected_draws}:
         details = ", ".join(f"{k}={v}" for k, v in draw_counts.items())
         raise ValueError(
             f"Central artifacts must all use {args.expected_draws} draws: {details}"
         )
+    # Same class of check on the OTHER half of the design. A shared draw count
+    # does not make two artifacts comparable if one is a balanced assignment
+    # and the other Bernoulli.
+    check_selection_methods(compared, args.expected_selection_method)
 
     fd = data["full_tariff_displacement"]
     fw = data["full_tariff_wage_cut"]

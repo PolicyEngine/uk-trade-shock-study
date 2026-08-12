@@ -111,8 +111,10 @@ paper-values:
 	$(PYTHON) analysis/write_submission_results.py --expected-draws 50
 	$(PYTHON) analysis/write_factorial_results.py --expected-draws 50
 	$(PYTHON) analysis/write_validation_macros.py
-	# Pure statutory arithmetic; safe to recompute on every build.
-	$(PYTHON) analysis/referee_fixes.py --only jsa
+	# Pure statutory arithmetic; safe to recompute on every build. `monthly`
+	# and `schedule` are included so the corrected notes and the band-structure
+	# benchmark reach the artifact rather than going stale in it.
+	$(PYTHON) analysis/referee_fixes.py --only monthly schedule jsa
 	$(PYTHON) analysis/write_referee_macros.py
 
 paper: paper-values

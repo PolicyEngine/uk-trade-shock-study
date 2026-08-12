@@ -13,7 +13,11 @@ re-employment plus survivor earnings cuts), and a factorial **mixed
 wage/job-loss** family. An Economic
 Prosperity Deal counterfactual
 (full tariffs vs deal-mitigated: autos 25%→10% in-quota, conditional steel
-relief, pharma exempt) prices the deal for households and the Exchequer.
+relief, pharma exempt) is retained in the code and in the online supplement
+but is **withdrawn as a result**: the paired full-minus-EPD contrast is
+smaller than its own assignment dispersion on every quantity reported, and it
+prices a change in a sector calibration whose own rank-order check does not
+corroborate it. Nothing quantitative should be taken from those figures.
 
 Companion to [uk-ai-study](../uk-ai-study), whose conventions this repo
 mirrors. The disposition of successive referee rounds is tracked in
@@ -160,10 +164,12 @@ for the implemented benchmark.
 
 ## Paper
 
-`paper/main.tex` is the complete manuscript, including the data, mechanics,
-Monte Carlo, sensitivity, and secondary-results appendices. It is the only
-paper PDF produced by the build. All numerical values draw from validated
-generated files.
+`paper/main.tex` is the short main manuscript, including the data, mechanics,
+Monte Carlo and sensitivity appendices. `make paper` builds two PDFs from it
+and from `paper/supplement.tex`, the standalone online supplement described
+above (HMRC event-study detail, LFS imputation benchmarks, the withdrawn EPD
+detail and the exploratory sensitivity sections). All numerical values in both
+draw from validated generated files.
 The paper reports a static, partial-equilibrium, first-round fiscal-incidence
 stress test conditional on imposed labour-income changes. It is not a causal
 estimate of the tariffs' production, productivity, employment, macroeconomic

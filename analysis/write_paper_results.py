@@ -51,9 +51,10 @@ ANCHORS = (
 
 
 #: Where a scenario artifact may record the record-selection design. The first
-#: is the shape ``uk_trade_shock_study.runner.write_result`` would produce if
-#: ``MonteCarloResult`` carried the field; the second is the shape the
-#: hand-written design blocks already use
+#: is the shape ``uk_trade_shock_study.runner.write_result`` produces —
+#: ``MonteCarloResult`` carries ``selection_method`` and
+#: ``run_monte_carlo_prepared`` sets it from ``scenario.selection_method`` — and
+#: the second is the shape the hand-written design blocks use
 #: (``results/factorial_decomposition.json``'s ``design.selection_method``).
 SELECTION_METHOD_KEYS = ("selection_method", ("design", "selection_method"))
 
@@ -63,14 +64,29 @@ SELECTION_METHOD_KEYS = ("selection_method", ("design", "selection_method"))
 #: exactly the inference that would paper over a mixed-design comparison.
 SCENARIO_DEFAULT_SELECTION_METHOD = "bernoulli"
 
-#: Where the field SHOULD be recorded, quoted verbatim in the warning so the
-#: fix is actionable rather than a complaint.
+#: What actually fixes a silent artifact, quoted verbatim in the warnings so
+#: the fix is actionable rather than a complaint.
+#:
+#: The code side is DONE: ``MonteCarloResult`` declares ``selection_method``,
+#: ``run_monte_carlo_prepared`` sets it from ``scenario.selection_method``, and
+#: ``runner.write_result`` serialises it alongside ``n_draws``. What is stale
+#: is the STORED ARTIFACTS: every results/*.json this script reads was written
+#: before that field existed, so it carries no design to check. Only a re-run
+#: puts the field on disk — the file must not be hand-edited, because a
+#: hand-written design string would assert a provenance nobody verified.
 SELECTION_METHOD_PROVENANCE_FIX = (
-    "Add `selection_method` to `uk_trade_shock_study.runner.MonteCarloResult` "
-    "and set it from `scenario.selection_method` in `run_monte_carlo_prepared`, "
-    "so `runner.write_result` serialises it into every results/*.json alongside "
-    "`n_draws`. Until then this guard can only verify artifacts that already "
-    "carry it, and the manuscript's cross-design comparisons are unchecked."
+    "This is not a code gap: `uk_trade_shock_study.runner.MonteCarloResult` "
+    "already declares `selection_method`, `run_monte_carlo_prepared` sets it "
+    "from `scenario.selection_method`, and `runner.write_result` serialises it "
+    "into every artifact it writes. The artifacts named above simply predate "
+    "that change. Re-run the affected families against the licensed FRS "
+    "microdata so they record the field: `make results` for the 100-draw "
+    "central, transition, rent-sharing and OBR-low artifacts "
+    "(analysis/run_scenarios.py --n-draws 100), and `make submission-results` "
+    "for the 50-draw balanced design. Do not hand-edit the JSON: a design "
+    "string typed into an artifact asserts a provenance nobody verified. Until "
+    "those runs land this guard can only verify artifacts that already carry "
+    "the field, and the manuscript's cross-design comparisons are unchecked."
 )
 
 

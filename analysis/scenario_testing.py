@@ -31,7 +31,11 @@ import pandas as pd
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from figstyle import DPI, INK, SEQUENTIAL, apply_style
 
-from uk_trade_shock_study.runner import _baseline_and_persons, _one_draw
+from uk_trade_shock_study.runner import (
+    _baseline_and_persons,
+    _one_draw,
+    json_value as _json_value,
+)
 from uk_trade_shock_study.shocks import TradeShockScenario
 
 PERIOD = 2026
@@ -46,16 +50,6 @@ N_DRAWS = 5
 def _mean_sd(values):
     values = np.asarray(values, dtype=float)
     return float(values.mean()), float(values.std(ddof=1))
-
-
-def _json_value(value):
-    if isinstance(value, dict):
-        return {key: _json_value(item) for key, item in value.items()}
-    if isinstance(value, list):
-        return [_json_value(item) for item in value]
-    if isinstance(value, (float, np.floating)) and not np.isfinite(value):
-        return None
-    return value
 
 
 def main() -> None:

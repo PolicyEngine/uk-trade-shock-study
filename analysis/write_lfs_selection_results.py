@@ -26,9 +26,62 @@ OUTPUT = ROOT / "paper/generated_lfs_selection.tex"
 
 LFS_MODELS = ("cells", "income_terciles", "qrf")
 
+#: How a non-conforming or undefined artifact gets fixed. It cannot be
+#: hand-edited: the numbers come out of simulations over the licensed FRS
+#: microdata, so the only remedy is to re-run the producing script.
+SENSITIVITY_RERUN_FIX = (
+    "Re-run `python analysis/run_lfs_selection_sensitivity.py` (part of `make "
+    "results`) against the licensed FRS microdata. The writer now routes "
+    "its payload through `runner.json_value` with `allow_nan=False`, so a "
+    "fresh artifact is RFC 8259-conforming. Do not hand-edit the JSON."
+)
+
+
+def load_sensitivity(path: Path = SENSITIVITY) -> dict:
+    """Read the sensitivity artifact, warning if it predates the NaN fix.
+
+    Python's ``json`` accepts the non-standard ``NaN``/``Infinity`` literals
+    that ``run_lfs_selection_sensitivity.py`` used to emit; strict RFC 8259
+    parsers (Go, Rust, R's jsonlite) reject them outright, so an artifact that
+    still carries them is not readable by a conforming consumer of the
+    replication package. Loading is deliberately not blocked — the fields this
+    writer actually quotes are guarded in ``metric`` — but the artifact is
+    named as needing a licensed re-run rather than passing unremarked.
+    """
+    text = path.read_text()
+    nonstandard = sorted(
+        {token for token in ("NaN", "-Infinity", "Infinity") if token in text}
+    )
+    if nonstandard:
+        print("!" * 72)
+        print(
+            f"WARNING: {path.name} contains the non-standard JSON literal(s) "
+            f"{nonstandard}, which strict RFC 8259 parsers reject. This "
+            "artifact predates the sanitiser and is still defective as "
+            f"shipped. {SENSITIVITY_RERUN_FIX}"
+        )
+        print("!" * 72)
+    return json.loads(text)
+
 
 def metric(item: dict, field: str) -> tuple[float, float]:
-    values = np.array([draw[field] for draw in item["draws"]], dtype=float)
+    """Draw mean and SD for ``field``, refusing to quote undefined values.
+
+    A NaN draw (or a ``null``, which is how the sanitiser now records one)
+    would otherwise flow into a macro as the string "nan" and into the
+    manuscript as a silently broken number. Fail here instead.
+    """
+    raw = [draw.get(field) for draw in item["draws"]]
+    values = np.array(
+        [np.nan if value is None else value for value in raw], dtype=float
+    )
+    undefined = int((~np.isfinite(values)).sum())
+    if undefined:
+        raise ValueError(
+            f"{item.get('scenario', '<unnamed>')}: {undefined} of "
+            f"{len(values)} draws have no finite `{field}`, so its mean and SD "
+            f"cannot be quoted. {SENSITIVITY_RERUN_FIX}"
+        )
     return float(values.mean()), float(values.std(ddof=1))
 
 
@@ -55,7 +108,7 @@ def cushion_percent(item: dict) -> float:
 def main() -> None:
     uniform = json.loads(UNIFORM.read_text())
     wage_cut = json.loads(WAGE_CUT.read_text())
-    sensitivity = json.loads(SENSITIVITY.read_text())
+    sensitivity = load_sensitivity()
     if uniform["n_draws"] != sensitivity["n_draws"]:
         raise ValueError("Uniform and LFS selection models must use equal draw counts.")
     if wage_cut["n_draws"] != sensitivity["n_draws"]:

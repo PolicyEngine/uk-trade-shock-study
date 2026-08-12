@@ -1085,3 +1085,49 @@ def test_hmrc_dof_correction_keys_are_the_ones_the_estimator_writes() -> None:
     source = inspect.getsource(hmrc_destination_event_study.fit_post_model)
     for key in DOF_CORRECTION_KEYS:
         assert f'"{key}"' in source
+
+
+def test_the_sensitivity_reader_refuses_to_quote_an_undefined_draw() -> None:
+    """Referee R1: a NaN draw must fail loudly, not reach a macro as "nan".
+
+    results/lfs_selection_sensitivity.json still carries literal NaN in every
+    draw's `absolute_poverty_rate_change_bhc` — the writer is fixed but the
+    artifact itself needs a licensed re-run and must not be hand-edited. The
+    fields this writer quotes are finite today; the guard exists so that stops
+    being true loudly.
+    """
+    import pytest
+
+    from analysis.write_lfs_selection_results import metric
+
+    item = {"scenario": "probe", "draws": [{"x": 1.0}, {"x": None}]}
+    with pytest.raises(ValueError, match="no finite `x`"):
+        metric(item, "x")
+
+    item = {"scenario": "probe", "draws": [{"x": 1.0}, {"x": float("nan")}]}
+    with pytest.raises(ValueError, match="no finite `x`"):
+        metric(item, "x")
+
+    assert metric({"scenario": "p", "draws": [{"x": 1.0}, {"x": 3.0}]}, "x")[0] == 2.0
+
+
+def test_the_selection_design_guard_names_a_rerun_not_a_code_change() -> None:
+    """Referee R2: the remediation text described work already done.
+
+    `MonteCarloResult` carries `selection_method`, `run_monte_carlo_prepared`
+    sets it and `write_result` serialises it; what is stale is the stored
+    artifacts. The message must say so and name the re-run.
+    """
+    import dataclasses
+
+    from uk_trade_shock_study.runner import MonteCarloResult
+    from analysis.write_paper_results import SELECTION_METHOD_PROVENANCE_FIX
+
+    fields = {f.name for f in dataclasses.fields(MonteCarloResult)}
+    assert "selection_method" in fields
+
+    message = SELECTION_METHOD_PROVENANCE_FIX
+    assert "already declares `selection_method`" in message
+    assert "make results" in message
+    assert "make submission-results" in message
+    assert "Add `selection_method` to" not in message

@@ -1,4 +1,4 @@
-.PHONY: bootstrap test manifest check public-hmrc public-bres trade-event-study lfs-imputation lfs-qrf lfs-benchmarks inputs results submission-results figures paper-values uncertainty-design paper reproduce takeup-entitled bootstrap-summary assignment-inclusion
+.PHONY: bootstrap test manifest check public-hmrc public-bres trade-event-study lfs-imputation lfs-qrf lfs-benchmarks inputs results submission-results figures paper-values uncertainty-design paper reproduce takeup-entitled bootstrap-summary assignment-inclusion concentration-sweep poverty-gap-production
 
 PYTHON := .venv/bin/python
 
@@ -31,6 +31,21 @@ bootstrap-summary:
 # design versus the Bernoulli comparator.  Needs licensed FRS data.
 assignment-inclusion:
 	$(PYTHON) analysis/assignment_inclusion_diagnostic.py
+
+# Cushioning against the CONCENTRATION of a fixed aggregate loss, traced
+# continuously (the factorial cells are its two endpoints).  Needs licensed
+# FRS data.  Roughly phi-points x n-seeds shocked simulations.
+concentration-sweep:
+	$(PYTHON) analysis/concentration_sweep.py
+
+# Poverty among AFFECTED households at the submission design's 50 draws.  The
+# default 5-draw run is exploratory (assignment SD ~30pp) and
+# write_welfare_results.py refuses to emit macros from it.  Needs licensed FRS
+# data.  Not folded into paper-values: that would make every paper build
+# depend on a 100-simulation artifact.
+poverty-gap-production:
+	$(PYTHON) analysis/poverty_gap.py --n-draws 50
+	$(PYTHON) analysis/write_welfare_results.py --min-draws 50
 
 public-hmrc:
 	$(PYTHON) analysis/download_hmrc_panel.py

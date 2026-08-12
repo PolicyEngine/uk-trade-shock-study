@@ -1,56 +1,68 @@
 \section{Introduction}\label{sec:intro}
 
-Who bears an earnings loss when the same aggregate amount can be
-distributed through different workers and labour-market states? This paper
-answers that question for the United Kingdom. I hold an aggregate loss in
-employee earnings---roughly \pounds\FullWageGross\,million a year in the
-application, calibrated from the 2025 US tariff schedule---fixed, and
-compare its fiscal and distributional consequences across a factorial
-family of incidence patterns: diffuse proportional wage cuts across all
-exposed workers, concentrated wage cuts imposing the displacement draw's
-exact worker-level losses without any job loss, displacement of the same
-selected workers into unemployment, and mixed transition paths with
-re-employment penalties. Defining the cushioning rate as
-$1-\Delta Y/\Delta E$, where $\Delta E$ is the gross employee-earnings loss
-and $\Delta Y$ the household disposable-income loss, diffuse wage cuts are
-cushioned at \SubmissionUnitWageCushion\ per cent while displacement is
-cushioned at
-$\SubmissionUnitDisplacedCushion \pm \SubmissionUnitDisplacedCushionSD$ per
-cent---a gap of \PrimaryCushionDifference\ percentage points. The two
-headline scenarios differ in more than the adjustment margin: they also
-concentrate the loss on different workers. The factorial middle cell
-separates the two channels, and within the modelled annual system the answer
-is one-sided. Concentrating the
-same aggregate loss on the displacement draw's workers, while keeping
-everyone employed, accounts for \FactorialConcStep\ points of the gap;
-moving those same workers, bearing the same worker-level losses, from
-employment into unemployment accounts for only the remaining
-\FactorialStateStep\ points (Section~\ref{sec:results-factorial}). The
-mechanism is therefore a loss-size effect inside the statutory schedule: a
-diffuse in-work reduction is offset automatically at marginal income-tax
-and National Insurance rates, whereas a complete earnings loss exhausts
-that relief and lands on means-tested Universal Credit---whose statutory
-entitlement responds to income, not employment status, so the state change
-itself adds almost nothing \emph{within the modelled annual system}.
+How much of an earnings loss does a tax--benefit system absorb? The standard
+way of answering compares two coefficients: one for a proportional fall in
+income, one for a rise in unemployment. \citet{dolls2012} report both for
+every EU member state and the United States, and the microsimulation
+literature that follows them---\citet{figari2011},
+\citet{fernandezsalgado2014}, \citet{brewertasseva2021}---has kept the
+convention. The difference between the two is read, naturally enough, as
+telling us something about the extensive margin: about what happens when
+people lose jobs rather than wages.
 
-The two halves of that sentence should not be given equal weight, and this
-paper does not. The concentration result is a substantive property of the UK
-schedule; the near-zero state component is close to mechanical, because
-every institution that conditions on employment status---New Style JSA,
-monthly assessment periods, waiting and claiming frictions, work-search
-conditionality---is exactly what the annual model omits. The two cells being
-compared differ only by a label no modelled formula reads. To fix the order
-of magnitude: New Style JSA alone would be worth up to
-\JSACushionPoints\ percentage points of cushioning for a representative
-displaced worker---tens of times the step the decomposition records, on
-either of the two seed bases reported in
-Section~\ref{sec:results-factorial}. The
-extensive-margin result is thus a bound on what a static statutory reading
-can attribute to employment status, not a claim about the experience of job
-loss. Actual receipt additionally depends on capital holdings and claiming
-behaviour that the survey data only partially observe, and
-Section~\ref{sec:results-takeup} shows the claiming convention alone
-moves displacement cushioning by an amount comparable to the headline gap.
+This paper shows that reading is not available. The two shocks differ in more
+than the labour-market state they impose. They also differ in how the loss is
+\emph{distributed}: a proportional income shock takes a little from everyone,
+while an unemployment shock takes everything from a few. Under a progressive
+schedule those are not the same experiment, because a marginal loss is
+relieved at the marginal rate and a complete loss at the average rate, and a
+personal allowance guarantees the first exceeds the second at every earnings
+level. Any comparison of the two coefficients therefore mixes a concentration
+effect with a margin effect, and reports the sum under the margin's name.
+
+I separate them. Holding an aggregate employee-earnings loss fixed---roughly
+\pounds\FullWageGross\,million a year in the application, calibrated from the
+2025 US tariff schedule---I vary only its incidence across Family Resources
+Survey households in PolicyEngine UK: diffuse proportional cuts across all
+exposed workers; a concentrated cut imposing a displacement draw's exact
+worker-level losses with no job loss; and displacement of those same workers.
+Defining the cushioning rate as $1-\Delta Y/\Delta E$, where $\Delta E$ is the
+gross employee-earnings loss and $\Delta Y$ the household disposable-income
+loss, diffuse cuts are cushioned at \SubmissionUnitWageCushion\ per cent and
+displacement at
+$\SubmissionUnitDisplacedCushion \pm \SubmissionUnitDisplacedCushionSD$ per
+cent. The middle cell splits that gap: \FactorialConcStep\ points come from
+concentrating the loss on selected workers at fixed employment state, and
+\FactorialStateStep\ points from the employment-state change itself
+(Section~\ref{sec:results-factorial}).
+
+The near-zero state component is the point, and it is not a finding about the
+United Kingdom. It is near-zero \emph{by construction} in any annual static
+model. Every institution that conditions on employment status---New Style
+Jobseeker's Allowance, monthly assessment periods, waiting and claiming
+frictions, work-search conditionality---is exactly what such a model omits,
+so the two cells being compared differ only by a label no modelled formula
+reads. To fix the order of magnitude: New Style JSA alone would be worth up
+to \JSACushionPoints\ percentage points of cushioning for a representative
+displaced worker, tens of times the step the decomposition records. What a
+stabilisation coefficient can identify, then, is the concentration channel;
+the extensive margin it appears to measure is beyond the reach of the design
+that produces it.
+
+The concentration channel is itself a statement about tax progressivity, and
+it can be checked without a microsimulation at all. Weighted as the
+comparison actually is---by the wage bill, over a population more
+concentrated above the higher-rate threshold than the exposed-sector mean of
+\pounds 48{,}272 suggests---income tax and employee National Insurance relieve
+\WageChannelTaxAndNI\ per cent of a diffuse loss against
+\DispChannelTaxAndNI\ per cent of a concentrated one, a wedge of
+\ScheduleWedgeWeighted\ points. The simulated step is
+\FactorialConcStepChannelSeeds. The household system therefore \emph{works
+against} the schedule, subtracting \ScheduleWedgeOffsets\ points, most of
+them Universal Credit responding to a complete loss as a marginal cut never
+triggers it. Identifying that offset is what the microsimulation contributes;
+the sign and order of magnitude were settled by the schedule.
+
 The gap is
 not an artefact of the HBAI treatment of pension saving: recomputed under a
 pension-gross income concept, both margins' cushioning falls by four to five
@@ -129,23 +141,39 @@ lags and a cross-sectional earnings penalty, so the response surface, not
 any single interior calibration, is the reported object
 (Section~\ref{sec:results-transition}).
 
-The paper makes three contributions. First, it provides a reproducible UK
-microsimulation framework for mapping earnings losses---here calibrated to
-trade exposure as an application---into fiscal and distributional outcomes.
-Second, it separates, factorially, how much of the wage-cut versus
-displacement cushioning gap reflects concentrating a fixed loss on selected
-workers, and bounds how much a static statutory model can attribute to the
-change in employment state itself.
-Third, it quantifies which statutory channels drive the difference and which
-assumptions are most important for policy conclusions---and reports plainly
-that two of them dominate: within-division worker selection moves the
-headline contrast by a fifth to a third of its size, and the Universal Credit
-claiming convention moves the displacement margin by an amount comparable to
-the whole contrast, while pension accounting and duration equivalence do
-not. A companion reconciliation against the UK cells of
-\citet{dolls2012}---whose ordering of income and unemployment shocks is the
-reverse of the one found here---locates that discrepancy principally in the
-out-of-work benefit channel (Section~\ref{sec:results-benchmarks}). The remainder of the paper describes
+The paper makes three contributions. The first is the decomposition itself:
+it shows that the income-shock versus unemployment-shock comparison on which
+the automatic-stabiliser literature rests is a progressivity statistic
+reported under an employment-margin label, and that the margin component is
+not identified by the class of model that produces the comparison. That
+result is about measurement and does not depend on the United Kingdom; the UK
+is the illustration.
+
+The second is institutional and specific to Universal Credit. PolicyEngine UK
+carries benefit take-up as a stored benefit-unit flag drawn on pre-shock
+circumstances and calibrated as a population-wide share rather than take-up
+among the entitled, so a naive imposed-transition pipeline hands a displaced
+worker the claiming decision they made while employed and, in most cases, not
+entitled. Correcting it turns out to change nothing---and the reason it
+changes nothing is itself the finding. Because Universal Credit is an
+integrated in-work award, almost every displaced worker's benefit unit is
+\emph{already} entitled at baseline, so a re-draw conditioned on new
+entitlement has an empty domain. The convention that binds is the one held
+fixed: the frozen claiming state of the already-entitled
+(Section~\ref{sec:results-takeup}). Any imposed-transition exercise in a
+model of this class inherits both problems.
+
+The third is quantitative and conditional. Two assumptions dominate the
+magnitude---within-division worker selection moves the contrast by a fifth to
+a third of its size, and the claiming convention moves the displacement
+margin by an amount comparable to the whole contrast---while pension
+accounting and duration equivalence do not. A reconciliation against the UK
+cells of \citet{dolls2012}, whose ordering of income and unemployment shocks
+is the reverse of the one found here, locates that discrepancy principally in
+the out-of-work benefit channel (Section~\ref{sec:results-benchmarks}). The
+level of the contrast is therefore not robust; its sign and mechanism are.
+
+The remainder of the paper describes
 the evidence and scenario design, presents the polar bounds and mixed paths,
 reports policy counterfactuals, and discusses limitations and
 reproducibility.

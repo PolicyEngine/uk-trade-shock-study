@@ -127,13 +127,32 @@ def main() -> None:
             macros[f"{prefix}Shortfall"] = fmt(
                 unit["cushioning_percent"][margin] - channel_sum
             )
-        # The factorial STEPS on the channel seeds, for the same reason: the
-        # manuscript must not present the 50-draw step and the 5-seed channel
-        # arithmetic as though they were the same decomposition.
         sums = {
             key: 100 * sum(levels[key].values())
             for key in ("wage_cut", "concentrated_wage_cut", "displacement")
         }
+        # The WAGE-BILL-WEIGHTED schedule wedge. The representative-worker
+        # benchmark elsewhere in the paper is computed at the exposed-sector
+        # mean, but the object actually being compared is a wage-bill-weighted
+        # aggregate, and the exposed population is far more concentrated above
+        # the higher-rate and upper-earnings-limit thresholds than one worker
+        # on the mean. Taking income tax and employee NI together gives the
+        # schedule's own prediction for the concentration step; the residual
+        # against the realised step is what the household system contributes,
+        # and both must be read on the SAME seed basis.
+        wedge = (
+            100 * (levels["wage_cut"]["income_tax"]
+                   + levels["wage_cut"]["employee_national_insurance"])
+            - 100 * (levels["concentrated_wage_cut"]["income_tax"]
+                     + levels["concentrated_wage_cut"]["employee_national_insurance"])
+        )
+        conc_step_seeds = sums["wage_cut"] - sums["concentrated_wage_cut"]
+        macros["ScheduleWedgeWeighted"] = fmt(wedge)
+        macros["ScheduleWedgeOffsets"] = fmt(wedge - conc_step_seeds)
+
+        # The factorial STEPS on the channel seeds, for the same reason: the
+        # manuscript must not present the 50-draw step and the 5-seed channel
+        # arithmetic as though they were the same decomposition.
         macros["FactorialConcStepChannelSeeds"] = fmt(
             sums["wage_cut"] - sums["concentrated_wage_cut"]
         )

@@ -7,21 +7,31 @@ the relative BHC line, weighted to £bn/yr), baseline vs shocked, nationally
 and among AFFECTED households only (households containing a displaced
 worker), plus the poverty-rate change among people in affected households.
 
-Scenarios: full_tariff and epd displacement (20 Monte Carlo draws each,
-seeds 0-19; affected-household baseline values vary by draw because the drawn
-households differ), plus the deterministic full_tariff wage cut (affected =
-households with any earnings cut).
+Scenarios: full_tariff and epd displacement (``--n-draws`` Monte Carlo draws
+each, seeds 0..n-1; affected-household baseline values vary by draw because
+the drawn households differ), plus the deterministic full_tariff wage cut
+(affected = households with any earnings cut).
+
+DRAW COUNT. The default (5) is an exploratory setting: the affected-household
+poverty rate has an assignment SD of roughly 30 points at that sample size,
+which is not reportable. Run ``make poverty-gap-production`` to rebuild the
+artifact at the submission design's 50 draws;
+analysis/write_welfare_results.py refuses to emit macros below that.
+The wage-cut margin stays a single deterministic run: it has no assignment
+randomness, so extra seeds vary only through the post-shock UC take-up
+re-draw, whose new-entitlement set is empty at the paper's calibration.
 
 Note: the shocked gap uses each simulation's own relative line; the shock is
 far too small to move the median (Appendix on absolute poverty), so this is
 indistinguishable from a fixed-line gap.
 
 Writes results/poverty_gap.json.
-Usage: .venv/bin/python analysis/poverty_gap.py
+Usage: .venv/bin/python analysis/poverty_gap.py [--n-draws 50]
 """
 
 from __future__ import annotations
 
+import argparse
 import json
 from pathlib import Path
 
@@ -34,8 +44,14 @@ from uk_trade_shock_study.shocks import PRESETS, apply_shocks, build_shocked_sim
 PERIOD = 2026
 DATASET = Path("data/frs_2024_25.h5")
 RESULTS = Path("results")
-# Distributional appendix calculation; headline aggregate scenarios use 10 draws.
+# Exploratory default; override with --n-draws. The affected-household
+# poverty rate is unreportable at this sample size (SD ~30pp), so the
+# production artifact is built at the submission design's 50 draws via
+# `make poverty-gap-production`.
 N_DRAWS = 5
+#: Draws for the wage-cut margin: deterministic, so one run (see the module
+#: docstring). Recorded in the artifact as ``wage_cut_n_draws``.
+WAGE_CUT_N_DRAWS = 1
 
 
 def gap_arrays(sim):
@@ -74,7 +90,26 @@ def draw_gap(base, shock, p_w, p_hh_row, affected_person):
     }
 
 
-def main() -> None:
+def parse_args(argv=None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser.add_argument(
+        "--n-draws",
+        type=int,
+        default=N_DRAWS,
+        help="Monte Carlo draws per displacement scenario (seeds 0..n-1)",
+    )
+    parser.add_argument(
+        "--output", type=Path, default=RESULTS / "poverty_gap.json"
+    )
+    args = parser.parse_args(argv)
+    if args.n_draws < 1:
+        parser.error("--n-draws must be at least 1")
+    return args
+
+
+def main(argv=None) -> None:
+    args = parse_args(argv)
+    n_draws = args.n_draws
     dataset, baseline, persons = _baseline_and_persons(DATASET, None, PERIOD)
     base = gap_arrays(baseline)
     p_w = persons["weight"].to_numpy(float)
@@ -83,10 +118,10 @@ def main() -> None:
     p_hh_row = hh_row[p_hh].to_numpy()
     base_emp = persons["employment_income"].to_numpy(float)
 
-    out = {"n_draws": N_DRAWS}
+    out = {"n_draws": n_draws, "wage_cut_n_draws": WAGE_CUT_N_DRAWS}
     for name in ("full_tariff_displacement", "epd_displacement"):
         draws = []
-        for seed in range(N_DRAWS):
+        for seed in range(n_draws):
             table = apply_shocks(persons, PRESETS[name], seed=seed)
             shocked = build_shocked_simulation(dataset, baseline, table, PERIOD)
             draws.append(draw_gap(
@@ -109,8 +144,8 @@ def main() -> None:
         base, gap_arrays(wc_shocked), p_w, p_hh_row,
         base_emp > wc_table["employment_income"].to_numpy(float),
     )
-    RESULTS.mkdir(exist_ok=True)
-    (RESULTS / "poverty_gap.json").write_text(json.dumps(out, indent=2))
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    args.output.write_text(json.dumps(out, indent=2))
     print(json.dumps({k: v for k, v in out.items() if not k.endswith("_per_draw")}, indent=2))
 
 

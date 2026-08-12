@@ -21,9 +21,17 @@ Outputs
   results/submission/submission_{anchor}_12m_concentrated_wage_cut.json
   results/factorial_decomposition.json  (paired per-seed decomposition plus
   a channel split of each step into income tax, employee NI, Universal
-  Credit, other benefits and the pension/other residual on seeds 0-4).
+  Credit, other benefits and the pension/other residual, by default on
+  seeds 0-4).
 
 Usage: .venv/bin/python analysis/factorial_decomposition.py [--n-draws 50]
+                                                            [--channel-seeds 5]
+
+The channel split's seed count is a CLI flag, not a source constant: the
+manuscript describes re-running it at the full draw count as inexpensive, and
+`--channel-seeds 50` is what makes that promise actionable. The realised count
+is recorded at ``design.channel_seeds`` and per anchor at
+``channel_split.n_seeds`` so a reader can tell which run produced the numbers.
 """
 
 from __future__ import annotations
@@ -55,7 +63,15 @@ PERIOD = 2026
 DATASET = Path("data/frs_2024_25.h5")
 SUBMISSION = Path("results/submission")
 ANCHORS = {"obr": ELASTICITY_SCENARIOS["obr_low"], "unit": 1.0}
-CHANNEL_SEEDS = range(5)
+#: Default number of seeds the channel split averages over. The paired
+#: decomposition runs at ``--n-draws`` (50 for the submission design) but the
+#: channel split re-simulates every margin, so it defaults to a cheaper five.
+#: The manuscript describes re-running it at the full draw count as
+#: inexpensive; ``--channel-seeds`` is what makes that promise actionable
+#: without editing this file.
+DEFAULT_CHANNEL_SEEDS = 5
+#: Retained for callers that imported the old module-level constant.
+CHANNEL_SEEDS = range(DEFAULT_CHANNEL_SEEDS)
 
 
 def scenario(anchor: str, margin: str) -> TradeShockScenario:
@@ -114,13 +130,22 @@ def paired_decomposition(anchor: str, n_draws: int) -> dict:
     }
 
 
-def channel_split(dataset, baseline, persons, anchor: str) -> dict:
-    """Cushioning components by margin, averaged over CHANNEL_SEEDS."""
+def channel_split(
+    dataset, baseline, persons, anchor: str, n_seeds: int = DEFAULT_CHANNEL_SEEDS
+) -> dict:
+    """Cushioning components by margin, averaged over ``n_seeds`` seeds.
+
+    Seeds are ``range(n_seeds)``, so raising the count is a superset of the
+    smaller run rather than a different sample.
+    """
+    if n_seeds < 1:
+        raise ValueError(f"--channel-seeds must be at least 1, got {n_seeds}")
+    seeds = range(n_seeds)
     per_margin: dict[str, list[dict]] = {}
     for margin in ("wage_cut", "concentrated_wage_cut", "displacement"):
         scen = scenario(anchor, margin)
         rows = []
-        for seed in CHANNEL_SEEDS:
+        for seed in seeds:
             table = apply_shocks(persons, scen, seed=seed)
             shocked = build_shocked_simulation(dataset, baseline, table, PERIOD)
             comp = cushioning_components(baseline, shocked, persons, table, PERIOD)
@@ -137,7 +162,8 @@ def channel_split(dataset, baseline, persons, anchor: str) -> dict:
         for margin, rows in per_margin.items()
     }
     return {
-        "seeds": list(CHANNEL_SEEDS),
+        "n_seeds": n_seeds,
+        "seeds": list(seeds),
         "components_share_of_gross_loss": means,
         "concentration_and_selection_step_by_channel_pp": {
             k: (means["wage_cut"][k] - means["concentrated_wage_cut"][k]) * 100
@@ -155,11 +181,25 @@ def main() -> None:
     parser.add_argument("--n-draws", type=int, default=50)
     parser.add_argument("--anchors", nargs="*", default=list(ANCHORS))
     parser.add_argument("--skip-channels", action="store_true")
+    parser.add_argument(
+        "--channel-seeds",
+        type=int,
+        default=DEFAULT_CHANNEL_SEEDS,
+        help=(
+            "seeds the channel split averages over (default "
+            f"{DEFAULT_CHANNEL_SEEDS}). Pass --channel-seeds 50 to run it at "
+            "the submission design's draw count; the seeds are range(n), so a "
+            "larger run contains the smaller one."
+        ),
+    )
     args = parser.parse_args()
+    if args.channel_seeds < 1:
+        parser.error(f"--channel-seeds must be at least 1, got {args.channel_seeds}")
 
     dataset, baseline, persons = _baseline_and_persons(DATASET, None, PERIOD)
     out: dict = {"design": {
         "n_draws": args.n_draws,
+        "channel_seeds": args.channel_seeds,
         "selection_method": "balanced",
         "notes": (
             "Concentrated wage cut imposes the displacement draw's exact "
@@ -185,7 +225,7 @@ def main() -> None:
         out["anchors"][anchor] = paired_decomposition(anchor, args.n_draws)
         if not args.skip_channels and anchor == "unit":
             out["anchors"][anchor]["channel_split"] = channel_split(
-                dataset, baseline, persons, anchor
+                dataset, baseline, persons, anchor, args.channel_seeds
             )
     Path("results/factorial_decomposition.json").write_text(
         json.dumps(out, indent=2) + "\n"

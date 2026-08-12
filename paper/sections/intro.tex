@@ -3,7 +3,7 @@
 How much of an earnings loss does a tax--benefit system absorb? The standard
 way of answering compares two coefficients: one for a proportional fall in
 income, one for a rise in unemployment. \citet{dolls2012} report both for
-every EU member state and the United States, and the microsimulation
+nineteen EU countries and the United States, and the microsimulation
 literature that follows them---\citet{figari2011},
 \citet{fernandezsalgado2014}, \citet{brewertasseva2021}---has kept the
 convention. The difference between the two is read, naturally enough, as
@@ -16,8 +16,8 @@ than the labour-market state they impose. They also differ in how the loss is
 while an unemployment shock takes everything from a few. Under a progressive
 schedule those are not the same experiment, because a marginal loss is
 relieved at the marginal rate and a complete loss at the average rate, and a
-personal allowance guarantees the first exceeds the second at every earnings
-level. Any comparison of the two coefficients therefore mixes a concentration
+personal allowance makes the first at least as large as the second at every
+earnings level, strictly so above the allowance. Any comparison of the two coefficients therefore mixes a concentration
 effect with a margin effect, and reports the sum under the margin's name.
 
 I separate them. Holding an aggregate employee-earnings loss fixed---roughly
@@ -36,21 +36,45 @@ concentrating the loss on selected workers at fixed employment state, and
 \FactorialStateStep\ points from the employment-state change itself
 (Section~\ref{sec:results-factorial}).
 
-The near-zero state component is the point, and it is not a finding about the
-United Kingdom. It is near-zero \emph{by construction} in any annual static
-model. Every institution that conditions on employment status---New Style
-Jobseeker's Allowance, monthly assessment periods, waiting and claiming
-frictions, work-search conditionality---is exactly what such a model omits,
-so the two cells being compared differ only by a label no modelled formula
-reads. To fix the order of magnitude: New Style JSA alone would be worth up
-to \JSACushionPoints\ percentage points of cushioning for a representative
-displaced worker, tens of times the step the decomposition records. What a
-stabilisation coefficient can identify, then, is the concentration channel;
-the extensive margin it appears to measure is beyond the reach of the design
-that produces it.
+The near-zero state component is the point, and it requires care to state.
+It is \emph{not} a general property of annual static microsimulation. EUROMOD
+and UKMOD simulate contributory unemployment benefit from constructed
+earnings and contribution histories---the Labour Market Adjustment add-on
+exists to build exactly those characteristics for people moved into
+unemployment---and \citet{figari2011} impose employment-to-unemployment
+transitions and find the entitlement rules bite heterogeneously, with around
+73 per cent of the newly unemployed qualifying in the United Kingdom against
+62 per cent in Italy. A rule that denies two in five claimants is not a
+label. \citet{dolls2012} likewise recover a substantial out-of-work benefit
+response---0.163 of their UK unemployment coefficient against 0.031 for the
+income shock---from an annual static model, by imposing their shock through
+reweighting rather than through a rule-based transition.
 
-The concentration channel is itself a statement about tax progressivity, and
-it can be checked without a microsimulation at all. Weighted as the
+The near-zero step here is a property of \emph{this pipeline}. PolicyEngine
+UK carries New Style Jobseeker's Allowance as a survey-reported variable
+rather than a simulated rule, so an imposed change of
+\texttt{employment\_status} triggers no contributory entitlement; the stored
+claiming flag is frozen at its pre-shock draw; and no monthly assessment,
+waiting period or conditionality exists in an annual model to be triggered.
+The two cells being compared therefore differ, in this implementation, only
+by a label no active formula reads. To fix the order of magnitude of what is
+missing: New Style JSA alone would be worth up to
+\JSACushionPoints\ percentage points of cushioning for a representative
+displaced worker, tens of times the step the decomposition records.
+
+The consequence is a warning about implementation rather than about a class
+of model. A stabilisation contrast computed on a pipeline that leaves
+status-contingent rules inactive measures loss concentration and reports it
+under the employment margin's name. Whether any particular published estimate
+is affected depends on whether its pipeline simulates those rules---which the
+add-ons above show is a choice, not a constraint---and that is a question the
+literature does not currently ask of itself.
+
+The concentration channel is itself a statement about tax progressivity. A
+single-worker calculation on the exposed-sector mean settles its sign without
+a microsimulation---\ScheduleMarginalRate\ per cent marginal against
+\ScheduleAverageRate\ per cent average, a wedge of
+\ScheduleImpliedGap\ points---but not its magnitude. Weighted as the
 comparison actually is---by the wage bill, over a population more
 concentrated above the higher-rate threshold than the exposed-sector mean of
 \pounds 48{,}272 suggests---income tax and employee National Insurance relieve

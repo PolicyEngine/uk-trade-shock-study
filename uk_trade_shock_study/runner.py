@@ -75,6 +75,12 @@ class MonteCarloResult:
     cushioning_rate_sd: float = 0.0
     cushioning_rate_mc_se: float = 0.0
     cushioning_valid_draws: int = 0
+    #: Assignment design behind these draws. Recorded because the legacy
+    #: 100-draw families run the Bernoulli comparator while the submission
+    #: design is balanced, and comparing across the two without noticing is
+    #: how an appendix reconciliation ends up on a different run from the
+    #: table it reconciles.
+    selection_method: str = ""
     draws: list = field(default_factory=list)
 
 
@@ -452,6 +458,7 @@ def run_monte_carlo_prepared(
             else float("nan")
         ),
         cushioning_valid_draws=valid_cushioning,
+        selection_method=scenario.selection_method,
         draws=[asdict(d) for d in draws],
     )
 

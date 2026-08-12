@@ -92,7 +92,7 @@ closed in code but need a licensed-data run to close in the manuscript.
   the out-of-work benefit channel (2.7 vs 16.3 per cent).
 - **M6 pi = 1 mischaracterised.** Derivation added: pi = 1 is the
   constant-wage-share benchmark, not full wage incidence (which would need
-  pi ~ 3-5). The turnover-versus-GVA denominator offset is stated.
+  pi well above 3). The turnover-versus-GVA denominator offset is stated.
 - **M7 Shapley claim withdrawn** from the manuscript and from
   `factorial_decomposition.json`'s design note: the diffuse-displacement
   coalition is undefined, so no Shapley value exists.
@@ -250,7 +250,7 @@ closed in code but need a licensed-data run to close in the manuscript.
 - Leave-one-division-out reruns cover all 23 exposed divisions. The primary
   contrast remains positive in every rerun, ranging from 7.6 to 11.3
   percentage points.
-- The complete gate passes 100 tests, validates the frozen input manifest,
+- The complete gate passes 263 tests, validates the frozen input manifest,
   regenerates all manuscript values and builds a visually inspected 28-page
   main paper plus a 14-page online supplement.
 

@@ -473,16 +473,26 @@ def _finite_mean_sd(values) -> tuple[float, float, int]:
     return float(finite.mean()), standard_deviation, len(finite)
 
 
-def write_result(result, path: str | Path) -> None:
-    def json_value(value):
-        """Return standards-compliant JSON values (RFC 8259 has no NaN)."""
-        if isinstance(value, dict):
-            return {key: json_value(item) for key, item in value.items()}
-        if isinstance(value, list):
-            return [json_value(item) for item in value]
-        if isinstance(value, (float, np.floating)) and not np.isfinite(value):
-            return None
-        return value
+def json_value(value):
+    """Return standards-compliant JSON values (RFC 8259 has no NaN).
 
+    Every artifact writer in this package must route its payload through this
+    before ``json.dumps`` — NaN and +/-Infinity are Python/JavaScript
+    extensions that strict parsers reject, so an artifact carrying them is not
+    readable by a conforming consumer. Non-finite floats become ``null``,
+    which round-trips as "this draw had no defined value" rather than as a
+    token no standard parser accepts. Pair it with ``allow_nan=False`` so a
+    missed branch fails loudly at write time instead of shipping.
+    """
+    if isinstance(value, dict):
+        return {key: json_value(item) for key, item in value.items()}
+    if isinstance(value, list):
+        return [json_value(item) for item in value]
+    if isinstance(value, (float, np.floating)) and not np.isfinite(value):
+        return None
+    return value
+
+
+def write_result(result, path: str | Path) -> None:
     payload = json_value(asdict(result))
     Path(path).write_text(json.dumps(payload, indent=2, allow_nan=False))

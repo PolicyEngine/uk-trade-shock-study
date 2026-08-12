@@ -259,7 +259,36 @@ income tax and National Insurance are identical by construction, and on the
 \FactorialChannelSeeds\ channel seeds the entire step is a
 \FactorialStateStepUC-point Universal Credit residual---those seeds giving a
 step of \FactorialStateStepChannelSeeds\ points against the
-\FactorialStateStep\ points of the full design. The magnitude of what is
+\FactorialStateStep\ points of the full design.
+
+That residual is not the employment-status label, and tracing it changes what
+the step measures. Within policyengine-uk the \texttt{employment\_status}
+variable is read by no tax or benefit formula at all: its only consumer is a
+behavioural labour-supply module that this design switches off. What the two
+cells actually differ in is \texttt{hours\_worked}, which the concentrated
+cell leaves at baseline and displacement zeroes. Hours are load-bearing
+through exactly one Universal Credit path---%
+\texttt{hours\_worked} $\rightarrow$ \texttt{in\_work} $\rightarrow$
+\texttt{uc\_childcare\_work\_condition} $\rightarrow$
+\texttt{uc\_childcare\_element}---because \texttt{in\_work} is an
+\emph{or} of positive hours and positive earnings. A displaced worker has
+neither, so the childcare work condition fails and the childcare element
+drops to zero; a concentrated-cut worker has zero earnings but positive
+hours, so it is retained in full. Two further hours-sensitive gates lie
+outside Universal Credit: the Housing Benefit worker disregard and the
+council-tax-reduction non-dependant deduction.
+
+The measured step is therefore an \emph{hours} effect operating on
+childcare and two smaller in-work gates, not an employment-status effect. It
+is small because childcare costs affect a minority of the exposed benefit
+units, though the per-unit amounts are large. This sharpens rather than
+weakens the reading below: the statutory system's response to job loss, as
+implemented here, runs through hours-contingent entitlement rather than
+through employment status, and the status label contributes exactly nothing.
+Making the two cells differ in employment state alone would require zeroing
+hours in both---an option the code now carries but which has not been run at
+the licensed-data calibration, so the residual reported here remains an
+hours effect. The magnitude of what is
 missing dwarfs what is measured on either basis. New Style
 JSA alone, at \pounds\JSAWeeklyRate\ a week for its 182-day maximum---taken
 from \JSARateSource, with no 2026--27 uprating applied---is worth

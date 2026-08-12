@@ -19,8 +19,11 @@ The near-zero employment-state step carries much weaker information than the
 concentration step, and the paper does not rest on it. Every
 status-contingent institution---New Style JSA, monthly assessment periods,
 the five-week wait, claiming frictions, conditionality---sits outside the
-annual model, so the two cells being compared differ only by a label no
-modelled formula reads. New Style JSA alone would be worth up to
+annual model. The two cells do not differ by an inert label alone: the
+\texttt{employment\_status} variable is read by no tax or benefit formula in
+policyengine-uk, but the cells also differ in \texttt{hours\_worked}, which
+gates the Universal Credit childcare element through the \texttt{in\_work}
+condition. The measured step is that hours effect, not a status effect. New Style JSA alone would be worth up to
 \JSACushionPoints\ percentage points of cushioning for a representative
 displaced worker, tens of times the step actually measured. The
 decomposition therefore bounds what a static statutory model can attribute
@@ -156,8 +159,12 @@ Constituency machinery in the Online Supplement is
 illustrative because local industry structure is not observed at the required
 level.
 
-Seven items of unfinished business should be named rather than left for a
-reader to discover. Two are new and are the most important: the continuous
+Eight items of unfinished business should be named rather than left for a
+reader to discover. One is new: the measured employment-state step is an
+hours effect on childcare-linked entitlement rather than a status effect
+(Section~\ref{sec:results-factorial}), and the \texttt{zero\_hours} option
+now in the code would isolate the status flag by removing hours from both
+cells---it should drive the residual to zero, and has not been run. Two are new and are the most important: the continuous
 concentration sweep, which is the natural central object of this design and
 would separate concentration from worker selection
 (\texttt{make concentration-sweep}); and the conditional-on-affected welfare
@@ -179,7 +186,7 @@ whether the highest-weight exposed records are selected at their nominal
 rates, is implemented but unrun. And the household bootstrap holds
 the original assignment fixed, so its interval is conditional on which records
 those draws selected and is narrower than a fully re-drawn bootstrap would be.
-None of the seven is \emph{known} to change the sign of the reported
+None of the eight is \emph{known} to change the sign of the reported
 contrast, but that is a weaker statement than it may appear, and the
 arithmetic should be set out rather than left implicit. Three \emph{separate}
 sensitivities---only the first of which is on the list above---raise

@@ -92,9 +92,13 @@ def test_a_partially_recorded_set_is_reported(capsys) -> None:
 def test_the_shipped_artifacts_still_do_not_record_the_design(capsys) -> None:
     """Documents the current state, and fails the day it is fixed.
 
-    Nothing in results/*.json carries `selection_method`, so the guard above
-    cannot yet run on the real build. When
-    `uk_trade_shock_study.runner.MonteCarloResult` starts carrying the field,
+    The code side is already done: `MonteCarloResult` declares
+    `selection_method`, `run_monte_carlo_prepared` sets it from the scenario,
+    and `write_result` serialises it. What is stale is the shipped artifacts —
+    every results/*.json below was written before that field existed, so the
+    guard above still cannot run on the real build. The fix is a re-run of the
+    affected families (`make results`, `make submission-results`) against the
+    licensed FRS microdata, not another code change. When those artifacts land,
     this test fails and should be replaced by an assertion on the recorded
     value.
     """

@@ -11,6 +11,7 @@ import pandas as pd
 
 from uk_trade_shock_study.runner import (
     _baseline_and_persons,
+    json_value,
     run_monte_carlo_prepared,
 )
 from uk_trade_shock_study.shocks import PRESETS
@@ -69,7 +70,7 @@ def main() -> None:
             period=args.period,
             n_draws=args.n_draws,
         )
-        results[label] = asdict(result)
+        results[label] = json_value(asdict(result))
         print(
             f"{label}: gross £{result.draws[0]['gross_earnings_loss']/1e6:.0f}m "
             f"(first draw), cushioning {result.cushioning_rate_mean*100:.1f}%"
@@ -88,7 +89,9 @@ def main() -> None:
             "tariff-specific worker selection."
         ),
     }
-    args.output.write_text(json.dumps(payload, indent=2) + "\n")
+    args.output.write_text(
+        json.dumps(json_value(payload), indent=2, allow_nan=False) + "\n"
+    )
     print(f"Wrote {args.output}")
 
 

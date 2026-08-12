@@ -80,8 +80,12 @@ concentrated above the higher-rate threshold than the exposed-sector mean of
 \pounds 48{,}272 suggests---income tax and employee National Insurance relieve
 \WageChannelTaxAndNI\ per cent of a diffuse loss against
 \DispChannelTaxAndNI\ per cent of a concentrated one, a wedge of
-\ScheduleWedgeWeighted\ points. The simulated step is
-\FactorialConcStepChannelSeeds. The household system therefore \emph{works
+\ScheduleWedgeWeighted\ points, against a simulated step of
+\FactorialConcStepChannelSeeds. Those four figures are the channel split,
+which runs on \FactorialChannelSeeds\ common seeds rather than the
+\SubmissionDraws\ assignments behind the cushioning rates above; the two
+bases are not interchangeable and Section~\ref{sec:results-factorial}
+quantifies the difference. The household system therefore \emph{works
 against} the schedule, subtracting \ScheduleWedgeOffsets\ points, most of
 them Universal Credit responding to a complete loss as a marginal cut never
 triggers it. Identifying that offset is what the microsimulation contributes;
@@ -96,7 +100,8 @@ from \GapHBAIPension\ to \GapPensionGross\ points
 
 The scale of the exercise should be clear from the outset, because it governs
 which results can carry weight. That fixed loss is borne under displacement by
-about \FullDisplacedWorkers\ thousand represented workers---small relative to
+about \FullDisplacedWorkers\ thousand represented workers on the
+\ProductionDraws-draw comparator design---small relative to
 national aggregates, and drawn from a pool of roughly a thousand exposed
 Family Resources Survey records of which only about ten are selected in any
 one assignment. National poverty and inequality movements are consequently
@@ -177,8 +182,8 @@ The second is institutional and specific to Universal Credit. PolicyEngine UK
 carries benefit take-up as a stored benefit-unit flag drawn on pre-shock
 circumstances and calibrated as a population-wide share rather than take-up
 among the entitled, so a naive imposed-transition pipeline hands a displaced
-worker the claiming decision they made while employed and, in most cases, not
-entitled. Correcting it turns out to change nothing---and the reason it
+worker a claiming decision made in a state of the world the shock has
+destroyed. Correcting it turns out to change nothing---and the reason it
 changes nothing is itself the finding. Because Universal Credit is an
 integrated in-work award, almost every displaced worker's benefit unit is
 \emph{already} entitled at baseline, so a re-draw conditioned on new

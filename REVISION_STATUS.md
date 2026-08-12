@@ -219,7 +219,12 @@ closed in code but need a licensed-data run to close in the manuscript.
 - Headline direct and measured scenarios use a common 100-assignment
   production specification.
 - Headline manuscript values are generated from the JSON artifacts; the build
-  fails if the ten declared production artifacts have mixed draw counts.
+  fails if the declared production artifacts have mixed draw counts. The
+  compared set in `analysis/write_paper_results.py` is the eight central
+  scenarios plus the two OBR-low anchors, the two transition scenarios and the
+  two rent-sharing artifacts when present — fourteen with the current results
+  directory. The companion assignment-design check cannot yet run: the stored
+  artifacts predate `MonteCarloResult.selection_method` and it warns instead.
 - Main-text benchmark checks now report the weak sector-level agreement with
   observed exports and the very small expected number of selected FRS records
   per displacement assignment.
@@ -250,9 +255,9 @@ closed in code but need a licensed-data run to close in the manuscript.
 - Leave-one-division-out reruns cover all 23 exposed divisions. The primary
   contrast remains positive in every rerun, ranging from 7.6 to 11.3
   percentage points.
-- The complete gate passes 263 tests, validates the frozen input manifest,
-  regenerates all manuscript values and builds a visually inspected 28-page
-  main paper plus a 14-page online supplement.
+- The complete gate passes 321 tests (4 skipped), validates the frozen input
+  manifest, regenerates all manuscript values and builds a visually inspected
+  main paper plus an online supplement.
 
 ## Deliberately outside the current estimand
 

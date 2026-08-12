@@ -11,6 +11,7 @@ from uk_trade_shock_study.shocks import (
     RENT_SHARING_ELASTICITY,
     RENT_SHARING_PRESETS,
     TradeShockScenario,
+    apply_concentrated_wage_cut,
     apply_mixed_margin,
     apply_shocks,
     apply_wage_cut,
@@ -1303,3 +1304,70 @@ def test_concentrated_wage_cut_scales_pensions_to_zero_without_status_change():
     )
     applied_status = np.asarray(shocked_sim.stored["employment_status"], dtype=str)
     assert np.array_equal(applied_status, baseline_status)
+
+
+def _concentrated_persons(n: int = 40):
+    rng = np.random.default_rng(0)
+    return pd.DataFrame(
+        {
+            "person_id": np.arange(n),
+            "age": rng.integers(25, 60, n),
+            "employment_income": np.linspace(20_000, 60_000, n),
+            "hours_worked": np.full(n, 1800.0),
+            "weight": np.linspace(100.0, 2_000.0, n),
+            "sic_division": np.where(np.arange(n) % 2 == 0, 29.0, 24.0),
+        }
+    )
+
+
+def _concentrated_scenario():
+    return TradeShockScenario(
+        "concentrated_hours_test",
+        "full_tariff",
+        "concentrated_wage_cut",
+        elasticity=1.0,
+        duration_equivalent=1.0,
+        selection_method="bernoulli",
+    )
+
+
+def test_concentrated_cell_keeps_baseline_hours_by_default() -> None:
+    """The stored results depend on this: hours stay at baseline.
+
+    That is what makes the measured "employment-state" step an hours effect
+    on childcare-linked entitlement rather than a status effect --
+    employment_status is read by no tax or benefit formula in
+    policyengine-uk.
+    """
+    persons = _concentrated_persons()
+    out = apply_concentrated_wage_cut(persons, _concentrated_scenario(), seed=0)
+    drawn = out["earnings_changed"].to_numpy(dtype=bool)
+    assert drawn.any(), "fixture must draw at least one worker"
+    np.testing.assert_array_equal(
+        out["hours_worked"].to_numpy(), persons["hours_worked"].to_numpy()
+    )
+    assert (out.loc[drawn, "employment_income"] == 0).all()
+
+
+def test_zero_hours_isolates_the_status_flag() -> None:
+    """`zero_hours` removes the one channel through which the cells differ."""
+    persons = _concentrated_persons()
+    out = apply_concentrated_wage_cut(
+        persons, _concentrated_scenario(), seed=0, zero_hours=True
+    )
+    drawn = out["earnings_changed"].to_numpy(dtype=bool)
+    assert drawn.any()
+    assert (out.loc[drawn, "hours_worked"] == 0).all()
+    # Undrawn workers are untouched on both axes.
+    np.testing.assert_array_equal(
+        out.loc[~drawn, "hours_worked"].to_numpy(),
+        persons.loc[~drawn, "hours_worked"].to_numpy(),
+    )
+
+
+def test_zero_hours_requires_an_hours_column() -> None:
+    persons = _concentrated_persons().drop(columns=["hours_worked"])
+    with pytest.raises(KeyError, match="hours_worked"):
+        apply_concentrated_wage_cut(
+            persons, _concentrated_scenario(), seed=0, zero_hours=True
+        )

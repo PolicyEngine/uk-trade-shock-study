@@ -1,8 +1,10 @@
 # Major-revision status
 
-Updated 11 August 2026 against `REFEREE_AUDIT.md`, the journal-readiness
-audit, the August 2026 referee report (reject-and-resubmit), and three
-further rounds of independent review on 11 August 2026.
+Updated 12 August 2026. Records the disposition of the original journal
+readiness audit, the August 2026 referee report (reject-and-resubmit), three
+further rounds of independent review, and a full economics referee report.
+The source memos for the earlier rounds have been removed from the
+replication package; their dispositions are recorded below.
 
 ## Third-round disposition (11 August 2026)
 

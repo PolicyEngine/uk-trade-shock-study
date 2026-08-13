@@ -13,7 +13,13 @@ estimate.
 Anticipation. UK goods exports to the United States surged through the first
 quarter of 2025 ahead of the April 2025 tariff announcement. Dropping only the
 announcement month leaves the front-running months inside the pre-period, which
-inflates the estimated post-policy decline and, if the plotted series is
+    surged through 2025Q1 ahead of the April schedule. NOTE: on the
+    regenerated panel this exclusion makes the estimated decline LARGER,
+    not smaller -- the 2025Q1 level surge is ~97 per cent precious metals
+    (the London-to-New-York bullion movement), which the P99 weight cap
+    suppresses, so the weighted log-gap outcome never saw it. The window
+    is retained on ex-ante grounds, not because it corrects a measured
+    bias in this series.
 normalised on those months, measures the post-policy gap against the
 front-running peak. The estimation sample therefore excludes the whole
 anticipation window (``ANTICIPATION_WINDOW``, default 2025m1-2025m4) and the
@@ -698,6 +704,17 @@ def fit_ppml_model(
         "status": status,
         "product_count": int(data["hs4"].nunique()),
         "row_count": int(len(data)),
+        # Same degrees-of-freedom convention as the WLS path, stamped so a
+        # reader (and analysis/write_trade_benchmark_results.py) can tell which
+        # convention produced these standard errors without reading this file.
+        # The scale is exactly 1.0 because the absorbed product-destination
+        # effects are counted inside ``_cluster_covariance`` -- through its
+        # ``n_absorbed`` argument, which enters the finite-sample correction
+        # directly -- rather than being added back as a post-hoc rescale the
+        # way ``_absorbed_dof_scale`` does for WLS. The correction is applied
+        # either way; only where it is applied differs.
+        "absorbed_fixed_effects": int(n_groups),
+        "absorbed_dof_scale": 1.0,
         "zero_observation_share": float(np.mean(y <= 0)),
         "separated_pairs_dropped": separated,
         "us_post_separated": separation is not None,

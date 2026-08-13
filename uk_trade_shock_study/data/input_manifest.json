@@ -64,7 +64,7 @@
       "retrieved_at": "2026-07-29",
       "vintage": "January 2018 to May 2026; United States, Canada, Japan and Australia",
       "local_path": "data/public/hmrc_exports_product_destination_201801_202606.csv.gz",
-      "sha256": "fbfca6bc2963cab2e15d0899e540c5f6e5abeaa598cd8de9213da504d8364d8e",
+      "sha256": "380e092ef70dc564fd3766ab8e8f63bae79b95047f9bbcaf1cb46663b2ffa9ee",
       "distributed": false,
       "exclusions": "HMRC two-digit aggregate rows are excluded from the HS4 event-study panel; detailed seven-digit numeric IDs are retained after restoring the leading zero"
     },
@@ -331,13 +331,13 @@
     },
     {
       "path": "results/hmrc_destination_event_study.json",
-      "sha256": "674c8387eb805365ae47182ec4b301eff36074c8e7ed6aa87c1d575d67cfae45",
+      "sha256": "6e5b8341714c71f644dec9ec728629545597f8735be8f25ac36a6e90de60dcad",
       "quoted_by": "analysis/write_trade_benchmark_results.py",
       "produced_by": "make trade-event-study"
     },
     {
       "path": "results/hmrc_destination_event_study_monthly.csv",
-      "sha256": "092031b0a5753ce3a1e3e62b374f8961014096c366fce2e79a983cd7d1e27c96",
+      "sha256": "43022dc597eafb69246bb56b2b9402a9cfeda1639b3ad474ce90b34b03847d80",
       "quoted_by": "analysis/write_trade_benchmark_results.py",
       "produced_by": "make trade-event-study"
     },

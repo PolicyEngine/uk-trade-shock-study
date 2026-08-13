@@ -67,17 +67,14 @@ the same HS4 products sent elsewhere. The design regresses a log
 destination gap on a post-May-2025 indicator with product and seasonal
 effects and a linear trend, weighting by capped pre-policy US export
 values, and reports control-destination, weighting, sample-start and
-placebo-date checks. The estimates reported here omit April 2025 alone as an
-announcement month (\HMRCAnticipationSpec). That convention is too narrow:
-UK goods exports to the United States surged through the first quarter of
-2025 ahead of the April schedule, and leaving that surge inside the
-pre-period inflates any estimated post-policy fall. A
-January--April 2025 anticipation window, a continuous-trade restriction and
-a Poisson specification on levels are implemented in the estimator but are
-\emph{not} present in the run reported in this paper, which predates them;
-regenerating them requires re-downloading the public HMRC panel. The
-manuscript therefore quotes the April-only estimates throughout and states
-their known bias. It controls for product
+placebo-date checks. The estimates reported here omit a
+\HMRCAnticipationSpec, cover January 2018 to May 2026, and are computed
+\HMRCDofConvention. A continuous-trade restriction and a Poisson
+pseudo-maximum-likelihood estimator on levels are reported alongside the
+primary specification, because the balanced panel fills absent flows with
+zeros under a $\log(1+V)$ outcome and extensive-margin movement in the
+smaller comparison destinations would otherwise enter the gap mechanically.
+It controls for product
 shocks common across destinations but not US-specific demand or other
 coincident policies, and it is not used to estimate the demand or incidence
 parameters of Equation~\eqref{eq:shock}; its role is falsification---a role

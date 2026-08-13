@@ -282,22 +282,29 @@ the step measures. Within policyengine-uk the \texttt{employment\_status}
 variable is read by no tax or benefit formula at all: its only consumer is a
 behavioural labour-supply module that this design switches off. What the two
 cells actually differ in is \texttt{hours\_worked}, which the concentrated
-cell leaves at baseline and displacement zeroes. Hours are load-bearing
-through exactly one Universal Credit path---%
-\texttt{hours\_worked} $\rightarrow$ \texttt{in\_work} $\rightarrow$
+cell leaves at baseline and displacement zeroes. Hours enter through
+\texttt{in\_work}, which is an \emph{or} of positive hours and positive
+earnings: a displaced worker has neither, while a concentrated-cut worker has
+zero earnings but positive hours and so remains \texttt{in\_work}. In the
+pinned version \texttt{in\_work} has exactly three consumers, and only one
+of them is Universal Credit---%
 \texttt{uc\_childcare\_work\_condition} $\rightarrow$
-\texttt{uc\_childcare\_element}---because \texttt{in\_work} is an
-\emph{or} of positive hours and positive earnings. A displaced worker has
-neither, so the childcare work condition fails and the childcare element
-drops to zero; a concentrated-cut worker has zero earnings but positive
-hours, so it is retained in full. Two further hours-sensitive gates lie
-outside Universal Credit: the Housing Benefit worker disregard and the
-council-tax-reduction non-dependant deduction.
+\texttt{uc\_childcare\_element}. The other two are childcare subsidies
+outside Universal Credit: the Department for Education's extended childcare
+entitlement and HMRC's Tax-Free Childcare, each of which applies its own
+work condition. All three are childcare gates, and all three shut for a
+displaced worker and stay open for a concentrated-cut one. A separate set of
+gates reads \texttt{weekly\_hours} rather than \texttt{in\_work}: the
+Housing Benefit worker disregard, the council-tax-reduction non-dependant
+deduction, the income tests of the same two childcare subsidies, and the
+legacy Working Tax Credit elements. Their contribution cannot be separated
+without re-running the decomposition channel by channel.
 
 The measured step is therefore an \emph{hours} effect operating on
-childcare and two smaller in-work gates, not an employment-status effect. It
-is small because childcare costs affect a minority of the exposed benefit
-units, though the per-unit amounts are large. This sharpens rather than
+childcare support and a set of smaller in-work gates, not an
+employment-status effect. It is small because childcare costs affect a
+minority of the exposed benefit units, though the per-unit amounts are
+large. This sharpens rather than
 weakens the reading below: the statutory system's response to job loss, as
 implemented here, runs through hours-contingent entitlement rather than
 through employment status, and the status label contributes exactly nothing.

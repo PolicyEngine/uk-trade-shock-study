@@ -102,7 +102,23 @@ INERT_BASIS_INFERRED = "convention_spread"
 #: also return bit-identical cushioning, which is exactly the case the
 #: diagnostic was built to separate. The macro therefore states which of the
 #: two the printed grid actually rests on.
+#: The grid is NOT inert: the diagnostic records benefit units being
+#: re-drawn. Until the Universal Credit award-cache correction of 2026-08-13
+#: this case could not arise -- a shocked simulation was served its BASELINE
+#: award, so changing the claiming rate changed nothing and the grid returned
+#: bit-identical cushioning at every convention. That artefact was read as the
+#: new-entitlement scope having an empty domain. It does not: with the cache
+#: correctly invalidated the same grid moves displacement cushioning by
+#: several points. Emitting a phrase here rather than raising lets the
+#: manuscript state what the grid now shows; the guard still raises if the
+#: diagnostic and the spread contradict each other.
+BASIS_LIVE = "live_grid"
 TAKEUP_INERT_BASIS_PHRASES = {
+    BASIS_LIVE: (
+        "measured directly: the re-draw diagnostic stored with the grid "
+        "records benefit units being re-drawn in most seeds, so the grid is "
+        "live and the claiming rate is a binding parameter"
+    ),
     INERT_BASIS_MEASURED: (
         "measured directly: the re-draw diagnostic stored with the grid "
         "records no benefit unit re-drawn in any seed"
@@ -255,13 +271,21 @@ def takeup_inert_basis(block: dict, convention_spread_pp: float, where: str) -> 
         }
         live = {key: n for key, n in counts.items() if n > 0}
         if live:
-            raise RuntimeError(
-                f"{where}: the re-draw diagnostic reports a NON-EMPTY re-draw "
-                f"set ({live}), so the take-up grid is not inert and the "
-                "manuscript's claim that no benefit unit is ever re-drawn is "
-                "false at this calibration. Rewrite the claim; do not emit a "
-                "macro asserting inertness."
-            )
+            # A non-empty re-draw set with a ZERO spread is the pathological
+            # case the diagnostic exists to catch: units were re-drawn and
+            # nothing moved, which is what a stale award cache looks like.
+            # Refuse that one; a non-empty set with a real spread is simply a
+            # live grid and is reported as such.
+            if convention_spread_pp == 0.0:
+                raise RuntimeError(
+                    f"{where}: the diagnostic reports a NON-EMPTY re-draw set "
+                    f"({live}) yet the claiming conventions return "
+                    "bit-identical cushioning. Units were re-drawn and their "
+                    "awards did not move, which is the signature of an award "
+                    "served from a stale cache rather than recomputed. Do not "
+                    "report either number; re-run the take-up grid."
+                )
+            return BASIS_LIVE
         if convention_spread_pp != 0.0:
             raise RuntimeError(
                 f"{where}: the diagnostic says nothing was ever re-drawn, yet "
@@ -527,6 +551,14 @@ def main() -> None:
         # from the spread. The two are different claims (see
         # takeup_inert_basis) and the manuscript must state which it holds.
         f"\\newcommand{{\\TakeupInertBasis}}{{{takeup_inert_basis_phrase(inert_basis)}}}",
+        # Size of the re-draw set, so the manuscript can say how large the
+        # live domain is rather than only that it is non-empty. Both are read
+        # off the same diagnostic the basis phrase above is derived from.
+        f"\\newcommand{{\\TakeupRedrawnBenunits}}{{{takeup['0.80'][REDRAW_DIAGNOSTIC_KEY]['n_redrawn_mean']:.1f}}}",
+        f"\\newcommand{{\\TakeupRedrawnMax}}{{{int(takeup['0.80'][REDRAW_DIAGNOSTIC_KEY]['n_redrawn_max'])}}}",
+        f"\\newcommand{{\\TakeupRedrawnWeighted}}{{{takeup['0.80'][REDRAW_DIAGNOSTIC_KEY]['weighted_redrawn_mean']/1000:.1f}}}",
+        f"\\newcommand{{\\TakeupLowConvention}}{{{pct(takeup['0.55']['cushioning_rate']['mean'])}}}",
+        f"\\newcommand{{\\TakeupFullConvention}}{{{pct(takeup['1.00']['cushioning_rate']['mean'])}}}",
         # Binding claiming margin: all-entitled re-draw scope. The spread is
         # the difference of the two PRINTED endpoints, so the sentence that
         # quotes all three adds up (see entitled_scope_macro_values).

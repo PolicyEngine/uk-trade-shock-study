@@ -161,14 +161,24 @@ def check_selection_methods(
                 f"{SELECTION_METHOD_PROVENANCE_FIX}"
             )
     if not present:
-        print(
-            "WARNING: no central artifact records `selection_method`, so the "
-            "assignment-design guard did not run. These artifacts are built "
-            "from `shocks.PRESETS`, which takes TradeShockScenario's default "
-            f"({SCENARIO_DEFAULT_SELECTION_METHOD!r}), whereas the 50-draw "
-            "submission design passes 'balanced' explicitly — the two are "
-            "compared in the manuscript. That is an inference from the source, "
-            f"not a fact recorded in the artifacts. {SELECTION_METHOD_PROVENANCE_FIX}"
+        # Until the 2026-08-13 re-run, every shipped artifact predated the
+        # `selection_method` field and this branch could only warn: the design
+        # had to be inferred from `shocks.PRESETS` rather than read off the
+        # artifact. The re-run records it everywhere, so an artifact that
+        # lacks it is now stale rather than merely old, and stale artifacts
+        # are exactly what this pipeline exists to catch. Failing here is the
+        # difference between a guard that runs and one that reports it could
+        # not run.
+        raise ValueError(
+            "No central artifact records `selection_method`, so the "
+            "assignment-design guard cannot run. Every artifact written since "
+            "the re-run carries this field; one that does not was produced by "
+            "an older build and must not be quoted beside current ones. These "
+            "are built from `shocks.PRESETS`, which takes TradeShockScenario's "
+            f"default ({SCENARIO_DEFAULT_SELECTION_METHOD!r}), whereas the "
+            "50-draw submission design passes 'balanced' explicitly, and the "
+            "manuscript compares the two. "
+            f"{SELECTION_METHOD_PROVENANCE_FIX}"
         )
     elif len(present) < len(recorded):
         silent = sorted(set(recorded) - set(present))

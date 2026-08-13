@@ -66,18 +66,21 @@ def test_a_nested_design_block_is_read() -> None:
     assert _selection_method({"design": {"n_draws": 50}}) is None
 
 
-def test_silence_is_not_read_as_the_scenario_default(capsys) -> None:
+def test_silence_is_not_read_as_the_scenario_default() -> None:
     """Assuming 'bernoulli' would let a balanced artifact pass unnoticed.
 
-    An artifact that does not record its design has not been checked, and the
-    guard must say so rather than manufacture a provenance.
+    An artifact that does not record its design has not been checked. This
+    used to print a warning, because no shipped artifact carried the field
+    and failing would have blocked every build. Since the re-run they all
+    carry it, so silence now means the artifact is stale and the guard
+    raises rather than narrating that it could not run.
     """
-    recorded = check_selection_methods({"a": {"n_draws": 100}, "b": {"n_draws": 100}})
-    assert recorded == {"a": None, "b": None}
-    warning = capsys.readouterr().out
-    assert "no central artifact records" in warning
-    assert SCENARIO_DEFAULT_SELECTION_METHOD in warning
-    assert SELECTION_METHOD_PROVENANCE_FIX in warning
+    with pytest.raises(ValueError) as excinfo:
+        check_selection_methods({"a": {"n_draws": 100}, "b": {"n_draws": 100}})
+    message = str(excinfo.value)
+    assert "No central artifact records" in message
+    assert SCENARIO_DEFAULT_SELECTION_METHOD in message
+    assert SELECTION_METHOD_PROVENANCE_FIX in message
 
 
 def test_a_partially_recorded_set_is_reported(capsys) -> None:
@@ -89,31 +92,40 @@ def test_a_partially_recorded_set_is_reported(capsys) -> None:
     assert "['b']" in warning
 
 
-def test_the_shipped_artifacts_still_do_not_record_the_design(capsys) -> None:
-    """Documents the current state, and fails the day it is fixed.
+def test_the_shipped_artifacts_record_the_assignment_design() -> None:
+    """Every central artifact carries the design it was produced under.
 
-    The code side is already done: `MonteCarloResult` declares
-    `selection_method`, `run_monte_carlo_prepared` sets it from the scenario,
-    and `write_result` serialises it. What is stale is the shipped artifacts —
-    every results/*.json below was written before that field existed, so the
-    guard above still cannot run on the real build. The fix is a re-run of the
-    affected families (`make results`, `make submission-results`) against the
-    licensed FRS microdata, not another code change. When those artifacts land,
-    this test fails and should be replaced by an assertion on the recorded
-    value.
+    This replaces an earlier guard that asserted the opposite. The code side
+    had long been done -- `MonteCarloResult` declared `selection_method`,
+    `run_monte_carlo_prepared` set it, `write_result` serialised it -- but
+    every shipped artifact predated the field, so the real guard in
+    `check_selection_methods` could only warn that it was unable to run. The
+    2026-08-13 re-run against the licensed FRS microdata landed the field
+    everywhere, so the guard now runs for real and its absence is an error.
     """
     import json
     from pathlib import Path
 
     from analysis.write_paper_results import ANCHORS, CENTRAL
 
+    recorded = {}
     for name in (*CENTRAL, *ANCHORS):
         item = json.loads(Path(f"results/{name}.json").read_text())
-        assert _selection_method(item) is None, (
-            f"results/{name}.json now records selection_method; replace this "
-            "test with an assertion on its value and drop the warning path in "
-            "check_selection_methods."
-        )
+        recorded[name] = _selection_method(item)
+
+    missing = sorted(n for n, v in recorded.items() if v is None)
+    assert not missing, (
+        f"central artifacts {missing} do not record selection_method; they "
+        "predate the re-run and must not be quoted beside current ones. "
+        "Re-run `make results`."
+    )
+    distinct = set(recorded.values())
+    assert distinct == {"bernoulli"}, (
+        "central artifacts must all use one assignment design; found "
+        f"{sorted(distinct)}. These are built from shocks.PRESETS, which takes "
+        "the TradeShockScenario default; the 50-draw submission family passes "
+        "'balanced' explicitly and is compared against these in the manuscript."
+    )
 
 
 # ---------------------------------------------------------------------------

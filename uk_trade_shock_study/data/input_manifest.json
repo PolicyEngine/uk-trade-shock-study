@@ -39,12 +39,15 @@
       "id": "frs_2024_25",
       "source": "PolicyEngine UK single-year dataset built from Family Resources Survey 2024-25",
       "url": "https://huggingface.co/policyengine/policyengine-uk-data",
-      "retrieved_at": "2026-07-22",
+      "retrieved_at": "2026-06-19",
       "vintage": "FRS 2024-25",
       "local_path": "data/frs_2024_25.h5",
       "sha256": "623802aad0f7eef76df8a0ce1b19933b5648ac97486d5b01d371e7c7d374ba40",
       "distributed": false,
-      "exclusions": "Licensed microdata are not redistributed"
+      "exclusions": "Licensed microdata are not redistributed",
+      "upstream_revision": "5535b2f805d66790aa9432d6dedad73b673646d3",
+      "upstream_release": "policyengine-uk-data 1.56.6",
+      "note": "The Hugging Face repo has since replaced this file (1.56.12 onward), so a bare download of frs_2024_25.h5 no longer reproduces these results. Pass revision=upstream_revision to hf_hub_download, or verify sha256 before running. The earlier retrieved_at of 2026-07-22 was the download date, not the vintage of the bytes; the sha256 identifies release 1.56.6 of 2026-06-19."
     },
     {
       "id": "ons_input_output_2022",
@@ -109,85 +112,85 @@
   "quoted_results": [
     {
       "path": "results/full_tariff_displacement.json",
-      "sha256": "7fdd450076d8be2090b39170183026dec0b48f3a78f887957cc0afea6af7077b",
+      "sha256": "3756c6f734b1b06328684cad0edee60fa67a0c74b6973264e04e7c419f8f4cd4",
       "quoted_by": "analysis/write_paper_results.py",
       "produced_by": "make results"
     },
     {
       "path": "results/full_tariff_wage_cut.json",
-      "sha256": "c33af4b13834cfb664734f2cabc39de9097fbde4a0216dd624cf4abdb1759064",
+      "sha256": "baf9bbf79393635967abec2796c563b591e4a8b7d2205221c998417cd89b37f1",
       "quoted_by": "analysis/write_paper_results.py",
       "produced_by": "make results"
     },
     {
       "path": "results/full_tariff_inactivity.json",
-      "sha256": "4fc2d4fb2260abde06263bbcf19faf726d22412ffe0871086dd2b63b7717d33a",
+      "sha256": "dd3766e1446550c91463f83f2ae21177b4c23f6f8453791797c66d44cb4e6af2",
       "quoted_by": "analysis/write_paper_results.py",
       "produced_by": "make results"
     },
     {
       "path": "results/epd_displacement.json",
-      "sha256": "7cf61625409a9bd6228e725369ff658b1d63b1e255e02f8a8bdf4109e048ec4f",
+      "sha256": "2ceb0ee282678dfc56c5ee5622a0b1ff3c9cc29873284be882eb682e100ebfd3",
       "quoted_by": "analysis/write_paper_results.py",
       "produced_by": "make results"
     },
     {
       "path": "results/epd_wage_cut.json",
-      "sha256": "87021a4ec5424750f87717cdd6585cce43f2c8ec31c24c3fb6dfd3614e1a8256",
+      "sha256": "bc5b59b45c21058ec92a97d4ad0fcb7ff89b1ffa121e31925090755775f2acea",
       "quoted_by": "analysis/write_paper_results.py",
       "produced_by": "make results"
     },
     {
       "path": "results/epd_inactivity.json",
-      "sha256": "25074952ae085e378a5ff12e620cf5a648615ae4e09326a111ab7e59de58455e",
+      "sha256": "a5a4eb215122b1fab52b896f781c20087531f70975eb71319bcac0474c30d88f",
       "quoted_by": "analysis/write_paper_results.py",
       "produced_by": "make results"
     },
     {
       "path": "results/measured_displacement.json",
-      "sha256": "4eea5ebec43c58308aeee3ca5d16dcdd0554b8ba35802671b7604ab30182296f",
+      "sha256": "ad4d1508a98fc165083caf228574fa821f16503964596b176466f4909a558c8b",
       "quoted_by": "analysis/write_paper_results.py",
       "produced_by": "make results"
     },
     {
       "path": "results/measured_wage_cut.json",
-      "sha256": "42199a6f37ac50c6c968b91a5b04ff676700a44ca2076e67dfe7ced007ef964f",
+      "sha256": "52a0fe883c2c11087d2fecdd916120f42faebe29e5e63742fd0451953b64fadf",
       "quoted_by": "analysis/write_paper_results.py",
       "produced_by": "make results"
     },
     {
       "path": "results/full_tariff_obr_low_displacement.json",
-      "sha256": "6aa2b0b88042155597e10bb8609ddf49c7014dede1507bd5a7534d561f5e38aa",
+      "sha256": "9d84dc00d02f9cc59dbcea561d48b6d5b4b34c6c8f73d15a28ae3fdb7084d7ec",
       "quoted_by": "analysis/write_paper_results.py",
       "produced_by": "make results"
     },
     {
       "path": "results/full_tariff_obr_low_wage_cut.json",
-      "sha256": "9903347cbeb7db78a8876eb1d699aabba0045a5364c8f750cdaf371aa687f112",
+      "sha256": "59d808c154a15a0e94b5498ca5b5c3104e88e1691b2ebc7af1ae97bfcfcfcef7",
       "quoted_by": "analysis/write_paper_results.py",
       "produced_by": "make results"
     },
     {
       "path": "results/full_tariff_transition_central.json",
-      "sha256": "df01aaffb0f2c1f87f285a2ab193481a4218a7a7b1c7ca1961281f84d07249fe",
+      "sha256": "85d88701b7776fac1384bbbd23e8f63f75527c7f048f3b8d7ea5b29242ae8e09",
       "quoted_by": "analysis/write_paper_results.py",
       "produced_by": "make results"
     },
     {
       "path": "results/epd_transition_central.json",
-      "sha256": "238468ade695f990c14fc97a805d78d30c2f14cf1d99670eafbcc727ce434aa4",
+      "sha256": "37c5e7193a65d6ce47dffde13ac036e7b7db7f968834606678066807c2fdfb2d",
       "quoted_by": "analysis/write_paper_results.py",
       "produced_by": "make results"
     },
     {
       "path": "results/full_tariff_rentsharing.json",
-      "sha256": "48b04dd8f7eb617a4f46c06c8277befcb6d011f198e56a79f038e7253059b7bf",
+      "sha256": "a2697aded675fb0a5a95aea30c5067b77c2ba268276ab1ee4db61c61d5c22bd6",
       "quoted_by": "analysis/write_paper_results.py",
       "produced_by": "make results"
     },
     {
       "path": "results/epd_rentsharing.json",
-      "sha256": "aa0fa11d5880aa25b0c6fe3fb56ed2c8b608fc329806bb130732f40186ee49df",
+      "sha256": "0ed5367e8500cea1accf0f83d103138da4ecbd87aa3c0a1646f17948e887ef0a",
       "quoted_by": "analysis/write_paper_results.py",
       "produced_by": "make results"
     },
@@ -199,121 +202,121 @@
     },
     {
       "path": "results/submission/submission_obr_12m_displacement.json",
-      "sha256": "9bbc031f191631e3c98f7e990f763aeb8f1fc44999d9f16ed745b1b7267311ca",
+      "sha256": "205da814c7ab6614adb53547d98386aead01fe20bff5094de5d080491e14153e",
       "quoted_by": "analysis/write_submission_results.py",
       "produced_by": "make submission-results"
     },
     {
       "path": "results/submission/submission_obr_12m_displacement_bernoulli.json",
-      "sha256": "cd30c446b4d98a1a598d287332b0aa98db3cefab14198fdcdbd08d7681d0ce03",
+      "sha256": "7df63b2dde768d65d139ff99547e81495678a127a0c9d1c476fb92efe1d2f7a0",
       "quoted_by": "analysis/write_submission_results.py",
       "produced_by": "make submission-results"
     },
     {
       "path": "results/submission/submission_obr_12m_wage_cut.json",
-      "sha256": "7b67bf165c1ebdf3860831098511c58b9bba02d8f34ab0d11c42da499243aab2",
+      "sha256": "50462c77f5ffdeb63d16d50ea883dacebcf1a6650e1c36b42b15f24f3de6a80f",
       "quoted_by": "analysis/write_submission_results.py",
       "produced_by": "make submission-results"
     },
     {
       "path": "results/submission/submission_obr_3m_displacement.json",
-      "sha256": "bd804bb623a46ba2f2a21e7a177d47bd3a7393e16a3febc3e8337bd5a6c66cc8",
+      "sha256": "6abee34d1c74610e79f5dd75e245b536a7cd7d44aa6ba8357d5e05015f20a5c1",
       "quoted_by": "analysis/write_submission_results.py",
       "produced_by": "make submission-results"
     },
     {
       "path": "results/submission/submission_obr_3m_wage_cut.json",
-      "sha256": "05c9f3a8e2add8b3d9da7a9a1e6727a7cc3bd8c6cfcc379dc7d582e0ff56048b",
+      "sha256": "fb5621f2cacf548c78f9f93af411496432cae48dd9caddc563d9f4bcd4a72389",
       "quoted_by": "analysis/write_submission_results.py",
       "produced_by": "make submission-results"
     },
     {
       "path": "results/submission/submission_obr_6m_displacement.json",
-      "sha256": "06fc1a2024d7913882963de30b3424b622213b102625f8b27a79013562fd9052",
+      "sha256": "cffc7ebb7c14bfa8b41b8abf3f89e6203d8ac968eb0d8cc753624ed64fed59ce",
       "quoted_by": "analysis/write_submission_results.py",
       "produced_by": "make submission-results"
     },
     {
       "path": "results/submission/submission_obr_6m_wage_cut.json",
-      "sha256": "b52e434d7f3dfe3f3b4ffe92b4cdcae244c6e30acc4ddb1d56b9768202420f50",
+      "sha256": "d618c7181546e0206066cb8feb778dae04ec3065eb56db26838a63c5e90be4ef",
       "quoted_by": "analysis/write_submission_results.py",
       "produced_by": "make submission-results"
     },
     {
       "path": "results/submission/submission_unit_12m_displacement.json",
-      "sha256": "e41026240e5f02b247446d5929ee23eb808376652c49ef3a71b1d744785977cc",
+      "sha256": "30c610e7eb0a45250778e565a7fc73121641d5315e42a87bc61fc06f316e649f",
       "quoted_by": "analysis/write_submission_results.py",
       "produced_by": "make submission-results"
     },
     {
       "path": "results/submission/submission_unit_12m_displacement_bernoulli.json",
-      "sha256": "0272a26dba1980cf4aa411516a0c15a77dab5607d999cbb2eac5e7b1326c96ad",
+      "sha256": "ebc0c339a7d8aada944a49c95079fd01db10cd8560cd5d1fae60ee9497cd26e1",
       "quoted_by": "analysis/write_submission_results.py",
       "produced_by": "make submission-results"
     },
     {
       "path": "results/submission/submission_unit_12m_wage_cut.json",
-      "sha256": "3908f2603d170ea25e5a53a2cdf976771875070b8decd928c8be9dbca786d275",
+      "sha256": "770c4a674c7f9710d69f764fa52072029af82d6b9d27fc701a32c5872b47224a",
       "quoted_by": "analysis/write_submission_results.py",
       "produced_by": "make submission-results"
     },
     {
       "path": "results/submission/submission_unit_3m_displacement.json",
-      "sha256": "82595818068754e3b010b1ece15a335124aee5e3d76bc68a33942b9eb2b39182",
+      "sha256": "77be6f7d1a1938d3d3a6ba401c2d93784add7fb997429647276a20ed769a45a6",
       "quoted_by": "analysis/write_submission_results.py",
       "produced_by": "make submission-results"
     },
     {
       "path": "results/submission/submission_unit_3m_wage_cut.json",
-      "sha256": "5f2bf24b6a7924ee5be23425abb2cf020162692062c4ebb8e59dd989d293b4fe",
+      "sha256": "2225c0ce5eacd8617c88e665ef2252b9263132b6d3f48e9aeedf86a5e7dd03b2",
       "quoted_by": "analysis/write_submission_results.py",
       "produced_by": "make submission-results"
     },
     {
       "path": "results/submission/submission_unit_6m_displacement.json",
-      "sha256": "6b754b36666a5dc010baf8ddc4fa14562b68e5b69d6efb24ac5b1d7d8776ca51",
+      "sha256": "d320478489cbfd9b6e3b20efdd453e767ef45de5e9e7323a34098b216f431692",
       "quoted_by": "analysis/write_submission_results.py",
       "produced_by": "make submission-results"
     },
     {
       "path": "results/submission/submission_unit_6m_wage_cut.json",
-      "sha256": "46aac3167399e14eee81e2d281eb2efb3c846eba81d235c96e3f3081260821c7",
+      "sha256": "9401108ba26d2c22e4244a15428d5c8ce992e66a3378acf9f9bf8639714127d9",
       "quoted_by": "analysis/write_submission_results.py",
       "produced_by": "make submission-results"
     },
     {
       "path": "results/submission/submission_obr_12m_concentrated_wage_cut.json",
-      "sha256": "654a588bfa6305750f5adaf397a1d0cea9ca8bccceb51493cf4b577fe7528b75",
+      "sha256": "e47ada4b4d3725381c1c41461d68c9816927e8ef360f37955788975e6426e594",
       "quoted_by": "analysis/write_submission_results.py, analysis/factorial_decomposition.py",
       "produced_by": "make submission-results"
     },
     {
       "path": "results/submission/submission_unit_12m_concentrated_wage_cut.json",
-      "sha256": "0e23bc5f7639a6a79f8198759096bd7652cb753653cb4635134c98cb5a63e635",
+      "sha256": "823ba2e115e916879c2525496c60eeb59a41314c20add108677d320cf0d2e25a",
       "quoted_by": "analysis/write_submission_results.py, analysis/factorial_decomposition.py",
       "produced_by": "make submission-results"
     },
     {
       "path": "results/leave_one_sector_out.json",
-      "sha256": "6f2bba3bfa5679d98a5a8e55a0b6768dcd53c44200a2f89bc0b40fd49c48e67e",
+      "sha256": "01d68b53af772de80b3ed46965e6c6e292bd95336e24f1dfc16120fae3d84ea2",
       "quoted_by": "analysis/write_submission_results.py",
       "produced_by": "make submission-results"
     },
     {
       "path": "results/bootstrap_uncertainty.json",
-      "sha256": "0245ad2a869fcc404d047f282ef9cbd05924ded5a525ede621519fc05c05c7ad",
+      "sha256": "039a24ad7bcac840e6398b1818e61244f893a6cf2ae9db269681525475add3d6",
       "quoted_by": "analysis/write_submission_results.py",
       "produced_by": "make submission-results"
     },
     {
       "path": "results/factorial_decomposition.json",
-      "sha256": "18a7c50acd1e62fff046d03c11ce87428a85d3e1f8d26c6338b4423b274c8f07",
+      "sha256": "e7272c8e88910b89130d6bd40a1fa0f8c10e3ef129a0e395ab2ea2feecacc70f",
       "quoted_by": "analysis/write_factorial_results.py",
       "produced_by": "make submission-results"
     },
     {
       "path": "results/leave_one_record_out.json",
-      "sha256": "19b9e7462664e07b5931f56a9869cdadb3ff2eb138524a4e663077d0fd1846d8",
+      "sha256": "8713a5cc7059984aca679689e67635d7cea904d6ecbd507d1ce803afa478a5a3",
       "quoted_by": "analysis/write_factorial_results.py",
       "produced_by": "make submission-results"
     },

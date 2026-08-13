@@ -63,12 +63,14 @@ margins while the contrast widens slightly, from \GapHBAIPension\ to
 artefact of the HBAI treatment of pension saving---and this is one of the
 sensitivities under which it does not shrink. The
 claiming convention, by contrast, is not settled and the paper should not
-pretend otherwise. The new-entitlement take-up grid returns numerically
-identical results under every rate and under the stale flag---identical to
-machine precision, which is only possible if its re-draw set is empty, a
-conclusion \TakeupInertBasis---so it tests an empty set rather than
-establishing insensitivity. The convention that does bind is the frozen
-claiming state of already-entitled non-claimers. On \TakeupEntitledSource,
+pretend otherwise. The new-entitlement take-up grid moves
+displacement cushioning by \TakeupConventionSpread\ percentage points across
+claiming rates, re-drawing \TakeupRedrawnBenunits\ benefit units per
+assignment---a conclusion \TakeupInertBasis. An earlier revision reported
+this grid as inert, on the strength of bit-identical output across every
+convention; that invariance was a stale award cache and is documented in
+Section~\ref{sec:results-takeup}. A second convention binds alongside it: the
+frozen claiming state of already-entitled non-claimers. On \TakeupEntitledSource,
 the only source at which either quantity has been measured, that
 convention zeroes UC for \TakeupZeroUCNonTakeupShare\ per cent of the
 displaced by weight, and re-drawing it moves displacement cushioning by
@@ -86,10 +88,12 @@ One statement about precision should govern how every number in this paper
 is read. The displacement side of the contrast rests on
 \UnitEffectiveLossRecords\ effective record contributions, and the
 resampling standard error of \BootstrapCushionDifferenceSE\ points sits
-beside structural sensitivities---worker selection, the claiming convention,
-the omitted contributory benefit---that are individually 1.7 to 5.8 times
-larger. The contrast should be read as being of order ten points with
-structural uncertainty of the same order, not as a figure known to a decimal
+beside three structural sensitivities that each dwarf it: worker selection
+moves the contrast by up to \LFSSelectionShiftMax\ points, the claiming
+convention by \TakeupEntitledSpread, and the omitted contributory benefit by
+\JSACushionPoints. The contrast should therefore be read as being of the
+order of its own point estimate, \PrimaryCushionDifference\ points, with
+structural uncertainty of the same order---not as a figure known to a decimal
 place. The decimals are retained only so that the arithmetic between
 quantities can be checked.
 

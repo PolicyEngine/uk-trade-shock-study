@@ -55,28 +55,40 @@ estimate shrinks monotonically as the pre-period is shortened, so the post
 indicator is plausibly absorbing part of a differential trend rather than a
 level break.
 
-Two further design issues are known and are \emph{not} resolved in the run
-reported here. This section states them rather than leaving them implicit,
-and is explicit that the corrections exist only in code.
+Two design issues that earlier drafts left open are resolved in this run, and
+one of them did not behave as expected.
 
-First, UK goods exports to the United States surged
-through the first quarter of 2025 ahead of the April schedule; omitting only
-April 2025---which is the convention behind every estimate in this
-supplement (\HMRCAnticipationSpec)---leaves that anticipation surge inside
-the pre-period, where it inflates any estimated post-policy fall. The
-estimator now supports a configurable anticipation \emph{window}
-(January--April 2025 by default) alongside the original single-month
-omission, but the stored panel predates that option and has not been
-regenerated. Second, the balanced panel
-fills absent flows with zeros under a $\log(1+V)$ outcome, so
-extensive-margin movement in the smaller comparison destinations enters the
-gap mechanically; a continuous-trade restriction and a Poisson
-pseudo-maximum-likelihood estimator on levels are likewise implemented but
-absent from this run. The two biases do not share a sign: the anticipation
-surge inflates the estimated decline, while zero-filled control flows lower
-the control term and so understate it. Their net direction is therefore not
-established, and re-running \texttt{make public-hmrc trade-event-study} is
-among the outstanding items listed in the main paper's discussion.
+First, the anticipation window. UK goods exports to the United States surged
+through the first quarter of 2025, and the estimator now omits a
+\HMRCAnticipationSpec\ rather than April alone. The stated rationale for
+that exclusion---that leaving the surge in the pre-period inflates the
+estimated post-policy fall---turns out not to hold in this outcome. Omitting
+the window makes the estimated decline \emph{larger}, not smaller, because
+in the weighted log-gap the January--April 2025 months already sit below the
+2024 base. The reason is compositional: the level surge is about 97 per cent
+precious metals---gold, silver and platinum, the London-to-New-York bullion
+movement---and the ninety-ninth-percentile cap on product weights suppresses
+those three lines almost entirely, so the outcome never saw the surge the
+exclusion was designed to remove. The window is retained on ex-ante grounds,
+but the reader should not be told it corrects a bias that this series does
+not exhibit.
+
+Second, the zeros. The balanced panel fills absent flows with zeros under a
+$\log(1+V)$ outcome, so extensive-margin movement in the smaller comparison
+destinations enters the gap mechanically. Two specifications now bound that
+channel, and they bound it severely: a Poisson estimator on levels gives
+\HMRCPPMLEffect\ per cent ($p=\HMRCPPMLPValue$), and a restriction to
+products trading continuously in all four destinations gives
+\HMRCContinuousEffect\ per cent ($p=\HMRCContinuousPValue$). Against a
+headline of \HMRCWeightedEffect\ per cent, roughly two-thirds of the primary
+estimate is attributable to how zeros are handled. The Poisson fit converged
+in four iterations, is neither rank-deficient nor separated, and drops 149
+never-trading pairs from a panel with 35 per cent zero observations.
+
+One further caveat travels with the vintage: HMRC has revised the Overseas
+Trade Statistics back-series since this project's input manifest was first
+frozen, so part of the movement against earlier drafts is data revision
+rather than a change of specification.
 
 On tariff intensity, broad steel and auto chapters fall \HMRCHighTariffEffect\ per
 cent ($p=\HMRCHighTariffPValue$), compared with \HMRCOtherEffect\ per cent

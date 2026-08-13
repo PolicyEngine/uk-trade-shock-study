@@ -13,6 +13,13 @@
 
 % Supplement sections are numbered S1, S2, ...
 \renewcommand{\thesection}{S\arabic{section}}
+% Section labels are S1..S13; article's default 1.5em \numberline box
+% is too narrow for the two-digit ones, so "S10" ran into its title in
+% the table of contents. Widen the box for section and subsection lines.
+\usepackage{tocloft}
+\setlength{\cftsecnumwidth}{3.0em}
+\setlength{\cftsubsecnumwidth}{3.8em}
+\setlength{\cftsubsecindent}{3.0em}
 \renewcommand{\thetable}{S\arabic{table}}
 \renewcommand{\thefigure}{S\arabic{figure}}
 
@@ -25,7 +32,7 @@
 \input{generated_validation}
 \input{referee_macros}
 
-\title{\bfseries Online Supplement:\\What Stabilisation Coefficients Measure: Loss Concentration\and the Participation--Marginal Tax Wedge}
+\title{\bfseries Online Supplement:\\What Stabilisation Coefficients Measure:\\The Role of Loss Concentration}
 \author{Vahid Ahmadi}
 \date{\small August 2026}
 

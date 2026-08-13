@@ -99,6 +99,7 @@ def main() -> None:
         for margin, prefix in (
             ("displacement", "DispChannel"),
             ("wage_cut", "WageChannel"),
+            ("concentrated_wage_cut", "ConcChannel"),
         ):
             share = levels[margin]
             for key, label in (
@@ -147,6 +148,33 @@ def main() -> None:
                      + levels["concentrated_wage_cut"]["employee_national_insurance"])
         )
         conc_step_seeds = sums["wage_cut"] - sums["concentrated_wage_cut"]
+        # The wedge is a TAX-AND-NI object, not a participation tax rate: it
+        # nets no out-of-work entitlement, and the means-tested awards that a
+        # participation rate would include run the other way (see
+        # ScheduleWedgeOffsets). The manuscript must not name it as a PTR.
+        #
+        # It is defined against the CONCENTRATED cell, so quote
+        # \ConcChannelTaxAndNI beside it. Displacement happens to carry the
+        # same tax-and-NI level -- the worker-level earnings losses are the
+        # same draw and only benefits react to employment status -- and
+        # earlier drafts silently displayed the displacement macro instead.
+        # That coincidence is asserted rather than trusted: if a future run
+        # breaks it, the swap becomes an error and this stops the build.
+        conc_tax_ni = 100 * (
+            levels["concentrated_wage_cut"]["income_tax"]
+            + levels["concentrated_wage_cut"]["employee_national_insurance"]
+        )
+        disp_tax_ni = 100 * (
+            levels["displacement"]["income_tax"]
+            + levels["displacement"]["employee_national_insurance"]
+        )
+        if abs(conc_tax_ni - disp_tax_ni) > 0.05:
+            raise ValueError(
+                "concentrated and displacement tax-and-NI relief have "
+                f"diverged ({conc_tax_ni:.2f} vs {disp_tax_ni:.2f} per cent); "
+                "the manuscript's schedule-wedge passage assumes they "
+                "coincide and must be rewritten before building."
+            )
         macros["ScheduleWedgeWeighted"] = fmt(wedge)
         macros["ScheduleWedgeOffsets"] = fmt(wedge - conc_step_seeds)
 

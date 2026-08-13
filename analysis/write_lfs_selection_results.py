@@ -19,8 +19,21 @@ import numpy as np
 
 
 ROOT = Path(__file__).resolve().parents[1]
-UNIFORM = ROOT / "results/full_tariff_displacement.json"
-WAGE_CUT = ROOT / "results/full_tariff_wage_cut.json"
+#: Comparators for the LFS models. These deliberately point at the PRE-FIX
+#: pipeline copies, because results/lfs_selection_sensitivity.json could not be
+#: regenerated in the 2026-08-13 re-run: it is built from the LFS five-quarter
+#: file (UKDA SN 9490), licensed separately from the FRS and absent from the
+#: Hugging Face download.
+#:
+#: The manuscript quotes a SHIFT (LFS-shaped minus uniform), and the Universal
+#: Credit award-cache fix moves both sides by about +2.7 points, so the shift
+#: survives it — but only within one vintage. Pairing the pre-fix LFS models
+#: against the re-run comparator returns +0.07/+0.58/-0.78 in place of the
+#: correct +2.82/+3.33/+1.97, reversing the finding that worker selection
+#: matters. See results/prefix_pipeline/README.md.
+UNIFORM = ROOT / "results/prefix_pipeline/full_tariff_displacement.json"
+WAGE_CUT = ROOT / "results/prefix_pipeline/full_tariff_wage_cut.json"
+CURRENT_UNIFORM = ROOT / "results/full_tariff_displacement.json"
 SENSITIVITY = ROOT / "results/lfs_selection_sensitivity.json"
 OUTPUT = ROOT / "paper/generated_lfs_selection.tex"
 
@@ -118,6 +131,46 @@ def main() -> None:
             f"against {sensitivity['n_draws']}. Do not mix the 100-draw "
             "production suite with the 50-draw submission design."
         )
+    # VINTAGE GUARD. `selection_method` was added to MonteCarloResult after
+    # these artifacts were first written, so its presence dates an artifact:
+    # anything from the re-run carries it, anything older does not. The LFS
+    # models and their comparators must sit on the same side of that line, or
+    # the shift mixes a pre-fix minuend with a post-fix subtrahend.
+    def vintage(item: dict) -> str:
+        return "re-run" if item.get("selection_method") is not None else "pre-fix"
+
+    lfs_vintages = {
+        name: vintage(sensitivity["models"][name])
+        for name in LFS_MODELS
+        if name in sensitivity["models"]
+    }
+    comparator_vintages = {UNIFORM.name: vintage(uniform), WAGE_CUT.name: vintage(wage_cut)}
+    all_vintages = set(lfs_vintages.values()) | set(comparator_vintages.values())
+    if len(all_vintages) > 1:
+        raise ValueError(
+            "LFS selection models and their comparators come from different "
+            "pipeline vintages, so their difference is not a selection shift.\n"
+            f"  LFS models : {lfs_vintages}\n"
+            f"  comparators: {comparator_vintages}\n"
+            "The Universal Credit award-cache fix moved every displacement-"
+            "family cushioning rate by about +2.7 points. Subtracting across "
+            "that boundary turns shifts of roughly +2 to +3 points into "
+            "roughly zero. Pair like with like: either re-run the LFS "
+            "sensitivity (needs UKDA SN 9490) and point UNIFORM/WAGE_CUT at "
+            "results/full_tariff_*.json, or leave both on the pre-fix copies "
+            "in results/prefix_pipeline/."
+        )
+    if all_vintages == {"pre-fix"} and CURRENT_UNIFORM.exists():
+        current = json.loads(CURRENT_UNIFORM.read_text())
+        if current.get("selection_method") is not None:
+            print(
+                "NOTE: the LFS selection sensitivity is still on the pre-fix "
+                "pipeline and is compared against pre-fix comparators, which "
+                "is correct for a shift but means its LEVELS are stale. "
+                "Re-run it against UKDA SN 9490 to retire "
+                "results/prefix_pipeline/."
+            )
+
     missing = [name for name in LFS_MODELS if name not in sensitivity["models"]]
     if missing:
         raise KeyError(
@@ -155,6 +208,23 @@ def main() -> None:
         # it narrates the narrowing, or it silently mixes two designs.
         "LFSSelectionBaselineGap": f"{wage_cushion - uniform_cushion:.1f}",
     }
+
+    # How far the pre-fix levels sit below their corrected counterparts,
+    # measured rather than asserted: the same scenario, same design, same
+    # draw count, run either side of the Universal Credit award-cache fix.
+    # The manuscript quotes this when it warns that the LFS levels are on the
+    # older pipeline, so the warning cannot drift from the artifacts.
+    if CURRENT_UNIFORM.exists():
+        current = json.loads(CURRENT_UNIFORM.read_text())
+        if current.get("selection_method") is not None:
+            shift = cushion_percent(current) - uniform_cushion
+            if current["n_draws"] != uniform["n_draws"]:
+                raise ValueError(
+                    "the pre-fix and re-run comparators must share a draw "
+                    f"count to measure the cache shift: {uniform['n_draws']} "
+                    f"vs {current['n_draws']}"
+                )
+            macros["FactorialCacheShift"] = f"{shift:.1f}"
 
     OUTPUT.write_text(
         "% Generated by analysis/write_lfs_selection_results.py\n"

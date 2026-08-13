@@ -187,9 +187,10 @@ of the mechanism but not its size. A genuinely independent weighted benchmark
 would apply the statutory schedule to the exposed earnings distribution
 outside PolicyEngine; that distribution is not currently reported, which is a
 gap in this draft. All figures in this comparison are on the
-\FactorialChannelSeeds\ channel seeds; the \FactorialDraws-draw step is
-\FactorialConcStep\ points, and comparing across the two bases would
-overstate the offsets by more than a factor of two.
+\FactorialChannelSeeds\ channel seeds, which is now the same count as the
+\FactorialDraws\ paired assignments behind the steps, so the two bases give
+the same concentration step (\FactorialConcStepChannelSeeds\ against
+\FactorialConcStep\ points) and no cross-basis correction is required.
 
 Three things prevent the simulation from being a restatement of that
 arithmetic, and they are what the exercise contributes. First, the
@@ -217,20 +218,19 @@ means-tested safety net will have it backwards: the gap opens because the
 loss at the average rate, and the means-tested response works against it.
 
 One limitation of this split should be stated rather than left to the
-artifact, and it is larger than a rounding remark. The channel decomposition
-is computed on \FactorialChannelSeeds\ common seeds while the steps are
-estimated over \FactorialDraws\ paired assignments. On those five seeds the
-concentration step is \FactorialConcStepChannelSeeds\ points, against the
-\FactorialConcStep\ points of the full design---a discrepancy of more than a
-third---and the employment-state step is
-\FactorialStateStepChannelSeeds\ points against \FactorialStateStep. Every
-channel figure in this subsection therefore belongs to the five-seed run and
-should be read as a decomposition of the \emph{mechanism}, not as an
-accounting identity for the headline numbers. Where the paper quotes a
-channel share and a headline rate in the same sentence, the seed basis is
-stated. Re-running the split at the full draw count would dissolve the
-problem and is inexpensive; it is listed among the outstanding items in
-Section~\ref{sec:discussion}.
+artifact. The channel decomposition is computed on
+\FactorialChannelSeeds\ common seeds and the steps over \FactorialDraws\
+paired assignments, and because those counts now agree the two bases return
+the same answer: the concentration step is
+\FactorialConcStepChannelSeeds\ points on the channel seeds against
+\FactorialConcStep\ on the full design, and the employment-state step
+\FactorialStateStepChannelSeeds\ against \FactorialStateStep. The channel
+figures are therefore an accounting identity for the headline numbers, not
+merely a decomposition of the mechanism. An earlier revision ran the split on
+five seeds, where the concentration step differed from the full design by
+more than a third and every channel share had to be read on its own basis;
+that caveat no longer applies and the columns now sum to their own
+headlines.
 
 One limit of this design should be stated before the readings. With the
 aggregate held fixed and concentrated on the ten records a displacement draw
@@ -521,33 +521,30 @@ out-of-work benefits 0.163): the unemployment shock is stabilised
 diffuse wage cut.
 
 Decomposing the displacement margin on the same channels locates the
-discrepancy, subject to one accounting caveat that must come first. The
-channel split runs on \FactorialChannelSeeds\ common seeds while the
-cushioning rates are estimated over \FactorialDraws\ paired assignments, and
-on the stochastic margins the two do not coincide: the displacement channels
-sum to \DispChannelSum\ per cent against the \SubmissionUnitDisplacedCushion\
-per cent headline, a shortfall of \DispChannelShortfall\ points. The
-deterministic wage-cut column sums to \WageChannelSum\ per cent, exactly its
-own headline, which identifies the shortfall as seed-subset drift rather
-than a missing channel. Dolls et al.'s coefficients, by contrast, add up
-exactly. The comparison below is therefore between their decomposition and
-this paper's \emph{five-seed} run, and the implied total difference is
-\DispChannelSum--41.5 rather than the \SubmissionUnitDisplacedCushion--41.5
-the headline would suggest. Re-running the channel split at the full draw
-count would remove the caveat and is cheap; it has not been done here.
+discrepancy. The channel split runs on \FactorialChannelSeeds\ common seeds,
+the same count as the \FactorialDraws\ paired assignments behind the
+cushioning rates, and the two now coincide: the displacement channels sum to
+\DispChannelSum\ per cent against a \SubmissionUnitDisplacedCushion\ per cent
+headline, a shortfall of \DispChannelShortfall\ points, and the wage-cut
+column likewise sums to its own headline. An earlier revision ran this split
+on five seeds and carried a \pounds-for-\pounds\ shortfall of several points,
+which it reported as a caveat on the comparison; the shortfall was seed-subset
+drift and disappears at the full count. The decomposition and Dolls et al.'s
+therefore both add up, and the comparison below is between like and like.
 
 With that stated, the tax side agrees closely: income tax and employee
 National Insurance together absorb \DispChannelTaxAndNI\ per cent of the
 displaced gross loss here against 25.2 per cent in their unemployment cell.
-The benefit side does not agree at all: all modelled benefits supply
-\DispChannelBenefits\ per cent here against their 16.3 per cent, a factor of
-roughly six. One further term has no counterpart in their decomposition and
-should not be quietly absorbed: the \DispChannelResidual-point employee
-pension and salary-sacrifice outflow, which is a reduction in deferred
-saving rather than a public transfer and which is about a seventh of the
-displacement channel sum, or two-fifths of the 11.2-point difference against
-Dolls et al.---the same term that supplies about an eighth of
-measured cushioning on the displacement margin (Section~\ref{sec:results-mechanism}). The decomposition is exactly the two terms above: moving from their income
+The benefit side agrees less well: all modelled benefits supply
+\DispChannelBenefits\ per cent here against their \DollsUKBenefits\ per
+cent, a factor of \DollsBenefitRatio. One further term has no counterpart in
+their decomposition and should not be quietly absorbed: the
+\DispChannelResidual-point employee pension and salary-sacrifice outflow,
+which is a reduction in deferred saving rather than a public transfer. It is
+\ResidualShareOfDispSum\ per cent of the displacement channel sum and
+\ResidualShareOfDollsGap\ per cent of the \DollsGapPoints-point total
+difference against Dolls et al.---so once it is set aside, very little of the
+level difference remains to be explained by institutions at all. The decomposition is exactly the two terms above: moving from their income
 shock to their unemployment shock, the tax component \emph{falls} from 0.267
 to 0.191---the marginal-minus-average wedge---while the benefit component
 rises from 0.031 to 0.163, the $B_{\text{out}}$ term. In their estimates the
@@ -583,13 +580,22 @@ targets and propagates each through the fiscal model while preserving every
 division's expected wage-bill loss. Across all three LFS-shaped risk models,
 mean displacement cushioning spans
 \LFSSelectionCushionMin--\LFSSelectionCushionMax\ per cent against
-\LFSUniformCushion\ per cent under uniform assignment. Two design points
+\LFSUniformCushion\ per cent under uniform assignment. Three design points
 must travel with those numbers. This family, and its uniform benchmark, use
 the \LFSSelectionDraws-draw Bernoulli design rather than the
 \SubmissionDraws-draw balanced design of the primary table, so the gap it
 narrows is its own baseline of \LFSSelectionBaselineGap\ points rather than
 the \PrimaryCushionDifference\ points reported in
-Table~\ref{tab:cushioning}; and the three models agree
+Table~\ref{tab:cushioning}. Both sides of this comparison are also computed
+on the pipeline as it stood \emph{before} the Universal Credit award-cache
+correction described in Section~\ref{sec:results-factorial}: the LFS models
+are built on the five-quarter longitudinal file, licensed separately from the
+Family Resources Survey, and could not be re-run for this revision. The
+levels are therefore roughly \FactorialCacheShift\ points below their
+corrected counterparts and should not be read beside the rates in
+Table~\ref{tab:cushioning}; the \emph{shift} between them is what this
+subsection quotes, and it is computed within one vintage, which is why it
+survives the correction. Finally, the three models agree
 closely with each other---their spread is smaller than the assignment SD of
 any single specification---but they do \emph{not} agree with uniform
 assignment. Every LFS-shaped model raises
@@ -610,25 +616,43 @@ selection-model sensitivity---not tariff-specific worker risk. Full designs,
 distributions and tables are in the Online Supplement
 (Sections~S3--S4).
 
-One labelling point governs the rest of this subsection and the appendix reconciliation. The \ProductionDraws-draw legacy scenarios are run under the \emph{Bernoulli comparator}, not the balanced design of Table~\ref{tab:cushioning}. That is read from the scenario definitions in the source rather than from the artifacts, which predate the field that records it; the build now carries a guard that will check it once those families are re-run, and warns until then.
+One labelling point governs the rest of this subsection and the appendix reconciliation. The \ProductionDraws-draw legacy scenarios are run under the \emph{Bernoulli comparator}, not the balanced design of Table~\ref{tab:cushioning}. Each of those artifacts now records its own \texttt{selection\_method}, so this is read off the artifact rather than inferred from the scenario definitions in the source, and the build fails rather than warns if a central artifact omits it. Earlier revisions could only infer the design, because every shipped artifact predated the field.
 The consequence of the design difference is visible: that is why their gross-loss dispersion is an order of magnitude wider than the table's. Figures from the two designs are not interchangeable and are labelled at the point of use. The realised displacement output is consistent with the allocation design but too sparse for precise empirical incidence: the expected 9.7 selected FRS records per assignment produce \FullDisplacedWorkers{} thousand represented displaced workers and \pounds $\FullDisplacedGross\pm\FullDisplacedGrossSD$ million of gross loss. The gross-loss SD is nearly half its mean, and Exchequer-cost SD exceeds half its mean. The 100-assignment average is numerically more stable than an individual assignment, but it remains conditional on the observed 1,018 exposed records and the uniform within-division selection rule.
 
-\paragraph{Take-up: an empty grid, and the margin that binds.}\label{sec:results-takeup} Because the
+\paragraph{Take-up: a live grid, and how nearly it was missed.}\label{sec:results-takeup} Because the
 displacement-side cushion runs through UC, the claiming convention was
 scored over \TakeupSeeds\ assignments at new-entitlement rates of 0.55, 0.80
 and 1.00, with the stale pre-shock flag restored as a fourth convention.
-Displacement cushioning is \TakeupDisplacedCentral\ per cent under all four,
-and the maximum spread across them is \TakeupConventionSpread\ percentage
-points. That result should not be read as robustness. The four conventions
-agree not to within rounding but \emph{exactly}, to machine precision, across
-a stochastic re-draw---which is only possible if no benefit unit is ever
-re-drawn. That conclusion is \TakeupInertBasis. As
-Section~\ref{sec:method-takeup} explains, almost every displaced
+Displacement cushioning runs from \TakeupLowConvention\ per cent at the
+lowest claiming rate to \TakeupFullConvention\ per cent at full take-up, a
+spread of \TakeupConventionSpread\ percentage points---about half the
+\PrimaryCushionDifference-point headline contrast this paper is built on. The
+claiming rate is therefore a binding parameter, and one of the largest
+single sources of uncertainty in the exercise. The re-draw set is not empty:
+\TakeupRedrawnBenunits\ benefit units are re-drawn per assignment on
+average (at most \TakeupRedrawnMax), representing
+\TakeupRedrawnWeighted\ thousand households. That conclusion is
+\TakeupInertBasis.
+
+An earlier revision of this paper reported the opposite, and the reason is
+worth stating because it generalises. On that pipeline all four conventions
+returned cushioning that agreed not to within rounding but \emph{exactly}, to
+machine precision, across a stochastic re-draw. The inference drawn was that
+no benefit unit could be re-drawn at all---that almost every displaced
 worker's benefit unit already holds a positive all-claim entitlement at
 baseline through the in-work means test, so none satisfies the
-zero-to-positive condition that the new-entitlement scope requires. The grid
-varies a parameter with an empty domain, and the correct inference is that
-this specification tests nothing, not that claiming does not matter. (The
+zero-to-positive condition the new-entitlement scope requires, and the grid
+therefore varied a parameter with an empty domain. The premise was a defect,
+not a feature of the tax--benefit system: a shocked simulation was being
+served its \emph{baseline} Universal Credit award from a stale formula
+cache, so re-drawing the claiming flag could not move anything. Units were
+being re-drawn all along and their awards were not being recomputed. With the
+cache invalidated before measurement, the same grid moves by
+\TakeupConventionSpread\ points. A design that returns bit-identical output
+across a stochastic parameter should be treated as a suspected defect before
+it is reported as a finding; the diagnostic that separates the two---counting
+the re-draw set directly rather than inferring it from an exact-zero
+spread---is now stored with the grid and checked at build time. (The
 level itself sits below the \SubmissionUnitDisplacedCushion\ per cent of
 Table~\ref{tab:cushioning} because this grid runs on the Bernoulli comparator
 over \TakeupSeeds\ seeds rather than the \SubmissionDraws-draw balanced

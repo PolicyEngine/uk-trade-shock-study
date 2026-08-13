@@ -1,0 +1,3665 @@
+{
+  "design": {
+    "period": 2026,
+    "tariff_scenario": "full_tariff",
+    "elasticity": 1.0,
+    "selection_method": "balanced",
+    "uc_takeup": 0.8,
+    "uc_takeup_scope": "new_entitlement",
+    "n_seeds": 5,
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "phi_grid": [
+      0.00017,
+      0.00035041136064185624,
+      0.0007222830686286888,
+      0.0014888011343926703,
+      0.0030687813601627937,
+      0.006325505011335355,
+      0.0130384048104053,
+      0.02687532453066734,
+      0.05539658256754467,
+      0.11418583454354266,
+      0.2353647861672275,
+      0.48514408804728054,
+      1.0
+    ],
+    "expected_gross_earnings_loss": 885749325.2499495,
+    "n_exposed_employee_records": 1018,
+    "notes": "Aggregate expected wage-bill loss is held fixed at each division's declared s_j at every phi: the loss fraction is clip(phi, s_j, 1) and the selection probability is s_j / clip(phi, s_j, 1), whose product is s_j exactly. Nobody changes employment state anywhere on the sweep, so the only thing varying is the concentration of a fixed loss. phi <= min_j s_j reproduces the diffuse wage cut; phi = 1 reproduces the concentrated wage cut (bit-identical under bernoulli assignment)."
+  },
+  "points": [
+    {
+      "phi": 0.00017,
+      "n_divisions": 23,
+      "n_divisions_clipped": 22,
+      "expected_gross_earnings_loss": 885749325.2499495,
+      "realised_over_expected_loss": 0.9999999999999987,
+      "division_schedule": {
+        "10": {
+          "sector_shock": 0.0009900000000000002,
+          "phi_effective": 0.0009900000000000002,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 174
+        },
+        "11": {
+          "sector_shock": 0.006270000000000001,
+          "phi_effective": 0.006270000000000001,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 22
+        },
+        "12": {
+          "sector_shock": 0.00472,
+          "phi_effective": 0.00472,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 2
+        },
+        "13": {
+          "sector_shock": 0.00478,
+          "phi_effective": 0.00478,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 13
+        },
+        "14": {
+          "sector_shock": 0.01465,
+          "phi_effective": 0.01465,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 13
+        },
+        "15": {
+          "sector_shock": 0.007850000000000001,
+          "phi_effective": 0.007850000000000001,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 1
+        },
+        "16": {
+          "sector_shock": 0.00017,
+          "phi_effective": 0.00017,
+          "selection_probability": 1.0,
+          "clipped": false,
+          "exposed_records": 18
+        },
+        "17": {
+          "sector_shock": 0.0015900000000000003,
+          "phi_effective": 0.0015900000000000003,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 26
+        },
+        "18": {
+          "sector_shock": 0.0047,
+          "phi_effective": 0.0047,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 35
+        },
+        "19": {
+          "sector_shock": 0.00255,
+          "phi_effective": 0.00255,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 4
+        },
+        "20": {
+          "sector_shock": 0.012520000000000002,
+          "phi_effective": 0.012520000000000002,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 28
+        },
+        "21": {
+          "sector_shock": 0.01301,
+          "phi_effective": 0.01301,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 66
+        },
+        "22": {
+          "sector_shock": 0.00196,
+          "phi_effective": 0.00196,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 53
+        },
+        "23": {
+          "sector_shock": 0.0025000000000000005,
+          "phi_effective": 0.0025000000000000005,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 40
+        },
+        "24": {
+          "sector_shock": 0.012625,
+          "phi_effective": 0.012625,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 28
+        },
+        "25": {
+          "sector_shock": 0.0030800000000000003,
+          "phi_effective": 0.0030800000000000003,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 97
+        },
+        "26": {
+          "sector_shock": 0.01786,
+          "phi_effective": 0.01786,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 57
+        },
+        "27": {
+          "sector_shock": 0.01263,
+          "phi_effective": 0.01263,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 37
+        },
+        "28": {
+          "sector_shock": 0.01801,
+          "phi_effective": 0.01801,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 89
+        },
+        "29": {
+          "sector_shock": 0.027425,
+          "phi_effective": 0.027425,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 63
+        },
+        "30": {
+          "sector_shock": 0.015690000000000003,
+          "phi_effective": 0.015690000000000003,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 73
+        },
+        "31": {
+          "sector_shock": 0.006350000000000001,
+          "phi_effective": 0.006350000000000001,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 29
+        },
+        "32": {
+          "sector_shock": 0.01391,
+          "phi_effective": 0.01391,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 50
+        }
+      },
+      "summary": {
+        "cushioning_rate": {
+          "mean": 0.43930884975852935,
+          "sd": 0.0,
+          "valid_draws": 5
+        },
+        "exchequer_cost": {
+          "mean": 484212736.0,
+          "sd": 0.0,
+          "valid_draws": 5
+        },
+        "gross_earnings_loss": {
+          "mean": 885749325.2499483,
+          "sd": 0.0,
+          "valid_draws": 5
+        },
+        "net_disposable_loss": {
+          "mean": 496631808.0,
+          "sd": 0.0,
+          "valid_draws": 5
+        },
+        "effective_loss_records": {
+          "mean": 226.07919873714064,
+          "sd": 3.1776437161565096e-14,
+          "valid_draws": 5
+        },
+        "affected_records": {
+          "mean": 1018.0,
+          "sd": 0.0,
+          "valid_draws": 5
+        },
+        "affected_weighted": {
+          "mean": 1839976.78225708,
+          "sd": 0.0,
+          "valid_draws": 5
+        },
+        "max_record_loss_share": {
+          "mean": 0.035607692457740994,
+          "sd": 0.0,
+          "valid_draws": 5
+        },
+        "poverty_rate_change_bhc": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "valid_draws": 5
+        }
+      },
+      "draws": [
+        {
+          "seed": 0,
+          "cushioning_rate": 0.43930884975852935,
+          "exchequer_cost": 484212736.0,
+          "net_disposable_loss": 496631808.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 885749325.2499483,
+          "affected_records": 1018,
+          "affected_weighted": 1839976.78225708,
+          "effective_loss_records": 226.07919873714062,
+          "max_record_loss_share": 0.035607692457740994
+        },
+        {
+          "seed": 1,
+          "cushioning_rate": 0.43930884975852935,
+          "exchequer_cost": 484212736.0,
+          "net_disposable_loss": 496631808.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 885749325.2499483,
+          "affected_records": 1018,
+          "affected_weighted": 1839976.78225708,
+          "effective_loss_records": 226.07919873714062,
+          "max_record_loss_share": 0.035607692457740994
+        },
+        {
+          "seed": 2,
+          "cushioning_rate": 0.43930884975852935,
+          "exchequer_cost": 484212736.0,
+          "net_disposable_loss": 496631808.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 885749325.2499483,
+          "affected_records": 1018,
+          "affected_weighted": 1839976.78225708,
+          "effective_loss_records": 226.07919873714062,
+          "max_record_loss_share": 0.035607692457740994
+        },
+        {
+          "seed": 3,
+          "cushioning_rate": 0.43930884975852935,
+          "exchequer_cost": 484212736.0,
+          "net_disposable_loss": 496631808.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 885749325.2499483,
+          "affected_records": 1018,
+          "affected_weighted": 1839976.78225708,
+          "effective_loss_records": 226.07919873714062,
+          "max_record_loss_share": 0.035607692457740994
+        },
+        {
+          "seed": 4,
+          "cushioning_rate": 0.43930884975852935,
+          "exchequer_cost": 484212736.0,
+          "net_disposable_loss": 496631808.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 885749325.2499483,
+          "affected_records": 1018,
+          "affected_weighted": 1839976.78225708,
+          "effective_loss_records": 226.07919873714062,
+          "max_record_loss_share": 0.035607692457740994
+        }
+      ]
+    },
+    {
+      "phi": 0.00035041136064185624,
+      "n_divisions": 23,
+      "n_divisions_clipped": 22,
+      "expected_gross_earnings_loss": 885749325.2499495,
+      "realised_over_expected_loss": 1.0000001506557352,
+      "division_schedule": {
+        "10": {
+          "sector_shock": 0.0009900000000000002,
+          "phi_effective": 0.0009900000000000002,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 174
+        },
+        "11": {
+          "sector_shock": 0.006270000000000001,
+          "phi_effective": 0.006270000000000001,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 22
+        },
+        "12": {
+          "sector_shock": 0.00472,
+          "phi_effective": 0.00472,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 2
+        },
+        "13": {
+          "sector_shock": 0.00478,
+          "phi_effective": 0.00478,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 13
+        },
+        "14": {
+          "sector_shock": 0.01465,
+          "phi_effective": 0.01465,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 13
+        },
+        "15": {
+          "sector_shock": 0.007850000000000001,
+          "phi_effective": 0.007850000000000001,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 1
+        },
+        "16": {
+          "sector_shock": 0.00017,
+          "phi_effective": 0.00035041136064185624,
+          "selection_probability": 0.4851440880472804,
+          "clipped": false,
+          "exposed_records": 18
+        },
+        "17": {
+          "sector_shock": 0.0015900000000000003,
+          "phi_effective": 0.0015900000000000003,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 26
+        },
+        "18": {
+          "sector_shock": 0.0047,
+          "phi_effective": 0.0047,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 35
+        },
+        "19": {
+          "sector_shock": 0.00255,
+          "phi_effective": 0.00255,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 4
+        },
+        "20": {
+          "sector_shock": 0.012520000000000002,
+          "phi_effective": 0.012520000000000002,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 28
+        },
+        "21": {
+          "sector_shock": 0.01301,
+          "phi_effective": 0.01301,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 66
+        },
+        "22": {
+          "sector_shock": 0.00196,
+          "phi_effective": 0.00196,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 53
+        },
+        "23": {
+          "sector_shock": 0.0025000000000000005,
+          "phi_effective": 0.0025000000000000005,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 40
+        },
+        "24": {
+          "sector_shock": 0.012625,
+          "phi_effective": 0.012625,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 28
+        },
+        "25": {
+          "sector_shock": 0.0030800000000000003,
+          "phi_effective": 0.0030800000000000003,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 97
+        },
+        "26": {
+          "sector_shock": 0.01786,
+          "phi_effective": 0.01786,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 57
+        },
+        "27": {
+          "sector_shock": 0.01263,
+          "phi_effective": 0.01263,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 37
+        },
+        "28": {
+          "sector_shock": 0.01801,
+          "phi_effective": 0.01801,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 89
+        },
+        "29": {
+          "sector_shock": 0.027425,
+          "phi_effective": 0.027425,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 63
+        },
+        "30": {
+          "sector_shock": 0.015690000000000003,
+          "phi_effective": 0.015690000000000003,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 73
+        },
+        "31": {
+          "sector_shock": 0.006350000000000001,
+          "phi_effective": 0.006350000000000001,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 29
+        },
+        "32": {
+          "sector_shock": 0.01391,
+          "phi_effective": 0.01391,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 50
+        }
+      },
+      "summary": {
+        "cushioning_rate": {
+          "mean": 0.43930893422985484,
+          "sd": 0.0,
+          "valid_draws": 5
+        },
+        "exchequer_cost": {
+          "mean": 484212736.0,
+          "sd": 0.0,
+          "valid_draws": 5
+        },
+        "gross_earnings_loss": {
+          "mean": 885749458.6931652,
+          "sd": 1.3328003749250113e-07,
+          "valid_draws": 5
+        },
+        "net_disposable_loss": {
+          "mean": 496631808.0,
+          "sd": 0.0,
+          "valid_draws": 5
+        },
+        "effective_loss_records": {
+          "mean": 226.07855451779847,
+          "sd": 0.0,
+          "valid_draws": 5
+        },
+        "affected_records": {
+          "mean": 1008.0,
+          "sd": 0.0,
+          "valid_draws": 5
+        },
+        "affected_weighted": {
+          "mean": 1815943.6509094238,
+          "sd": 0.0,
+          "valid_draws": 5
+        },
+        "max_record_loss_share": {
+          "mean": 0.035607687093238666,
+          "sd": 0.0,
+          "valid_draws": 5
+        },
+        "poverty_rate_change_bhc": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "valid_draws": 5
+        }
+      },
+      "draws": [
+        {
+          "seed": 0,
+          "cushioning_rate": 0.43930893422985484,
+          "exchequer_cost": 484212736.0,
+          "net_disposable_loss": 496631808.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 885749458.6931653,
+          "affected_records": 1008,
+          "affected_weighted": 1815943.6509094238,
+          "effective_loss_records": 226.07855451779847,
+          "max_record_loss_share": 0.035607687093238666
+        },
+        {
+          "seed": 1,
+          "cushioning_rate": 0.43930893422985484,
+          "exchequer_cost": 484212736.0,
+          "net_disposable_loss": 496631808.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 885749458.6931653,
+          "affected_records": 1008,
+          "affected_weighted": 1815943.6509094238,
+          "effective_loss_records": 226.07855451779847,
+          "max_record_loss_share": 0.035607687093238666
+        },
+        {
+          "seed": 2,
+          "cushioning_rate": 0.43930893422985484,
+          "exchequer_cost": 484212736.0,
+          "net_disposable_loss": 496631808.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 885749458.6931653,
+          "affected_records": 1008,
+          "affected_weighted": 1815943.6509094238,
+          "effective_loss_records": 226.07855451779847,
+          "max_record_loss_share": 0.035607687093238666
+        },
+        {
+          "seed": 3,
+          "cushioning_rate": 0.43930893422985484,
+          "exchequer_cost": 484212736.0,
+          "net_disposable_loss": 496631808.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 885749458.6931653,
+          "affected_records": 1008,
+          "affected_weighted": 1815943.6509094238,
+          "effective_loss_records": 226.07855451779847,
+          "max_record_loss_share": 0.035607687093238666
+        },
+        {
+          "seed": 4,
+          "cushioning_rate": 0.43930893422985484,
+          "exchequer_cost": 484212736.0,
+          "net_disposable_loss": 496631808.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 885749458.6931653,
+          "affected_records": 1008,
+          "affected_weighted": 1815943.6509094238,
+          "effective_loss_records": 226.07855451779847,
+          "max_record_loss_share": 0.035607687093238666
+        }
+      ]
+    },
+    {
+      "phi": 0.0007222830686286888,
+      "n_divisions": 23,
+      "n_divisions_clipped": 22,
+      "expected_gross_earnings_loss": 885749325.2499495,
+      "realised_over_expected_loss": 0.9999841506935107,
+      "division_schedule": {
+        "10": {
+          "sector_shock": 0.0009900000000000002,
+          "phi_effective": 0.0009900000000000002,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 174
+        },
+        "11": {
+          "sector_shock": 0.006270000000000001,
+          "phi_effective": 0.006270000000000001,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 22
+        },
+        "12": {
+          "sector_shock": 0.00472,
+          "phi_effective": 0.00472,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 2
+        },
+        "13": {
+          "sector_shock": 0.00478,
+          "phi_effective": 0.00478,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 13
+        },
+        "14": {
+          "sector_shock": 0.01465,
+          "phi_effective": 0.01465,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 13
+        },
+        "15": {
+          "sector_shock": 0.007850000000000001,
+          "phi_effective": 0.007850000000000001,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 1
+        },
+        "16": {
+          "sector_shock": 0.00017,
+          "phi_effective": 0.0007222830686286888,
+          "selection_probability": 0.2353647861672272,
+          "clipped": false,
+          "exposed_records": 18
+        },
+        "17": {
+          "sector_shock": 0.0015900000000000003,
+          "phi_effective": 0.0015900000000000003,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 26
+        },
+        "18": {
+          "sector_shock": 0.0047,
+          "phi_effective": 0.0047,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 35
+        },
+        "19": {
+          "sector_shock": 0.00255,
+          "phi_effective": 0.00255,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 4
+        },
+        "20": {
+          "sector_shock": 0.012520000000000002,
+          "phi_effective": 0.012520000000000002,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 28
+        },
+        "21": {
+          "sector_shock": 0.01301,
+          "phi_effective": 0.01301,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 66
+        },
+        "22": {
+          "sector_shock": 0.00196,
+          "phi_effective": 0.00196,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 53
+        },
+        "23": {
+          "sector_shock": 0.0025000000000000005,
+          "phi_effective": 0.0025000000000000005,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 40
+        },
+        "24": {
+          "sector_shock": 0.012625,
+          "phi_effective": 0.012625,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 28
+        },
+        "25": {
+          "sector_shock": 0.0030800000000000003,
+          "phi_effective": 0.0030800000000000003,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 97
+        },
+        "26": {
+          "sector_shock": 0.01786,
+          "phi_effective": 0.01786,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 57
+        },
+        "27": {
+          "sector_shock": 0.01263,
+          "phi_effective": 0.01263,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 37
+        },
+        "28": {
+          "sector_shock": 0.01801,
+          "phi_effective": 0.01801,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 89
+        },
+        "29": {
+          "sector_shock": 0.027425,
+          "phi_effective": 0.027425,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 63
+        },
+        "30": {
+          "sector_shock": 0.015690000000000003,
+          "phi_effective": 0.015690000000000003,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 73
+        },
+        "31": {
+          "sector_shock": 0.006350000000000001,
+          "phi_effective": 0.006350000000000001,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 29
+        },
+        "32": {
+          "sector_shock": 0.01391,
+          "phi_effective": 0.01391,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 50
+        }
+      },
+      "summary": {
+        "cushioning_rate": {
+          "mean": 0.4394479440591721,
+          "sd": 0.0,
+          "valid_draws": 5
+        },
+        "exchequer_cost": {
+          "mean": 484212736.0,
+          "sd": 0.0,
+          "valid_draws": 5
+        },
+        "gross_earnings_loss": {
+          "mean": 885735286.7374208,
+          "sd": 0.0,
+          "valid_draws": 5
+        },
+        "net_disposable_loss": {
+          "mean": 496500736.0,
+          "sd": 0.0,
+          "valid_draws": 5
+        },
+        "effective_loss_records": {
+          "mean": 226.07148746224738,
+          "sd": 0.0,
+          "valid_draws": 5
+        },
+        "affected_records": {
+          "mean": 1005.0,
+          "sd": 0.0,
+          "valid_draws": 5
+        },
+        "affected_weighted": {
+          "mean": 1810631.7129211426,
+          "sd": 0.0,
+          "valid_draws": 5
+        },
+        "max_record_loss_share": {
+          "mean": 0.0356082568239169,
+          "sd": 0.0,
+          "valid_draws": 5
+        },
+        "poverty_rate_change_bhc": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "valid_draws": 5
+        }
+      },
+      "draws": [
+        {
+          "seed": 0,
+          "cushioning_rate": 0.4394479440591721,
+          "exchequer_cost": 484212736.0,
+          "net_disposable_loss": 496500736.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 885735286.7374208,
+          "affected_records": 1005,
+          "affected_weighted": 1810631.7129211426,
+          "effective_loss_records": 226.07148746224738,
+          "max_record_loss_share": 0.0356082568239169
+        },
+        {
+          "seed": 1,
+          "cushioning_rate": 0.4394479440591721,
+          "exchequer_cost": 484212736.0,
+          "net_disposable_loss": 496500736.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 885735286.7374208,
+          "affected_records": 1005,
+          "affected_weighted": 1810631.7129211426,
+          "effective_loss_records": 226.07148746224738,
+          "max_record_loss_share": 0.0356082568239169
+        },
+        {
+          "seed": 2,
+          "cushioning_rate": 0.4394479440591721,
+          "exchequer_cost": 484212736.0,
+          "net_disposable_loss": 496500736.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 885735286.7374208,
+          "affected_records": 1005,
+          "affected_weighted": 1810631.7129211426,
+          "effective_loss_records": 226.07148746224738,
+          "max_record_loss_share": 0.0356082568239169
+        },
+        {
+          "seed": 3,
+          "cushioning_rate": 0.4394479440591721,
+          "exchequer_cost": 484212736.0,
+          "net_disposable_loss": 496500736.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 885735286.7374208,
+          "affected_records": 1005,
+          "affected_weighted": 1810631.7129211426,
+          "effective_loss_records": 226.07148746224738,
+          "max_record_loss_share": 0.0356082568239169
+        },
+        {
+          "seed": 4,
+          "cushioning_rate": 0.4394479440591721,
+          "exchequer_cost": 484212736.0,
+          "net_disposable_loss": 496500736.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 885735286.7374208,
+          "affected_records": 1005,
+          "affected_weighted": 1810631.7129211426,
+          "effective_loss_records": 226.07148746224738,
+          "max_record_loss_share": 0.0356082568239169
+        }
+      ]
+    },
+    {
+      "phi": 0.0014888011343926703,
+      "n_divisions": 23,
+      "n_divisions_clipped": 21,
+      "expected_gross_earnings_loss": 885749325.2499495,
+      "realised_over_expected_loss": 1.0000111137878547,
+      "division_schedule": {
+        "10": {
+          "sector_shock": 0.0009900000000000002,
+          "phi_effective": 0.0014888011343926703,
+          "selection_probability": 0.6649645658712189,
+          "clipped": false,
+          "exposed_records": 174
+        },
+        "11": {
+          "sector_shock": 0.006270000000000001,
+          "phi_effective": 0.006270000000000001,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 22
+        },
+        "12": {
+          "sector_shock": 0.00472,
+          "phi_effective": 0.00472,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 2
+        },
+        "13": {
+          "sector_shock": 0.00478,
+          "phi_effective": 0.00478,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 13
+        },
+        "14": {
+          "sector_shock": 0.01465,
+          "phi_effective": 0.01465,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 13
+        },
+        "15": {
+          "sector_shock": 0.007850000000000001,
+          "phi_effective": 0.007850000000000001,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 1
+        },
+        "16": {
+          "sector_shock": 0.00017,
+          "phi_effective": 0.0014888011343926703,
+          "selection_probability": 0.11418583454354263,
+          "clipped": false,
+          "exposed_records": 18
+        },
+        "17": {
+          "sector_shock": 0.0015900000000000003,
+          "phi_effective": 0.0015900000000000003,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 26
+        },
+        "18": {
+          "sector_shock": 0.0047,
+          "phi_effective": 0.0047,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 35
+        },
+        "19": {
+          "sector_shock": 0.00255,
+          "phi_effective": 0.00255,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 4
+        },
+        "20": {
+          "sector_shock": 0.012520000000000002,
+          "phi_effective": 0.012520000000000002,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 28
+        },
+        "21": {
+          "sector_shock": 0.01301,
+          "phi_effective": 0.01301,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 66
+        },
+        "22": {
+          "sector_shock": 0.00196,
+          "phi_effective": 0.00196,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 53
+        },
+        "23": {
+          "sector_shock": 0.0025000000000000005,
+          "phi_effective": 0.0025000000000000005,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 40
+        },
+        "24": {
+          "sector_shock": 0.012625,
+          "phi_effective": 0.012625,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 28
+        },
+        "25": {
+          "sector_shock": 0.0030800000000000003,
+          "phi_effective": 0.0030800000000000003,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 97
+        },
+        "26": {
+          "sector_shock": 0.01786,
+          "phi_effective": 0.01786,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 57
+        },
+        "27": {
+          "sector_shock": 0.01263,
+          "phi_effective": 0.01263,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 37
+        },
+        "28": {
+          "sector_shock": 0.01801,
+          "phi_effective": 0.01801,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 89
+        },
+        "29": {
+          "sector_shock": 0.027425,
+          "phi_effective": 0.027425,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 63
+        },
+        "30": {
+          "sector_shock": 0.015690000000000003,
+          "phi_effective": 0.015690000000000003,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 73
+        },
+        "31": {
+          "sector_shock": 0.006350000000000001,
+          "phi_effective": 0.006350000000000001,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 29
+        },
+        "32": {
+          "sector_shock": 0.01391,
+          "phi_effective": 0.01391,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 50
+        }
+      },
+      "summary": {
+        "cushioning_rate": {
+          "mean": 0.43928548748820784,
+          "sd": 0.0002378350781128315,
+          "valid_draws": 5
+        },
+        "exchequer_cost": {
+          "mean": 484147200.0,
+          "sd": 162606.55711255927,
+          "valid_draws": 5
+        },
+        "gross_earnings_loss": {
+          "mean": 885759169.2800426,
+          "sd": 9241.512319195988,
+          "valid_draws": 5
+        },
+        "net_disposable_loss": {
+          "mean": 496658022.4,
+          "sd": 215373.2731719514,
+          "valid_draws": 5
+        },
+        "effective_loss_records": {
+          "mean": 226.02482645507092,
+          "sd": 0.012160093018629902,
+          "valid_draws": 5
+        },
+        "affected_records": {
+          "mean": 943.8,
+          "sd": 0.4472135954999579,
+          "valid_draws": 5
+        },
+        "affected_weighted": {
+          "mean": 1697085.2525512695,
+          "sd": 2494.1103965336865,
+          "valid_draws": 5
+        },
+        "max_record_loss_share": {
+          "mean": 0.03560729672889994,
+          "sd": 3.715071416660877e-07,
+          "valid_draws": 5
+        },
+        "poverty_rate_change_bhc": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "valid_draws": 5
+        }
+      },
+      "draws": [
+        {
+          "seed": 0,
+          "cushioning_rate": 0.4390230597666279,
+          "exchequer_cost": 484016128.0,
+          "net_disposable_loss": 496893952.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 885765378.8643916,
+          "affected_records": 944,
+          "affected_weighted": 1695649.5935058594,
+          "effective_loss_records": 226.0229678649537,
+          "max_record_loss_share": 0.035607047103813676
+        },
+        {
+          "seed": 1,
+          "cushioning_rate": 0.4391690703125243,
+          "exchequer_cost": 484081664.0,
+          "net_disposable_loss": 496762880.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 885762274.6962658,
+          "affected_records": 944,
+          "affected_weighted": 1694896.378540039,
+          "effective_loss_records": 226.02199187161156,
+          "max_record_loss_share": 0.03560717188928245
+        },
+        {
+          "seed": 2,
+          "cushioning_rate": 0.4391735401790522,
+          "exchequer_cost": 484016128.0,
+          "net_disposable_loss": 496762880.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 885769334.3473825,
+          "affected_records": 944,
+          "affected_weighted": 1695750.6962890625,
+          "effective_loss_records": 226.02495940702408,
+          "max_record_loss_share": 0.03560688809732777
+        },
+        {
+          "seed": 3,
+          "cushioning_rate": 0.43945716068212914,
+          "exchequer_cost": 484229120.0,
+          "net_disposable_loss": 496500736.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 885749850.277627,
+          "affected_records": 943,
+          "affected_weighted": 1698158.9635620117,
+          "effective_loss_records": 226.01023104009192,
+          "max_record_loss_share": 0.0356076713513032
+        },
+        {
+          "seed": 4,
+          "cushioning_rate": 0.43960460650070576,
+          "exchequer_cost": 484392960.0,
+          "net_disposable_loss": 496369664.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 885749008.2145458,
+          "affected_records": 944,
+          "affected_weighted": 1700970.630859375,
+          "effective_loss_records": 226.04398209167334,
+          "max_record_loss_share": 0.0356077052027726
+        }
+      ]
+    },
+    {
+      "phi": 0.0030687813601627937,
+      "n_divisions": 23,
+      "n_divisions_clipped": 17,
+      "expected_gross_earnings_loss": 885749325.2499495,
+      "realised_over_expected_loss": 1.0000165845727025,
+      "division_schedule": {
+        "10": {
+          "sector_shock": 0.0009900000000000002,
+          "phi_effective": 0.0030687813601627937,
+          "selection_probability": 0.322603627893348,
+          "clipped": false,
+          "exposed_records": 174
+        },
+        "11": {
+          "sector_shock": 0.006270000000000001,
+          "phi_effective": 0.006270000000000001,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 22
+        },
+        "12": {
+          "sector_shock": 0.00472,
+          "phi_effective": 0.00472,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 2
+        },
+        "13": {
+          "sector_shock": 0.00478,
+          "phi_effective": 0.00478,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 13
+        },
+        "14": {
+          "sector_shock": 0.01465,
+          "phi_effective": 0.01465,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 13
+        },
+        "15": {
+          "sector_shock": 0.007850000000000001,
+          "phi_effective": 0.007850000000000001,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 1
+        },
+        "16": {
+          "sector_shock": 0.00017,
+          "phi_effective": 0.0030687813601627937,
+          "selection_probability": 0.055396582567544594,
+          "clipped": false,
+          "exposed_records": 18
+        },
+        "17": {
+          "sector_shock": 0.0015900000000000003,
+          "phi_effective": 0.0030687813601627937,
+          "selection_probability": 0.5181209781317406,
+          "clipped": false,
+          "exposed_records": 26
+        },
+        "18": {
+          "sector_shock": 0.0047,
+          "phi_effective": 0.0047,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 35
+        },
+        "19": {
+          "sector_shock": 0.00255,
+          "phi_effective": 0.0030687813601627937,
+          "selection_probability": 0.830948738513169,
+          "clipped": false,
+          "exposed_records": 4
+        },
+        "20": {
+          "sector_shock": 0.012520000000000002,
+          "phi_effective": 0.012520000000000002,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 28
+        },
+        "21": {
+          "sector_shock": 0.01301,
+          "phi_effective": 0.01301,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 66
+        },
+        "22": {
+          "sector_shock": 0.00196,
+          "phi_effective": 0.0030687813601627937,
+          "selection_probability": 0.6386900107787494,
+          "clipped": false,
+          "exposed_records": 53
+        },
+        "23": {
+          "sector_shock": 0.0025000000000000005,
+          "phi_effective": 0.0030687813601627937,
+          "selection_probability": 0.814655625993303,
+          "clipped": false,
+          "exposed_records": 40
+        },
+        "24": {
+          "sector_shock": 0.012625,
+          "phi_effective": 0.012625,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 28
+        },
+        "25": {
+          "sector_shock": 0.0030800000000000003,
+          "phi_effective": 0.0030800000000000003,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 97
+        },
+        "26": {
+          "sector_shock": 0.01786,
+          "phi_effective": 0.01786,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 57
+        },
+        "27": {
+          "sector_shock": 0.01263,
+          "phi_effective": 0.01263,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 37
+        },
+        "28": {
+          "sector_shock": 0.01801,
+          "phi_effective": 0.01801,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 89
+        },
+        "29": {
+          "sector_shock": 0.027425,
+          "phi_effective": 0.027425,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 63
+        },
+        "30": {
+          "sector_shock": 0.015690000000000003,
+          "phi_effective": 0.015690000000000003,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 73
+        },
+        "31": {
+          "sector_shock": 0.006350000000000001,
+          "phi_effective": 0.006350000000000001,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 29
+        },
+        "32": {
+          "sector_shock": 0.01391,
+          "phi_effective": 0.01391,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 50
+        }
+      },
+      "summary": {
+        "cushioning_rate": {
+          "mean": 0.4395253151225898,
+          "sd": 0.0002858278649828149,
+          "valid_draws": 5
+        },
+        "exchequer_cost": {
+          "mean": 484409344.0,
+          "sd": 198307.3228703368,
+          "valid_draws": 5
+        },
+        "gross_earnings_loss": {
+          "mean": 885764015.0240303,
+          "sd": 61312.59702244424,
+          "valid_draws": 5
+        },
+        "net_disposable_loss": {
+          "mean": 496448307.2,
+          "sd": 255506.36567256012,
+          "valid_draws": 5
+        },
+        "effective_loss_records": {
+          "mean": 225.49427702484113,
+          "sd": 0.1446426675417252,
+          "valid_draws": 5
+        },
+        "affected_records": {
+          "mean": 843.4,
+          "sd": 1.140175425099138,
+          "valid_draws": 5
+        },
+        "affected_weighted": {
+          "mean": 1506089.647680664,
+          "sd": 2344.534093287021,
+          "valid_draws": 5
+        },
+        "max_record_loss_share": {
+          "mean": 0.03560710206565891,
+          "sd": 2.4647612166309595e-06,
+          "valid_draws": 5
+        },
+        "poverty_rate_change_bhc": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "valid_draws": 5
+        }
+      },
+      "draws": [
+        {
+          "seed": 0,
+          "cushioning_rate": 0.43960636919320883,
+          "exchequer_cost": 484491264.0,
+          "net_disposable_loss": 496369664.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 885751794.2974892,
+          "affected_records": 844,
+          "affected_weighted": 1502467.541015625,
+          "effective_loss_records": 225.3209283506907,
+          "max_record_loss_share": 0.0356075932007188
+        },
+        {
+          "seed": 1,
+          "cushioning_rate": 0.4396492658489771,
+          "exchequer_cost": 484474880.0,
+          "net_disposable_loss": 496369664.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 885819601.453794,
+          "affected_records": 842,
+          "affected_weighted": 1509014.9543457031,
+          "effective_loss_records": 225.62275212764587,
+          "max_record_loss_share": 0.03560486753328738
+        },
+        {
+          "seed": 2,
+          "cushioning_rate": 0.4398962264993824,
+          "exchequer_cost": 484655104.0,
+          "net_disposable_loss": 496107520.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 885742148.9938471,
+          "affected_records": 843,
+          "affected_weighted": 1506498.507019043,
+          "effective_loss_records": 225.60657954550712,
+          "max_record_loss_share": 0.0356079809501883
+        },
+        {
+          "seed": 3,
+          "cushioning_rate": 0.4392105078307602,
+          "exchequer_cost": 484278272.0,
+          "net_disposable_loss": 496762880.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 885827724.9069473,
+          "affected_records": 845,
+          "affected_weighted": 1506459.077331543,
+          "effective_loss_records": 225.35509880647544,
+          "max_record_loss_share": 0.035604541020055405
+        },
+        {
+          "seed": 4,
+          "cushioning_rate": 0.43926420624062024,
+          "exchequer_cost": 484147200.0,
+          "net_disposable_loss": 496631808.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 885678805.4680743,
+          "affected_records": 843,
+          "affected_weighted": 1506008.1586914062,
+          "effective_loss_records": 225.56602629388664,
+          "max_record_loss_share": 0.03561052762404468
+        }
+      ]
+    },
+    {
+      "phi": 0.006325505011335355,
+      "n_divisions": 23,
+      "n_divisions_clipped": 12,
+      "expected_gross_earnings_loss": 885749325.2499495,
+      "realised_over_expected_loss": 0.9999391364297239,
+      "division_schedule": {
+        "10": {
+          "sector_shock": 0.0009900000000000002,
+          "phi_effective": 0.006325505011335355,
+          "selection_probability": 0.15650924285506254,
+          "clipped": false,
+          "exposed_records": 174
+        },
+        "11": {
+          "sector_shock": 0.006270000000000001,
+          "phi_effective": 0.006325505011335355,
+          "selection_probability": 0.9912252047487294,
+          "clipped": false,
+          "exposed_records": 22
+        },
+        "12": {
+          "sector_shock": 0.00472,
+          "phi_effective": 0.006325505011335355,
+          "selection_probability": 0.7461854810867627,
+          "clipped": false,
+          "exposed_records": 2
+        },
+        "13": {
+          "sector_shock": 0.00478,
+          "phi_effective": 0.006325505011335355,
+          "selection_probability": 0.7556708897446454,
+          "clipped": false,
+          "exposed_records": 13
+        },
+        "14": {
+          "sector_shock": 0.01465,
+          "phi_effective": 0.01465,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 13
+        },
+        "15": {
+          "sector_shock": 0.007850000000000001,
+          "phi_effective": 0.007850000000000001,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 1
+        },
+        "16": {
+          "sector_shock": 0.00017,
+          "phi_effective": 0.006325505011335355,
+          "selection_probability": 0.0268753245306673,
+          "clipped": false,
+          "exposed_records": 18
+        },
+        "17": {
+          "sector_shock": 0.0015900000000000003,
+          "phi_effective": 0.006325505011335355,
+          "selection_probability": 0.25136332943388834,
+          "clipped": false,
+          "exposed_records": 26
+        },
+        "18": {
+          "sector_shock": 0.0047,
+          "phi_effective": 0.006325505011335355,
+          "selection_probability": 0.7430236782008018,
+          "clipped": false,
+          "exposed_records": 35
+        },
+        "19": {
+          "sector_shock": 0.00255,
+          "phi_effective": 0.006325505011335355,
+          "selection_probability": 0.40312986796000955,
+          "clipped": false,
+          "exposed_records": 4
+        },
+        "20": {
+          "sector_shock": 0.012520000000000002,
+          "phi_effective": 0.012520000000000002,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 28
+        },
+        "21": {
+          "sector_shock": 0.01301,
+          "phi_effective": 0.01301,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 66
+        },
+        "22": {
+          "sector_shock": 0.00196,
+          "phi_effective": 0.006325505011335355,
+          "selection_probability": 0.3098566828241642,
+          "clipped": false,
+          "exposed_records": 53
+        },
+        "23": {
+          "sector_shock": 0.0025000000000000005,
+          "phi_effective": 0.006325505011335355,
+          "selection_probability": 0.39522536074510745,
+          "clipped": false,
+          "exposed_records": 40
+        },
+        "24": {
+          "sector_shock": 0.012625,
+          "phi_effective": 0.012625,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 28
+        },
+        "25": {
+          "sector_shock": 0.0030800000000000003,
+          "phi_effective": 0.006325505011335355,
+          "selection_probability": 0.4869176444379723,
+          "clipped": false,
+          "exposed_records": 97
+        },
+        "26": {
+          "sector_shock": 0.01786,
+          "phi_effective": 0.01786,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 57
+        },
+        "27": {
+          "sector_shock": 0.01263,
+          "phi_effective": 0.01263,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 37
+        },
+        "28": {
+          "sector_shock": 0.01801,
+          "phi_effective": 0.01801,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 89
+        },
+        "29": {
+          "sector_shock": 0.027425,
+          "phi_effective": 0.027425,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 63
+        },
+        "30": {
+          "sector_shock": 0.015690000000000003,
+          "phi_effective": 0.015690000000000003,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 73
+        },
+        "31": {
+          "sector_shock": 0.006350000000000001,
+          "phi_effective": 0.006350000000000001,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 29
+        },
+        "32": {
+          "sector_shock": 0.01391,
+          "phi_effective": 0.01391,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 50
+        }
+      },
+      "summary": {
+        "cushioning_rate": {
+          "mean": 0.4364334895085258,
+          "sd": 0.0018900530570584485,
+          "valid_draws": 5
+        },
+        "exchequer_cost": {
+          "mean": 481502822.4,
+          "sd": 1447811.7242282573,
+          "valid_draws": 5
+        },
+        "gross_earnings_loss": {
+          "mean": 885695415.383645,
+          "sd": 104983.20108502769,
+          "valid_draws": 5
+        },
+        "net_disposable_loss": {
+          "mean": 499148390.4,
+          "sd": 1717493.388311233,
+          "valid_draws": 5
+        },
+        "effective_loss_records": {
+          "mean": 223.1820859387646,
+          "sd": 0.534612901336463,
+          "valid_draws": 5
+        },
+        "affected_records": {
+          "mean": 709.4,
+          "sd": 1.3416407864998738,
+          "valid_draws": 5
+        },
+        "affected_weighted": {
+          "mean": 1261985.989276123,
+          "sd": 4683.239366448777,
+          "valid_draws": 5
+        },
+        "max_record_loss_share": {
+          "mean": 0.035609860201234814,
+          "sd": 4.2213234982652205e-06,
+          "valid_draws": 5
+        },
+        "poverty_rate_change_bhc": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "valid_draws": 5
+        }
+      },
+      "draws": [
+        {
+          "seed": 0,
+          "cushioning_rate": 0.4369710071902895,
+          "exchequer_cost": 481951744.0,
+          "net_disposable_loss": 498728960.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 885796231.400392,
+          "affected_records": 711,
+          "affected_weighted": 1259723.9168395996,
+          "effective_loss_records": 223.61021457836932,
+          "max_record_loss_share": 0.03560580690018253
+        },
+        {
+          "seed": 1,
+          "cushioning_rate": 0.43931341628493614,
+          "exchequer_cost": 483721216.0,
+          "net_disposable_loss": 496500736.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 885522768.7279876,
+          "affected_records": 710,
+          "affected_weighted": 1260780.4408874512,
+          "effective_loss_records": 223.4253987419102,
+          "max_record_loss_share": 0.035616802505774946
+        },
+        {
+          "seed": 2,
+          "cushioning_rate": 0.4363161535861455,
+          "exchequer_cost": 481378304.0,
+          "net_disposable_loss": 499253248.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 885697277.252558,
+          "affected_records": 708,
+          "affected_weighted": 1257836.3291015625,
+          "effective_loss_records": 223.27971212837969,
+          "max_record_loss_share": 0.03560978494366334
+        },
+        {
+          "seed": 3,
+          "cushioning_rate": 0.4344318866340323,
+          "exchequer_cost": 480149504.0,
+          "net_disposable_loss": 500957184.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 885759243.0707648,
+          "affected_records": 710,
+          "affected_weighted": 1269973.7110595703,
+          "effective_loss_records": 222.25189418009305,
+          "max_record_loss_share": 0.03560729375943076
+        },
+        {
+          "seed": 4,
+          "cushioning_rate": 0.4351349838472256,
+          "exchequer_cost": 480313344.0,
+          "net_disposable_loss": 500301824.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 885701556.4665232,
+          "affected_records": 708,
+          "affected_weighted": 1261615.5484924316,
+          "effective_loss_records": 223.3432100650709,
+          "max_record_loss_share": 0.03560961289712248
+        }
+      ]
+    },
+    {
+      "phi": 0.0130384048104053,
+      "n_divisions": 23,
+      "n_divisions_clipped": 6,
+      "expected_gross_earnings_loss": 885749325.2499495,
+      "realised_over_expected_loss": 0.9998568604049001,
+      "division_schedule": {
+        "10": {
+          "sector_shock": 0.0009900000000000002,
+          "phi_effective": 0.0130384048104053,
+          "selection_probability": 0.07592953389588968,
+          "clipped": false,
+          "exposed_records": 174
+        },
+        "11": {
+          "sector_shock": 0.006270000000000001,
+          "phi_effective": 0.0130384048104053,
+          "selection_probability": 0.48088704800730125,
+          "clipped": false,
+          "exposed_records": 22
+        },
+        "12": {
+          "sector_shock": 0.00472,
+          "phi_effective": 0.0130384048104053,
+          "selection_probability": 0.3620074747359588,
+          "clipped": false,
+          "exposed_records": 2
+        },
+        "13": {
+          "sector_shock": 0.00478,
+          "phi_effective": 0.0130384048104053,
+          "selection_probability": 0.36660926466904303,
+          "clipped": false,
+          "exposed_records": 13
+        },
+        "14": {
+          "sector_shock": 0.01465,
+          "phi_effective": 0.01465,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 13
+        },
+        "15": {
+          "sector_shock": 0.007850000000000001,
+          "phi_effective": 0.0130384048104053,
+          "selection_probability": 0.6020675162451857,
+          "clipped": false,
+          "exposed_records": 1
+        },
+        "16": {
+          "sector_shock": 0.00017,
+          "phi_effective": 0.0130384048104053,
+          "selection_probability": 0.013038404810405295,
+          "clipped": false,
+          "exposed_records": 18
+        },
+        "17": {
+          "sector_shock": 0.0015900000000000003,
+          "phi_effective": 0.0130384048104053,
+          "selection_probability": 0.12194743322673189,
+          "clipped": false,
+          "exposed_records": 26
+        },
+        "18": {
+          "sector_shock": 0.0047,
+          "phi_effective": 0.0130384048104053,
+          "selection_probability": 0.36047354475826404,
+          "clipped": false,
+          "exposed_records": 35
+        },
+        "19": {
+          "sector_shock": 0.00255,
+          "phi_effective": 0.0130384048104053,
+          "selection_probability": 0.19557607215607944,
+          "clipped": false,
+          "exposed_records": 4
+        },
+        "20": {
+          "sector_shock": 0.012520000000000002,
+          "phi_effective": 0.0130384048104053,
+          "selection_probability": 0.9602401660369078,
+          "clipped": false,
+          "exposed_records": 28
+        },
+        "21": {
+          "sector_shock": 0.01301,
+          "phi_effective": 0.0130384048104053,
+          "selection_probability": 0.9978214504904288,
+          "clipped": false,
+          "exposed_records": 66
+        },
+        "22": {
+          "sector_shock": 0.00196,
+          "phi_effective": 0.0130384048104053,
+          "selection_probability": 0.15032513781408458,
+          "clipped": false,
+          "exposed_records": 53
+        },
+        "23": {
+          "sector_shock": 0.0025000000000000005,
+          "phi_effective": 0.0130384048104053,
+          "selection_probability": 0.1917412472118426,
+          "clipped": false,
+          "exposed_records": 40
+        },
+        "24": {
+          "sector_shock": 0.012625,
+          "phi_effective": 0.0130384048104053,
+          "selection_probability": 0.968293298419805,
+          "clipped": false,
+          "exposed_records": 28
+        },
+        "25": {
+          "sector_shock": 0.0030800000000000003,
+          "phi_effective": 0.0130384048104053,
+          "selection_probability": 0.23622521656499007,
+          "clipped": false,
+          "exposed_records": 97
+        },
+        "26": {
+          "sector_shock": 0.01786,
+          "phi_effective": 0.01786,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 57
+        },
+        "27": {
+          "sector_shock": 0.01263,
+          "phi_effective": 0.0130384048104053,
+          "selection_probability": 0.9686767809142287,
+          "clipped": false,
+          "exposed_records": 37
+        },
+        "28": {
+          "sector_shock": 0.01801,
+          "phi_effective": 0.01801,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 89
+        },
+        "29": {
+          "sector_shock": 0.027425,
+          "phi_effective": 0.027425,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 63
+        },
+        "30": {
+          "sector_shock": 0.015690000000000003,
+          "phi_effective": 0.015690000000000003,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 73
+        },
+        "31": {
+          "sector_shock": 0.006350000000000001,
+          "phi_effective": 0.0130384048104053,
+          "selection_probability": 0.4870227679180802,
+          "clipped": false,
+          "exposed_records": 29
+        },
+        "32": {
+          "sector_shock": 0.01391,
+          "phi_effective": 0.01391,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 50
+        }
+      },
+      "summary": {
+        "cushioning_rate": {
+          "mean": 0.43546958573675604,
+          "sd": 0.0028949421911003857,
+          "valid_draws": 5
+        },
+        "exchequer_cost": {
+          "mean": 480473907.2,
+          "sd": 2298272.8634353234,
+          "valid_draws": 5
+        },
+        "gross_earnings_loss": {
+          "mean": 885622539.4501731,
+          "sd": 129791.40240735332,
+          "valid_draws": 5
+        },
+        "net_disposable_loss": {
+          "mean": 499961036.8,
+          "sd": 2607641.1223608204,
+          "valid_draws": 5
+        },
+        "effective_loss_records": {
+          "mean": 216.40628687871677,
+          "sd": 0.36693481345160056,
+          "valid_draws": 5
+        },
+        "affected_records": {
+          "mean": 600.8,
+          "sd": 1.4832396974191324,
+          "valid_draws": 5
+        },
+        "affected_weighted": {
+          "mean": 1067615.7768432617,
+          "sd": 5206.927260101734,
+          "valid_draws": 5
+        },
+        "max_record_loss_share": {
+          "mean": 0.03561279067001905,
+          "sd": 5.219316760272635e-06,
+          "valid_draws": 5
+        },
+        "poverty_rate_change_bhc": {
+          "mean": 0.0,
+          "sd": 0.0,
+          "valid_draws": 5
+        }
+      },
+      "draws": [
+        {
+          "seed": 0,
+          "cushioning_rate": 0.43236314073736637,
+          "exchequer_cost": 477921280.0,
+          "net_disposable_loss": 502792192.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 885763818.532032,
+          "affected_records": 600,
+          "affected_weighted": 1072216.7601623535,
+          "effective_loss_records": 216.58375561773462,
+          "max_record_loss_share": 0.03560710982801471
+        },
+        {
+          "seed": 1,
+          "cushioning_rate": 0.43382419986724685,
+          "exchequer_cost": 479248384.0,
+          "net_disposable_loss": 501350400.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 885503053.7907956,
+          "affected_records": 603,
+          "affected_weighted": 1073928.4294128418,
+          "effective_loss_records": 216.83745690481248,
+          "max_record_loss_share": 0.03561759548217562
+        },
+        {
+          "seed": 2,
+          "cushioning_rate": 0.43603352408840645,
+          "exchequer_cost": 480968704.0,
+          "net_disposable_loss": 499515392.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 885718235.6319761,
+          "affected_records": 601,
+          "affected_weighted": 1061983.1408691406,
+          "effective_loss_records": 215.88527072584142,
+          "max_record_loss_share": 0.03560894232424577
+        },
+        {
+          "seed": 3,
+          "cushioning_rate": 0.4351060721652954,
+          "exchequer_cost": 480182272.0,
+          "net_disposable_loss": 500301824.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 885656225.6169178,
+          "affected_records": 601,
+          "affected_weighted": 1064037.5487976074,
+          "effective_loss_records": 216.21104045131744,
+          "max_record_loss_share": 0.03561143551628334
+        },
+        {
+          "seed": 4,
+          "cushioning_rate": 0.4400209918254654,
+          "exchequer_cost": 484048896.0,
+          "net_disposable_loss": 495845376.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 885471363.6791446,
+          "affected_records": 599,
+          "affected_weighted": 1065913.0049743652,
+          "effective_loss_records": 216.51391069387796,
+          "max_record_loss_share": 0.035618870199375825
+        }
+      ]
+    },
+    {
+      "phi": 0.02687532453066734,
+      "n_divisions": 23,
+      "n_divisions_clipped": 1,
+      "expected_gross_earnings_loss": 885749325.2499495,
+      "realised_over_expected_loss": 0.9998862386707437,
+      "division_schedule": {
+        "10": {
+          "sector_shock": 0.0009900000000000002,
+          "phi_effective": 0.02687532453066734,
+          "selection_probability": 0.03683676447777643,
+          "clipped": false,
+          "exposed_records": 174
+        },
+        "11": {
+          "sector_shock": 0.006270000000000001,
+          "phi_effective": 0.02687532453066734,
+          "selection_probability": 0.23329950835925073,
+          "clipped": false,
+          "exposed_records": 22
+        },
+        "12": {
+          "sector_shock": 0.00472,
+          "phi_effective": 0.02687532453066734,
+          "selection_probability": 0.1756257861970755,
+          "clipped": false,
+          "exposed_records": 2
+        },
+        "13": {
+          "sector_shock": 0.00478,
+          "phi_effective": 0.02687532453066734,
+          "selection_probability": 0.1778583173775468,
+          "clipped": false,
+          "exposed_records": 13
+        },
+        "14": {
+          "sector_shock": 0.01465,
+          "phi_effective": 0.02687532453066734,
+          "selection_probability": 0.5451096965650754,
+          "clipped": false,
+          "exposed_records": 13
+        },
+        "15": {
+          "sector_shock": 0.007850000000000001,
+          "phi_effective": 0.02687532453066734,
+          "selection_probability": 0.2920894961116616,
+          "clipped": false,
+          "exposed_records": 1
+        },
+        "16": {
+          "sector_shock": 0.00017,
+          "phi_effective": 0.02687532453066734,
+          "selection_probability": 0.006325505011335346,
+          "clipped": false,
+          "exposed_records": 18
+        },
+        "17": {
+          "sector_shock": 0.0015900000000000003,
+          "phi_effective": 0.02687532453066734,
+          "selection_probability": 0.05916207628248942,
+          "clipped": false,
+          "exposed_records": 26
+        },
+        "18": {
+          "sector_shock": 0.0047,
+          "phi_effective": 0.02687532453066734,
+          "selection_probability": 0.1748816091369184,
+          "clipped": false,
+          "exposed_records": 35
+        },
+        "19": {
+          "sector_shock": 0.00255,
+          "phi_effective": 0.02687532453066734,
+          "selection_probability": 0.0948825751700302,
+          "clipped": false,
+          "exposed_records": 4
+        },
+        "20": {
+          "sector_shock": 0.012520000000000002,
+          "phi_effective": 0.02687532453066734,
+          "selection_probability": 0.46585483965834434,
+          "clipped": false,
+          "exposed_records": 28
+        },
+        "21": {
+          "sector_shock": 0.01301,
+          "phi_effective": 0.02687532453066734,
+          "selection_probability": 0.4840871776321932,
+          "clipped": false,
+          "exposed_records": 66
+        },
+        "22": {
+          "sector_shock": 0.00196,
+          "phi_effective": 0.02687532453066734,
+          "selection_probability": 0.07292935189539575,
+          "clipped": false,
+          "exposed_records": 53
+        },
+        "23": {
+          "sector_shock": 0.0025000000000000005,
+          "phi_effective": 0.02687532453066734,
+          "selection_probability": 0.09302213251963745,
+          "clipped": false,
+          "exposed_records": 40
+        },
+        "24": {
+          "sector_shock": 0.012625,
+          "phi_effective": 0.02687532453066734,
+          "selection_probability": 0.46976176922416907,
+          "clipped": false,
+          "exposed_records": 28
+        },
+        "25": {
+          "sector_shock": 0.0030800000000000003,
+          "phi_effective": 0.02687532453066734,
+          "selection_probability": 0.11460326726419333,
+          "clipped": false,
+          "exposed_records": 97
+        },
+        "26": {
+          "sector_shock": 0.01786,
+          "phi_effective": 0.02687532453066734,
+          "selection_probability": 0.6645501147202899,
+          "clipped": false,
+          "exposed_records": 57
+        },
+        "27": {
+          "sector_shock": 0.01263,
+          "phi_effective": 0.02687532453066734,
+          "selection_probability": 0.46994781348920833,
+          "clipped": false,
+          "exposed_records": 37
+        },
+        "28": {
+          "sector_shock": 0.01801,
+          "phi_effective": 0.02687532453066734,
+          "selection_probability": 0.6701314426714682,
+          "clipped": false,
+          "exposed_records": 89
+        },
+        "29": {
+          "sector_shock": 0.027425,
+          "phi_effective": 0.027425,
+          "selection_probability": 1.0,
+          "clipped": true,
+          "exposed_records": 63
+        },
+        "30": {
+          "sector_shock": 0.015690000000000003,
+          "phi_effective": 0.02687532453066734,
+          "selection_probability": 0.5838069036932446,
+          "clipped": false,
+          "exposed_records": 73
+        },
+        "31": {
+          "sector_shock": 0.006350000000000001,
+          "phi_effective": 0.02687532453066734,
+          "selection_probability": 0.2362762165998791,
+          "clipped": false,
+          "exposed_records": 29
+        },
+        "32": {
+          "sector_shock": 0.01391,
+          "phi_effective": 0.02687532453066734,
+          "selection_probability": 0.5175751453392627,
+          "clipped": false,
+          "exposed_records": 50
+        }
+      },
+      "summary": {
+        "cushioning_rate": {
+          "mean": 0.4350411647872436,
+          "sd": 0.0074681944068519315,
+          "valid_draws": 5
+        },
+        "exchequer_cost": {
+          "mean": 479526912.0,
+          "sd": 5739593.716564963,
+          "valid_draws": 5
+        },
+        "gross_earnings_loss": {
+          "mean": 885648561.2293211,
+          "sd": 703541.7797721092,
+          "valid_draws": 5
+        },
+        "net_disposable_loss": {
+          "mean": 500354252.8,
+          "sd": 6557268.988970576,
+          "valid_draws": 5
+        },
+        "effective_loss_records": {
+          "mean": 132.62332235805533,
+          "sd": 16.773136107727034,
+          "valid_draws": 5
+        },
+        "affected_records": {
+          "mean": 359.4,
+          "sd": 2.302172886644268,
+          "valid_draws": 5
+        },
+        "affected_weighted": {
+          "mean": 643335.1117492676,
+          "sd": 6974.743449986389,
+          "valid_draws": 5
+        },
+        "max_record_loss_share": {
+          "mean": 0.04790382352103406,
+          "sd": 0.011723309484660178,
+          "valid_draws": 5
+        },
+        "poverty_rate_change_bhc": {
+          "mean": 3.7468697220899295e-05,
+          "sd": 2.0945638503572067e-05,
+          "valid_draws": 5
+        }
+      },
+      "draws": [
+        {
+          "seed": 0,
+          "cushioning_rate": 0.4450841250007115,
+          "exchequer_cost": 485818368.0,
+          "net_disposable_loss": 491651072.0,
+          "poverty_rate_change_bhc": 4.683587152612412e-05,
+          "gross_earnings_loss": 885992083.0353436,
+          "affected_records": 356,
+          "affected_weighted": 643461.2879943848,
+          "effective_loss_records": 159.97073862481054,
+          "max_record_loss_share": 0.026932655876932252
+        },
+        {
+          "seed": 1,
+          "cushioning_rate": 0.43978379123930844,
+          "exchequer_cost": 482213888.0,
+          "net_disposable_loss": 495845376.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 885096447.1322732,
+          "affected_records": 359,
+          "affected_weighted": 632684.7463378906,
+          "effective_loss_records": 130.5066664552152,
+          "max_record_loss_share": 0.05317457989422018
+        },
+        {
+          "seed": 2,
+          "cushioning_rate": 0.43434509931435217,
+          "exchequer_cost": 482738176.0,
+          "net_disposable_loss": 501350400.0,
+          "poverty_rate_change_bhc": 4.683587152612412e-05,
+          "gross_earnings_loss": 886318494.5313789,
+          "affected_records": 362,
+          "affected_weighted": 642284.4514465332,
+          "effective_loss_records": 133.30713159853528,
+          "max_record_loss_share": 0.05310126329588763
+        },
+        {
+          "seed": 3,
+          "cushioning_rate": 0.42800952706245965,
+          "exchequer_cost": 473858048.0,
+          "net_disposable_loss": 506855424.0,
+          "poverty_rate_change_bhc": 4.683587152612412e-05,
+          "gross_earnings_loss": 886125640.1648967,
+          "affected_records": 361,
+          "affected_weighted": 651676.8978271484,
+          "effective_loss_records": 123.95211483626535,
+          "max_record_loss_share": 0.053112820133911665
+        },
+        {
+          "seed": 4,
+          "cushioning_rate": 0.427983281319386,
+          "exchequer_cost": 473006080.0,
+          "net_disposable_loss": 506068992.0,
+          "poverty_rate_change_bhc": 4.683587152612412e-05,
+          "gross_earnings_loss": 884710141.2827132,
+          "affected_records": 359,
+          "affected_weighted": 646568.1751403809,
+          "effective_loss_records": 115.3799602754504,
+          "max_record_loss_share": 0.05319779840421855
+        }
+      ]
+    },
+    {
+      "phi": 0.05539658256754467,
+      "n_divisions": 23,
+      "n_divisions_clipped": 0,
+      "expected_gross_earnings_loss": 885749325.2499495,
+      "realised_over_expected_loss": 0.9982722279260898,
+      "division_schedule": {
+        "10": {
+          "sector_shock": 0.0009900000000000002,
+          "phi_effective": 0.05539658256754467,
+          "selection_probability": 0.017871138509183305,
+          "clipped": false,
+          "exposed_records": 174
+        },
+        "11": {
+          "sector_shock": 0.006270000000000001,
+          "phi_effective": 0.05539658256754467,
+          "selection_probability": 0.1131838772248276,
+          "clipped": false,
+          "exposed_records": 22
+        },
+        "12": {
+          "sector_shock": 0.00472,
+          "phi_effective": 0.05539658256754467,
+          "selection_probability": 0.08520381188216686,
+          "clipped": false,
+          "exposed_records": 2
+        },
+        "13": {
+          "sector_shock": 0.00478,
+          "phi_effective": 0.05539658256754467,
+          "selection_probability": 0.08628691118575373,
+          "clipped": false,
+          "exposed_records": 13
+        },
+        "14": {
+          "sector_shock": 0.01465,
+          "phi_effective": 0.05539658256754467,
+          "selection_probability": 0.2644567466257933,
+          "clipped": false,
+          "exposed_records": 13
+        },
+        "15": {
+          "sector_shock": 0.007850000000000001,
+          "phi_effective": 0.05539658256754467,
+          "selection_probability": 0.14170549221928178,
+          "clipped": false,
+          "exposed_records": 1
+        },
+        "16": {
+          "sector_shock": 0.00017,
+          "phi_effective": 0.05539658256754467,
+          "selection_probability": 0.0030687813601627894,
+          "clipped": false,
+          "exposed_records": 18
+        },
+        "17": {
+          "sector_shock": 0.0015900000000000003,
+          "phi_effective": 0.05539658256754467,
+          "selection_probability": 0.028702131545051975,
+          "clipped": false,
+          "exposed_records": 26
+        },
+        "18": {
+          "sector_shock": 0.0047,
+          "phi_effective": 0.05539658256754467,
+          "selection_probability": 0.08484277878097124,
+          "clipped": false,
+          "exposed_records": 35
+        },
+        "19": {
+          "sector_shock": 0.00255,
+          "phi_effective": 0.05539658256754467,
+          "selection_probability": 0.04603172040244184,
+          "clipped": false,
+          "exposed_records": 4
+        },
+        "20": {
+          "sector_shock": 0.012520000000000002,
+          "phi_effective": 0.05539658256754467,
+          "selection_probability": 0.22600672134845956,
+          "clipped": false,
+          "exposed_records": 28
+        },
+        "21": {
+          "sector_shock": 0.01301,
+          "phi_effective": 0.05539658256754467,
+          "selection_probability": 0.2348520323277523,
+          "clipped": false,
+          "exposed_records": 66
+        },
+        "22": {
+          "sector_shock": 0.00196,
+          "phi_effective": 0.05539658256754467,
+          "selection_probability": 0.035381243917170985,
+          "clipped": false,
+          "exposed_records": 53
+        },
+        "23": {
+          "sector_shock": 0.0025000000000000005,
+          "phi_effective": 0.05539658256754467,
+          "selection_probability": 0.04512913764945279,
+          "clipped": false,
+          "exposed_records": 40
+        },
+        "24": {
+          "sector_shock": 0.012625,
+          "phi_effective": 0.05539658256754467,
+          "selection_probability": 0.22790214512973658,
+          "clipped": false,
+          "exposed_records": 28
+        },
+        "25": {
+          "sector_shock": 0.0030800000000000003,
+          "phi_effective": 0.05539658256754467,
+          "selection_probability": 0.05559909758412584,
+          "clipped": false,
+          "exposed_records": 97
+        },
+        "26": {
+          "sector_shock": 0.01786,
+          "phi_effective": 0.05539658256754467,
+          "selection_probability": 0.3224025593676907,
+          "clipped": false,
+          "exposed_records": 57
+        },
+        "27": {
+          "sector_shock": 0.01263,
+          "phi_effective": 0.05539658256754467,
+          "selection_probability": 0.2279924034050355,
+          "clipped": false,
+          "exposed_records": 37
+        },
+        "28": {
+          "sector_shock": 0.01801,
+          "phi_effective": 0.05539658256754467,
+          "selection_probability": 0.3251103076266579,
+          "clipped": false,
+          "exposed_records": 89
+        },
+        "29": {
+          "sector_shock": 0.027425,
+          "phi_effective": 0.05539658256754467,
+          "selection_probability": 0.4950666400144971,
+          "clipped": false,
+          "exposed_records": 63
+        },
+        "30": {
+          "sector_shock": 0.015690000000000003,
+          "phi_effective": 0.05539658256754467,
+          "selection_probability": 0.28323046788796574,
+          "clipped": false,
+          "exposed_records": 73
+        },
+        "31": {
+          "sector_shock": 0.006350000000000001,
+          "phi_effective": 0.05539658256754467,
+          "selection_probability": 0.11462800962961009,
+          "clipped": false,
+          "exposed_records": 29
+        },
+        "32": {
+          "sector_shock": 0.01391,
+          "phi_effective": 0.05539658256754467,
+          "selection_probability": 0.2510985218815553,
+          "clipped": false,
+          "exposed_records": 50
+        }
+      },
+      "summary": {
+        "cushioning_rate": {
+          "mean": 0.4401038836437504,
+          "sd": 0.018527901005831973,
+          "valid_draws": 5
+        },
+        "exchequer_cost": {
+          "mean": 482361344.0,
+          "sd": 14999241.049753418,
+          "valid_draws": 5
+        },
+        "gross_earnings_loss": {
+          "mean": 884218952.3012978,
+          "sd": 1225400.6749241375,
+          "valid_draws": 5
+        },
+        "net_disposable_loss": {
+          "mean": 495085158.4,
+          "sd": 16932250.084274944,
+          "valid_draws": 5
+        },
+        "effective_loss_records": {
+          "mean": 80.46505390097377,
+          "sd": 5.913437186173899,
+          "valid_draws": 5
+        },
+        "affected_records": {
+          "mean": 175.8,
+          "sd": 1.3038404810405297,
+          "valid_draws": 5
+        },
+        "affected_weighted": {
+          "mean": 311488.4311218262,
+          "sd": 5903.4602960992015,
+          "valid_draws": 5
+        },
+        "max_record_loss_share": {
+          "mean": 0.050660110910498046,
+          "sd": 0.0073323259576245055,
+          "valid_draws": 5
+        },
+        "poverty_rate_change_bhc": {
+          "mean": 1.8734348610449648e-05,
+          "sd": 2.565306333527209e-05,
+          "valid_draws": 5
+        }
+      },
+      "draws": [
+        {
+          "seed": 0,
+          "cushioning_rate": 0.4258445334774793,
+          "exchequer_cost": 471449600.0,
+          "net_disposable_loss": 507904000.0,
+          "poverty_rate_change_bhc": 4.683587152612412e-05,
+          "gross_earnings_loss": 884610579.5634326,
+          "affected_records": 175,
+          "affected_weighted": 318099.5390319824,
+          "effective_loss_records": 88.92716729351721,
+          "max_record_loss_share": 0.0394765884375444
+        },
+        {
+          "seed": 1,
+          "cushioning_rate": 0.4189295868969224,
+          "exchequer_cost": 465649664.0,
+          "net_disposable_loss": 514719744.0,
+          "poverty_rate_change_bhc": 4.683587152612412e-05,
+          "gross_earnings_loss": 885813031.2490933,
+          "affected_records": 176,
+          "affected_weighted": 306860.95864868164,
+          "effective_loss_records": 78.76000787857748,
+          "max_record_loss_share": 0.046820567993853306
+        },
+        {
+          "seed": 2,
+          "cushioning_rate": 0.4661204817901403,
+          "exchequer_cost": 504397824.0,
+          "net_disposable_loss": 471465984.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 883094346.0443338,
+          "affected_records": 177,
+          "affected_weighted": 307741.5635986328,
+          "effective_loss_records": 83.0383075140421,
+          "max_record_loss_share": 0.05569691947499817
+        },
+        {
+          "seed": 3,
+          "cushioning_rate": 0.44445972545556134,
+          "exchequer_cost": 485572608.0,
+          "net_disposable_loss": 490471424.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 882872847.341631,
+          "affected_records": 174,
+          "affected_weighted": 317787.13192749023,
+          "effective_loss_records": 78.55773073510333,
+          "max_record_loss_share": 0.05571089294291645
+        },
+        {
+          "seed": 4,
+          "cushioning_rate": 0.4451650905986487,
+          "exchequer_cost": 484737024.0,
+          "net_disposable_loss": 490864640.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 884703957.307998,
+          "affected_records": 177,
+          "affected_weighted": 306952.96240234375,
+          "effective_loss_records": 73.04205608362872,
+          "max_record_loss_share": 0.05559558570317789
+        }
+      ]
+    },
+    {
+      "phi": 0.11418583454354266,
+      "n_divisions": 23,
+      "n_divisions_clipped": 0,
+      "expected_gross_earnings_loss": 885749325.2499495,
+      "realised_over_expected_loss": 1.0013750542002955,
+      "division_schedule": {
+        "10": {
+          "sector_shock": 0.0009900000000000002,
+          "phi_effective": 0.11418583454354266,
+          "selection_probability": 0.008670077194404373,
+          "clipped": false,
+          "exposed_records": 174
+        },
+        "11": {
+          "sector_shock": 0.006270000000000001,
+          "phi_effective": 0.11418583454354266,
+          "selection_probability": 0.054910488897894356,
+          "clipped": false,
+          "exposed_records": 22
+        },
+        "12": {
+          "sector_shock": 0.00472,
+          "phi_effective": 0.11418583454354266,
+          "selection_probability": 0.04133612561372589,
+          "clipped": false,
+          "exposed_records": 2
+        },
+        "13": {
+          "sector_shock": 0.00478,
+          "phi_effective": 0.11418583454354266,
+          "selection_probability": 0.04186158483762919,
+          "clipped": false,
+          "exposed_records": 13
+        },
+        "14": {
+          "sector_shock": 0.01465,
+          "phi_effective": 0.11418583454354266,
+          "selection_probability": 0.12829962716972124,
+          "clipped": false,
+          "exposed_records": 13
+        },
+        "15": {
+          "sector_shock": 0.007850000000000001,
+          "phi_effective": 0.11418583454354266,
+          "selection_probability": 0.06874758179401447,
+          "clipped": false,
+          "exposed_records": 1
+        },
+        "16": {
+          "sector_shock": 0.00017,
+          "phi_effective": 0.11418583454354266,
+          "selection_probability": 0.0014888011343926698,
+          "clipped": false,
+          "exposed_records": 18
+        },
+        "17": {
+          "sector_shock": 0.0015900000000000003,
+          "phi_effective": 0.11418583454354266,
+          "selection_probability": 0.013924669433437325,
+          "clipped": false,
+          "exposed_records": 26
+        },
+        "18": {
+          "sector_shock": 0.0047,
+          "phi_effective": 0.11418583454354266,
+          "selection_probability": 0.041160972539091456,
+          "clipped": false,
+          "exposed_records": 35
+        },
+        "19": {
+          "sector_shock": 0.00255,
+          "phi_effective": 0.11418583454354266,
+          "selection_probability": 0.02233201701589005,
+          "clipped": false,
+          "exposed_records": 4
+        },
+        "20": {
+          "sector_shock": 0.012520000000000002,
+          "phi_effective": 0.11418583454354266,
+          "selection_probability": 0.10964582472115428,
+          "clipped": false,
+          "exposed_records": 28
+        },
+        "21": {
+          "sector_shock": 0.01301,
+          "phi_effective": 0.11418583454354266,
+          "selection_probability": 0.11393707504969786,
+          "clipped": false,
+          "exposed_records": 66
+        },
+        "22": {
+          "sector_shock": 0.00196,
+          "phi_effective": 0.11418583454354266,
+          "selection_probability": 0.01716500131417431,
+          "clipped": false,
+          "exposed_records": 53
+        },
+        "23": {
+          "sector_shock": 0.0025000000000000005,
+          "phi_effective": 0.11418583454354266,
+          "selection_probability": 0.021894134329303972,
+          "clipped": false,
+          "exposed_records": 40
+        },
+        "24": {
+          "sector_shock": 0.012625,
+          "phi_effective": 0.11418583454354266,
+          "selection_probability": 0.11056537836298504,
+          "clipped": false,
+          "exposed_records": 28
+        },
+        "25": {
+          "sector_shock": 0.0030800000000000003,
+          "phi_effective": 0.11418583454354266,
+          "selection_probability": 0.02697357349370249,
+          "clipped": false,
+          "exposed_records": 97
+        },
+        "26": {
+          "sector_shock": 0.01786,
+          "phi_effective": 0.11418583454354266,
+          "selection_probability": 0.15641169564854754,
+          "clipped": false,
+          "exposed_records": 57
+        },
+        "27": {
+          "sector_shock": 0.01263,
+          "phi_effective": 0.11418583454354266,
+          "selection_probability": 0.11060916663164365,
+          "clipped": false,
+          "exposed_records": 37
+        },
+        "28": {
+          "sector_shock": 0.01801,
+          "phi_effective": 0.11418583454354266,
+          "selection_probability": 0.1577253437083058,
+          "clipped": false,
+          "exposed_records": 89
+        },
+        "29": {
+          "sector_shock": 0.027425,
+          "phi_effective": 0.11418583454354266,
+          "selection_probability": 0.24017865359246454,
+          "clipped": false,
+          "exposed_records": 63
+        },
+        "30": {
+          "sector_shock": 0.015690000000000003,
+          "phi_effective": 0.11418583454354266,
+          "selection_probability": 0.1374075870507117,
+          "clipped": false,
+          "exposed_records": 73
+        },
+        "31": {
+          "sector_shock": 0.006350000000000001,
+          "phi_effective": 0.11418583454354266,
+          "selection_probability": 0.05561110119643208,
+          "clipped": false,
+          "exposed_records": 29
+        },
+        "32": {
+          "sector_shock": 0.01391,
+          "phi_effective": 0.11418583454354266,
+          "selection_probability": 0.12181896340824727,
+          "clipped": false,
+          "exposed_records": 50
+        }
+      },
+      "summary": {
+        "cushioning_rate": {
+          "mean": 0.4438372015115123,
+          "sd": 0.024260976491998338,
+          "valid_draws": 5
+        },
+        "exchequer_cost": {
+          "mean": 483278848.0,
+          "sd": 22275938.49719073,
+          "valid_draws": 5
+        },
+        "gross_earnings_loss": {
+          "mean": 886967278.5800432,
+          "sd": 1538762.3186559984,
+          "valid_draws": 5
+        },
+        "net_disposable_loss": {
+          "mean": 493302579.2,
+          "sd": 21658155.79005053,
+          "valid_draws": 5
+        },
+        "effective_loss_records": {
+          "mean": 40.456352423274566,
+          "sd": 4.54955946103521,
+          "valid_draws": 5
+        },
+        "affected_records": {
+          "mean": 85.2,
+          "sd": 1.0954451150103321,
+          "valid_draws": 5
+        },
+        "affected_weighted": {
+          "mean": 149926.86488037108,
+          "sd": 1791.1172599039735,
+          "valid_draws": 5
+        },
+        "max_record_loss_share": {
+          "mean": 0.08016018521067791,
+          "sd": 0.023864554141924763,
+          "valid_draws": 5
+        },
+        "poverty_rate_change_bhc": {
+          "mean": 2.0473782002705665e-05,
+          "sd": 2.8034880600812972e-05,
+          "valid_draws": 5
+        }
+      },
+      "draws": [
+        {
+          "seed": 0,
+          "cushioning_rate": 0.4385870881511714,
+          "exchequer_cost": 474742784.0,
+          "net_disposable_loss": 499253248.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 889279953.2448832,
+          "affected_records": 85,
+          "affected_weighted": 149043.63177490234,
+          "effective_loss_records": 42.8337126409349,
+          "max_record_loss_share": 0.0632010949184115
+        },
+        {
+          "seed": 1,
+          "cushioning_rate": 0.41851826372149736,
+          "exchequer_cost": 465108992.0,
+          "net_disposable_loss": 515768320.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 886989715.7921586,
+          "affected_records": 84,
+          "affected_weighted": 150418.6284790039,
+          "effective_loss_records": 41.41149035353228,
+          "max_record_loss_share": 0.06336428228356158
+        },
+        {
+          "seed": 2,
+          "cushioning_rate": 0.43350184448035234,
+          "exchequer_cost": 468746240.0,
+          "net_disposable_loss": 502398976.0,
+          "poverty_rate_change_bhc": 5.118445500676416e-05,
+          "gross_earnings_loss": 886850153.1821413,
+          "affected_records": 85,
+          "affected_weighted": 151101.0714416504,
+          "effective_loss_records": 39.048084276892226,
+          "max_record_loss_share": 0.09639572056146785
+        },
+        {
+          "seed": 3,
+          "cushioning_rate": 0.4835554730651508,
+          "exchequer_cost": 520028160.0,
+          "net_disposable_loss": 457965568.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 886766233.5741502,
+          "affected_records": 85,
+          "affected_weighted": 147285.45498657227,
+          "effective_loss_records": 33.47778974276542,
+          "max_record_loss_share": 0.1143295222564902
+        },
+        {
+          "seed": 4,
+          "cushioning_rate": 0.4450233381393893,
+          "exchequer_cost": 487768064.0,
+          "net_disposable_loss": 491126784.0,
+          "poverty_rate_change_bhc": 5.118445500676416e-05,
+          "gross_earnings_loss": 884950337.1068829,
+          "affected_records": 87,
+          "affected_weighted": 151785.53771972656,
+          "effective_loss_records": 45.510685102248004,
+          "max_record_loss_share": 0.0635103060334585
+        }
+      ]
+    },
+    {
+      "phi": 0.2353647861672275,
+      "n_divisions": 23,
+      "n_divisions_clipped": 0,
+      "expected_gross_earnings_loss": 885749325.2499495,
+      "realised_over_expected_loss": 1.0012996804994427,
+      "division_schedule": {
+        "10": {
+          "sector_shock": 0.0009900000000000002,
+          "phi_effective": 0.2353647861672275,
+          "selection_probability": 0.00420623669377883,
+          "clipped": false,
+          "exposed_records": 174
+        },
+        "11": {
+          "sector_shock": 0.006270000000000001,
+          "phi_effective": 0.2353647861672275,
+          "selection_probability": 0.026639499060599255,
+          "clipped": false,
+          "exposed_records": 22
+        },
+        "12": {
+          "sector_shock": 0.00472,
+          "phi_effective": 0.2353647861672275,
+          "selection_probability": 0.02005397696427886,
+          "clipped": false,
+          "exposed_records": 2
+        },
+        "13": {
+          "sector_shock": 0.00478,
+          "phi_effective": 0.2353647861672275,
+          "selection_probability": 0.020308900400265457,
+          "clipped": false,
+          "exposed_records": 13
+        },
+        "14": {
+          "sector_shock": 0.01465,
+          "phi_effective": 0.2353647861672275,
+          "selection_probability": 0.06224380562006045,
+          "clipped": false,
+          "exposed_records": 13
+        },
+        "15": {
+          "sector_shock": 0.007850000000000001,
+          "phi_effective": 0.2353647861672275,
+          "selection_probability": 0.033352482874912937,
+          "clipped": false,
+          "exposed_records": 1
+        },
+        "16": {
+          "sector_shock": 0.00017,
+          "phi_effective": 0.2353647861672275,
+          "selection_probability": 0.0007222830686286878,
+          "clipped": false,
+          "exposed_records": 18
+        },
+        "17": {
+          "sector_shock": 0.0015900000000000003,
+          "phi_effective": 0.2353647861672275,
+          "selection_probability": 0.006755471053644786,
+          "clipped": false,
+          "exposed_records": 26
+        },
+        "18": {
+          "sector_shock": 0.0047,
+          "phi_effective": 0.2353647861672275,
+          "selection_probability": 0.01996900248561666,
+          "clipped": false,
+          "exposed_records": 35
+        },
+        "19": {
+          "sector_shock": 0.00255,
+          "phi_effective": 0.2353647861672275,
+          "selection_probability": 0.010834246029430316,
+          "clipped": false,
+          "exposed_records": 4
+        },
+        "20": {
+          "sector_shock": 0.012520000000000002,
+          "phi_effective": 0.2353647861672275,
+          "selection_probability": 0.0531940236425363,
+          "clipped": false,
+          "exposed_records": 28
+        },
+        "21": {
+          "sector_shock": 0.01301,
+          "phi_effective": 0.2353647861672275,
+          "selection_probability": 0.055275898369760164,
+          "clipped": false,
+          "exposed_records": 66
+        },
+        "22": {
+          "sector_shock": 0.00196,
+          "phi_effective": 0.2353647861672275,
+          "selection_probability": 0.008327498908895458,
+          "clipped": false,
+          "exposed_records": 53
+        },
+        "23": {
+          "sector_shock": 0.0025000000000000005,
+          "phi_effective": 0.2353647861672275,
+          "selection_probability": 0.010621809832774822,
+          "clipped": false,
+          "exposed_records": 40
+        },
+        "24": {
+          "sector_shock": 0.012625,
+          "phi_effective": 0.2353647861672275,
+          "selection_probability": 0.05364013965551284,
+          "clipped": false,
+          "exposed_records": 28
+        },
+        "25": {
+          "sector_shock": 0.0030800000000000003,
+          "phi_effective": 0.2353647861672275,
+          "selection_probability": 0.01308606971397858,
+          "clipped": false,
+          "exposed_records": 97
+        },
+        "26": {
+          "sector_shock": 0.01786,
+          "phi_effective": 0.2353647861672275,
+          "selection_probability": 0.07588220944534332,
+          "clipped": false,
+          "exposed_records": 57
+        },
+        "27": {
+          "sector_shock": 0.01263,
+          "phi_effective": 0.2353647861672275,
+          "selection_probability": 0.053661383275178394,
+          "clipped": false,
+          "exposed_records": 37
+        },
+        "28": {
+          "sector_shock": 0.01801,
+          "phi_effective": 0.2353647861672275,
+          "selection_probability": 0.0765195180353098,
+          "clipped": false,
+          "exposed_records": 89
+        },
+        "29": {
+          "sector_shock": 0.027425,
+          "phi_effective": 0.2353647861672275,
+          "selection_probability": 0.11652125386553978,
+          "clipped": false,
+          "exposed_records": 63
+        },
+        "30": {
+          "sector_shock": 0.015690000000000003,
+          "phi_effective": 0.2353647861672275,
+          "selection_probability": 0.06666247851049478,
+          "clipped": false,
+          "exposed_records": 73
+        },
+        "31": {
+          "sector_shock": 0.006350000000000001,
+          "phi_effective": 0.2353647861672275,
+          "selection_probability": 0.026979396975248045,
+          "clipped": false,
+          "exposed_records": 29
+        },
+        "32": {
+          "sector_shock": 0.01391,
+          "phi_effective": 0.2353647861672275,
+          "selection_probability": 0.0590997499095591,
+          "clipped": false,
+          "exposed_records": 50
+        }
+      },
+      "summary": {
+        "cushioning_rate": {
+          "mean": 0.4176589612261852,
+          "sd": 0.01593710804469244,
+          "valid_draws": 5
+        },
+        "exchequer_cost": {
+          "mean": 465974067.2,
+          "sd": 11619002.13294701,
+          "valid_draws": 5
+        },
+        "gross_earnings_loss": {
+          "mean": 886900516.3753713,
+          "sd": 3441853.491680191,
+          "valid_draws": 5
+        },
+        "net_disposable_loss": {
+          "mean": 516449894.4,
+          "sd": 12951080.990296863,
+          "valid_draws": 5
+        },
+        "effective_loss_records": {
+          "mean": 21.53648484068075,
+          "sd": 3.0775168266175674,
+          "valid_draws": 5
+        },
+        "affected_records": {
+          "mean": 41.4,
+          "sd": 1.9493588689617927,
+          "valid_draws": 5
+        },
+        "affected_weighted": {
+          "mean": 74979.20466918945,
+          "sd": 3234.9207346086264,
+          "valid_draws": 5
+        },
+        "max_record_loss_share": {
+          "mean": 0.1145922197605288,
+          "sd": 0.03335125742818882,
+          "valid_draws": 5
+        },
+        "poverty_rate_change_bhc": {
+          "mean": 3.30878994179884e-05,
+          "sd": 3.722187194363625e-05,
+          "valid_draws": 5
+        }
+      },
+      "draws": [
+        {
+          "seed": 0,
+          "cushioning_rate": 0.40173402607273667,
+          "exchequer_cost": 454262784.0,
+          "net_disposable_loss": 529924096.0,
+          "poverty_rate_change_bhc": 2.0857101324323057e-05,
+          "gross_earnings_loss": 885766731.0098897,
+          "affected_records": 38,
+          "affected_weighted": 76525.67178344727,
+          "effective_loss_records": 17.121831723593427,
+          "max_record_loss_share": 0.16750620203418823
+        },
+        {
+          "seed": 1,
+          "cushioning_rate": 0.4255221820937256,
+          "exchequer_cost": 474791936.0,
+          "net_disposable_loss": 509476864.0,
+          "poverty_rate_change_bhc": 2.16462899931269e-05,
+          "gross_earnings_loss": 886852108.3317455,
+          "affected_records": 42,
+          "affected_weighted": 69254.36337280273,
+          "effective_loss_records": 20.826701818012907,
+          "max_record_loss_share": 0.12524045573378814
+        },
+        {
+          "seed": 2,
+          "cushioning_rate": 0.44067482240924805,
+          "exchequer_cost": 481427456.0,
+          "net_disposable_loss": 498991104.0,
+          "poverty_rate_change_bhc": 9.721503070295179e-05,
+          "gross_earnings_loss": 892130595.9251895,
+          "affected_records": 42,
+          "affected_weighted": 76584.31161499023,
+          "effective_loss_records": 22.515039270854253,
+          "max_record_loss_share": 0.09847946762234168
+        },
+        {
+          "seed": 3,
+          "cushioning_rate": 0.41561275918791896,
+          "exchequer_cost": 461619200.0,
+          "net_disposable_loss": 515768320.0,
+          "poverty_rate_change_bhc": 2.5721075069540245e-05,
+          "gross_earnings_loss": 882579707.3927791,
+          "affected_records": 42,
+          "affected_weighted": 75630.91317749023,
+          "effective_loss_records": 21.567398658279544,
+          "max_record_loss_share": 0.09954516900898541
+        },
+        {
+          "seed": 4,
+          "cushioning_rate": 0.4047510163672964,
+          "exchequer_cost": 457768960.0,
+          "net_disposable_loss": 528089088.0,
+          "poverty_rate_change_bhc": 0.0,
+          "gross_earnings_loss": 887173439.217253,
+          "affected_records": 43,
+          "affected_weighted": 76900.7633972168,
+          "effective_loss_records": 25.65145273266363,
+          "max_record_loss_share": 0.0821898044033406
+        }
+      ]
+    },
+    {
+      "phi": 0.48514408804728054,
+      "n_divisions": 23,
+      "n_divisions_clipped": 0,
+      "expected_gross_earnings_loss": 885749325.2499495,
+      "realised_over_expected_loss": 0.9992387272812805,
+      "division_schedule": {
+        "10": {
+          "sector_shock": 0.0009900000000000002,
+          "phi_effective": 0.48514408804728054,
+          "selection_probability": 0.002040630864914339,
+          "clipped": false,
+          "exposed_records": 174
+        },
+        "11": {
+          "sector_shock": 0.006270000000000001,
+          "phi_effective": 0.48514408804728054,
+          "selection_probability": 0.012923995477790813,
+          "clipped": false,
+          "exposed_records": 22
+        },
+        "12": {
+          "sector_shock": 0.00472,
+          "phi_effective": 0.48514408804728054,
+          "selection_probability": 0.00972906836605624,
+          "clipped": false,
+          "exposed_records": 2
+        },
+        "13": {
+          "sector_shock": 0.00478,
+          "phi_effective": 0.48514408804728054,
+          "selection_probability": 0.009852742963929836,
+          "clipped": false,
+          "exposed_records": 13
+        },
+        "14": {
+          "sector_shock": 0.01465,
+          "phi_effective": 0.48514408804728054,
+          "selection_probability": 0.030197214314136422,
+          "clipped": false,
+          "exposed_records": 13
+        },
+        "15": {
+          "sector_shock": 0.007850000000000001,
+          "phi_effective": 0.48514408804728054,
+          "selection_probability": 0.016180759888462178,
+          "clipped": false,
+          "exposed_records": 1
+        },
+        "16": {
+          "sector_shock": 0.00017,
+          "phi_effective": 0.48514408804728054,
+          "selection_probability": 0.0003504113606418561,
+          "clipped": false,
+          "exposed_records": 18
+        },
+        "17": {
+          "sector_shock": 0.0015900000000000003,
+          "phi_effective": 0.48514408804728054,
+          "selection_probability": 0.0032773768436503013,
+          "clipped": false,
+          "exposed_records": 26
+        },
+        "18": {
+          "sector_shock": 0.0047,
+          "phi_effective": 0.48514408804728054,
+          "selection_probability": 0.009687843500098374,
+          "clipped": false,
+          "exposed_records": 35
+        },
+        "19": {
+          "sector_shock": 0.00255,
+          "phi_effective": 0.48514408804728054,
+          "selection_probability": 0.005256170409627841,
+          "clipped": false,
+          "exposed_records": 4
+        },
+        "20": {
+          "sector_shock": 0.012520000000000002,
+          "phi_effective": 0.48514408804728054,
+          "selection_probability": 0.025806766089623758,
+          "clipped": false,
+          "exposed_records": 28
+        },
+        "21": {
+          "sector_shock": 0.01301,
+          "phi_effective": 0.48514408804728054,
+          "selection_probability": 0.02681677530559146,
+          "clipped": false,
+          "exposed_records": 66
+        },
+        "22": {
+          "sector_shock": 0.00196,
+          "phi_effective": 0.48514408804728054,
+          "selection_probability": 0.004040036863870811,
+          "clipped": false,
+          "exposed_records": 53
+        },
+        "23": {
+          "sector_shock": 0.0025000000000000005,
+          "phi_effective": 0.48514408804728054,
+          "selection_probability": 0.005153108244733179,
+          "clipped": false,
+          "exposed_records": 40
+        },
+        "24": {
+          "sector_shock": 0.012625,
+          "phi_effective": 0.48514408804728054,
+          "selection_probability": 0.026023196635902548,
+          "clipped": false,
+          "exposed_records": 28
+        },
+        "25": {
+          "sector_shock": 0.0030800000000000003,
+          "phi_effective": 0.48514408804728054,
+          "selection_probability": 0.0063486293575112755,
+          "clipped": false,
+          "exposed_records": 97
+        },
+        "26": {
+          "sector_shock": 0.01786,
+          "phi_effective": 0.48514408804728054,
+          "selection_probability": 0.03681380530037382,
+          "clipped": false,
+          "exposed_records": 57
+        },
+        "27": {
+          "sector_shock": 0.01263,
+          "phi_effective": 0.48514408804728054,
+          "selection_probability": 0.026033502852392015,
+          "clipped": false,
+          "exposed_records": 37
+        },
+        "28": {
+          "sector_shock": 0.01801,
+          "phi_effective": 0.48514408804728054,
+          "selection_probability": 0.03712299179505781,
+          "clipped": false,
+          "exposed_records": 89
+        },
+        "29": {
+          "sector_shock": 0.027425,
+          "phi_effective": 0.48514408804728054,
+          "selection_probability": 0.05652959744472296,
+          "clipped": false,
+          "exposed_records": 63
+        },
+        "30": {
+          "sector_shock": 0.015690000000000003,
+          "phi_effective": 0.48514408804728054,
+          "selection_probability": 0.03234090734394543,
+          "clipped": false,
+          "exposed_records": 73
+        },
+        "31": {
+          "sector_shock": 0.006350000000000001,
+          "phi_effective": 0.48514408804728054,
+          "selection_probability": 0.013088894941622272,
+          "clipped": false,
+          "exposed_records": 29
+        },
+        "32": {
+          "sector_shock": 0.01391,
+          "phi_effective": 0.48514408804728054,
+          "selection_probability": 0.0286718942736954,
+          "clipped": false,
+          "exposed_records": 50
+        }
+      },
+      "summary": {
+        "cushioning_rate": {
+          "mean": 0.39492405006559367,
+          "sd": 0.034125165193739725,
+          "valid_draws": 5
+        },
+        "exchequer_cost": {
+          "mean": 446434508.8,
+          "sd": 23697994.53385276,
+          "valid_draws": 5
+        },
+        "gross_earnings_loss": {
+          "mean": 885075028.4530125,
+          "sd": 3083896.7902851836,
+          "valid_draws": 5
+        },
+        "net_disposable_loss": {
+          "mean": 535481548.8,
+          "sd": 28988047.80402715,
+          "valid_draws": 5
+        },
+        "effective_loss_records": {
+          "mean": 11.73490879707891,
+          "sd": 0.7532062734717864,
+          "valid_draws": 5
+        },
+        "affected_records": {
+          "mean": 21.2,
+          "sd": 0.8366600265340756,
+          "valid_draws": 5
+        },
+        "affected_weighted": {
+          "mean": 36626.69045410156,
+          "sd": 1433.1914907000814,
+          "valid_draws": 5
+        },
+        "max_record_loss_share": {
+          "mean": 0.18473869530607165,
+          "sd": 0.027142826173603578,
+          "valid_draws": 5
+        },
+        "poverty_rate_change_bhc": {
+          "mean": 0.00012419880705921149,
+          "sd": 8.268716016829996e-05,
+          "valid_draws": 5
+        }
+      },
+      "draws": [
+        {
+          "seed": 0,
+          "cushioning_rate": 0.347065074795045,
+          "exchequer_cost": 412680192.0,
+          "net_disposable_loss": 576716800.0,
+          "poverty_rate_change_bhc": 9.721503070295179e-05,
+          "gross_earnings_loss": 883268420.3850327,
+          "affected_records": 21,
+          "affected_weighted": 38964.99417114258,
+          "effective_loss_records": 11.93753112495321,
+          "max_record_loss_share": 0.2022645339373119
+        },
+        {
+          "seed": 1,
+          "cushioning_rate": 0.3765155487506606,
+          "exchequer_cost": 438501376.0,
+          "net_disposable_loss": 549584896.0,
+          "poverty_rate_change_bhc": 0.00023691735334063768,
+          "gross_earnings_loss": 881473298.8108054,
+          "affected_records": 21,
+          "affected_weighted": 36327.224365234375,
+          "effective_loss_records": 10.984104827118955,
+          "max_record_loss_share": 0.20267644593630463
+        },
+        {
+          "seed": 2,
+          "cushioning_rate": 0.4319972806540545,
+          "exchequer_cost": 469319680.0,
+          "net_disposable_loss": 504889344.0,
+          "poverty_rate_change_bhc": 1.3577248839935496e-05,
+          "gross_earnings_loss": 888885434.5299253,
+          "affected_records": 22,
+          "affected_weighted": 35210.0390625,
+          "effective_loss_records": 12.882294505323578,
+          "max_record_loss_share": 0.14240873701980908
+        },
+        {
+          "seed": 3,
+          "cushioning_rate": 0.3988399573688113,
+          "exchequer_cost": 442728448.0,
+          "net_disposable_loss": 533594112.0,
+          "poverty_rate_change_bhc": 0.0001627981346238594,
+          "gross_earnings_loss": 887607415.929604,
+          "affected_records": 22,
+          "affected_weighted": 35836.876037597656,
+          "effective_loss_records": 11.725564953025415,
+          "max_record_loss_share": 0.2040245649703912
+        },
+        {
+          "seed": 4,
+          "cushioning_rate": 0.4202023887593971,
+          "exchequer_cost": 468942848.0,
+          "net_disposable_loss": 512622592.0,
+          "poverty_rate_change_bhc": 0.0001104862677886731,
+          "gross_earnings_loss": 884140572.6096951,
+          "affected_records": 20,
+          "affected_weighted": 36794.3186340332,
+          "effective_loss_records": 11.145048574973387,
+          "max_record_loss_share": 0.17231919466654147
+        }
+      ]
+    },
+    {
+      "phi": 1.0,
+      "n_divisions": 23,
+      "n_divisions_clipped": 0,
+      "expected_gross_earnings_loss": 885749325.2499495,
+      "realised_over_expected_loss": 0.9986008141083195,
+      "division_schedule": {
+        "10": {
+          "sector_shock": 0.0009900000000000002,
+          "phi_effective": 1.0,
+          "selection_probability": 0.0009900000000000002,
+          "clipped": false,
+          "exposed_records": 174
+        },
+        "11": {
+          "sector_shock": 0.006270000000000001,
+          "phi_effective": 1.0,
+          "selection_probability": 0.006270000000000001,
+          "clipped": false,
+          "exposed_records": 22
+        },
+        "12": {
+          "sector_shock": 0.00472,
+          "phi_effective": 1.0,
+          "selection_probability": 0.00472,
+          "clipped": false,
+          "exposed_records": 2
+        },
+        "13": {
+          "sector_shock": 0.00478,
+          "phi_effective": 1.0,
+          "selection_probability": 0.00478,
+          "clipped": false,
+          "exposed_records": 13
+        },
+        "14": {
+          "sector_shock": 0.01465,
+          "phi_effective": 1.0,
+          "selection_probability": 0.01465,
+          "clipped": false,
+          "exposed_records": 13
+        },
+        "15": {
+          "sector_shock": 0.007850000000000001,
+          "phi_effective": 1.0,
+          "selection_probability": 0.007850000000000001,
+          "clipped": false,
+          "exposed_records": 1
+        },
+        "16": {
+          "sector_shock": 0.00017,
+          "phi_effective": 1.0,
+          "selection_probability": 0.00017,
+          "clipped": false,
+          "exposed_records": 18
+        },
+        "17": {
+          "sector_shock": 0.0015900000000000003,
+          "phi_effective": 1.0,
+          "selection_probability": 0.0015900000000000003,
+          "clipped": false,
+          "exposed_records": 26
+        },
+        "18": {
+          "sector_shock": 0.0047,
+          "phi_effective": 1.0,
+          "selection_probability": 0.0047,
+          "clipped": false,
+          "exposed_records": 35
+        },
+        "19": {
+          "sector_shock": 0.00255,
+          "phi_effective": 1.0,
+          "selection_probability": 0.00255,
+          "clipped": false,
+          "exposed_records": 4
+        },
+        "20": {
+          "sector_shock": 0.012520000000000002,
+          "phi_effective": 1.0,
+          "selection_probability": 0.012520000000000002,
+          "clipped": false,
+          "exposed_records": 28
+        },
+        "21": {
+          "sector_shock": 0.01301,
+          "phi_effective": 1.0,
+          "selection_probability": 0.01301,
+          "clipped": false,
+          "exposed_records": 66
+        },
+        "22": {
+          "sector_shock": 0.00196,
+          "phi_effective": 1.0,
+          "selection_probability": 0.00196,
+          "clipped": false,
+          "exposed_records": 53
+        },
+        "23": {
+          "sector_shock": 0.0025000000000000005,
+          "phi_effective": 1.0,
+          "selection_probability": 0.0025000000000000005,
+          "clipped": false,
+          "exposed_records": 40
+        },
+        "24": {
+          "sector_shock": 0.012625,
+          "phi_effective": 1.0,
+          "selection_probability": 0.012625,
+          "clipped": false,
+          "exposed_records": 28
+        },
+        "25": {
+          "sector_shock": 0.0030800000000000003,
+          "phi_effective": 1.0,
+          "selection_probability": 0.0030800000000000003,
+          "clipped": false,
+          "exposed_records": 97
+        },
+        "26": {
+          "sector_shock": 0.01786,
+          "phi_effective": 1.0,
+          "selection_probability": 0.01786,
+          "clipped": false,
+          "exposed_records": 57
+        },
+        "27": {
+          "sector_shock": 0.01263,
+          "phi_effective": 1.0,
+          "selection_probability": 0.01263,
+          "clipped": false,
+          "exposed_records": 37
+        },
+        "28": {
+          "sector_shock": 0.01801,
+          "phi_effective": 1.0,
+          "selection_probability": 0.01801,
+          "clipped": false,
+          "exposed_records": 89
+        },
+        "29": {
+          "sector_shock": 0.027425,
+          "phi_effective": 1.0,
+          "selection_probability": 0.027425,
+          "clipped": false,
+          "exposed_records": 63
+        },
+        "30": {
+          "sector_shock": 0.015690000000000003,
+          "phi_effective": 1.0,
+          "selection_probability": 0.015690000000000003,
+          "clipped": false,
+          "exposed_records": 73
+        },
+        "31": {
+          "sector_shock": 0.006350000000000001,
+          "phi_effective": 1.0,
+          "selection_probability": 0.006350000000000001,
+          "clipped": false,
+          "exposed_records": 29
+        },
+        "32": {
+          "sector_shock": 0.01391,
+          "phi_effective": 1.0,
+          "selection_probability": 0.01391,
+          "clipped": false,
+          "exposed_records": 50
+        }
+      },
+      "summary": {
+        "cushioning_rate": {
+          "mean": 0.3359194922816765,
+          "sd": 0.0166797393737241,
+          "valid_draws": 5
+        },
+        "exchequer_cost": {
+          "mean": 366850867.2,
+          "sd": 32356785.20244215,
+          "valid_draws": 5
+        },
+        "gross_earnings_loss": {
+          "mean": 884509997.2904942,
+          "sd": 6095677.184296378,
+          "valid_draws": 5
+        },
+        "net_disposable_loss": {
+          "mean": 587359846.4,
+          "sd": 13997851.407175204,
+          "valid_draws": 5
+        },
+        "effective_loss_records": {
+          "mean": 6.418910036351408,
+          "sd": 1.3671791254507275,
+          "valid_draws": 5
+        },
+        "affected_records": {
+          "mean": 9.6,
+          "sd": 0.8944271909999159,
+          "valid_draws": 5
+        },
+        "affected_weighted": {
+          "mean": 17589.651763916016,
+          "sd": 1343.2886649979685,
+          "valid_draws": 5
+        },
+        "max_record_loss_share": {
+          "mean": 0.26349558179436555,
+          "sd": 0.04649240657491237,
+          "valid_draws": 5
+        },
+        "poverty_rate_change_bhc": {
+          "mean": 0.0004293921601739137,
+          "sd": 0.00021719412349088086,
+          "valid_draws": 5
+        }
+      },
+      "draws": [
+        {
+          "seed": 0,
+          "cushioning_rate": 0.326356408623639,
+          "exchequer_cost": 328679424.0,
+          "net_disposable_loss": 594542592.0,
+          "poverty_rate_change_bhc": 0.0005510784579725592,
+          "gross_earnings_loss": 882577374.164957,
+          "affected_records": 10,
+          "affected_weighted": 16688.01773071289,
+          "effective_loss_records": 5.188300689561692,
+          "max_record_loss_share": 0.2957493294300691
+        },
+        {
+          "seed": 1,
+          "cushioning_rate": 0.3647995455567825,
+          "exchequer_cost": 409731072.0,
+          "net_disposable_loss": 562429952.0,
+          "poverty_rate_change_bhc": 0.0001861838599538368,
+          "gross_earnings_loss": 885436948.3929224,
+          "affected_records": 10,
+          "affected_weighted": 16214.856811523438,
+          "effective_loss_records": 8.46026382283626,
+          "max_record_loss_share": 0.21824467303154332
+        },
+        {
+          "seed": 2,
+          "cushioning_rate": 0.33239155688713806,
+          "exchequer_cost": 388071424.0,
+          "net_disposable_loss": 595197952.0,
+          "poverty_rate_change_bhc": 0.0007170494291529605,
+          "gross_earnings_loss": 891537484.4943047,
+          "affected_records": 8,
+          "affected_weighted": 17114.6708984375,
+          "effective_loss_records": 5.386679314245996,
+          "max_record_loss_share": 0.32583122948844334
+        },
+        {
+          "seed": 3,
+          "cushioning_rate": 0.33303754173304745,
+          "exchequer_cost": 346619904.0,
+          "net_disposable_loss": 592052224.0,
+          "poverty_rate_change_bhc": 0.0004416873838008206,
+          "gross_earnings_loss": 887684481.5799668,
+          "affected_records": 10,
+          "affected_weighted": 18463.381713867188,
+          "effective_loss_records": 5.935867842622959,
+          "max_record_loss_share": 0.2539152482511508
+        },
+        {
+          "seed": 4,
+          "cushioning_rate": 0.32301240860777547,
+          "exchequer_cost": 361152512.0,
+          "net_disposable_loss": 592576512.0,
+          "poverty_rate_change_bhc": 0.0002509616699893913,
+          "gross_earnings_loss": 875313697.8203201,
+          "affected_records": 10,
+          "affected_weighted": 19467.331665039062,
+          "effective_loss_records": 7.123438512490134,
+          "max_record_loss_share": 0.2237374287706212
+        }
+      ]
+    }
+  ]
+}

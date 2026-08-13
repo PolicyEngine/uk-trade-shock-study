@@ -175,6 +175,36 @@ def main() -> None:
                 "the manuscript's schedule-wedge passage assumes they "
                 "coincide and must be rewritten before building."
             )
+        # RECONCILIATION AGAINST DOLLS, FUEST AND PEICHL (2012), UK
+        # unemployment cell (NBER WP 16275, App. Tables 2-3). Their two
+        # components are external literature constants; everything DERIVED
+        # from them is emitted here so the manuscript never hand-types a
+        # difference or a ratio that a re-run can silently invalidate. An
+        # earlier draft hardcoded "a factor of roughly six" and an
+        # "11.2-point difference", both of which were artifacts of a 5-seed
+        # channel split and a UC award served from a stale cache.
+        dolls_tax, dolls_benefits = 25.2, 16.3
+        dolls_total = dolls_tax + dolls_benefits
+        disp_sum = sums["displacement"]
+        disp_benefits = 100 * (
+            levels["displacement"]["universal_credit"]
+            + levels["displacement"]["other_benefits"]
+        )
+        disp_residual = 100 * levels["displacement"]["other_residual"]
+        dolls_gap = dolls_total - disp_sum
+        macros["DollsUKTax"] = fmt(dolls_tax)
+        macros["DollsUKBenefits"] = fmt(dolls_benefits)
+        macros["DollsUKTotal"] = fmt(dolls_total)
+        macros["DollsGapPoints"] = fmt(dolls_gap)
+        macros["DollsBenefitRatio"] = fmt(
+            dolls_benefits / disp_benefits if disp_benefits else float("nan")
+        )
+        macros["ResidualShareOfDollsGap"] = fmt(
+            100 * disp_residual / dolls_gap if dolls_gap else float("nan"), 0
+        )
+        macros["ResidualShareOfDispSum"] = fmt(
+            100 * disp_residual / disp_sum if disp_sum else float("nan"), 0
+        )
         macros["ScheduleWedgeWeighted"] = fmt(wedge)
         macros["ScheduleWedgeOffsets"] = fmt(wedge - conc_step_seeds)
 

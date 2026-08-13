@@ -9,62 +9,116 @@
     "bootstrap_seed": 20260805,
     "n_households": 16288,
     "resampling_unit": "household",
-    "notes": "Household bootstrap of the FRS sample; PSU/strata design variables are unavailable in the research file, so the interval approximates design-based sampling variance. Assignment dispersion is reported separately in the primary table; replicate statistics average over common assignment draws before resampling variation is measured."
+    "estimators": {
+      "mean_of_per_draw_ratios": "keys ending _cushioning: mean over assignment draws of 1 - net/gross, computed on draws with a positive gross loss. Retains near-zero denominators, which is the source of the right skew in the replicate distribution.",
+      "ratio_of_pooled_sums": "keys ending _cushioning_pooled: 1 - (sum of net over draws) / (sum of gross over draws). One denominator, formed after pooling; preferred when the two disagree."
+    },
+    "support": {
+      "displacement": {
+        "households_positive_gross_any_draw": 194,
+        "households_positive_gross_every_draw": 0,
+        "households_positive_gross_per_draw_mean": 9.88,
+        "households_positive_gross_per_draw_min": 8,
+        "smallest_draw_gross_share_of_mean": 0.9866351079630566
+      },
+      "wage_cut": {
+        "households_positive_gross_any_draw": 939,
+        "households_positive_gross_every_draw": 939,
+        "households_positive_gross_per_draw_mean": 939.0,
+        "households_positive_gross_per_draw_min": 939,
+        "smallest_draw_gross_share_of_mean": 1.0000000000000002
+      },
+      "any_margin": {
+        "households_positive_gross_any_draw": 939
+      },
+      "note": "Support of the household bootstrap: households whose weighted gross earnings loss is positive in at least one common assignment draw. The resample can only vary these households' multiplicities, so a small support means the reported interval understates sampling variability."
+    },
+    "notes": "Household bootstrap of the FRS sample; PSU/strata design variables are unavailable in the research file, so the interval approximates design-based sampling variance. Assignment dispersion is reported separately in the primary table; replicate statistics average over common assignment draws before resampling variation is measured. CONDITIONING LIMITATION: the resample reweights households but holds the original displacement assignment fixed. The per-household contributions come from assignment draws taken on the realised sample, so the same small set of selected records appears in every replicate and only their multiplicities change (see design.support for how many households that is). The interval is therefore conditional on that selection: it omits the variation that would come from a different FRS sample offering a different pool of records, and from re-drawing the assignment within each resampled sample. The bias is one-sided - the reported interval is too narrow and its coverage is below nominal - and it is larger the smaller the support. Removing the conditioning would require re-running PolicyEngine inside each of the 999 replicates, which is not computationally feasible; the interval should be read as a lower bound on sampling uncertainty."
   },
   "estimates": {
     "displacement_cushioning": {
-      "point": 0.33268167254775155,
-      "bootstrap_se": 0.01170627642327889,
-      "ci_2_5": 0.30003198640202455,
-      "ci_97_5": 0.3457607142778686
+      "point": 0.36328130076408927,
+      "bootstrap_se": 0.010950026329219252,
+      "ci_2_5": 0.3352280853320491,
+      "ci_97_5": 0.37702376906715945,
+      "finite_replicates": 999
     },
     "displacement_valid_draws": {
       "point": 25.0,
       "bootstrap_se": 0.06318202212515545,
       "ci_2_5": 25.0,
-      "ci_97_5": 25.0
+      "ci_97_5": 25.0,
+      "finite_replicates": 999
+    },
+    "displacement_cushioning_pooled": {
+      "point": 0.3631765848059587,
+      "bootstrap_se": 0.01154719047874471,
+      "ci_2_5": 0.33986330433685286,
+      "ci_97_5": 0.3843405271437145,
+      "finite_replicates": 999
     },
     "displacement_exchequer": {
-      "point": 370294432.4999577,
-      "bootstrap_se": 43301851.45877814,
-      "ci_2_5": 290141971.0250458,
-      "ci_97_5": 466007592.2247052
+      "point": 397482345.99387306,
+      "bootstrap_se": 45002763.075002916,
+      "ci_2_5": 311079504.3374891,
+      "ci_97_5": 492871185.9376009,
+      "finite_replicates": 999
     },
     "displacement_gross": {
       "point": 885290817.7456354,
       "bootstrap_se": 92483359.33133206,
       "ci_2_5": 715345714.6462828,
-      "ci_97_5": 1083075801.6313941
+      "ci_97_5": 1083075801.6313941,
+      "finite_replicates": 999
     },
     "wage_cut_cushioning": {
-      "point": 0.43937746036824044,
-      "bootstrap_se": 0.008945952083486555,
-      "ci_2_5": 0.42104224116166983,
-      "ci_97_5": 0.45584951736101376
+      "point": 0.43936698616588565,
+      "bootstrap_se": 0.008946402228346688,
+      "ci_2_5": 0.42104110385396415,
+      "ci_97_5": 0.4558404994862252,
+      "finite_replicates": 999
     },
     "wage_cut_valid_draws": {
       "point": 25.0,
       "bootstrap_se": 0.0,
       "ci_2_5": 25.0,
-      "ci_97_5": 25.0
+      "ci_97_5": 25.0,
+      "finite_replicates": 999
+    },
+    "wage_cut_cushioning_pooled": {
+      "point": 0.43936698616588565,
+      "bootstrap_se": 0.00894640222834669,
+      "ci_2_5": 0.42104110385396415,
+      "ci_97_5": 0.45584049948622507,
+      "finite_replicates": 999
     },
     "wage_cut_exchequer": {
-      "point": 484229785.2152942,
-      "bootstrap_se": 37471588.81898845,
-      "ci_2_5": 416940322.4602355,
-      "ci_97_5": 557610749.9996741
+      "point": 484220507.6976258,
+      "bootstrap_se": 37471613.08941691,
+      "ci_2_5": 416913881.53488076,
+      "ci_97_5": 557610286.1237906,
+      "finite_replicates": 999
     },
     "wage_cut_gross": {
-      "point": 885749325.2499481,
-      "bootstrap_se": 60673778.99836112,
+      "point": 885749325.2499484,
+      "bootstrap_se": 60673778.998361126,
       "ci_2_5": 773931494.2921354,
-      "ci_97_5": 1006278327.1614248
+      "ci_97_5": 1006278327.1614248,
+      "finite_replicates": 999
     },
     "cushioning_difference": {
-      "point": 0.10669578782048889,
-      "bootstrap_se": 0.012409352126839,
-      "ci_2_5": 0.09056723423878754,
-      "ci_97_5": 0.13906709111996263
+      "point": 0.07608568540179639,
+      "bootstrap_se": 0.012485148869763285,
+      "ci_2_5": 0.05779906212194385,
+      "ci_97_5": 0.10730275993887033,
+      "finite_replicates": 999
+    },
+    "cushioning_difference_pooled": {
+      "point": 0.07619040135992694,
+      "bootstrap_se": 0.012928020078155673,
+      "ci_2_5": 0.051117353562468694,
+      "ci_97_5": 0.10300047302090512,
+      "finite_replicates": 999
     }
   }
 }

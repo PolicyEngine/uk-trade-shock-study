@@ -673,14 +673,23 @@ def apply_concentrated_wage_cut(
     policyengine-uk; its only consumer is a behavioural labour-supply module
     this design does not run. The cells differ in ``hours_worked``, which
     this one leaves at baseline and displacement zeroes, and hours ARE
-    load-bearing -- through exactly one Universal Credit path,
-    ``hours_worked`` -> ``in_work`` -> ``uc_childcare_work_condition`` ->
-    ``uc_childcare_element``, because ``in_work`` is an OR of positive hours
-    and positive earnings. A displaced worker has neither, so the childcare
-    work condition fails and the element drops to zero; a worker here has
-    zero earnings but positive hours, so it is retained. Two smaller
-    hours-sensitive gates sit outside UC: the Housing Benefit worker
-    disregard and the council-tax-reduction non-dependant deduction.
+    load-bearing. Hours enter through ``in_work``, an OR of positive hours
+    and positive earnings: a displaced worker has neither, a worker here has
+    zero earnings but positive hours and so stays ``in_work``.
+
+    ``in_work`` has exactly THREE consumers at the pinned version, and only
+    one is Universal Credit (``uc_childcare_work_condition`` ->
+    ``uc_childcare_element``). The other two are childcare subsidies outside
+    UC: ``extended_childcare_entitlement_work_condition`` (DfE) and
+    ``tax_free_childcare_treated_as_in_work`` (HMRC). All three are childcare
+    gates that shut for a displaced worker and stay open here. A SEPARATE set
+    of gates reads ``weekly_hours`` rather than ``in_work`` -- the Housing
+    Benefit worker disregard, the council-tax-reduction non-dependant
+    deduction, the income tests of those same two childcare subsidies, and
+    the legacy Working Tax Credit elements. An earlier revision listed the
+    first two of those as ``in_work`` consumers; they are not.
+    ``tests/test_hours_channels.py`` derives all of this from the installed
+    package, so it fails rather than drifts.
 
     So the measured "employment-state" step is an HOURS effect on
     childcare-linked entitlement. ``zero_hours`` makes the comparison

@@ -34,6 +34,14 @@ mirrors. The disposition of successive referee rounds is tracked in
 2. `analysis/download_data.py` — FRS microdata from PolicyEngine's Hugging
    Face repo (needs `HUGGING_FACE_TOKEN` with access to
    `policyengine/policyengine-uk-data`); lands in `data/` (gitignored).
+   **Pinned by revision and verified by hash.** Upstream republishes
+   `frs_2024_25.h5` under the same name on every data release, so a bare
+   download does not reproduce these results — the file behind them
+   (release 1.56.6, 2026-06-19) was replaced on 2026-07-21 and again on
+   2026-07-26. The script fetches the revision recorded in
+   `uk_trade_shock_study/data/input_manifest.json` and aborts if the bytes do
+   not match its `sha256`. Use `--latest` to test against current upstream
+   data; that is a robustness check, not a reproduction.
 3. `analysis/run_scenarios.py` — runs the {full_tariff, epd} ×
    {displacement, wage_cut, inactivity} presets with Monte Carlo draws
    (mean ± SD) and writes `results/*.json`.
@@ -149,6 +157,12 @@ licensed inputs are never downloaded or redistributed implicitly.
 ## Data requirements
 
 - FRS 2024-25 h5 + adult.tab (licensed; via download_data.py) — gitignored.
+  The h5 is pinned to upstream revision `5535b2f8` (policyengine-uk-data
+  1.56.6) and hash-checked on download; see item 2 above for why the pin
+  matters.
+- `policyengine-uk==2.89.2`, as pinned in `pyproject.toml`. The simulated
+  cells are version-sensitive: 2.90.0 shifts them by a few tenths of a point,
+  which is small enough to look like noise and large enough to matter.
 - HMRC uktradeinfo country-by-commodity exports and ONS Annual Business Survey
   turnover are used to rebuild the packaged intensity table.
 

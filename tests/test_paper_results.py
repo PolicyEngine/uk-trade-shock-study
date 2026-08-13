@@ -779,7 +779,7 @@ def test_hmrc_figure_base_warns_when_it_sits_in_the_anticipation_window() -> Non
 
 
 def test_hmrc_figure_base_prefers_an_explicit_base_period_column() -> None:
-    """When the revised estimator writes the column, the column wins."""
+    """The column is authoritative; detection from the data is the fallback."""
     import pandas as pd
 
     from analysis.write_trade_benchmark_results import detect_base_period
@@ -787,11 +787,22 @@ def test_hmrc_figure_base_prefers_an_explicit_base_period_column() -> None:
     frame = pd.read_csv(
         Path("results/hmrc_destination_event_study_monthly.csv")
     )
-    # detection alone finds the stale front-running base...
-    assert detect_base_period(frame)[0] == (202501, 202503)
-    # ...but a base_period column is authoritative and overrides it.
-    labelled = frame.assign(base_period="2024")
-    assert detect_base_period(labelled) == ((202401, 202412), "base_period column")
+    # The regenerated CSV carries the column, and it names the clean base.
+    assert "base_period" in frame.columns
+    assert detect_base_period(frame) == ((202401, 202412), "base_period column")
+    # Strip it and the fallback recovers the same window from the series alone,
+    # which is what makes the caption safe for a CSV written before the column
+    # existed.
+    bare = frame.drop(columns=["base_period"])
+    assert detect_base_period(bare) == (
+        (202401, 202412),
+        "detected from normalised_gap",
+    )
+    # The column wins even when it disagrees with the data: a CSV that says it
+    # was normalised on the front-running window must be read that way rather
+    # than silently re-detected into a cleaner-looking answer.
+    mislabelled = frame.assign(base_period="Jan-Mar 2025")
+    assert detect_base_period(mislabelled) == ((202501, 202503), "base_period column")
 
 
 def test_base_period_labels_round_trip() -> None:
@@ -988,52 +999,57 @@ def _hmrc_artifact() -> dict:
 
 
 def test_hmrc_dof_convention_macro_describes_the_stored_standard_errors() -> None:
-    """The stored artifact predates the absorbed-fixed-effect dof correction.
+    """The stored artifact now carries the absorbed-fixed-effect dof correction.
 
-    Every HMRC standard error, confidence interval and p-value the manuscript
-    quotes therefore comes from the superseded convention, and the macro has
-    to say so — the other two staleness dimensions of the same artifact
-    (\\HMRCAnticipationSpec, \\HMRCFigureBase) already do.
+    It was re-run on a freshly downloaded HMRC panel, so every standard error,
+    confidence interval and p-value the manuscript quotes comes from the
+    corrected convention and the macro has to say so. The macro is derived
+    from the artifact rather than asserted, so this test tracks the artifact:
+    if a future artifact loses the correction the macro goes back to warning
+    and this assertion fails, which is the point.
     """
     from analysis.write_trade_benchmark_results import (
-        DOF_CONVENTION_LEGACY,
+        DOF_CONVENTION_CORRECTED,
         dof_convention_label,
         dof_convention_state,
     )
 
     data = _hmrc_artifact()
-    # No block carries the correction: it is a pre-fix artifact throughout.
-    assert dof_convention_state(data) == DOF_CONVENTION_LEGACY
+    # Every fitted block carries the correction: WLS gap fits and PPML alike.
+    assert dof_convention_state(data) == DOF_CONVENTION_CORRECTED
     phrase = dof_convention_label(data)
-    assert "superseded" in phrase and "too tight" in phrase
+    assert "absorbed" in phrase
+    assert "superseded" not in phrase and "too tight" not in phrase
 
     macros = Path("paper/generated_trade_benchmarks.tex").read_text()
     assert _macro(macros, "HMRCDofConvention") == phrase
 
 
-def test_hmrc_dof_convention_flips_when_the_artifact_carries_the_correction() -> None:
-    """The macro must track the artifact, not a hard-coded staleness claim."""
+def test_hmrc_dof_convention_flips_when_the_artifact_loses_the_correction() -> None:
+    """The macro must track the artifact, not a hard-coded freshness claim."""
     import copy
 
     from analysis.write_trade_benchmark_results import (
-        DOF_CONVENTION_CORRECTED,
+        DOF_CONVENTION_LEGACY,
         DOF_CORRECTION_KEYS,
         _fitted_blocks,
         dof_convention_label,
         dof_convention_state,
     )
 
-    corrected = copy.deepcopy(_hmrc_artifact())
-    blocks = _fitted_blocks(corrected)
+    stored = _hmrc_artifact()
+    blocks = _fitted_blocks(stored)
     assert len(blocks) > 1  # the artifact really does carry many fitted blocks
-    for _, block in blocks:
-        block["absorbed_fixed_effects"] = int(block["product_count"])
-        block["absorbed_dof_scale"] = 1.005
-    assert dof_convention_state(corrected) == DOF_CONVENTION_CORRECTED
-    phrase = dof_convention_label(corrected)
-    assert "absorbed" in phrase and "superseded" not in phrase
-    assert phrase != dof_convention_label(_hmrc_artifact())
     assert set(DOF_CORRECTION_KEYS) <= set(blocks[0][1])
+
+    legacy = copy.deepcopy(stored)
+    for _, block in _fitted_blocks(legacy):
+        for key in DOF_CORRECTION_KEYS:
+            block.pop(key)
+    assert dof_convention_state(legacy) == DOF_CONVENTION_LEGACY
+    phrase = dof_convention_label(legacy)
+    assert "superseded" in phrase and "too tight" in phrase
+    assert phrase != dof_convention_label(stored)
 
 
 def test_hmrc_dof_convention_refuses_an_unrecognised_state() -> None:
@@ -1048,15 +1064,15 @@ def test_hmrc_dof_convention_refuses_an_unrecognised_state() -> None:
     )
 
     mixed = copy.deepcopy(_hmrc_artifact())
-    path, block = _fitted_blocks(mixed)[0]
-    block["absorbed_fixed_effects"] = 1194
-    block["absorbed_dof_scale"] = 1.005
+    for _, block in _fitted_blocks(mixed)[1:]:  # all but one lose the stamp
+        block.pop("absorbed_fixed_effects")
+        block.pop("absorbed_dof_scale")
     with pytest.raises(ValueError, match="mixes conventions"):
         dof_convention_state(mixed)
 
     half = copy.deepcopy(_hmrc_artifact())
     for _, item in _fitted_blocks(half):
-        item["absorbed_fixed_effects"] = 1194  # ...but no absorbed_dof_scale
+        item.pop("absorbed_dof_scale")  # ...but absorbed_fixed_effects stays
     with pytest.raises(ValueError, match="only part of"):
         dof_convention_state(half)
 
@@ -1082,9 +1098,30 @@ def test_hmrc_dof_correction_keys_are_the_ones_the_estimator_writes() -> None:
     from analysis import hmrc_destination_event_study
     from analysis.write_trade_benchmark_results import DOF_CORRECTION_KEYS
 
-    source = inspect.getsource(hmrc_destination_event_study.fit_post_model)
-    for key in DOF_CORRECTION_KEYS:
-        assert f'"{key}"' in source
+    for fitter in (
+        hmrc_destination_event_study.fit_post_model,
+        hmrc_destination_event_study.fit_ppml_model,
+    ):
+        source = inspect.getsource(fitter)
+        for key in DOF_CORRECTION_KEYS:
+            assert f'"{key}"' in source, f"{fitter.__name__} does not stamp {key}"
+
+
+def test_hmrc_dof_scan_skips_derived_summaries_of_fitted_estimates() -> None:
+    """Only real fits are scanned; blocks that re-report a fitted SE are not.
+
+    ``precision_summary`` and ``group_contrast`` copy or combine standard
+    errors that fitted blocks elsewhere in the same artifact already report,
+    so they carry no degrees-of-freedom convention of their own. Counting them
+    would make every corrected artifact look like a mixed one and stop the
+    macro from rendering at all.
+    """
+    from analysis.write_trade_benchmark_results import _fitted_blocks
+
+    paths = {path for path, _ in _fitted_blocks(_hmrc_artifact())}
+    assert "primary_capped_value_weighted" in paths
+    assert "zero_robustness.ppml_levels" in paths  # a separate fit, so in scope
+    assert not [path for path in paths if path.startswith("tariff_intensity_power.")]
 
 
 def test_the_sensitivity_reader_refuses_to_quote_an_undefined_draw() -> None:

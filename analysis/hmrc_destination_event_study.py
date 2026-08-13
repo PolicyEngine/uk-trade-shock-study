@@ -698,6 +698,17 @@ def fit_ppml_model(
         "status": status,
         "product_count": int(data["hs4"].nunique()),
         "row_count": int(len(data)),
+        # Same degrees-of-freedom convention as the WLS path, stamped so a
+        # reader (and analysis/write_trade_benchmark_results.py) can tell which
+        # convention produced these standard errors without reading this file.
+        # The scale is exactly 1.0 because the absorbed product-destination
+        # effects are counted inside ``_cluster_covariance`` -- through its
+        # ``n_absorbed`` argument, which enters the finite-sample correction
+        # directly -- rather than being added back as a post-hoc rescale the
+        # way ``_absorbed_dof_scale`` does for WLS. The correction is applied
+        # either way; only where it is applied differs.
+        "absorbed_fixed_effects": int(n_groups),
+        "absorbed_dof_scale": 1.0,
         "zero_observation_share": float(np.mean(y <= 0)),
         "separated_pairs_dropped": separated,
         "us_post_separated": separation is not None,

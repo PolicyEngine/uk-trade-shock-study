@@ -119,11 +119,37 @@ DOF_CONVENTION_PHRASES = {
 }
 
 
+#: A block is a FITTED estimate — one whose standard error the manuscript can
+#: quote as an interval — iff it carries all three of these. Carrying a
+#: ``standard_error`` alone is not enough, because the estimator also emits
+#: DERIVED blocks that re-report a standard error computed from fits reported
+#: elsewhere in the same artifact:
+#:
+#:   * ``precision_summary`` (``tariff_intensity_power.<group>``) copies
+#:     ``log_effect`` and ``standard_error`` straight out of a fitted block and
+#:     adds power facts; it has no interval of its own, hence no ``ci_lower``.
+#:   * ``group_contrast`` (``...difference_high_minus_other``) combines two
+#:     fitted standard errors; it reports ``log_effect_difference``, not
+#:     ``log_effect``.
+#:
+#: Neither is an independent fit, so neither restamps the degrees-of-freedom
+#: keys, and counting them would report a mixed convention for an artifact
+#: whose every standard error in fact comes from one. The three keys are the
+#: fitted estimators' common output (``fit_post_model`` and
+#: ``fit_ppml_model``), so PPML stays in scope: it is a separate fit whose
+#: interval the manuscript could quote, and its convention has to be checked.
+FITTED_ESTIMATE_KEYS = ("log_effect", "standard_error", "ci_lower")
+
+
 def _fitted_blocks(node, path: str = "") -> list[tuple[str, dict]]:
-    """Every nested dict that is a fitted estimate, i.e. carries a standard error."""
+    """Every nested dict that is a fitted estimate.
+
+    See :data:`FITTED_ESTIMATE_KEYS` for what separates a fit from a derived
+    summary that merely re-reports a fitted standard error.
+    """
     found: list[tuple[str, dict]] = []
     if isinstance(node, dict):
-        if "standard_error" in node:
+        if all(key in node for key in FITTED_ESTIMATE_KEYS):
             found.append((path or "<root>", node))
         for key, value in node.items():
             found.extend(_fitted_blocks(value, f"{path}.{key}" if path else str(key)))

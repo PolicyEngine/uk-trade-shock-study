@@ -119,11 +119,37 @@ DOF_CONVENTION_PHRASES = {
 }
 
 
+#: A block is a FITTED estimate — one whose standard error the manuscript can
+#: quote as an interval — iff it carries all three of these. Carrying a
+#: ``standard_error`` alone is not enough, because the estimator also emits
+#: DERIVED blocks that re-report a standard error computed from fits reported
+#: elsewhere in the same artifact:
+#:
+#:   * ``precision_summary`` (``tariff_intensity_power.<group>``) copies
+#:     ``log_effect`` and ``standard_error`` straight out of a fitted block and
+#:     adds power facts; it has no interval of its own, hence no ``ci_lower``.
+#:   * ``group_contrast`` (``...difference_high_minus_other``) combines two
+#:     fitted standard errors; it reports ``log_effect_difference``, not
+#:     ``log_effect``.
+#:
+#: Neither is an independent fit, so neither restamps the degrees-of-freedom
+#: keys, and counting them would report a mixed convention for an artifact
+#: whose every standard error in fact comes from one. The three keys are the
+#: fitted estimators' common output (``fit_post_model`` and
+#: ``fit_ppml_model``), so PPML stays in scope: it is a separate fit whose
+#: interval the manuscript could quote, and its convention has to be checked.
+FITTED_ESTIMATE_KEYS = ("log_effect", "standard_error", "ci_lower")
+
+
 def _fitted_blocks(node, path: str = "") -> list[tuple[str, dict]]:
-    """Every nested dict that is a fitted estimate, i.e. carries a standard error."""
+    """Every nested dict that is a fitted estimate.
+
+    See :data:`FITTED_ESTIMATE_KEYS` for what separates a fit from a derived
+    summary that merely re-reports a fitted standard error.
+    """
     found: list[tuple[str, dict]] = []
     if isinstance(node, dict):
-        if "standard_error" in node:
+        if all(key in node for key in FITTED_ESTIMATE_KEYS):
             found.append((path or "<root>", node))
         for key, value in node.items():
             found.extend(_fitted_blocks(value, f"{path}.{key}" if path else str(key)))
@@ -378,6 +404,7 @@ def main() -> None:
     data = json.loads(INPUT.read_text())
     monthly = pd.read_csv(MONTHLY)
     primary = data["primary_capped_value_weighted"]
+    zero = data["zero_robustness"]
     equal = data["equal_product_weighted"]
     high = data["tariff_intensity_groups"]["steel_and_auto_chapters"]
     other = data["tariff_intensity_groups"]["other_products"]
@@ -403,6 +430,18 @@ def main() -> None:
         "HMRCHighTariffPValue": f"{high['p_value']:.3f}",
         "HMRCOtherEffect": f"{100 * other['proportional_effect']:.1f}",
         "HMRCOtherPValue": f"{other['p_value']:.3f}",
+        # Zero-robustness bounds. The primary specification runs on a
+        # zero-filled log1p outcome; these two say how much of it survives
+        # when the zeros are handled properly. The manuscript must quote them
+        # beside the headline, because they are a third of its size.
+        "HMRCPPMLEffect": f"{100 * zero['ppml_levels']['proportional_effect']:.1f}",
+        "HMRCPPMLPValue": f"{zero['ppml_levels']['p_value']:.3f}",
+        "HMRCContinuousEffect": (
+            f"{100 * zero['continuous_positive_trade_products']['proportional_effect']:.1f}"
+        ),
+        "HMRCContinuousPValue": (
+            f"{zero['continuous_positive_trade_products']['p_value']:.4f}"
+        ),
         "HMRCAnticipationSpec": anticipation_spec_label(data),
         "HMRCDofConvention": dof_convention_label(data),
         "HMRCHighTariffTrendPValue": (

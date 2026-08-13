@@ -162,7 +162,7 @@ Constituency machinery in the Online Supplement is
 illustrative because local industry structure is not observed at the required
 level.
 
-Eight items of unfinished business should be named rather than left for a
+Seven items of unfinished business should be named rather than left for a
 reader to discover. One is new: the measured employment-state step is an
 hours effect on childcare-linked entitlement rather than a status effect
 (Section~\ref{sec:results-factorial}), and the \texttt{zero\_hours} option
@@ -175,12 +175,7 @@ statistics, which exist only at an exploratory five draws
 (\texttt{make poverty-gap-production}). The remaining five are as follows. The \texttt{all\_entitled} take-up grid, which is the
 specification in which the claiming assumption actually binds, has been
 implemented but not yet run at the unit-stress calibration; the manuscript
-quotes a superseded-vintage bound for it. The product--destination panel has
-not been regenerated under the anticipation-window, continuous-trade or
-Poisson specifications now implemented in its estimator, so the reported
-trade estimates retain an anticipation bias of known sign and a zero-fill
-bias of unknown sign, and its figure retains a base period inside the
-anticipation window. The channel decomposition still runs
+quotes a superseded-vintage bound for it. The product--destination panel has now been regenerated under all three specifications, and the resulting zero-robustness bounds are reported in Section~\ref{sec:results-benchmarks}. The channel decomposition still runs
 on \FactorialChannelSeeds\ seeds against a \FactorialDraws-draw headline, and
 should be re-run at the full count so the two reconcile. The per-record
 balanced-versus-Bernoulli inclusion-probability diagnostic
@@ -189,7 +184,7 @@ whether the highest-weight exposed records are selected at their nominal
 rates, is implemented but unrun. And the household bootstrap holds
 the original assignment fixed, so its interval is conditional on which records
 those draws selected and is narrower than a fully re-drawn bootstrap would be.
-None of the eight is \emph{known} to change the sign of the reported
+None of the seven is \emph{known} to change the sign of the reported
 contrast, but that is a weaker statement than it may appear, and the
 arithmetic should be set out rather than left implicit. Three \emph{separate}
 sensitivities---only the first of which is on the list above---raise

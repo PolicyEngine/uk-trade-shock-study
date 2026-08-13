@@ -13,12 +13,9 @@ g_{pt}=\log(1+V_{p,\mathrm{US},t})
 \]
 The destination gap is regressed on a post-May-2025 indicator, HS4 product
 fixed effects, month-of-year effects and a linear trend. The estimates
-reported below omit April 2025 alone (\HMRCAnticipationSpec). The estimator
-also supports omitting a wider anticipation window---January--April 2025 by
-default, covering both the announcement month and the preceding front-running
-quarter---and retains the April-only rule as a specification check so the two
-conventions can be compared, but that option post-dates the stored panel and
-is not exercised here. The primary WLS weights
+reported below omit a \HMRCAnticipationSpec, covering both the announcement
+month and the preceding quarter, and retain the April-only rule as a
+specification check so the two conventions can be compared. The primary WLS weights
 are products' mean 2022--24 US export values, capped at the 99th percentile;
 standard errors are clustered by HS4. Uncapped value weights, equal product
 weights, individual destinations, later sample starts and pseudo-policy dates
@@ -98,17 +95,17 @@ available: the high-tariff
 group rests on fewer than eight effective products against roughly a hundred
 for the comparison group, so the contrast is underpowered rather than
 informative in either direction: at the group's standard error the minimum
-effect detectable at conventional power is roughly 0.59 in logs, well above
-the 0.22 estimate itself. A second, independent
+effect detectable at conventional power is \HMRCHighTariffMDE\ in logs,
+against an estimate of \HMRCHighTariffEstimateLog. A second, independent
 disqualification is that the steel and auto group carries its own significant
 differential pre-trend ($p=\HMRCHighTariffTrendPValue$), so even a
 well-powered post-period contrast in that group would not identify a tariff
-effect. The stored diagnostics record each group's effective product count,
-standard error and confidence interval; the interval width, the minimum
-detectable effect and a formal test of the high-minus-other difference are
-computed by the revised estimator but, like the specifications above, are
-absent from this run, so the power figures quoted in this paragraph are
-derived by hand from the stored standard errors.
+effect. The stored diagnostics now record each group's effective product
+count, standard error, confidence interval, interval width and minimum
+detectable effect, together with a formal test of the high-minus-other
+difference---which does not reject
+($p=\HMRCGroupDifferencePValue$). Every power figure in this paragraph is
+read from that artifact rather than derived by hand.
 
 Figure~\ref{fig:hmrc-destination} displays the monthly gap. The panel is
 consistent with a post-policy decline concentrated in large US export

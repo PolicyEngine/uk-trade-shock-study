@@ -127,9 +127,15 @@ tax schedule alone, and the paper is stronger for saying so before claiming
 a discovery. Consider a worker with earnings $E$ facing an effective
 marginal deduction rate $m(E)$ and an average deduction rate $a(E)$ over the
 whole of their earnings. A small diffuse cut removes income at the margin,
-so the share of the gross loss absorbed by the state is $m(E)$; a complete
-loss of the same earnings removes every slice of the schedule, so the
-absorbed share is $a(E)$. Under any progressive schedule with a personal
+so the share of the gross loss absorbed by the state is $m(E)$---an effective
+marginal rate. A complete loss removes every slice of the schedule, so the
+absorbed share is a participation rate: $[T(E)-B_{\text{in}}+B_{\text{out}}]/E$,
+the average tax rate less in-work entitlement forgone plus out-of-work
+entitlement gained. It reduces to $a(E)$ only where out-of-work entitlement
+is zero, which is the case the log-linear parameterisation of
+Section~\ref{sec:lit-progressivity} describes and the United Kingdom does
+not. The $B_{\text{out}}$ term is where the means-tested system enters, and
+it is why the realised step falls short of the schedule's own wedge. Under any progressive schedule with a personal
 allowance, $m(E)\ge a(E)$---strictly above the allowance, with equality below
 it where both are zero---and the wedge $m(E)-a(E)$ is exactly the
 concentration effect. It is also a familiar object: in the log-linear tax
@@ -303,8 +309,15 @@ cushioning, or between twenty-five and fifty-five times the employment-state
 step this decomposition records depending on which seed basis is used, before any
 allowance for conditionality or the timing of awards.
 That comparison is an upper bound, since New Style JSA is taxable and is
-deducted pound for pound from any Universal Credit award, but it fixes the
-order of magnitude.
+deducted pound for pound from any Universal Credit award. Discounting it for
+those two effects and for the contribution condition---\citet{figari2011}
+find roughly three-quarters of the newly unemployed qualify in the United
+Kingdom---leaves something of the order of two to three points. Against a
+\PrimaryCushionDifference-point gap, a pipeline that simulated the single
+most obvious status-contingent rule in the UK system would therefore report a
+split nearer three-quarters to one-quarter than the one measured here. The
+decomposition's \emph{sign} is robust; its division of the gap is not, and
+this paper does not report one.
 
 The honest summary is therefore narrower than the arithmetic invites. The
 decomposition establishes that loss concentration, not employment status,
@@ -312,8 +325,17 @@ drives the gap \emph{inside a static annual statutory model}, and it bounds
 what such a model can attribute to the extensive margin at all. It is not
 evidence that job loss and an equivalent in-work earnings collapse are
 fiscally alike in the United Kingdom, and the paper's contribution rests on
-the concentration channel, which is well identified within the model, rather
-than on the state channel, which this design cannot measure.
+the concentration channel rather than on the state channel, which this design
+cannot measure. Even that is a claim about the mechanism and not about its
+size. The concentrated cell zeroes the drawn workers' earnings, so their
+benefit units acquire the same Universal Credit entitlement as the displaced
+ones---and therefore the same frozen claiming flag suppresses that
+entitlement in both, while leaving the diffuse cell, whose households rarely
+cross into new entitlement, almost untouched. Relaxing the claiming
+convention would raise the concentrated and displaced cells together and so
+\emph{shrink} the concentration step, by roughly three points on the channel
+arithmetic. The step is identified in sign and mechanism; its magnitude is
+convention-dependent by something between a third and two-thirds of itself.
 
 \paragraph{Assignment-design and record-support audit.}\label{sec:results-assignment} At the unit 12-month
 stress, balanced and Bernoulli integration agree closely: cushioning is
@@ -410,9 +432,14 @@ sector loss remains common. It yields
 $\FullTransitionCushion\pm\FullTransitionCushionSD$ per cent cushioning and
 an Exchequer cost of \pounds
 $\FullTransitionExchequer\pm\FullTransitionExchequerSD$ million---between
-the bounds, as the composition logic implies. Figure~\ref{fig:scenario-testing}
-plots the surrounding response surface over the declared grid
-$\lambda\in\{0,.25,.5,.75,1\}$. A churn-dominated 85/15
+the bounds, as the composition logic implies. The surrounding response surface was computed over the declared grid
+$\lambda\in\{0,.25,.5,.75,1\}$ but is not plotted here: the stored surface
+predates the current production runs and its deterministic $\lambda=0$
+endpoint reads about three points below the
+\SubmissionUnitWageCushion\ per cent that Table~\ref{tab:cushioning} gives
+for the identical scenario. A figure that needs a correction factor to be
+read against the paper's own table should not be in the paper;
+\texttt{make results} regenerates it. A churn-dominated 85/15
 displacement--survivor split
 ($\FullRentSharingCushion\pm\FullRentSharingCushionSD$ per cent cushioning,
 \pounds $\FullRentSharingExchequer\pm\FullRentSharingExchequerSD$ million)
@@ -423,13 +450,6 @@ the appendix.
 The 70/30 share, lag and penalty are assumptions bounded by external
 evidence, not estimated tariff responses.
 
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=.98\textwidth]{../results/figures/scenario_testing.png}
-\caption{Factorial scenario surface: export-demand calibration by the share of expected sector loss delivered through displacement rather than survivor wage cuts. Cell values are means over five common assignments. This grid predates the current production runs: its deterministic $\lambda=0$ wage-cut endpoint reads 40.6--41.3 per cent against the \SubmissionUnitWageCushion\ per cent of Table~\ref{tab:cushioning} for the identical scenario, a vintage difference of roughly three points that applies to the whole surface. It is retained to show the shape of the composition effect, not for its levels; \texttt{make results} regenerates it.}
-\label{fig:scenario-testing}
-\end{figure}
-
 \subsection{External magnitude and outturn checks}\label{sec:results-benchmarks}
 
 The frozen HMRC customs build totals \pounds55.6 billion of 2024 US-bound goods exports before exclusions and maps \pounds52.5 billion to producing divisions. This is reasonably close to the ONS balance-of-payments headline of \pounds59.3 billion, given known conceptual and coverage differences \citep{onsus2024}. The reference full-schedule calibration predicts a \PredictedAggregateFall\ per cent aggregate fall across mapped divisions. The observed May 2025--February 2026 customs window falls \RealisedAggregateFall\ per cent against its two-year same-month baseline. This near equality is not a validation result: the reference calibration was not estimated from that window, and the outturn combines tariff effects with prices, exchange rates, anticipation, composition, rerouting and other demand shocks.
@@ -438,19 +458,41 @@ Sector agreement is much weaker. The stored validation artifact reports a rank c
 
 \paragraph{Product--destination panel.} A monthly HMRC HS4
 product--destination panel (Online Supplement, Sections~S1--S2) is the
-strongest external test available of the sector calibration, and it does not
-pass it. The capped value-weighted specification puts US-bound exports
-\HMRCWeightedEffect\ per cent below the same products sent to Canada, Japan
-and Australia, but equal product weights give \HMRCEqualEffect\ per cent
-($p=\HMRCEqualPValue$); the estimate shrinks monotonically as the pre-period
-is shortened; the differential trend is borderline ($p=\HMRCTrendPValue$);
-and the tariff-intensity split that would make it a falsification test rests
-on fewer than eight effective products and carries its own significant
-pre-trend. The reported inference is computed \HMRCDofConvention, and the
-anticipation convention is \HMRCAnticipationSpec. None of this supports
-reading Equation~\eqref{eq:shock} as an estimated first stage, which is the
-only claim the paper needs it not to support. The supplement gives the design,
-the specification checks and the corrections that are implemented but unrun.
+strongest external test available of the sector calibration, and the
+regenerated estimates do not support reading Equation~\eqref{eq:shock} as an
+estimated first stage. The capped value-weighted specification, omitting a
+\HMRCAnticipationSpec\ and computed \HMRCDofConvention, puts US-bound
+exports \HMRCWeightedEffect\ per cent below the same products sent to
+Canada, Japan and Australia. Almost none of that survives contact with the
+zeros. The outcome fills absent flows with zeros under a $\log(1+V)$
+transform, and when that is handled properly the estimate collapses: a
+Poisson specification on levels gives \HMRCPPMLEffect\ per cent
+($p=\HMRCPPMLPValue$, insignificant), and restricting to products trading
+continuously in all four destinations gives \HMRCContinuousEffect\ per cent
+($p=\HMRCContinuousPValue$). Both land near a third of the headline, so most
+of the primary estimate rides on extensive-margin movement in the small
+comparison destinations rather than on intensive-margin decline in the
+United States. Equal product weights give \HMRCEqualEffect\ per cent
+($p=\HMRCEqualPValue$), the differential pre-trend is now significant
+($p=\HMRCTrendPValue$), and the estimate moves by more than twelve points
+across sample-start choices. Placebo cutoffs in May 2019--23 remain
+individually insignificant.
+
+The tariff-intensity ordering cannot adjudicate any of this. Broad steel and
+auto chapters fall \HMRCHighTariffEffect\ per cent
+($p=\HMRCHighTariffPValue$) against \HMRCOtherEffect\ per cent for other
+products, but the high-tariff group rests on fewer than eight effective
+products and carries a borderline pre-trend of its own
+($p=\HMRCHighTariffTrendPValue$): the comparison is underpowered rather than
+decisive. The honest summary is that the panel shows a post-policy decline in
+large US export products whose magnitude is not robust to how zeros are
+treated, and which it cannot attribute to tariffs. That constrains the
+bridge, not the estimand: the cushioning comparison conditions on a declared
+loss identical across margins by construction, and the leave-one-division-out
+audit (all \LeaveSectorCount\ divisions at \LeaveSectorDraws\ assignments,
+contrast range \LeaveSectorCushionDifferenceMin--%
+\LeaveSectorCushionDifferenceMax\ points) confirms that sector composition
+does not create or reverse it.
 
 \paragraph{Reconciliation with Dolls, Fuest and Peichl (2012).} The closest
 published comparator reverses this paper's ordering, and the reversal is
@@ -489,8 +531,12 @@ pension and salary-sacrifice outflow, which is a reduction in deferred
 saving rather than a public transfer and which is about a seventh of the
 displacement channel sum, or two-fifths of the 11.2-point difference against
 Dolls et al.---the same term that supplies about an eighth of
-measured cushioning on the displacement margin (Section~\ref{sec:results-mechanism}). The benefit channel is nonetheless where the reversal
-sits, and four features of the present design account for it, three of
+measured cushioning on the displacement margin (Section~\ref{sec:results-mechanism}). The decomposition is exactly the two terms above: moving from their income
+shock to their unemployment shock, the tax component \emph{falls} from 0.267
+to 0.191---the marginal-minus-average wedge---while the benefit component
+rises from 0.031 to 0.163, the $B_{\text{out}}$ term. In their estimates the
+transfer term wins; here it does not. The benefit channel is where the
+reversal sits, and four features of the present design account for it, three of
 them acknowledged limitations rather than findings. New Style JSA is not
 activated by the imposed transition, removing the contributory component
 that carries much of their benefit response. The claiming flag is frozen for

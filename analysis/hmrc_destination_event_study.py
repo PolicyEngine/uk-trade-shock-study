@@ -13,7 +13,13 @@ estimate.
 Anticipation. UK goods exports to the United States surged through the first
 quarter of 2025 ahead of the April 2025 tariff announcement. Dropping only the
 announcement month leaves the front-running months inside the pre-period, which
-inflates the estimated post-policy decline and, if the plotted series is
+    surged through 2025Q1 ahead of the April schedule. NOTE: on the
+    regenerated panel this exclusion makes the estimated decline LARGER,
+    not smaller -- the 2025Q1 level surge is ~97 per cent precious metals
+    (the London-to-New-York bullion movement), which the P99 weight cap
+    suppresses, so the weighted log-gap outcome never saw it. The window
+    is retained on ex-ante grounds, not because it corrects a measured
+    bias in this series.
 normalised on those months, measures the post-policy gap against the
 front-running peak. The estimation sample therefore excludes the whole
 anticipation window (``ANTICIPATION_WINDOW``, default 2025m1-2025m4) and the

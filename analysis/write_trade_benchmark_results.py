@@ -404,6 +404,7 @@ def main() -> None:
     data = json.loads(INPUT.read_text())
     monthly = pd.read_csv(MONTHLY)
     primary = data["primary_capped_value_weighted"]
+    zero = data["zero_robustness"]
     equal = data["equal_product_weighted"]
     high = data["tariff_intensity_groups"]["steel_and_auto_chapters"]
     other = data["tariff_intensity_groups"]["other_products"]
@@ -429,6 +430,18 @@ def main() -> None:
         "HMRCHighTariffPValue": f"{high['p_value']:.3f}",
         "HMRCOtherEffect": f"{100 * other['proportional_effect']:.1f}",
         "HMRCOtherPValue": f"{other['p_value']:.3f}",
+        # Zero-robustness bounds. The primary specification runs on a
+        # zero-filled log1p outcome; these two say how much of it survives
+        # when the zeros are handled properly. The manuscript must quote them
+        # beside the headline, because they are a third of its size.
+        "HMRCPPMLEffect": f"{100 * zero['ppml_levels']['proportional_effect']:.1f}",
+        "HMRCPPMLPValue": f"{zero['ppml_levels']['p_value']:.3f}",
+        "HMRCContinuousEffect": (
+            f"{100 * zero['continuous_positive_trade_products']['proportional_effect']:.1f}"
+        ),
+        "HMRCContinuousPValue": (
+            f"{zero['continuous_positive_trade_products']['p_value']:.4f}"
+        ),
         "HMRCAnticipationSpec": anticipation_spec_label(data),
         "HMRCDofConvention": dof_convention_label(data),
         "HMRCHighTariffTrendPValue": (

@@ -79,11 +79,11 @@ ENTITLED_SCOPE_SOURCE_LEGACY = "takeup_diagnosis_legacy_vintage"
 ENTITLED_SCOPE_SOURCE_PHRASES = {
     ENTITLED_SCOPE_SOURCE_CURRENT: (
         "the all-entitled re-draw grid in "
-        "\\texttt{results/referee\\_fixes.json}, computed at the current "
+        "\\texttt{results/\\allowbreak referee\\_fixes.json}, computed at the current "
         "calibration"
     ),
     ENTITLED_SCOPE_SOURCE_LEGACY: (
-        "the legacy \\texttt{results/takeup\\_diagnosis.json} grid, which "
+        "the legacy \\texttt{results/\\allowbreak takeup\\_diagnosis.json} grid, which "
         "applies the same all-changed-units convention at a "
         "\\emph{superseded} calibration---the former $\\varepsilon=2$ high "
         "case, whose seed-0 "

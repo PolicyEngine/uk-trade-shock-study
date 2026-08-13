@@ -405,6 +405,7 @@ def main() -> None:
     monthly = pd.read_csv(MONTHLY)
     primary = data["primary_capped_value_weighted"]
     zero = data["zero_robustness"]
+    power = data["tariff_intensity_power"]
     equal = data["equal_product_weighted"]
     high = data["tariff_intensity_groups"]["steel_and_auto_chapters"]
     other = data["tariff_intensity_groups"]["other_products"]
@@ -434,6 +435,18 @@ def main() -> None:
         # zero-filled log1p outcome; these two say how much of it survives
         # when the zeros are handled properly. The manuscript must quote them
         # beside the headline, because they are a third of its size.
+        # Power diagnostics for the tariff-intensity split. Emitted so the
+        # supplement quotes the artifact rather than hand arithmetic, which is
+        # how a 0.59 came to sit beside a stored 0.66.
+        "HMRCHighTariffMDE": (
+            f"{power['steel_and_auto_chapters']['minimum_detectable_log_effect_80_power']:.2f}"
+        ),
+        "HMRCHighTariffEstimateLog": (
+            f"{abs(power['steel_and_auto_chapters']['log_effect']):.2f}"
+        ),
+        "HMRCGroupDifferencePValue": (
+            f"{power['difference_high_minus_other']['p_value']:.3f}"
+        ),
         "HMRCPPMLEffect": f"{100 * zero['ppml_levels']['proportional_effect']:.1f}",
         "HMRCPPMLPValue": f"{zero['ppml_levels']['p_value']:.3f}",
         "HMRCContinuousEffect": (

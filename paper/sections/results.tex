@@ -142,8 +142,10 @@ concentration effect. It is also a familiar object: in the log-linear tax
 function of \citet{heathcote2017} the progressivity parameter $\tau$
 satisfies $1-m=(1-\tau)(1-a)$, so $m-a=\tau(1-a)$. The wedge is therefore
 $\tau$ scaled down by one minus the average rate---at the weighted rates
-below, a \ScheduleWedgeWeighted-point wedge corresponds to $\tau\approx0.20$,
-not $0.16$. And it is the \emph{difference} between the two cushioning rates
+below, the \ScheduleWedgeWeighted-point wedge corresponds to
+$\tau\approx0.20$, not $0.16$---the progressivity of the tax-and-National-%
+Insurance schedule alone, not of the tax--benefit system, whose means-tested
+component enters through $B_{\text{out}}$ and runs the other way. And it is the \emph{difference} between the two cushioning rates
 that estimates the wedge, not either rate on its own: the diffuse rate
 estimates the weighted marginal deduction rate, the concentrated rate the
 average (Section~\ref{sec:lit-progressivity}). It is large for a worker whose earnings straddle the
@@ -165,9 +167,12 @@ one. The comparison is wage-bill-weighted over a population more concentrated
 above the higher-rate and upper-earnings-limit thresholds than a worker on
 the mean. Weighted that way, income tax and employee National Insurance
 relieve \WageChannelTaxAndNI\ per cent of the diffuse loss against
-\DispChannelTaxAndNI\ per cent of the concentrated one, a wedge of
+\ConcChannelTaxAndNI\ per cent of the concentrated one, a wedge of
 \ScheduleWedgeWeighted\ points against a realised step of
-\FactorialConcStepChannelSeeds.
+\FactorialConcStepChannelSeeds. That wedge is a tax-and-National-Insurance
+quantity throughout. It is not a participation tax rate and is not reported as
+one: a participation rate nets out-of-work entitlement, which here is the
+\ScheduleWedgeOffsets\ points running the other way.
 
 Both of those figures come from the same simulation. They are the tax-and-NI
 channels of one decomposition and the residual of the same decomposition, so
@@ -316,8 +321,12 @@ Kingdom---leaves something of the order of two to three points. Against a
 \PrimaryCushionDifference-point gap, a pipeline that simulated the single
 most obvious status-contingent rule in the UK system would therefore report a
 split nearer three-quarters to one-quarter than the one measured here. The
-decomposition's \emph{sign} is robust; its division of the gap is not, and
-this paper does not report one.
+decomposition's \emph{sign} is robust. Its division of the gap is reported
+throughout as \FactorialConcStep\ against \FactorialStateStep, but that
+division should be read as a property of this pipeline and not as an estimate
+of the employment margin: the residual is what remains once every
+status-contingent rule has been switched off, and the arithmetic above says
+what switching one back on would do to it.
 
 The honest summary is therefore narrower than the arithmetic invites. The
 decomposition establishes that loss concentration, not employment status,

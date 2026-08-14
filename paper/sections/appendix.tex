@@ -1,7 +1,7 @@
 \appendix
 \section{Supporting Appendix}\label{app:support}
 
-US exports use HMRC uktradeinfo OTS/RTS data for 2024, mapped from SITC to SIC 2007 divisions and divided by the latest non-suppressed ONS Annual Business Survey turnover. Of a \pounds 55,600 million customs-basis total, \pounds 52,500 million maps to divisions after documented exclusions, chiefly non-monetary gold and precious metals. The measured window uses May 2025--February 2026 against the mean of the same calendar months one and two years earlier. Its 12.7 per cent aggregate fall is descriptive, not causal.
+US exports use HMRC uktradeinfo OTS/RTS data for 2024, mapped from SITC to SIC 2007 divisions and divided by the latest non-suppressed ONS Annual Business Survey turnover. Of a \pounds 55,600 million customs-basis total, \pounds 52,500 million maps to divisions after documented exclusions, chiefly non-monetary gold and precious metals. The measured window uses May 2025--February 2026 against the mean of the same calendar months one and two years earlier. Its \RealisedAggregateFall\ per cent aggregate fall is descriptive, not causal.
 
 \section{Shock mechanics}\label{app:mechanics}
 
@@ -11,7 +11,7 @@ UC claiming is redrawn after every margin for benefit units whose circumstances 
 
 \section{Monte Carlo and measures}\label{app:mc}
 
-Central direct and measured scenarios use \ProductionDraws\ assignments. Every displayed $\pm$ value is an assignment SD, not a standard error or confidence interval. The machine-readable artifacts additionally store numerical Monte Carlo standard error as assignment SD divided by $\sqrt{n}$; it measures precision of the simulated mean only. Survey-design, tariff-response and model-parameter uncertainty are not estimated. Five-assignment mechanism, demographic, poverty-gap, reallocation, duration and sensitivity-grid exercises, and the ten-assignment supply-chain exercise, are exploratory and are excluded from the headline evidence; the take-up grid is scored at the full comparator draw count and reported in the main text.
+Central direct and measured scenarios use \ProductionDraws\ assignments. Every displayed $\pm$ value is an assignment SD, not a standard error or confidence interval. The machine-readable artifacts additionally store numerical Monte Carlo standard error as assignment SD divided by $\sqrt{n}$; it measures precision of the simulated mean only. Survey-design, tariff-response and model-parameter uncertainty are not estimated. Five-assignment mechanism, demographic, reallocation, duration and sensitivity-grid exercises, and the ten-assignment supply-chain exercise, are exploratory and are excluded from the headline evidence; the affected-household poverty exercise is scored at \WelfarePovDraws\ assignments and the take-up grid at the full comparator draw count, and both are reported in the main text.
 The mixed-adjustment scenario surface likewise uses five common assignments
 per cell. Its machine-readable cells and draws are in
 \path{results/scenario_testing.json} and \path{results/scenario_testing.csv}.
@@ -34,7 +34,7 @@ Anchor & Months & Margin & Gross loss & Exchequer & Cushioning & Poverty \\
 
 These rows are sensitivity evidence only, not population estimates.
 
-\paragraph{Reconciling cushioning and the Exchequer effect.} The Exchequer effect is the change in the aggregate simulated government balance, not the household-side transfer implied by the cushioning identity. The identity implies a household-side offset of $(1-\Delta Y/\Delta E)\times\Delta E=\Delta E-\Delta Y$: \pounds\FullWageImpliedOffset\ million for the full-schedule wage cut and \pounds\FullDisplacedImpliedOffset\ million for displacement (computed as $\Delta E-\Delta Y$ within each draw and then averaged, not as mean cushioning times mean gross loss), against reported Exchequer costs of \pounds\FullWageExchequer\ million and \pounds\FullDisplacedExchequer\ million. The wedge is revenue lost outside employee disposable income: employer National Insurance contributions fall with the employee wage bill under every margin, and for displaced workers the zeroing of employee pension contributions and salary-sacrifice arrangements changes taxable pay relative to the gross-earnings accounting in $\Delta E$. The government balance also absorbs any other simulated fiscal flows that respond to the shock. The household-side offset therefore understates the Exchequer cost by \pounds\FullDisplacedExchequerWedge--\FullWageExchequerWedge\ million in the central full-schedule scenarios, and the two statistics answer different questions: the cushioning rate measures household income protection per pound of employee earnings lost, while the Exchequer effect measures the total first-round cost to the public finances.
+\paragraph{Reconciling cushioning and the Exchequer effect.} The Exchequer effect is the change in the aggregate simulated government balance, not the household-side transfer implied by the cushioning identity. The identity implies a household-side offset of $(1-\Delta Y/\Delta E)\times\Delta E=\Delta E-\Delta Y$: \pounds\FullWageImpliedOffset\ million for the full-schedule wage cut and \pounds\FullDisplacedImpliedOffset\ million for displacement (computed as $\Delta E-\Delta Y$ within each draw and then averaged, not as mean cushioning times mean gross loss), against the \ProductionDraws-assignment Bernoulli run's Exchequer costs of \pounds\FullWageExchequer\ million and \pounds\FullDisplacedExchequer\ million. The reconciliation is internally coherent on that vintage; Table~\ref{tab:cushioning} reports the same displacement scenario under the \SubmissionDraws-assignment balanced design, at \pounds\BalancedUnitExchequer\ million. The wedge is revenue lost outside employee disposable income: employer National Insurance contributions fall with the employee wage bill under every margin, and for displaced workers the zeroing of employee pension contributions and salary-sacrifice arrangements changes taxable pay relative to the gross-earnings accounting in $\Delta E$. The government balance also absorbs any other simulated fiscal flows that respond to the shock. The household-side offset therefore understates the Exchequer cost by \pounds\FullDisplacedExchequerWedge--\FullWageExchequerWedge\ million in the central full-schedule scenarios, and the two statistics answer different questions: the cushioning rate measures household income protection per pound of employee earnings lost, while the Exchequer effect measures the total first-round cost to the public finances.
 
 \section{Elasticity and pass-through grid}\label{app:grid}
 
@@ -45,7 +45,8 @@ The regenerated grid spans $\varepsilon\in\{0.4,1,2,3\}$ and $\pi\in\{0.5,0.75,1
 Figure~\ref{fig:scenario-testing} separates the aggregate export-demand
 calibration from the assumed composition of labour-market adjustment. Each
 cell uses the full tariff schedule and five common assignments. The wage-cut
-endpoint is stable: cushioning is 40.6--41.3 per cent over the four
+endpoint is stable: cushioning is
+\ScenarioWageEndpointMin--\ScenarioWageEndpointMax\ per cent over the four
 calibrations. Moving towards displacement generally lowers cushioning, but
 the small-shock cells are especially noisy because a few high-weight FRS
 records dominate five Bernoulli assignments. These cells are stress
@@ -57,22 +58,25 @@ adjustment mix changes the share absorbed by taxes and transfers.
 
 The reallocation exercise uses five paired assignments and is exploratory.
 Under the full schedule, the central 28.3 per cent penalty produces a mean
-gross loss of \pounds264 million, Exchequer cost of
-\pounds $149\pm131$ million, cushioning of $39.7\pm3.4$ per cent, and zero
-measured BHC-poverty change. With a three-month lag, gross loss rises to
-\pounds432 million and the Exchequer cost to
-\pounds $245\pm216$ million. The 14 per cent penalty gives gross loss of
-\pounds131 million and Exchequer cost of
-\pounds $75\pm64$ million. These pound levels are not commensurable with
+gross loss of \pounds\ReallocCentralGross\ million, Exchequer cost of
+\pounds $\ReallocCentralExchequer\pm\ReallocCentralExchequerSD$ million,
+cushioning of $\ReallocCentralCushion\pm\ReallocCentralCushionSD$ per cent,
+and zero measured BHC-poverty change. With a three-month lag, gross loss
+rises to \pounds\ReallocLagGross\ million and the Exchequer cost to
+\pounds $\ReallocLagExchequer\pm\ReallocLagExchequerSD$ million. The 14 per
+cent penalty gives gross loss of \pounds\ReallocLowPenaltyGross\ million and
+Exchequer cost of
+\pounds $\ReallocLowPenaltyExchequer\pm\ReallocLowPenaltyExchequerSD$
+million. These pound levels are not commensurable with
 the economy-wide wage-cut scenario because only selected movers' penalty is
 removed.
 
 \section{Observed-outturn stress scenario}\label{app:measured}
 
-The descriptive May 2025--February 2026 export window falls 12.7 per cent
-against its two-year same-month baseline. This is not a causal tariff
-estimate: it includes prices, exchange rates, front-running, rerouting and
-other demand conditions.
+The descriptive May 2025--February 2026 export window falls
+\RealisedAggregateFall\ per cent against its two-year same-month baseline.
+This is not a causal tariff estimate: it includes prices, exchange rates,
+front-running, rerouting and other demand conditions.
 
 The downside displacement scenario affects \MeasuredDisplacedWorkers\ thousand
 weighted workers on average, is cushioned by
@@ -109,7 +113,7 @@ mapping.
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=.94\textwidth]{../results/figures/hmrc_destination_event_study.png}
-\caption{Monthly capped-value-weighted gap between UK HS4 exports to the United States and mean exports of the same products to Canada, Japan and Australia, normalised to January--March 2025.}
+\caption{Monthly capped-value-weighted gap between UK HS4 exports to the United States and mean exports of the same products to Canada, Japan and Australia, normalised to \HMRCFigureBase.}
 \label{fig:hmrc-destination}
 \end{figure}
 
@@ -171,7 +175,7 @@ accounting are stored in \path{results/referee_fixes.json}.
 
 \section{Supply-chain sensitivity}\label{app:supplychain}
 
-The input--output scenario adds upstream requirements using the ONS domestic Leontief inverse. The accounting shock has a 1.95 direct-plus-upstream factor. It is not a lower bound and is not multiplied by local-employment multipliers. In the exploratory ten-assignment microsimulation, displacement affects 29,700 weighted workers on average, costs the Exchequer \pounds $680\pm310$ million and raises relative BHC poverty by 0.028 percentage points. The wage-cut variant costs \pounds 960 million and leaves measured relative poverty unchanged. These figures are accounting sensitivities, not all-channel causal estimates.
+The input--output scenario adds upstream requirements using the ONS domestic Leontief inverse. The accounting shock has a 1.95 direct-plus-upstream factor. It is not a lower bound and is not multiplied by local-employment multipliers. In the exploratory ten-assignment microsimulation, displacement affects \SupplyChainDisplacedWorkers\ thousand weighted workers on average, costs the Exchequer \pounds $\SupplyChainDisplacedExchequer\pm\SupplyChainDisplacedExchequerSD$ million and raises relative BHC poverty by \SupplyChainDisplacedPoverty\ percentage points. The wage-cut variant costs \pounds\SupplyChainWageExchequer\ million and leaves measured relative poverty unchanged. Both runs predate the Universal Credit award-cache correction---a \FactorialCacheShift-point offset where it has been measured on the displacement margin---so their levels are not comparable with Table~\ref{tab:cushioning}; they are retained as an exploratory extension. These figures are accounting sensitivities, not all-channel causal estimates.
 
 \section{Constituency machinery}\label{app:constituency}
 

@@ -52,8 +52,10 @@ ENTITLED_DECIMALS = 1
 JSA_RATE_SOURCE_PHRASES = {
     "policyengine_parameter": "the \\texttt{policyengine-uk} parameter tree",
     "statutory_fallback": (
-        "the published DWP statutory rate for 2025--26 "
-        "(\\texttt{policyengine-uk} was not available to this build)"
+        "the published DWP statutory rate for 2025--26, applied directly "
+        "rather than read from the simulation's parameter tree; the 2026--27 "
+        "uprating is not applied, which makes the bound conservative, since a "
+        "higher uprated rate would only raise it"
     ),
 }
 

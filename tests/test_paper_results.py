@@ -1174,3 +1174,35 @@ def test_the_selection_design_guard_names_a_rerun_not_a_code_change() -> None:
     assert "make results" in message
     assert "make submission-results" in message
     assert "Add `selection_method` to" not in message
+
+
+def test_referee_macro_table_rows_match_their_generator() -> None:
+    """The shipped Table 1 rows must equal what the writer emits today.
+
+    `split_submission_rows` re-splits paper/generated_submission.tex, so the
+    two files cannot legitimately disagree -- but nothing pinned them equal,
+    and they did disagree: restoring an older paper/ brought back stale rows,
+    and the macro writer was then run BEFORE the submission writer that feeds
+    it, so it re-split the stale file and reproduced them. Table 1 printed a
+    34.0 per cent displacement cushioning against 36.6 in the artifact and in
+    the abstract's own gap, on the same page.
+
+    A generated file that is committed must be checked against its generator,
+    not merely well-formed.
+    """
+    from analysis.write_referee_macros import split_submission_rows
+
+    committed = Path("paper/referee_macros.tex").read_text()
+    main_rows, thin_rows = split_submission_rows()
+
+    for label, rows in (("Main", main_rows), ("Thin", thin_rows)):
+        for row in rows:
+            assert row.strip() in committed, (
+                f"{label} scenario row is missing from paper/referee_macros.tex:\n"
+                f"  {row.strip()}\n"
+                "The committed macros are stale relative to "
+                "paper/generated_submission.tex. Re-run "
+                "`python analysis/write_submission_results.py --expected-draws 50` "
+                "and THEN `python analysis/write_referee_macros.py` -- the "
+                "second reads the first's output, so the order matters."
+            )

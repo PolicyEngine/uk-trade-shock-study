@@ -70,11 +70,11 @@ assignment---a conclusion \TakeupInertBasis. An earlier revision reported
 this grid as inert, on the strength of bit-identical output across every
 convention; that invariance was a stale award cache and is documented in
 Section~\ref{sec:results-takeup}. A second convention binds alongside it: the
-frozen claiming state of already-entitled non-claimers. On \TakeupEntitledSource,
-the only source at which either quantity has been measured, that
-convention zeroes UC for \TakeupZeroUCNonTakeupShare\ per cent of the
-displaced by weight, and re-drawing it moves displacement cushioning by
-\TakeupEntitledSpread\ percentage points. A
+frozen claiming state of already-entitled non-claimers. Re-drawing it on
+\TakeupEntitledSource\ moves displacement cushioning by
+\TakeupEntitledSpread\ percentage points. The share of the displaced whom
+that convention zeroes---\TakeupZeroUCNonTakeupShare\ per cent by weight---%
+rests on a weaker footing: it comes from \TakeupZeroUCSource. A
 spread of that order is comparable to the headline gap itself. The contrast
 is pre-specified and conditional: it prices a statutory schedule effect, not
 the tariffs' total causal incidence, and its magnitude is conditional on a
@@ -168,29 +168,34 @@ Constituency machinery in the Online Supplement is
 illustrative because local industry structure is not observed at the required
 level.
 
-Seven items of unfinished business should be named rather than left for a
-reader to discover. One is new: the measured employment-state step is an
-hours effect on childcare-linked entitlement rather than a status effect
-(Section~\ref{sec:results-factorial}), and the \texttt{zero\_hours} option
-now in the code would isolate the status flag by removing hours from both
-cells---it should drive the residual to zero, and has not been run. Two are new and are the most important: the continuous
-concentration sweep, which is the natural central object of this design and
-would separate concentration from worker selection
-(\texttt{make concentration-sweep}); and the conditional-on-affected welfare
-statistics, which exist only at an exploratory five draws
-(\texttt{make poverty-gap-production}). The remaining five are as follows. The \texttt{all\_entitled} take-up grid, which is the
-specification in which the claiming assumption actually binds, has been
-implemented but not yet run at the unit-stress calibration; the manuscript
-quotes a superseded-vintage bound for it. The product--destination panel has now been regenerated under all three specifications, and the resulting zero-robustness bounds are reported in Section~\ref{sec:results-benchmarks}. The channel decomposition still runs
-on \FactorialChannelSeeds\ seeds against a \FactorialDraws-draw headline, and
-should be re-run at the full count so the two reconcile. The per-record
-balanced-versus-Bernoulli inclusion-probability diagnostic
-(\path{analysis/assignment_inclusion_diagnostic.py}), which would show
-whether the highest-weight exposed records are selected at their nominal
-rates, is implemented but unrun. And the household bootstrap holds
-the original assignment fixed, so its interval is conditional on which records
-those draws selected and is narrower than a fully re-drawn bootstrap would be.
-None of the seven is \emph{known} to change the sign of the reported
+Four items of unfinished business should be named rather than left for a
+reader to discover, and four more that earlier revisions listed have since
+been closed. The open ones first. The household bootstrap reweights
+households while holding the original displacement assignment fixed, so its
+interval is conditional on which records those draws selected and is narrower
+than a fully re-drawn bootstrap would be; re-drawing the assignment inside
+each replicate would mean re-running the microsimulation a thousand times.
+New Style JSA is not activated by the imposed transition, which is the
+largest single omitted institution. The claiming share reported in
+Section~\ref{sec:results-takeup} rests on a superseded single-seed
+diagnostic and has not been recomputed at the unit stress. And the
+within-division selection rule is uniform, so the LFS-shaped alternatives of
+Section~\ref{sec:results-lfs} could not be re-run under the corrected
+pipeline for want of the licensed longitudinal file.
+
+Four items that previous versions listed as outstanding have been completed
+and are reported above: the continuous concentration sweep
+(Section~\ref{sec:results-sweep}); the conditional-on-affected welfare
+statistics at the full draw count (Section~\ref{sec:results-margins}); the
+channel decomposition at the full seed count, which now reconciles exactly
+with the headline; and the per-record inclusion-probability diagnostic, which
+finds no detectable departure from nominal selection rates under either
+design. The \texttt{zero\_hours} comparison has also been run, and is
+reported in Section~\ref{sec:results-factorial}; it required a fix, because
+the option wrote an hours column that the simulation constructor never read,
+so running it before would have returned a null result for the wrong reason.
+
+None of the four is \emph{known} to change the sign of the reported
 contrast, but that is a weaker statement than it may appear, and the
 arithmetic should be set out rather than left implicit. Three \emph{separate}
 sensitivities---only the first of which is on the list above---raise
@@ -204,9 +209,7 @@ calibrations and, in the JSA case, on a representative worker rather than
 the population, and each is an upper bound on its own channel---but the
 exercise establishes that the magnitude of the contrast is not robust, and
 that its sign is asserted here on the strength of the concentration
-mechanism rather than demonstrated against these three together. The second
-item bears only on the trade benchmark rather than on the cushioning
-estimand.
+mechanism rather than demonstrated against these three together. 
 
 The framework nevertheless provides a useful platform for subsequent work.
 The next empirical step is to combine product- or firm-level evidence on

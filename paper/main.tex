@@ -1,8 +1,6 @@
 \documentclass[11pt]{article}
 \usepackage[margin=1.1in]{geometry}
 \usepackage{booktabs}
-% Keep floats inside the section that references them.
-\usepackage[section]{placeins}
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{xcolor}
@@ -15,15 +13,15 @@
 \usepackage[hang,flushmargin]{footmisc}
 \usepackage[colorlinks=true, citecolor=paperblue, linkcolor=paperblue, urlcolor=paperblue]{hyperref}
 \hypersetup{
-  pdftitle={Who Bears a Trade Shock? Labour-Market Adjustment and Fiscal Incidence in the UK},
+  pdftitle={Labour-Market Adjustment and Fiscal Incidence of Trade Exposure in the UK},
   pdfauthor={Vahid Ahmadi},
-  pdfsubject={Decomposing the income-shock versus unemployment-shock stabilisation contrast into loss concentration and the employment margin, in UK tax--benefit microsimulation},
-  pdfkeywords={automatic stabilisers, participation tax rate, effective marginal tax rate, loss concentration, microsimulation, incidence}
+  pdfsubject={UK tax--benefit microsimulation under trade-related labour-income stress scenarios},
+  pdfkeywords={tariffs, trade shocks, microsimulation, poverty, inequality, public finances}
 }
 \usepackage{natbib}
 \bibliographystyle{apalike}
 
-\title{\bfseries Who Bears a Trade Shock?\\[0.15cm] Labour-Market Adjustment and Fiscal Incidence in the UK\thanks{\textbf{Acknowledgements:} I thank Max Ghenis and Seyed Mahdi Hosseini for valuable comments and helpful discussions.}\\[0.7cm]}
+\title{\bfseries Labour-Market Adjustment and Fiscal Incidence of Trade Exposure in the UK\thanks{\textbf{Acknowledgements:} I thank Max Ghenis and Seyed Mahdi Hosseini for valuable comments and helpful discussions.}\\[0.7cm]}
 \author{Vahid Ahmadi\thanks{Research Associate at PolicyEngine. Email: \href{mailto:vahid@policyengine.org}{vahid@policyengine.org}.}}
 \date{\small August 2026}
 
@@ -32,35 +30,35 @@
 \input{generated_trade_benchmarks}
 \input{generated_lfs_selection}
 \input{generated_submission}
-\input{generated_factorial}
-\input{generated_validation}
-\input{generated_welfare}
-\input{generated_sweep}
 \input{referee_macros}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-\noindent A tariff shock reaches a country's households through the labour
-market, and how much of it the tax--benefit system absorbs depends on which
-margin delivers it. Using the 2025 US tariff schedule to calibrate an
-aggregate UK employee-earnings loss of \pounds\FullWageGross\ million, and
-the 2024--25 Family Resources Survey with PolicyEngine UK, I hold that
-aggregate fixed and vary only how it is delivered: a diffuse wage cut across
-exposed employees, the same loss concentrated on the workers a displacement
-draw selects, and displacement itself. The system absorbs
-\SubmissionUnitWageCushion\ per cent of a diffuse loss and
-\SubmissionUnitDisplacedCushion\ per cent of a displaced one. Almost all of
-the \PrimaryCushionDifference-point difference is loss
-\emph{concentration}, not job loss: a complete individual loss exhausts
-marginal-rate relief that a partial one retains. The tariff schedule
-calibrates the aggregate and its sectoral incidence; it is not a causal
-estimate of tariff transmission.
+\noindent For the same aggregate earnings loss, the UK tax--benefit system
+cushions an intensive-margin adjustment far more than an extensive-margin
+one. Using the 2024--25 Family Resources Survey and PolicyEngine UK, I hold a
+common sector-specific earnings loss of roughly \pounds\FullWageGross\,million
+a year, calibrated from the 2025 US tariff schedule, fixed while varying its
+incidence across incumbent wage reductions, displacement, and mixed
+transition paths. Proportional wage cuts are cushioned at
+\FullWageCushion\ per cent, displacement at
+$\FullDisplacedCushion \pm \FullDisplacedCushionSD$ per cent: a gap of
+\PrimaryCushionDifference\ percentage points (household-bootstrap 95 per
+cent interval \BootstrapCushionDifferenceCILower--%
+\BootstrapCushionDifferenceCIUpper\ points), because in-work losses are
+relieved automatically at marginal tax rates while job loss relies on gated,
+means-tested, imperfectly claimed Universal Credit. An illustrative interior
+transition path yields \FullTransitionCushion\ per cent cushioning and an
+Exchequer cost of \pounds\FullTransitionExchequer\,million. Sensitivity
+analysis quantifies the pension-saving component of the gap and varies
+adjustment shares, spell-duration equivalents, worker selection, and benefit
+take-up.
 \end{abstract}
 
 \medskip
-\noindent\textbf{Keywords:} trade shocks, tariffs, labour-market adjustment, fiscal incidence, automatic stabilisers, loss concentration, microsimulation
+\noindent\textbf{Keywords:} tariffs, trade shocks, microsimulation, poverty, inequality, public finances
 
 \smallskip
 \noindent\textbf{JEL codes:} F13, F16, H23, H24, I38, J65
@@ -75,8 +73,6 @@ estimate of tariff transmission.
 
 \clearpage
 \input{sections/references}
-\clearpage
-\input{sections/declarations}
 \clearpage
 \input{sections/appendix}
 

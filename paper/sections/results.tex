@@ -61,249 +61,204 @@ comparisons, not confidence intervals for tariff effects. The mixed grid
 below is the conceptual centre of the design; the bounds make its composition
 effect transparent.
 
-\emph{Estimator provenance.} The cushioning levels and the gap in the
-abstract and in this section come from one 50-assignment paired-draw design;
-the wedge and offset quoted alongside them do not, and come from the
-\FactorialChannelSeeds-seed channel split described below. Specifically: the wage-cut
-and displacement cushioning levels are draw means of the two unit 12-month
-scenarios, and the \PrimaryCushionDifference-point gap is the mean of the
-per-draw differences on paired seeds, so the displayed levels and gap are
-consistent up to rounding of the unrounded underlying estimates. The
-record-resampling contrast reported below
-(\BootstrapCushionDifference\ points) is a different estimator---the
-draw-averaged contrast over the \BootstrapDraws\ common assignment draws
-retained in the resampling cache---and the worker-selection family runs on a
-third, the \LFSSelectionDraws-draw Bernoulli design, whose own baseline gap
-is \LFSSelectionBaselineGap\ points. Three estimators of one contrast is two
-too many for comfortable reading, so the convention is: the
-\PrimaryCushionDifference-point figure is primary and every other is labelled
-at the point of use. None of the three differs from another by as much as the
-structural sensitivities reported below, which is the more important fact
-about all of them.
+\paragraph{Assignment-design and record-support audit.} At the unit 12-month
+stress, balanced and Bernoulli integration agree closely: cushioning is
+\BalancedUnitCushion\ versus \BernoulliUnitCushion\ per cent and Exchequer
+cost is \pounds\BalancedUnitExchequer\ versus
+\pounds\BernoulliUnitExchequer\ million. Balancing reduces gross-loss SD to
+\BalancedGrossSDRatio\ of the Bernoulli value and Exchequer SD to
+\BalancedExchequerSDRatio, but it cannot repair sparse survey support. The
+unit displacement loss has only \UnitEffectiveLossRecords\ effective record
+contributions and its largest record supplies \UnitMaxRecordLossShare\ per
+cent on average. At the OBR three-month scale these deteriorate to
+\OBRThreeMonthEffectiveLossRecords\ and
+\OBRThreeMonthMaxRecordLossShare\ per cent. The smallest displacement rows
+are consequently sensitivity evidence, not precise population estimates.
+Across leave-each-sector-out reruns for all \LeaveSectorCount\ exposed
+divisions, the wage-minus-displacement cushioning difference remains positive,
+ranging from \LeaveSectorCushionDifferenceMin\ to
+\LeaveSectorCushionDifferenceMax\ percentage points. No single division
+creates or reverses the primary contrast.
+
+\paragraph{Survey sampling uncertainty.} Assignment SDs do not measure
+sampling variance, so the primary contrast is additionally scored with a
+household bootstrap of the FRS sample: \BootstrapReplicates\ multinomial
+resamples of the \BootstrapHouseholds\ households, applied to per-household
+contributions from \BootstrapDraws\ common assignment draws of each unit
+12-month margin, so that resampling variation is measured around the
+draw-averaged statistic. The wage-minus-displacement cushioning difference is
+\BootstrapCushionDifference\ percentage points with a bootstrap standard
+error of \BootstrapCushionDifferenceSE\ points and a 95 per cent percentile
+interval of \BootstrapCushionDifferenceCILower\ to
+\BootstrapCushionDifferenceCIUpper\ points: the interval excludes zero, so
+the sign of the primary contrast is not an artefact of which households the
+FRS happened to sample, although its magnitude is estimated imprecisely.
+Margin-level bootstrap SEs are \BootstrapDisplacementCushionSE\ points
+(displacement cushioning), \BootstrapWageCushionSE\ points (wage-cut
+cushioning), and \pounds\BootstrapDisplacementExchequerSE\ million and
+\pounds\BootstrapWageExchequerSE\ million on the respective Exchequer costs.
+The FRS research file carries no PSU or stratum identifiers, so households
+are the resampling unit; the interval approximates the design-based sampling
+variance without capturing geographic clustering, and it does not incorporate
+first-stage or parameter uncertainty, which remain scenario dimensions. One
+convention should be noted: a resample can zero a displacement draw's gross
+loss, leaving that draw's cushioning ratio undefined; replicates average
+over the defined draws, and near-zero-gross resamples with unstable ratios
+are retained. The interval is therefore a record-resampling sensitivity, not
+evidence that a conditional scenario contrast is statistically identified.
+
+\paragraph{Pension-contribution channel.} The HBAI disposable-income concept treats employee pension and salary-sacrifice contributions as an outflow, so a hypothesis worth testing is that part of the headline gap is reduced retirement saving rather than tax--benefit insurance. It is not. Recomputing both margins under a pension-gross income concept (disposable income plus employee pension and salary-sacrifice contributions, unit 12-month stress, Bernoulli comparator over \PensionSeeds\ draws) lowers wage-cut cushioning from \FullWageCushion\ to \WageCushionPensionGross\ per cent and displacement cushioning from \PensionDisplacedCushionHBAI\ to \DisplacedCushionPensionGross\ per cent---the pension outflow falls by close to the same share of the gross loss on both margins (\PensionShareWage\ and \PensionShareDisplaced\ per cent respectively; wage cuts scale contributions, displacement zeroes them)---so the wage-minus-displacement gap moves only from \GapHBAIPension\ to \GapPensionGross\ percentage points. The headline contrast is a statutory tax--benefit asymmetry, not a pension-accounting artefact. What the pension channel does affect is the \emph{level} of measured cushioning on both margins, and the implied loss of deferred retirement consumption is not captured by the cushioning rate.
+
+\paragraph{Mixed and transition paths.} The illustrative interior
+calibration is the transition-equivalent path: 70 per cent of each sector's
+declared loss is assigned to workers whose annual earnings and hours embody
+a three-month re-employment lag before entering a services job at the FRS
+28.3 per cent earnings penalty, with survivor cuts rescaled so the expected
+sector loss remains common. It yields
+$\FullTransitionCushion\pm\FullTransitionCushionSD$ per cent cushioning and
+an Exchequer cost of \pounds
+$\FullTransitionExchequer\pm\FullTransitionExchequerSD$ million---between
+the bounds, as the composition logic implies. The surrounding response
+surface (Figure~\ref{fig:scenario-testing}) includes a churn-dominated
+85/15 displacement--survivor split
+($\FullRentSharingCushion\pm\FullRentSharingCushionSD$ per cent cushioning,
+\pounds $\FullRentSharingExchequer\pm\FullRentSharingExchequerSD$ million)
+and the lower 14 per cent penalty sensitivity reported in the appendix.
+The 70/30 share, lag and penalty are assumptions bounded by external
+evidence, not estimated tariff responses.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.98\textwidth]{../results/figures/scenario_testing.png}
+\caption{Factorial scenario surface: export-demand calibration by the share of expected sector loss delivered through displacement rather than survivor wage cuts. Cell values are means over five common assignments.}
+\label{fig:scenario-testing}
+\end{figure}
 
 \subsection{External magnitude and outturn checks}\label{sec:results-benchmarks}
 
-The frozen HMRC customs build totals \pounds55.6 billion of 2024 US-bound goods exports before exclusions and maps \pounds52.5 billion to producing divisions. This is reasonably close to the ONS balance-of-payments headline of \pounds59.3 billion, given known conceptual and coverage differences \citep{onsus2024}. The reference full-schedule calibration predicts a \PredictedAggregateFall\ per cent aggregate fall across mapped divisions. The observed May 2025--February 2026 customs window falls \RealisedAggregateFall\ per cent against its two-year same-month baseline. This near equality is not a validation result: the reference calibration was not estimated from that window, and the outturn combines tariff effects with prices, exchange rates, anticipation, composition, rerouting and other demand shocks.
+The frozen HMRC customs build totals \pounds55.6 billion of 2024 US-bound goods exports before exclusions and maps \pounds52.5 billion to producing divisions. This is reasonably close to the ONS balance-of-payments headline of \pounds59.3 billion, given known conceptual and coverage differences \citep{onsus2024}. The reference full-schedule calibration predicts a 12.57 per cent aggregate fall across mapped divisions. The observed May 2025--February 2026 customs window falls 12.71 per cent against its two-year same-month baseline. This near equality is not a validation result: the reference calibration was not estimated from that window, and the outturn combines tariff effects with prices, exchange rates, anticipation, composition, rerouting and other demand shocks.
 
-Sector agreement is much weaker. The stored validation artifact reports a rank correlation of \RankCorrTopTen\ between the full-schedule predicted and realised falls among the ten largest exposed divisions, and a correlation of \ShockRateCorrAll\ between full-schedule and observed downside shock rates across all mapped divisions. The rank correlation is degenerate rather than informative: the predictor takes only two distinct values across the ten divisions, and the two that carry the higher value have the highest and lowest realised falls respectively, so their mid-ranks cancel exactly. Ten divisions is in any case too small a set for either figure to be decisive; taken with the underpowered product-level split below, the fair summary is that the sector mapping receives no corroboration rather than that it has been refuted. Machinery and motor vehicles decline broadly in the expected direction, while aerospace, electrical equipment and basic metals do not. The aggregate match can therefore be coincidental and must not be used to validate Equation~\eqref{eq:shock}. As a separate policy benchmark, the OBR's March 2025 scenario uses a demand elasticity of 0.4, implying an 8 per cent export-demand fall after a 20 percentage-point tariff and a direct export-demand effect just under 0.2 per cent of GDP \citep{obr2025}. The paper's $\varepsilon=1$ reference is 2.5 times that elasticity, at the constant-wage-share benchmark $\pi=1$ (Section~\ref{sec:method-primitives}); the demand calibration, not the incidence assumption, is what makes it a strong stress rather than a central forecast.
+Sector agreement is much weaker. The stored validation artifact reports a rank correlation of 0.00 between the full-schedule predicted and realised falls among the ten largest exposed divisions, and a correlation of 0.58 between full-schedule and observed downside shock rates across all mapped divisions. Machinery and motor vehicles decline broadly in the expected direction, while aerospace, electrical equipment and basic metals do not. The aggregate match can therefore be coincidental and must not be used to validate Equation~\eqref{eq:shock}. As a separate policy benchmark, the OBR's March 2025 scenario uses a demand elasticity of 0.4, implying an 8 per cent export-demand fall after a 20 percentage-point tariff and a direct export-demand effect just under 0.2 per cent of GDP \citep{obr2025}. The paper's $\varepsilon=1$ reference is 2.5 times that elasticity and additionally assumes full wage-bill incidence; it is a deliberately strong stress, not a central forecast.
 
-\paragraph{Product--destination panel.} A monthly HMRC HS4
-product--destination panel (Online Supplement, Sections~S1--S2) is the
-strongest external test available of the sector calibration, and the
-regenerated estimates do not support reading Equation~\eqref{eq:shock} as an
-estimated first stage. The capped value-weighted specification, omitting a
-\HMRCAnticipationSpec\ and computed \HMRCDofConvention, puts US-bound
-exports \HMRCWeightedEffect\ per cent below the same products sent to
-Canada, Japan and Australia. Almost none of that survives contact with the
-zeros. The outcome fills absent flows with zeros under a $\log(1+V)$
-transform, and when that is handled properly the estimate collapses: a
-Poisson specification on levels gives \HMRCPPMLEffect\ per cent
-($p=\HMRCPPMLPValue$, insignificant), and restricting to products trading
-continuously in all four destinations gives \HMRCContinuousEffect\ per cent
-($p=\HMRCContinuousPValue$). Both land near a third of the headline, so most
-of the primary estimate rides on extensive-margin movement in the small
-comparison destinations rather than on intensive-margin decline in the
-United States. Equal product weights give \HMRCEqualEffect\ per cent
-($p=\HMRCEqualPValue$), the differential pre-trend is now significant
-($p=\HMRCTrendPValue$), and the estimate moves by more than twelve points
-across sample-start choices. Placebo cutoffs in May 2019--23 remain
-individually insignificant.
+\paragraph{Product--destination panel.} The monthly HMRC panel
+(Appendix~\ref{app:trade-panel}) supports a post-policy decline concentrated
+in large US export products---the capped value-weighted specification
+estimates a \HMRCWeightedEffect\ per cent change in US-bound exports
+relative to the same products sent to Canada, Japan and Australia---but the
+tariff-intensity ordering fails: broad steel and auto chapters fall
+\HMRCHighTariffEffect\ per cent against \HMRCOtherEffect\ per cent for other
+products. As set out in the introduction, this failed falsification tests
+the bridge, not the estimand: the cushioning comparison conditions on a
+declared loss that is identical across margins by construction, and the
+leave-one-division-out audit (all \LeaveSectorCount\ divisions, contrast
+range \LeaveSectorCushionDifferenceMin--%
+\LeaveSectorCushionDifferenceMax\ points) together with the three LFS-shaped
+selection models confirm that sector composition does not create or reverse
+it. What the failure rules out is any reading of
+Equation~\eqref{eq:shock} as an estimated first stage.
 
-The tariff-intensity ordering cannot adjudicate any of this. Broad steel and
-auto chapters fall \HMRCHighTariffEffect\ per cent
-($p=\HMRCHighTariffPValue$) against \HMRCOtherEffect\ per cent for other
-products, but the high-tariff group rests on fewer than eight effective
-products and carries a borderline pre-trend of its own
-($p=\HMRCHighTariffTrendPValue$): the comparison is underpowered rather than
-decisive. The honest summary is that the panel shows a post-policy decline in
-large US export products whose magnitude is not robust to how zeros are
-treated, and which it cannot attribute to tariffs. That constrains the
-bridge, not the estimand: the cushioning comparison conditions on a declared
-loss identical across margins by construction, and the leave-one-division-out
-audit (all \LeaveSectorCount\ divisions at \LeaveSectorDraws\ assignments,
-contrast range \LeaveSectorCushionDifferenceMin--%
-\LeaveSectorCushionDifferenceMax\ points) confirms that sector composition
-does not create or reverse it.
+\paragraph{Longitudinal worker benchmark.} The five-quarter LFS contains
+\LFSManufacturingDonors\ wave-1 manufacturing employees after the required
+population filters, compared with \LFSFRSReceivers\ employed manufacturing
+FRS receivers. Its BRES-composition-adjusted manufacturing targets are an
+\LFSExitTarget\ per cent wave-1-to-wave-5 job-exit rate and
+\LFSWageTarget\ per cent mean log wage growth among valid endpoint-pay
+observations. Table~\ref{tab:lfs-imputation} compares receiver distributions.
+Calibration deliberately makes the aggregate exit means identical, so the
+comparison tests incidence shape rather than level. The QRF has a much wider
+risk distribution and agrees weakly with the primary cells: person-level
+correlations are only \LFSExitCorrelation\ for exit risk and
+\LFSWageCorrelation\ for predicted wage change. The longitudinal evidence
+therefore does not support replacing transparent cells with forest-generated
+tariff incidence. It instead quantifies model uncertainty that the central
+uniform assignment omits. Regularisation does not eliminate all forest tails:
+the maximum calibrated exit risk is \LFSQRFExitMaximum\ per cent and the
+predicted log-wage-change range is \LFSQRFWageMinimum\ to
+\LFSQRFWageMaximum\ per cent. These are benchmark predictions, not plausible
+confidence bounds.
 
-\paragraph{Reconciliation with Dolls, Fuest and Peichl (2012).} The closest
-published comparator reverses this paper's ordering, and the reversal is
-informative rather than embarrassing. For the United Kingdom,
-\citet{dolls2012} report an income-shock stabilisation coefficient of 0.352
-(income tax 0.267, social insurance contributions 0.054, benefits 0.031) and
-an unemployment-shock coefficient of 0.415 (tax 0.191, contributions 0.061,
-out-of-work benefits 0.163): the unemployment shock is stabilised
-\emph{more}. Here the displacement margin is cushioned \emph{less} than the
-diffuse wage cut.
+\begin{table}[htbp]
+\centering
+\small
+\caption{Calibrated FRS job-exit-risk distributions}
+\label{tab:lfs-imputation}
+\begin{tabular}{lrrrr}
+\toprule
+Estimator & Weighted mean & P10 & Median & P90 \\
+\midrule
+\LFSBenchmarkRows
+\bottomrule
+\end{tabular}
+\begin{minipage}{0.94\textwidth}
+\footnotesize\emph{Notes:} Entries are percentages among matched employed
+manufacturing FRS receivers. All means equal the same directly measured LFS
+target by construction. Quantiles are survey-weighted. QRF denotes the
+regularised quantile/random-forest benchmark described in
+Section~\ref{sec:method-lfs}; it predicts baseline transitions, not causal
+tariff effects.
+\end{minipage}
+\end{table}
 
-Decomposing the displacement margin on the same channels locates the
-discrepancy. The channel split runs on \FactorialChannelSeeds\ common seeds,
-the same count as the \FactorialDraws\ paired assignments behind the
-cushioning rates, and the two now coincide: the displacement channels sum to
-\DispChannelSum\ per cent against a \SubmissionUnitDisplacedCushion\ per cent
-headline, a shortfall of \DispChannelShortfall\ points, and the wage-cut
-column likewise sums to its own headline, so both decompositions add up and
-the comparison below is between like and like.
+\paragraph{Fiscal sensitivity to worker-risk shape.} Table~\ref{tab:lfs-selection}
+uses each calibrated risk model to vary selection within SIC divisions while
+holding every division's expected weighted wage-bill loss at the original
+shock. The cell model nearly reproduces uniform assignment. Across all three
+LFS-shaped models, mean cushioning ranges from 36.0 to 37.4 per cent,
+Exchequer cost from \pounds384 million to \pounds425 million, and measured
+poverty change from 0.024 to 0.028 percentage points. This model spread is
+smaller than the assignment SD within any specification. Weighted displaced
+headcount changes because calibration preserves the wage bill, not a
+headcount quota. The QRF mean gross loss is \pounds847 million rather than
+the \pounds886 million expectation, but its \pounds397 million assignment SD
+implies a numerical MC SE of about \pounds40 million, so this difference is
+not evidence of a different aggregate target.
 
-With that stated, the tax side agrees closely: income tax and employee
-National Insurance together absorb \DispChannelTaxAndNI\ per cent of the
-displaced gross loss here against 25.2 per cent in their unemployment cell.
-The benefit side agrees less well: all modelled benefits supply
-\DispChannelBenefits\ per cent here against their \DollsUKBenefits\ per
-cent, a factor of \DollsBenefitRatio. One further term has no counterpart in
-their decomposition, and accounting for it makes the disagreement \emph{worse}
-rather than better: the \DispChannelResidual-point employee pension and
-salary-sacrifice outflow is a reduction in deferred saving rather than a
-public transfer, and it is a component of this paper's sum only. Setting it
-aside to put the two decompositions on a comparable basis leaves
-\DispSumExPension\ per cent against their \DollsUKTotal, widening the
-difference from \DollsGapPoints\ to \DollsGapExPension\ points. A term
-that appears on one side alone and pushes that side \emph{up} cannot explain
-why that side is low; the institutional gap to be accounted for is therefore
-close to twice the headline difference, which strengthens rather than
-weakens the contributory-benefit and claiming explanations offered below.
+\begin{table}[htbp]
+\centering
+\scriptsize
+\caption{Full-schedule fiscal sensitivity to within-SIC worker selection}
+\label{tab:lfs-selection}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrrrr}
+\toprule
+Selection model & Workers (000s) & Gross loss (\pounds m) &
+Exchequer (\pounds m) & Cushioning (\%) & Poverty (pp) \\
+\midrule
+\LFSSelectionRows
+\bottomrule
+\end{tabular}}
+\begin{minipage}{0.96\textwidth}
+\footnotesize\emph{Notes:} Means $\pm$ assignment SD over
+\LFSSelectionDraws\ common assignments. Within each SIC division, individual
+probabilities are rescaled so the earnings-weighted mean equals the declared
+sector shock. Poverty is relative BHC against the frozen baseline line.
+LFS risks are predictive baseline-transition scores, not tariff-specific
+causal probabilities.
+\end{minipage}
+\end{table}
 
-Two comparability limits bear on the same paragraph. Their denominator is
-total household market income, not employee earnings, so their coefficients
-are not scaled by the same quantity as mine. And their unemployment shock is
-imposed by \emph{reweighting} the sample towards observed unemployed
-households, so their \DollsUKBenefits\ per cent benefit component is the
-receipt actually recorded for genuinely unemployed households---contributory
-Jobseeker's Allowance included---rather than the output of a rules-based
-transition applied to workers observed in employment. That difference is not
-a detail attached to the comparison; on the benefit side it is most of it. The decomposition is exactly the two terms above: moving from their income
-shock to their unemployment shock, the tax component \emph{falls} from 0.267
-to 0.191---the marginal-minus-average wedge---while the benefit component
-rises from 0.031 to 0.163, the $B_{\text{out}}$ term. In their estimates the
-transfer term wins; here it does not. The benefit channel is where the
-reversal sits, and four features of the present design account for it, three of
-them acknowledged limitations rather than findings. New Style JSA is not
-activated by the imposed transition, removing the contributory component
-that carries much of their benefit response. The claiming flag is frozen for
-already-entitled non-claimants, zeroing UC for over half the displaced by
-weight on the superseded $\varepsilon=2$ diagnostic, the only calibration for
-which that share has been measured. The exposed population is unusually high-earning---a mean of
-\pounds 48{,}272, well above the all-employee median---so means-tested
-support replaces a small share of the loss even where it is paid. And their
-coefficients are computed on the pre-Universal-Credit system of the late
-2000s, with contributory Jobseeker's Allowance and tax credits rather than a
-single tapered award.
+The realised displacement output is also consistent with the allocation design but too sparse for precise empirical incidence: the expected 9.7 selected FRS records per assignment produce \FullDisplacedWorkers{} thousand represented displaced workers and \pounds $\FullDisplacedGross\pm\FullDisplacedGrossSD$ million of gross loss. The gross-loss SD is nearly half its mean, and Exchequer-cost SD exceeds half its mean. The 100-assignment average is numerically more stable than an individual assignment, but it remains conditional on the observed 1,018 exposed records and the uniform within-division selection rule.
 
-The constructive reading is that this paper's displacement cushioning is a
-lower bound \emph{with respect to the first two features}---the absent New
-Style JSA and the frozen claiming flag---and the gap correspondingly an upper
-bound with respect to them. It is not a bound overall: the unmodelled
-capital test runs the other way (Section~\ref{sec:discussion}), and the
-institutional change between the two systems has no established sign, so the
-net direction is open. The first two features
-are addressable within this framework and are the natural next runs; the third is a property of the exposed population and is a real
-difference rather than a defect; the fourth is a genuine institutional change
-between 2008 and 2026 and would move the comparison in an unknown direction.
-
-\paragraph{Longitudinal worker benchmark (summary).} A five-quarter
-longitudinal LFS benchmark (Study 9490) calibrates cell, earnings-band and
-quantile-random-forest job-exit-risk models to BRES-adjusted manufacturing
-targets and propagates each through the fiscal model while preserving every
-division's expected wage-bill loss. \label{sec:results-lfs}Across all three LFS-shaped risk models,
-mean displacement cushioning spans
-\LFSSelectionCushionMin--\LFSSelectionCushionMax\ per cent against
-\LFSUniformCushion\ per cent under uniform assignment. Three design points
-must travel with those numbers. This family, and its uniform benchmark, use
-the \LFSSelectionDraws-draw Bernoulli design rather than the
-\SubmissionDraws-draw balanced design of the primary table, so the gap it
-narrows is its own baseline of \LFSSelectionBaselineGap\ points rather than
-the \PrimaryCushionDifference\ points reported in
-Table~\ref{tab:cushioning}. Both sides of this comparison are also computed
-on the pipeline as it stood \emph{before} the Universal Credit award-cache
-correction described in Section~\ref{sec:results-factorial}: the LFS models
-are built on the five-quarter longitudinal file, licensed separately from the
-Family Resources Survey, and could not be re-run for this revision. The
-levels are therefore roughly \FactorialCacheShift\ points below their
-corrected counterparts and should not be read beside the rates in
-Table~\ref{tab:cushioning}; the \emph{shift} between them is what this
-subsection quotes, and it is computed within one vintage, which is why it
-survives the correction. Finally, the three models agree
-closely with each other---their spread is smaller than the assignment SD of
-any single specification---but they do \emph{not} agree with uniform
-assignment. Every LFS-shaped model raises
-displacement cushioning, by
-\LFSSelectionShiftMin--\LFSSelectionShiftMax\ percentage points, which
-narrows the wage-minus-displacement gap from
-\LFSSelectionBaselineGap\ points to
-\LFSSelectionGapMin--\LFSSelectionGapMax\ points. Worker selection is
-therefore not a second-order detail: it accounts for something between a
-fifth and a third of the headline contrast, and it moves it in the direction
-of a smaller gap. What this exercise shows is that the \emph{sign} and rough
-scale of the contrast survive plausible re-shaping of within-division risk,
-while its magnitude is sensitive to a selection model that the data cannot
-identify. Person-level agreement between the three models is weak, and the
-available LFS manufacturing target rests on \LFSManufacturingDonors\ donors,
-so these are predictive baseline-transition benchmarks quantifying
-selection-model sensitivity---not tariff-specific worker risk. Full designs,
-distributions and tables are in the Online Supplement
-(Sections~S3--S4).
-
-One labelling point governs the rest of this subsection and the appendix reconciliation. The \ProductionDraws-draw legacy scenarios are run under the \emph{Bernoulli comparator}, not the balanced design of Table~\ref{tab:cushioning}. Each of those artifacts now records its own \texttt{selection\_method}, so this is read off the artifact rather than inferred from the scenario definitions in the source, and the build fails rather than warns if a central artifact omits it. Earlier revisions could only infer the design, because every shipped artifact predated the field.
-The consequence of the design difference is visible: that is why their gross-loss dispersion is an order of magnitude wider than the table's. Figures from the two designs are not interchangeable and are labelled at the point of use. The realised displacement output is consistent with the allocation design but too sparse for precise empirical incidence: the expected 9.7 selected FRS records per assignment produce \FullDisplacedWorkers{} thousand represented displaced workers and \pounds $\FullDisplacedGross\pm\FullDisplacedGrossSD$ million of gross loss. The gross-loss SD is nearly half its mean, and Exchequer-cost SD exceeds half its mean. The 100-assignment average is numerically more stable than an individual assignment, but it remains conditional on the observed 1,018 exposed records and the uniform within-division selection rule.
-
-\paragraph{Take-up: a live grid, and how nearly it was missed.}\label{sec:results-takeup} Because the
-displacement-side cushion runs through UC, the claiming convention was
-scored over \TakeupSeeds\ assignments at new-entitlement rates of 0.55, 0.80
-and 1.00, with the stale pre-shock flag restored as a fourth convention.
-Displacement cushioning runs from \TakeupLowConvention\ per cent at the
-lowest claiming rate to \TakeupFullConvention\ per cent at full take-up, a
-spread of \TakeupConventionSpread\ percentage points---about half the
-\PrimaryCushionDifference-point headline contrast this paper is built on. The
-claiming rate is therefore a binding parameter, and one of the largest
-single sources of uncertainty in the exercise. The re-draw set is not empty:
-\TakeupRedrawnBenunits\ benefit units are re-drawn per assignment on
-average (at most \TakeupRedrawnMax), representing
-\TakeupRedrawnWeighted\ thousand households. That conclusion is
-\TakeupInertBasis.
-
-A methodological warning travels with that number, because the grid
-initially appeared inert. All four conventions returned cushioning agreeing
-not to within rounding but \emph{exactly}, to machine precision, across a
-stochastic re-draw---which was a defect rather than a property of Universal
-Credit: the shocked simulation was being served its \emph{baseline} award
-from a stale formula cache, so re-drawing the claiming flag could not move
-anything. Bit-identical output across a stochastic parameter should be
-treated as a suspected defect before it is reported as a finding. The
-diagnostic that separates the two cases---counting the re-draw set directly
-rather than inferring it from a zero spread---is stored with the grid and
-checked at build time. (The level sits below the
-\SubmissionUnitDisplacedCushion\ per cent of Table~\ref{tab:cushioning}
-because this grid runs on the Bernoulli comparator over \TakeupSeeds\ seeds
-rather than the \SubmissionDraws-draw balanced design; what matters here is
-the comparison across conventions, which share it.)
-
-What does matter is the convention the default scope freezes.
-\TakeupZeroUCNonTakeupShare\ per cent of displaced workers, by weight, receive
-no UC \emph{solely} because their benefit unit's stored claiming flag is
-false, and that flag is a pre-shock draw calibrated as a population-wide
-share rather than take-up among the entitled. That share comes from
-\TakeupZeroUCSource, so it is quoted for order of magnitude only and---unlike
-the spread below---has not been recomputed since the cache correction. Re-drawing it for all entitled
-changed units---the \texttt{all\_entitled} scope---moves displacement
-cushioning from \TakeupEntitledStale\ per cent under the stale flag to
-\TakeupEntitledFull\ per cent at full take-up, a spread of
-\TakeupEntitledSpread\ percentage points---a convention grid, not an
-estimate of claiming behaviour. That spread, unlike the share above, is
-measured on \TakeupEntitledSource. Its
-order of magnitude is nonetheless the relevant one. A spread of that size is
-comparable to the entire \PrimaryCushionDifference-point wage-minus-%
-displacement gap, so the headline contrast should be read as conditional on
-a claiming rule that the survey data cannot pin down. The direction is
-one-sided only with respect to claiming: allowing the already-entitled to
-claim raises displacement cushioning and \emph{narrows} the gap, so the
-reported figure is an upper bound in that respect. The unmodelled UC capital
-test pushes the other way---redundancy payments against thresholds frozen
-since 2006 would extinguish awards, lowering displacement cushioning and
-\emph{widening} the gap---and the two effects are not commensurable with the
-data in hand (Section~\ref{sec:discussion}). Re-running the \texttt{all\_entitled}
-grid at the unit stress is among the outstanding items listed in
-Section~\ref{sec:discussion}; the code and the \texttt{make takeup-entitled} target are in place and
-require only a licensed-data run. Wage-cut results are take-up-insensitive
-because few wage-cut households change UC entitlement at all.
+\paragraph{Take-up as a headline sensitivity.} Because the displacement-side
+cushion runs through UC, take-up is scored at the full comparator draw count
+(\PensionSeeds\ Bernoulli assignments) rather than as an exploratory grid,
+with the new-entitlement claiming rate at 0.55, 0.80 and 1.00 and,
+additionally, the stale pre-shock claiming flag restored as a fourth
+convention. The measured answer is that none of these moves the unit-stress
+headline: displacement cushioning is \TakeupDisplacedCentral\ per cent under
+every convention, with differences below 0.1 percentage points---within the
+numerical precision of the aggregation. The reason is institutional and was
+not obvious ex ante: most displaced households are \emph{already} entitled
+to UC at baseline through the in-work means test, so under the maintained
+rule they retain their stored claiming state, and the newly entitled
+population that the take-up parameter governs carries little survey weight.
+The residual convention that this grid cannot test is the retention of
+baseline claiming states for already-entitled non-claimants---about half of
+entitled benefit units in the input data do not claim---and the unmodelled
+UC capital test (redundancy payments against thresholds frozen since 2006),
+both of which would move measured cushioning down, not up
+(Section~\ref{sec:discussion}). Wage-cut results are take-up-insensitive
+because few wage-cut households change UC entitlement.
 
 \subsection{Mechanism}\label{sec:results-mechanism}
 
@@ -314,17 +269,7 @@ relief is concentrated in lower tax and contribution payments. Displacement
 removes earnings altogether and shifts the response towards Universal Credit and
 other means-tested support. The latter channel is nonlinear: entitlement
 depends on household composition, existing income, rent, capital, and claiming
-behaviour rather than on the individual earnings loss alone. One channel in
-the decomposition deserves a name rather than a label. The ``other residual''
-term---\DispChannelResidual\ per cent of the gross loss under displacement
-and \WageChannelResidual\ per cent under the diffuse wage cut, so about an
-eighth of measured cushioning on the displacement margin and nearer a
-twelfth on the wage-cut margin---is overwhelmingly the
-employee pension and salary-sacrifice outflow, which falls with earnings
-under both margins and, under the HBAI disposable-income concept, offsets
-part of the loss. That it is a fall in deferred consumption rather than
-tax--benefit insurance is exactly the point tested in the pension-gross
-recomputation above. The plain FRS
+behaviour rather than on the individual earnings loss alone. The plain FRS
 input contains no usable household-capital measure, so the model cannot
 establish the empirical importance of UC's capital test. New-style JSA is not
 activated by the imposed transition. The gate audit should therefore be read
@@ -337,49 +282,26 @@ Under full displacement, relative BHC poverty rises by
 $\FullDisplacedPoverty\pm\FullDisplacedPovertySD$ percentage points. Under
 wage cuts it is unchanged at displayed precision. The small national change
 does not imply that exposed households are protected: the affected population
-is limited, and many exposed workers begin above the poverty threshold. The national figures are the wrong object, and reporting them at all is a
-concession to convention. What matters for welfare is the loss
-\emph{conditional on being affected}: the same aggregate concentrated on ten
-workers is far worse than spread over a thousand, and the system offsets less
-of it, so a cushioning rate that falls as concentration rises understates the
-insurance loss rather than measuring it. Those conditional statistics are reported here, at the
-\WelfarePovDraws\ draws of the submission design. Among the
-\WelfareDispPeople\ thousand people in affected households, relative BHC
-poverty rises from \WelfareDispPovBase\ per cent at baseline to
-\WelfareDispPovShock\ per cent under displacement, a change of
-\WelfareDispPovChange\ percentage points with an assignment standard
-deviation of \WelfareDispPovChangeSD. Under the diffuse wage cut the same
-statistic moves by \WelfareWagePovChange\ points, from
-\WelfareWagePovBase\ to \WelfareWagePovShock\ per cent, across a far
-larger affected population of \WelfareWagePeople\ thousand.
+is limited, and many exposed workers begin above the poverty threshold. The
+decile profile shows a broad reduction in disposable income, with the largest
+losses concentrated towards the upper end of the distribution where exposed
+earnings are concentrated. This pattern is consistent with a progressive
+tax--benefit response that cushions lower-income households more strongly than
+the gross earnings measure. These figures are distributional diagnostics rather
+than population-wide poverty forecasts. Figure~\ref{fig:decile-results} shows
+the decile profile.
 
-That contrast is the substantive counterpart of the cushioning gap, and it is
-much larger than it. The cushioning rate falls by
-\PrimaryCushionDifference\ points between the two margins; conditional
-poverty among the affected rises by nearly thirty points under one and not at
-all under the other. A fiscal statistic that moves by single digits is
-describing a distributional event an order of magnitude bigger, which is the
-sense in which the cushioning rate understates rather than measures the
-insurance loss. The assignment dispersion is large---the standard deviation
-is roughly two-thirds of the mean, reflecting the same thin record support as
-everything else on this margin---so the figure should be read as an order of
-magnitude, not a point estimate.
-
-The national figures below are therefore distributional diagnostics rather
-than population-wide forecasts, and the decile profile that earlier versions
-plotted has been withdrawn: on a
-typical stored draw four or five of the ten deciles record a
-disposable-income change of exactly zero---the modal count is four on the
-\SubmissionDraws-draw balanced design and five on the
-\ProductionDraws-draw comparator---so the profile's shape is an artefact of
-which handful of records a draw selected rather than a feature of the
-distribution.
-
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.85\textwidth]{../results/figures/decile_by_margin_full_tariff.png}
+\caption{Per-capita disposable-income change by baseline income decile in the full-schedule scenarios. Shading denotes assignment dispersion.}
+\label{fig:decile-results}
+\end{figure}
 
 A constituency-level surface was produced in earlier drafts but is not
 reported: it rests on imputed industry assignments rather than observed
 local industry structure, and a map invites exactly the seat-ranking
-reading it cannot support. The Online Supplement documents the
+reading it cannot support. Appendix~\ref{app:constituency} documents the
 machinery for future use with observed local industry data.
 
 \subsection{Fiscal incidence}\label{sec:results-fiscal}
@@ -393,468 +315,33 @@ salary-sacrifice changes respond to the shock but sit outside employee
 disposable income, which explains why the Exchequer cost does not equal the
 household-side cushioning amount. Displacement also produces more assignment
 dispersion because a small number of high-weight records can determine whether
-earnings are lost entirely. Appendix~\ref{app:mc} provides the formal
+earnings are lost entirely. Appendix~\ref{app:support} provides the formal
 reconciliation and draw distributions. Figure~\ref{fig:exchequer-results}
 shows the assignment distribution.
 
-\begin{figure}[!ht]
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=.85\textwidth]{../results/figures/exchequer_cost_draws.png}
 \caption{Annual Exchequer cost across regenerated assignments. The spread is assignment dispersion from the Monte Carlo allocation of displacement, not sampling uncertainty.}
 \label{fig:exchequer-results}
 \end{figure}
 
+\subsection{EPD counterfactual}\label{sec:results-epd}
 
-\subsection{Why the gap arises: a factorial decomposition}\label{sec:results-factorial}
+On paired seeds, full minus EPD displacement differs by
+$\EPDWorkerDifferenceThousands\pm\EPDWorkerDifferenceSDThousands$ thousand
+workers and \pounds $\EPDExchequerDifference\pm\EPDExchequerDifferenceSD$
+million of Exchequer cost. The contrast is driven primarily by the lower auto
+tariff and the exemption of pharmaceuticals in the EPD schedule. It should be
+interpreted as the fiscal value of changing the declared sector shock while
+holding the household model and assignment draws fixed. It does not include
+quota allocation, above-quota trade, price responses, NHS pricing concessions,
+or other general-equilibrium effects. Figure~\ref{fig:epd-results} summarises
+the paired comparison.
 
-The two headline scenarios differ in two respects at once: the adjustment
-margin and the concentration and identity of the losers. A diffuse wage cut
-spreads the loss over all exposed workers; displacement concentrates it on
-roughly ten selected survey records. To separate the channels, a factorial
-middle cell---a \emph{concentrated wage cut}---imposes the displacement
-draw's exact worker-level losses (the same balanced draw on the same seeds,
-each drawn worker losing their entire annual earnings, with pension
-contributions and statutory pay scaling to zero exactly as for any in-work
-earnings change) while leaving every worker employed at baseline hours.
-Because employment is binary, a ``diffuse displacement'' cell is not
-definable, so the sequential path diffuse $\rightarrow$ concentrated
-$\rightarrow$ displaced is the only feasible decomposition of the gap. No
-axiomatic backing is claimed for it: a Shapley allocation over the two
-factors would require the undefined diffuse-displacement cell to be valued
-(Section~\ref{sec:method-margins}).
-
-At the unit 12-month stress over \FactorialDraws\ paired assignments, the
-concentrated wage cut is cushioned at \FactorialConcCushion\ per cent,
-almost exactly the displacement rate (\FactorialDispCushion) and far below
-the diffuse wage cut (\FactorialWageCushion). The decomposition is
-one-sided: of the total $\FactorialGapTotal\pm\FactorialGapTotalSD$-point
-gap, $\FactorialConcStep\pm\FactorialConcStepSD$ points arise from
-concentration and worker selection while employment state is held fixed,
-and only $\FactorialStateStep\pm\FactorialStateStepSD$ points---about
-\FactorialStateShare\ per cent of the gap---from the employment-state
-change itself, holding the loss-bearing workers and their worker-level
-losses fixed. At the OBR-style anchor the pattern repeats (concentration
-\FactorialOBRConcStep\ points, employment state
-\FactorialOBRStateStep\ points). The channel split on common seeds locates
-the concentration step almost entirely in the income-tax schedule: diffuse
-cuts retain \FactorialConcStepIncomeTax\ points more marginal-rate
-income-tax relief than the concentrated cell, partially offset by
-pound-for-pound stronger Universal Credit support of the concentrated
-losses, which runs the other way and closes
-\FactorialConcStepUCAbs\ points of the gap.
-The employment-state step is nearly empty in every channel
-(UC \FactorialStateStepUC\ points; income tax and National Insurance zero
-by construction, since both cells zero the same earnings).
-
-\paragraph{The analytic benchmark, and what the simulation adds.} The
-direction and rough size of the concentration step are predictable from the
-tax schedule alone, and the paper is stronger for saying so before claiming
-a discovery. Consider a worker with earnings $E$ facing an effective
-marginal deduction rate $m(E)$ and an average deduction rate $a(E)$ over the
-whole of their earnings. A small diffuse cut removes income at the margin,
-so the share of the gross loss absorbed by the state is $m(E)$---an effective
-marginal rate. A complete loss removes every slice of the schedule, so the
-absorbed share is a participation rate: $[T(E)-B_{\text{in}}+B_{\text{out}}]/E$,
-the average tax rate less in-work entitlement forgone plus out-of-work
-entitlement gained. It reduces to $a(E)$ only where out-of-work entitlement
-is zero, which is the case the log-linear parameterisation of
-Section~\ref{sec:lit-progressivity} describes and the United Kingdom does
-not. The $B_{\text{out}}$ term is where the means-tested system enters, and
-it is why the realised step falls short of the schedule's own wedge. Under any progressive schedule with a personal
-allowance, $m(E)\ge a(E)$---strictly above the allowance, with equality below
-it where both are zero---and the wedge $m(E)-a(E)$ is exactly the
-concentration effect. It is also a familiar object: in the log-linear tax
-function of \citet{heathcote2017} the progressivity parameter $\tau$
-satisfies $1-m=(1-\tau)(1-a)$, so $m-a=\tau(1-a)$. The wedge is therefore
-$\tau$ scaled down by one minus the average rate---at the weighted rates
-below, the \ScheduleWedgeWeighted-point wedge corresponds to
-$\tau\approx0.20$, not $0.16$---the progressivity of the tax-and-National-%
-Insurance schedule alone, not of the tax--benefit system, whose means-tested
-component enters through $B_{\text{out}}$ and runs the other way. And it is the \emph{difference} between the two cushioning rates
-that estimates the wedge, not either rate on its own: the diffuse rate
-estimates the weighted marginal deduction rate, the concentrated rate the
-average (Section~\ref{sec:lit-progressivity}). It is large for a worker whose earnings straddle the
-higher-rate threshold, and it vanishes for a worker taxed at a single rate
-from the first pound.
-
-The benchmark is worth making numerical, because it can then be checked
-directly. For a single worker on the exposed-sector mean of
-\pounds 48{,}272 under the 2026 schedule, income tax and employee National
-Insurance take \ScheduleMarginalRate\ per cent of a marginal pound but only
-\ScheduleAverageRate\ per cent of the whole year's earnings, because zeroing
-the year also removes the untaxed personal allowance---a wedge of
-\ScheduleImpliedGap\ percentage points.
-
-That single-worker figure is the wrong weight for the aggregate being
-compared. Correcting the weight is informative, though the corrected quantity
-is not an independent prediction of the simulation. The comparison is
-wage-bill-weighted over a population more concentrated
-above the higher-rate and upper-earnings-limit thresholds than a worker on
-the mean. Weighted that way, income tax and employee National Insurance
-relieve \WageChannelTaxAndNI\ per cent of the diffuse loss against
-\ConcChannelTaxAndNI\ per cent of the concentrated one, a wedge of
-\ScheduleWedgeWeighted\ points against a realised step of
-\FactorialConcStepChannelSeeds. That wedge is a tax-and-National-Insurance
-quantity throughout. It is not a participation tax rate and is not reported as
-one: a participation rate nets out-of-work entitlement, which here is the
-\ScheduleWedgeOffsets\ points running the other way.
-
-Both of those figures come from the same simulation. They are the tax-and-NI
-channels of one decomposition and the residual of the same decomposition, so
-the \ScheduleWedgeOffsets-point difference between them is an accounting
-identity, not a test the schedule could have failed. What it does is locate
-the offsets: Universal Credit supplies most of them, because a complete loss
-draws a means-tested award that a marginal cut never triggers, with National
-Insurance above the upper earnings limit and the pension-contribution
-residual accounting for the rest. Only the \ScheduleImpliedGap-point
-single-worker wedge is computable outside the model, and it settles the sign
-of the mechanism but not its size. A genuinely independent weighted benchmark
-would apply the statutory schedule to the exposed earnings distribution
-outside PolicyEngine; that distribution is not currently reported, which is a
-gap in this draft. All figures in this comparison are on the
-\FactorialChannelSeeds\ channel seeds, which is now the same count as the
-\FactorialDraws\ paired assignments behind the steps, so the two bases give
-the same concentration step (\FactorialConcStepChannelSeeds\ against
-\FactorialConcStep\ points) and no cross-basis correction is required.
-
-Three things prevent the simulation from being a restatement of that
-arithmetic, and they are what the exercise contributes. First, the
-income-tax wedge overshoots the realised step, because means-tested support
-runs the other way: a complete loss draws Universal Credit that a marginal
-cut does not, worth \FactorialConcStepUC\ points on that channel, and
-National Insurance and the pension-contribution residual each
-subtract a little more. Second, $m$ and $a$ are household objects here
-rather than individual ones---partner earnings, rent, household composition
-and the UC taper all enter---so the weighted aggregation over the exposed
-population is not the representative-worker calculation. Third, the
-counterfactual holds the \emph{aggregate} loss fixed, so the comparison
-prices a redistribution of a given loss across workers rather than a change
-in its size. The value added is quantification of a mechanism whose sign was
-never in doubt, and identification of the offsets that determine its size.
-
-One reading should be blocked before it forms. This is a
-\emph{tax-progressivity} result, not a safety-net result. Universal Credit
-moves \FactorialConcStepUC\ points of the concentration step against income
-tax's \FactorialConcStepIncomeTax, and supplies only
-\DispChannelBenefits\ per cent of the displaced gross loss in total. A
-reader who takes the headline gap as evidence about the strength of the
-means-tested safety net will have it backwards: the gap opens because the
-\emph{tax} schedule relieves a marginal cut at the marginal rate and a total
-loss at the average rate, and the means-tested response works against it.
-
-One limitation of this split should be stated rather than left to the
-artifact. The channel decomposition is computed on the same
-\FactorialChannelSeeds\ seeds as the steps themselves, so the two bases
-agree and the channel figures are an accounting identity for the headline
-numbers rather than a separate decomposition of the mechanism.
-
-One limit of this design should be stated before the readings. With the
-aggregate held fixed and concentrated on the ten records a displacement draw
-selects, those records lose everything by construction, so the
-``concentration and selection'' step confounds \emph{how concentrated} the
-loss is with \emph{who} bears it; there is no free variation between them in
-a three-cell design. A continuous sweep separates them: impose each
-division's declared loss $s_j$ as a proportional cut of fraction
-$\phi^{\text{eff}}_j=\max(\phi,s_j)$ on a randomly selected
-$s_j/\phi^{\text{eff}}_j$ share of its exposed employees, so the expected
-wage-bill loss is invariant by construction while its concentration varies
-from fully diffuse to total. The clip matters: below its own $s_j$ a division
-cannot concentrate further without under-delivering its aggregate, so it sits
-at its diffuse endpoint until the grid reaches it. That sweep nests both endpoints of the
-present design---at $\phi\le\min_j s_j$ it reproduces the diffuse wage cut
-record for record, and at $\phi=1$ it reproduces the concentrated cell
-exactly under Bernoulli assignment---and traces the curvature of the
-effective schedule between them.
-\path{analysis/concentration_sweep.py} implements it
-(\texttt{make concentration-sweep}), and it is reported next.
-
-\paragraph{The concentration gradient.}\label{sec:results-sweep}
-Figure~\ref{fig:concentration-sweep} traces cushioning across
-\SweepPoints\ values of $\varphi$ at \SweepSeeds\ seeds each. The design
-nests the factorial: the diffuse endpoint returns
-\SweepDiffuseCushion\ per cent and the concentrated endpoint
-\SweepConcentratedCushion, reproducing the two wage-cut cells of
-Section~\ref{sec:results-factorial} to the second decimal, so the curve is an
-interpolation through the paper's own design rather than a separate exercise.
-The build asserts that correspondence and fails if it breaks.
-
-What the curve shows is not what the factorial's two points suggest. The
-relationship is flat over most of its range: at $\varphi=\SweepPlateauPhi$
-per cent---by which point the loss is already concentrated on a twentieth of
-the exposed workforce---cushioning is still
-\SweepPlateauCushion\ per cent, within Monte Carlo error of the diffuse
-value. \SweepDropAfterPlateauShare\ per cent of the total
-\SweepTotalDrop-point decline occurs above that threshold, as $\varphi$ runs
-from \SweepPlateauPhi\ per cent to complete loss and the effective record
-count falls from tens to \SweepConcentratedEffRecords.
-
-That shape is what the schedule predicts, and the paper should have said so
-before computing it. A worker at the exposed-sector mean faces a locally
-\emph{flat} marginal rate: the wedge in Section~\ref{sec:lit-progressivity}
-opens only when a loss is large enough to carry earnings down through the
-higher-rate threshold, the personal allowance, or the point at which
-means-tested support begins. Small proportional cuts, however concentrated
-across workers, are relieved at very nearly the same marginal rate as a
-diffuse cut, so concentration \emph{per se} does nothing until individual
-losses become large. Concentration is therefore a threshold effect in the
-size of the individual loss, not a gradient in how many workers bear it---and
-the factorial's two cells, being the two extremes, cannot distinguish those
-two readings. The empirical question this raises, which this paper does not
-answer, is where a real trade shock sits on the horizontal axis.
-
-One qualification travels with the figure. The region where the effect
-appears is also the region where the effective record support collapses: the
-concentrated end rests on \SweepConcentratedEffRecords\ effective records
-with an assignment standard deviation of \SweepConcentratedSD\ points. The
-sweep therefore does not separate concentration from \emph{which} workers
-are selected as cleanly as its construction promises, because at high
-$\varphi$ the two are confounded by design---the aggregate is fixed, so
-concentrating it necessarily means loading it onto a handful of drawn
-records. The flat left-hand portion is precisely estimated; the decline is
-the part that inherits the thin support discussed throughout this section.
-
-\begin{figure}[!ht]
+\begin{figure}[htbp]
 \centering
-\includegraphics[width=\linewidth]{figures/concentration_sweep.png}
-\caption{Cushioning against loss concentration. Each point imposes the same
-aggregate employee-earnings loss as a cut of fraction $\varphi$ on a
-$1/\varphi$ share of exposed workers, at \SweepSeeds\ assignment draws;
-shading is the Monte Carlo 95 per cent interval of the mean. Dotted lines
-mark the diffuse and concentrated cells of the factorial decomposition, which
-the endpoints reproduce. The horizontal axis is logarithmic.}
-\label{fig:concentration-sweep}
+\includegraphics[width=.85\textwidth]{../results/figures/epd_counterfactual.png}
+\caption{Full-schedule and EPD scenario comparison. Error bars are assignment standard deviations.}
+\label{fig:epd-results}
 \end{figure}
-
-Two readings follow, and the second constrains the first. The
-concentration step is a genuine result about the UK statutory schedule:
-within the modelled annual system, the diffuse-wage-cut versus displacement
-gap is a \emph{loss-concentration} effect---complete individual losses
-exhaust marginal-rate relief---and not an effect of unemployment status,
-which Universal Credit's income-based means test barely registers. The
-paper's earlier language of a ``statutory asymmetry between adjustment
-margins'' was imprecise and has been replaced accordingly.
-
-The employment-state step, by contrast, is close to mechanically zero and
-should not be read as a finding about the United Kingdom. Every institution
-in the UK system that conditions on employment status sits outside this
-model: New Style JSA is not activated by the imposed transition, and monthly
-assessment periods, the five-week wait, claiming frictions and work-search
-conditionality carry no fiscal machinery here. The concentrated and displaced
-cells zero the same earnings for the same workers, so the only remaining
-difference between them is a status label that no \emph{statutory} formula reads;
-income tax and National Insurance are identical by construction, and on the
-\FactorialChannelSeeds\ channel seeds the entire step is a
-\FactorialStateStepUC-point Universal Credit residual---those seeds giving a
-step of \FactorialStateStepChannelSeeds\ points against the
-\FactorialStateStep\ points of the full design.
-
-That residual is not the employment-status label, and tracing it changes what
-the step measures. Within policyengine-uk the \texttt{employment\_status}
-variable is read by no tax or benefit formula at all: its only consumer is a
-behavioural labour-supply module that this design switches off. What the two
-cells actually differ in is \texttt{hours\_worked}, which the concentrated
-cell leaves at baseline and displacement zeroes. Hours enter through
-\texttt{in\_work}, which is an \emph{or} of positive hours and positive
-earnings: a displaced worker has neither, while a concentrated-cut worker has
-zero earnings but positive hours and so remains \texttt{in\_work}. In the
-pinned version \texttt{in\_work} has exactly three consumers, and only one
-of them is Universal Credit---%
-\texttt{uc\_childcare\_work\_condition} $\rightarrow$
-\texttt{uc\_childcare\_element}. The other two are childcare subsidies
-outside Universal Credit: the Department for Education's extended childcare
-entitlement and HMRC's Tax-Free Childcare, each of which applies its own
-work condition. All three are childcare gates, and all three shut for a
-displaced worker and stay open for a concentrated-cut one. A separate set of
-gates reads \texttt{weekly\_hours} rather than \texttt{in\_work}: the
-Housing Benefit worker disregard, the council-tax-reduction non-dependant
-deduction, the income tests of the same two childcare subsidies, and the
-legacy Working Tax Credit elements. Their contribution cannot be separated
-without re-running the decomposition channel by channel.
-
-That mechanism can be measured rather than argued, and doing so qualifies it.
-Re-running the concentrated cell with hours zeroed as well---so the two cells
-differ \emph{only} in the inert status flags---splits the step over
-\ZeroHoursSeeds\ seeds into an hours channel of
-\ZeroHoursChannel\ points (standard error \ZeroHoursChannelSE) and a
-status-only residual of \ZeroHoursStatusResidual\ points (standard error
-\ZeroHoursStatusResidualSE). The hours channel is therefore real and
-precisely estimated but very small; the status-only residual is
-indistinguishable from zero, as it must be if
-\texttt{employment\_status} is read by no formula. Neither is the whole of
-the step, because the step itself
-(\ZeroHoursStateStep, standard error \ZeroHoursStateStepSE) is not
-distinguishable from zero on this design. The honest summary is that the
-employment-state cell measures an hours effect on childcare support of about
-a tenth of a point, sitting inside an estimate whose assignment noise is
-several times larger.
-
-The measured step is therefore not
-an employment-status effect. It is small because childcare costs affect a
-minority of the exposed benefit units, though the per-unit amounts are
-large. This sharpens rather than
-weakens the reading below: the statutory system's response to job loss, as
-implemented here, runs through hours-contingent entitlement rather than
-through employment status, and the status label contributes exactly nothing.
-Making the two cells differ in employment state alone would require zeroing
-hours in both---an option the code now carries but which has not been run at
-the licensed-data calibration, so the residual reported here remains an
-hours effect. The magnitude of what is
-missing dwarfs what is measured on either basis. New Style
-JSA alone, at \pounds\JSAWeeklyRate\ a week for its 182-day maximum---taken
-from \JSARateSource, with no 2026--27 uprating applied---is worth
-up to \pounds\JSAMaxSpellAmount\ for a representative displaced worker on the
-exposed-sector mean wage---about \JSACushionPoints\ percentage points of
-cushioning, or between twenty-five and fifty-five times the employment-state
-step this decomposition records depending on which seed basis is used, before any
-allowance for conditionality or the timing of awards.
-That comparison is an upper bound, since New Style JSA is taxable and is
-deducted pound for pound from any Universal Credit award. Discounting it for
-those two effects and for the contribution condition---\citet{figari2011}
-find roughly three-quarters of the newly unemployed qualify in the United
-Kingdom---leaves something of the order of two to three points. Against a
-\PrimaryCushionDifference-point gap, a pipeline that simulated the single
-most obvious status-contingent rule in the UK system would therefore report a
-split nearer three-quarters to one-quarter than the one measured here. The
-decomposition's \emph{sign} is robust. Its division of the gap is reported
-throughout as \FactorialConcStep\ against \FactorialStateStep, but that
-division should be read as a property of this pipeline and not as an estimate
-of the employment margin: the residual is what remains once every
-status-contingent rule has been switched off, and the arithmetic above says
-what switching one back on would do to it.
-
-The honest summary is therefore narrower than the arithmetic invites. The
-decomposition establishes that loss concentration, not employment status,
-drives the gap \emph{inside a static annual statutory model}, and it bounds
-what such a model can attribute to the extensive margin at all. It is not
-evidence that job loss and an equivalent in-work earnings collapse are
-fiscally alike in the United Kingdom, and the paper's contribution rests on
-the concentration channel rather than on the state channel, which this design
-cannot measure. Even that is a claim about the mechanism and not about its
-size. The concentrated cell zeroes the drawn workers' earnings, so their
-benefit units acquire the same Universal Credit entitlement as the displaced
-ones---and therefore the same frozen claiming flag suppresses that
-entitlement in both, while leaving the diffuse cell, whose households rarely
-cross into new entitlement, almost untouched. Relaxing the claiming
-convention would raise the concentrated and displaced cells together and so
-\emph{shrink} the concentration step, by roughly three points on the channel
-arithmetic. The step is identified in sign and mechanism; its magnitude is
-convention-dependent by something between a third and two-thirds of itself.
-
-\paragraph{Assignment-design and record-support audit.}\label{sec:results-assignment} At the unit 12-month
-stress, balanced and Bernoulli integration agree closely: cushioning is
-\BalancedUnitCushion\ versus \BernoulliUnitCushion\ per cent and Exchequer
-cost is \pounds\BalancedUnitExchequer\ versus
-\pounds\BernoulliUnitExchequer\ million. Balancing reduces gross-loss SD to
-\BalancedGrossSDRatio\ of the Bernoulli value and Exchequer SD to
-\BalancedExchequerSDRatio, but it cannot repair sparse survey support. The
-unit displacement loss has only \UnitEffectiveLossRecords\ effective record
-contributions and its largest record supplies \UnitMaxRecordLossShare\ per
-cent on average. At the OBR three-month scale these deteriorate to
-\OBRThreeMonthEffectiveLossRecords\ and
-\OBRThreeMonthMaxRecordLossShare\ per cent. The smallest displacement rows
-are consequently sensitivity evidence, not precise population estimates.
-Balancing also has a cost that the aggregate agreement does not reveal:
-conditioning on the wage-bill target changes record-level marginal inclusion
-probabilities away from the declared $s_j$, and with the largest record
-supplying \UnitMaxRecordLossShare\ per cent of the loss on average, a reader
-is entitled to know whether that record is selected at its nominal rate. The
-repository emits a per-record empirical inclusion-probability diagnostic
-comparing the balanced and Bernoulli designs for exactly this purpose
-(\path{analysis/assignment_inclusion_diagnostic.py}, \texttt{make
-assignment-inclusion}); it requires a licensed-data run and is not yet
-reported here, which is a gap in the present draft rather than a resolved
-question.
-Across leave-each-sector-out reruns for all \LeaveSectorCount\ exposed
-divisions (\LeaveSectorDraws\ assignments each, a lighter design than the
-primary table's \SubmissionDraws), the wage-minus-displacement cushioning difference remains positive,
-ranging from \LeaveSectorCushionDifferenceMin\ to
-\LeaveSectorCushionDifferenceMax\ percentage points. No single division
-creates or reverses the primary contrast.
-
-\paragraph{Record-resampling sensitivity.}\label{sec:results-bootstrap} Assignment SDs do not measure
-sensitivity to which households the FRS sampled, so the primary contrast is
-additionally scored with a household record-resampling exercise:
-\BootstrapReplicates\ multinomial resamples of the
-\BootstrapHouseholds\ households, applied to per-household contributions
-from \BootstrapDraws\ common assignment draws of each unit 12-month margin,
-so that resampling variation is measured around the draw-averaged statistic.
-On that estimator the wage-minus-displacement cushioning difference is
-\BootstrapCushionDifference\ percentage points with a resampling standard
-error of \BootstrapCushionDifferenceSE\ points and a 2.5th--97.5th
-percentile range of \BootstrapCushionDifferenceCILower\ to
-\BootstrapCushionDifferenceCIUpper\ points. This is deliberately not
-presented as a significance test: the two counterfactuals are imposed
-scenarios, so their contrast is partly generated by construction, and the
-resampling captures record composition only---not the FRS complex survey
-design (no PSU or stratum identifiers exist in the research file), not
-tariff-calibration, incidence, concordance or model-parameter uncertainty,
-and not behavioural or claiming uncertainty, all of which remain scenario
-dimensions. The range should be read as robustness of the contrast to
-record composition, nothing stronger. Margin-level resampling SEs are
-\BootstrapDisplacementCushionSE\ points (displacement cushioning),
-\BootstrapWageCushionSE\ points (wage-cut cushioning), and
-\pounds\BootstrapDisplacementExchequerSE\ million and
-\pounds\BootstrapWageExchequerSE\ million on the respective Exchequer costs.
-Two conventions should be noted, and they do not push the
-same way. A resample can zero a displacement draw's
-gross loss, leaving that draw's cushioning ratio undefined; replicates
-average over the defined draws, and near-zero-gross resamples with unstable
-ratios are retained, which \emph{widens} the interval and is what makes it
-asymmetric about its point. The second convention narrows it: the
-replicates reweight households while
-holding the original displacement assignment fixed, so the interval is
-conditional on which records those draws happened to select and is narrower
-than a fully re-drawn bootstrap would be. Re-running the assignment inside
-each replicate is computationally out of reach here. A ratio-of-pooled-sums
-estimator, which is not vulnerable to the near-zero denominators, is stored
-alongside it and is reported here as the primary interval:
-\BootstrapPooledDifference\ points with a resampling standard error of
-\BootstrapPooledDifferenceSE\ and a 95 per cent interval of
-\BootstrapPooledCILower--\BootstrapPooledCIUpper. It is \emph{wider} than
-the mean-of-ratios interval quoted above, not narrower, which is the first
-thing to note about it: the near-zero denominators are not what makes the
-reported interval asymmetric, since the pooled interval is asymmetric too.
-Both are quoted so the reader can see that the choice of estimator moves the
-bound by less than the structural sensitivities below do.
-
-\paragraph{Leave-one-record-out.} Because the displacement side of the
-contrast rests on few effective records, each of the
-\LOOHouseholds\ FRS households that contributes a positive weighted gross
-loss to any of the \LOODraws\ cached displacement draws is removed in
-turn---from both margins, since the same survey record underlies both
-counterfactuals---and the draw-averaged contrast is recomputed exactly from
-stored per-household contributions. The contrast remains positive in every
-case, ranging from \LOOMin\ to \LOOMax\ percentage points around the
-\LOOPoint-point resampling-cache value; the most influential single record
-moves it by \LOOMaxShift\ points. No individual FRS household creates the
-headline gap, although the sparse support continues to rule out subgroup,
-regional and constituency readings of the displacement scenarios.
-
-\paragraph{Pension-contribution channel.}\label{sec:results-pension} The HBAI disposable-income concept treats employee pension and salary-sacrifice contributions as an outflow, so a hypothesis worth testing is that part of the headline gap is reduced retirement saving rather than tax--benefit insurance. It is not. Recomputing both margins under a pension-gross income concept (disposable income plus employee pension and salary-sacrifice contributions, unit 12-month stress, the primary balanced design over \PensionSeeds\ paired assignments) lowers wage-cut cushioning from \PensionWageCushionHBAI\ to \WageCushionPensionGross\ per cent and displacement cushioning from \PensionDisplacedCushionHBAI\ to \DisplacedCushionPensionGross\ per cent---the pension outflow falls by close to the same share of the gross loss on both margins (\PensionShareWage\ and \PensionShareDisplaced\ per cent respectively; wage cuts scale contributions, displacement zeroes them)---so the wage-minus-displacement gap moves only from \GapHBAIPension\ to \GapPensionGross\ percentage points. (As with the headline contrast, that gap is the mean of the per-draw differences rather than the difference of the rounded levels printed beside it; see the estimator-provenance note in Section~\ref{sec:results-cushioning}.) The headline contrast is a tax--benefit schedule effect, not a pension-accounting artefact. What the pension channel does affect is the \emph{level} of measured cushioning on both margins, and the implied loss of deferred retirement consumption is not captured by the cushioning rate.
-
-\paragraph{Mixed and transition paths.}\label{sec:results-transition} The illustrative interior
-calibration is the transition-equivalent path: 70 per cent of each sector's
-declared loss is assigned to workers whose annual earnings and hours embody
-a three-month re-employment lag before entering a services job at the FRS
-28.3 per cent earnings penalty, with survivor cuts rescaled so the expected
-sector loss remains common. It yields
-$\FullTransitionCushion\pm\FullTransitionCushionSD$ per cent cushioning and
-an Exchequer cost of \pounds
-$\FullTransitionExchequer\pm\FullTransitionExchequerSD$ million---between
-the bounds, as the composition logic implies. The surrounding response surface was computed over the declared grid
-$\lambda\in\{0,.25,.5,.75,1\}$ but is not plotted here: the stored surface
-predates the current production runs and its deterministic $\lambda=0$
-endpoint reads about three points below the
-\SubmissionUnitWageCushion\ per cent that Table~\ref{tab:cushioning} gives
-for the identical scenario. A figure that needs a correction factor to be
-read against the paper's own table should not be in the paper;
-\texttt{make results} regenerates it. A churn-dominated 85/15
-displacement--survivor split
-($\FullRentSharingCushion\pm\FullRentSharingCushionSD$ per cent cushioning,
-\pounds $\FullRentSharingExchequer\pm\FullRentSharingExchequerSD$ million)
-lies between two of that grid's columns but is \emph{not} one of its cells:
-it is a separate \ProductionDraws-draw mixed-margin run and should not be
-read off the figure. The lower 14 per cent penalty sensitivity is reported in
-the appendix.
-The 70/30 share, lag and penalty are assumptions bounded by external
-evidence, not estimated tariff responses.

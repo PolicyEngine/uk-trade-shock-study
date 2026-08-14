@@ -1,132 +1,28 @@
 \section{Introduction}\label{sec:intro}
 
-Who bears a trade shock? When a tariff falls on a country's exports, the
-loss reaches households through the labour market, and the same aggregate
-loss in employee earnings can arrive by very different routes: as smaller pay
-packets for people who keep their jobs, or as the complete loss of earnings
-for a smaller number who do not. This paper asks how much of that loss the UK
-tax--benefit system absorbs, and how much the answer depends on which route
-the loss takes.
-
-The question is worth posing because the answer is not invariant, and the
-reason it is not invariant is the nonlinearity of the schedule itself. For an
-equal aggregate loss, a broad reduction in earnings leaves most households in
-work and inside the tax schedule, where each lost pound is relieved at a
-marginal rate. A loss concentrated on a few workers removes their earnings
-entirely, exhausting that marginal-rate relief and drawing instead on
-means-tested support that a partial cut never triggers. The two are not the
-same experiment even when the aggregate is identical, and the difference
-between them is a statement about the tax schedule rather than about
-unemployment.
-
-That distinction has a direct bearing on how trade-shock incidence is usually
-measured. The microsimulation literature on automatic stabilisers---%
-\citet{dolls2012} for nineteen EU countries and the United States, and
-\citet{figari2011}, \citet{fernandezsalgado2014} and
-\citet{brewertasseva2021} after them---reports a coefficient for a
-proportional income shock beside one for a rise in unemployment, and the
-difference is read as the extensive margin. It is not identified as one: the
-two shocks also differ in how concentrated the loss is, so the comparison
-mixes a concentration effect with a margin effect and reports the sum under
-the margin's name. Anyone using those coefficients to price the household
-incidence of a trade shock inherits that conflation.
-
-The application is the 2025 United States tariff schedule as it falls on UK
-goods exports. The tariff calculation sets the size of the aggregate
-employee-earnings loss and its distribution across industry divisions; it is
-a calibration of the shock, not a causal estimate of tariff transmission, and
-Section~\ref{sec:results-benchmarks} is explicit about how much corroboration
-it does and does not receive from outturn data.
-
-The design separates the two. Holding the aggregate employee-earnings loss fixed---roughly
-\pounds\FullWageGross\,million a year in the application, calibrated from the
-2025 US tariff schedule---I vary only its incidence across Family Resources
-Survey households in PolicyEngine UK: diffuse proportional cuts across all
-exposed workers; a concentrated cut imposing a displacement draw's exact
-worker-level losses with no job loss; and displacement of those same workers.
-Defining the cushioning rate as $1-\Delta Y/\Delta E$, where $\Delta E$ is the
-gross employee-earnings loss and $\Delta Y$ the household disposable-income
-loss, diffuse cuts are cushioned at \SubmissionUnitWageCushion\ per cent and
-displacement at
-$\SubmissionUnitDisplacedCushion \pm \SubmissionUnitDisplacedCushionSD$ per
-cent. The middle cell splits that gap: \FactorialConcStep\ points come from
-concentrating the loss on selected workers at fixed employment state, and
-\FactorialStateStep\ points from the employment-state change itself
-(Section~\ref{sec:results-factorial}).
-
-The near-zero state component is the point, and it requires care to state.
-It is \emph{not} a general property of annual static microsimulation. EUROMOD
-and UKMOD simulate contributory unemployment benefit from constructed
-earnings and contribution histories---the Labour Market Adjustment add-on
-exists to build exactly those characteristics for people moved into
-unemployment---and \citet{figari2011} impose employment-to-unemployment
-transitions and find the entitlement rules bite heterogeneously, with around
-73 per cent of the newly unemployed qualifying in the United Kingdom against
-62 per cent in Italy. A rule that denies two in five claimants is not a
-label. \citet{dolls2012} likewise recover a substantial out-of-work benefit
-response---0.163 of their UK unemployment coefficient against 0.031 for the
-income shock---from an annual static model, by imposing their shock through
-reweighting rather than through a rule-based transition.
-
-The near-zero step here is a property of \emph{this pipeline}. PolicyEngine
-UK carries New Style Jobseeker's Allowance as a survey-reported variable
-rather than a simulated rule, so an imposed change of
-\texttt{employment\_status} triggers no contributory entitlement; the stored
-claiming flag is frozen at its pre-shock draw; and no monthly assessment,
-waiting period or conditionality exists in an annual model to be triggered.
-The two cells being compared therefore differ, in this implementation, only
-by a label no active formula reads. To fix the order of magnitude of what is
-missing: New Style JSA alone would be worth up to
-\JSACushionPoints\ percentage points of cushioning for a representative
-displaced worker, tens of times the step the decomposition records.
-
-The consequence is a warning about implementation rather than about a class
-of model. A stabilisation contrast computed on a pipeline that leaves
-status-contingent rules inactive measures loss concentration and reports it
-under the employment margin's name. Whether any particular published estimate
-is affected depends on whether its pipeline simulates those rules---which the
-add-ons above show is a choice, not a constraint---and that is a question the
-literature does not currently ask of itself.
-
-The concentration channel is itself a statement about tax progressivity. A
-single-worker calculation on the exposed-sector mean settles its sign without
-a microsimulation---\ScheduleMarginalRate\ per cent marginal against
-\ScheduleAverageRate\ per cent average, a wedge of
-\ScheduleImpliedGap\ points---but not its magnitude. Weighted as the
-comparison actually is---by the wage bill, over a population more
-concentrated above the higher-rate threshold than the exposed-sector mean of
-\pounds 48{,}272 suggests---income tax and employee National Insurance relieve
-\WageChannelTaxAndNI\ per cent of a diffuse loss against
-\ConcChannelTaxAndNI\ per cent of a concentrated one, a tax-and-National-%
-Insurance wedge of \ScheduleWedgeWeighted\ points, against a simulated step of
-\FactorialConcStepChannelSeeds. Those four figures are the channel split,
-which runs on \FactorialChannelSeeds\ common seeds rather than the
-\SubmissionDraws\ assignments behind the cushioning rates above; the two
-bases are not interchangeable and Section~\ref{sec:results-factorial}
-quantifies the difference. The household system therefore \emph{works
-against} the schedule, subtracting \ScheduleWedgeOffsets\ points, most of
-them Universal Credit responding to a complete loss as a marginal cut never
-triggers it. Identifying that offset is what the microsimulation contributes;
-the sign and order of magnitude were settled by the schedule.
-
-The gap is
-not an artefact of the HBAI treatment of pension saving: recomputed under a
-pension-gross income concept, both margins' cushioning falls by four to five
-percentage points and the wage-minus-displacement contrast widens slightly,
-from \GapHBAIPension\ to \GapPensionGross\ points
-(Section~\ref{sec:results-pension}).
-
-The scale of the exercise should be clear from the outset, because it governs
-which results can carry weight. That fixed loss is borne under displacement by
-about \FullDisplacedWorkers\ thousand represented workers on the
-\ProductionDraws-draw comparator design---small relative to
-national aggregates, and drawn from a pool of roughly a thousand exposed
-Family Resources Survey records of which only about ten are selected in any
-one assignment. National poverty and inequality movements are consequently
-near zero everywhere in this paper and carry no information; the object of
-study is the \emph{composition} of the fiscal response to a given loss, not
-its aggregate size, and no subgroup, regional or constituency reading of the
-displacement scenarios is supportable at this level of survey support.
+Who bears a trade shock when the same aggregate labour-income loss can be
+distributed through different labour-market margins? This paper answers that
+question for the United Kingdom. I hold a trade-exposure-calibrated loss in
+employee earnings---roughly \pounds\FullWageGross\,million a year, built from
+the 2025 US tariff schedule---fixed, and compare its fiscal and distributional
+consequences when it arrives as incumbent wage reductions, as displacement,
+or as mixtures of the two with re-employment penalties. The central finding
+is a large statutory asymmetry. Defining the cushioning rate as
+$1-\Delta Y/\Delta E$, where $\Delta E$ is the gross employee-earnings loss
+and $\Delta Y$ the household disposable-income loss, proportional wage cuts
+are cushioned at \FullWageCushion\ per cent while displacement is cushioned
+at $\FullDisplacedCushion \pm \FullDisplacedCushionSD$ per cent---a gap of
+\PrimaryCushionDifference\ percentage points, with a household-bootstrap 95
+per cent interval of \BootstrapCushionDifferenceCILower\ to
+\BootstrapCushionDifferenceCIUpper\ points that excludes zero. The mechanism
+is institutional: an in-work earnings reduction is offset automatically at
+marginal income-tax and National Insurance rates, whereas whole-job loss is
+relieved nearer average rates and depends on Universal Credit, which is
+gated by means tests, capital rules, and claiming behaviour. The gap is not
+an artefact of the HBAI treatment of pension saving: recomputed under a
+pension-gross income concept, both margins' cushioning falls by roughly four
+percentage points but the wage-minus-displacement contrast is essentially
+unchanged (Section~\ref{sec:results-cushioning}).
 
 The comparison matters because the UK tax--benefit system is nonlinear. For
 an equal aggregate loss, a broad reduction in earnings leaves most households
@@ -151,29 +47,20 @@ sector weights and shock magnitudes through a transparent accounting bridge
 $\times$ a wage-bill-incidence assumption); the bridge deliberately omits
 prices, quantities, imported inputs, productivity, profits, and firm entry.
 Reported $\pm$ values are assignment dispersion from the Monte Carlo
-allocation of displacement, not standard errors; sensitivity of the primary
-contrast to which FRS records were sampled is scored separately by a
-household record-resampling exercise and a leave-one-record-out audit,
-neither of which is a design-based confidence interval. Mixed-path shares
-are disciplined by external evidence but not estimated.
+allocation of displacement, not standard errors; survey-sampling uncertainty
+is scored separately by a household bootstrap. Mixed-path shares are
+disciplined by external evidence but not estimated.
 
 One negative result should be on the table from the outset. A monthly HMRC
-product--destination panel shows a post-policy decline in US-bound exports
-concentrated in large products, but the calibration earns no credit at sector
-rank: the rank correlation between predicted and realised export falls among
-the ten largest exposed divisions is \RankCorrTopTen\
-(Section~\ref{sec:results-benchmarks}). That figure is mechanically
-degenerate rather than informative---the predictor takes only two distinct
-values across the ten divisions, and the two carrying the higher value
-realised the largest and the smallest falls, so their mid-ranks cancel
-exactly---and with ten divisions and an underpowered product-level intensity
-split, the honest reading is an absence of corroboration rather than a
-decisive refutation---but the practical
-consequence is the same and it bounds the paper's claims: the sector
-calibration must not be read as measured tariff incidence. It does not touch
-the cushioning comparison, which conditions on a declared loss rather than on
-the bridge. The
-leave-one-division-out audit (\LeaveSectorDraws\ assignments) across all \LeaveSectorCount\ exposed divisions
+product--destination panel confirms a post-policy decline in US-bound
+exports, but at sector rank the calibration fails its own falsification
+test: the rank correlation between predicted and realised sector export
+falls among the ten largest exposed divisions is zero
+(Section~\ref{sec:results-benchmarks}). This failure bounds the paper's
+claims---the sector calibration must not be read as measured tariff
+incidence---but it does not touch the cushioning comparison, which
+conditions on a declared loss rather than on the bridge. The
+leave-one-division-out audit across all \LeaveSectorCount\ exposed divisions
 shows the wage-minus-displacement contrast surviving every rerun
 (range \LeaveSectorCushionDifferenceMin--%
 \LeaveSectorCushionDifferenceMax\ points): the calibration determines
@@ -183,58 +70,23 @@ extensive relief.
 The second stage uses the 2024--25 Family Resources Survey and PolicyEngine
 UK to compute taxes, National Insurance, benefits, household disposable
 income, poverty, inequality, and Exchequer effects. I report a common
-aggregate loss under alternative incidence patterns, decompose the result by
+aggregate loss under alternative adjustment paths, decompose the result by
 tax and benefit channel, and show sensitivity to spell duration, worker
-selection, benefit take-up, and re-employment. Between the polar bounds a
-transition surface varies the loss share borne by workers who re-enter
-services jobs after a lag; its interior points rest on assumed shares,
-lags and a cross-sectional earnings penalty, so the response surface, not
-any single interior calibration, is the reported object
-(Section~\ref{sec:results-transition}).
+selection, benefit take-up, and re-employment. Between the polar bounds, an
+illustrative interior transition path---70 per cent of the loss borne by
+workers who re-enter services jobs at an FRS-calibrated earnings penalty
+after a three-month lag, the rest by survivor wage cuts---yields
+\FullTransitionCushion\ per cent cushioning and an Exchequer cost of
+\pounds\FullTransitionExchequer\,million. The response surface around the
+bounds, not any single interior point, is the paper's central object.
 
-The paper makes three contributions. The first is substantive and about the
-United Kingdom: it prices how much of a trade-related earnings loss the
-statutory system absorbs, and shows that the answer varies by
-\PrimaryCushionDifference\ percentage points across delivery margins that
-are indistinguishable at the aggregate level. For anyone costing the
-household consequences of a tariff episode, the composition of the labour
-market response is not a second-order detail---it moves the fiscal answer by
-about a sixth of the loss. A corollary follows for how such exercises are
-usually conducted: because the difference is loss concentration rather than
-job loss, the income-shock versus unemployment-shock comparison on which the
-automatic-stabiliser literature rests is a progressivity statistic reported
-under an employment-margin label, and the margin component is not identified
-by the class of model that produces it.
-
-The second is institutional and specific to Universal Credit. PolicyEngine UK
-carries benefit take-up as a stored benefit-unit flag drawn on pre-shock
-circumstances and calibrated as a population-wide share rather than take-up
-among the entitled, so a naive imposed-transition pipeline hands a displaced
-worker a claiming decision made in a state of the world the shock has
-destroyed. Correcting it moves displacement cushioning by
-\TakeupConventionSpread\ percentage points, roughly half the headline
-contrast---so the claiming convention is one of the largest single sources of
-uncertainty here, not a detail. An earlier revision of this paper reported
-that it changed nothing and treated that as the finding; the invariance was a
-stale benefit-award cache rather than a property of Universal Credit, and is
-described in Section~\ref{sec:results-takeup} because the way it presented
-itself---bit-identical output across a stochastic parameter---is a trap any
-imposed-transition pipeline can fall into. A second convention binds
-alongside it: the frozen claiming state of the already-entitled
-(Section~\ref{sec:results-takeup}). Any imposed-transition exercise in a
-model of this class inherits both problems.
-
-The third is quantitative and conditional. Two assumptions dominate the
-magnitude---within-division worker selection moves the contrast by a fifth to
-a third of its size, and the claiming convention moves the displacement
-margin by an amount comparable to the whole contrast---while pension
-accounting and duration equivalence do not. A reconciliation against the UK
-cells of \citet{dolls2012}, whose ordering of income and unemployment shocks
-is the reverse of the one found here, locates that discrepancy principally in
-the out-of-work benefit channel (Section~\ref{sec:results-benchmarks}). The
-level of the contrast is therefore not robust; its sign and mechanism are.
-
-The remainder of the paper describes
+The paper makes three contributions. First, it provides a reproducible UK
+microsimulation framework for mapping trade-exposure-calibrated earnings
+losses into fiscal and distributional outcomes. Second, it shows why the
+incidence margin matters even when aggregate lost earnings are identical.
+Third, it quantifies which statutory channels drive the differences and
+which assumptions---timing, take-up, pensions, and worker selection---are
+most important for policy conclusions. The remainder of the paper describes
 the evidence and scenario design, presents the polar bounds and mixed paths,
 reports policy counterfactuals, and discusses limitations and
 reproducibility.

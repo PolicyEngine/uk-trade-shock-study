@@ -30,6 +30,9 @@
 \input{generated_trade_benchmarks}
 \input{generated_lfs_selection}
 \input{generated_submission}
+\input{generated_factorial}
+\input{generated_validation}
+\input{generated_welfare}
 \input{referee_macros}
 
 \begin{document}
@@ -37,24 +40,25 @@
 
 \begin{abstract}
 \noindent For the same aggregate earnings loss, the UK tax--benefit system
-cushions an intensive-margin adjustment far more than an extensive-margin
-one. Using the 2024--25 Family Resources Survey and PolicyEngine UK, I hold a
-common sector-specific earnings loss of roughly \pounds\FullWageGross\,million
-a year, calibrated from the 2025 US tariff schedule, fixed while varying its
-incidence across incumbent wage reductions, displacement, and mixed
-transition paths. Proportional wage cuts are cushioned at
-\FullWageCushion\ per cent, displacement at
-$\FullDisplacedCushion \pm \FullDisplacedCushionSD$ per cent: a gap of
-\PrimaryCushionDifference\ percentage points (household-bootstrap 95 per
-cent interval \BootstrapCushionDifferenceCILower--%
-\BootstrapCushionDifferenceCIUpper\ points), because in-work losses are
-relieved automatically at marginal tax rates while job loss relies on gated,
-means-tested, imperfectly claimed Universal Credit. An illustrative interior
-transition path yields \FullTransitionCushion\ per cent cushioning and an
-Exchequer cost of \pounds\FullTransitionExchequer\,million. Sensitivity
-analysis quantifies the pension-saving component of the gap and varies
-adjustment shares, spell-duration equivalents, worker selection, and benefit
-take-up.
+cushions intensive-margin adjustment far more than extensive-margin
+adjustment. Using the 2024--25 Family Resources Survey and PolicyEngine UK,
+I fix a sector-specific earnings loss of roughly
+\pounds\FullWageGross\,million a year, calibrated from the 2025 US tariff
+schedule, and vary its incidence across incumbent wage cuts, displacement,
+and mixed transition paths. Wage cuts are cushioned at
+\SubmissionUnitWageCushion\ per cent, displacement at
+$\SubmissionUnitDisplacedCushion \pm \SubmissionUnitDisplacedCushionSD$ per
+cent: a gap of \PrimaryCushionDifference\ percentage points
+(household-bootstrap 95 per cent interval
+\BootstrapCushionDifferenceCILower--\BootstrapCushionDifferenceCIUpper\
+points, a sampling-uncertainty lower bound), because a broad loss is
+relieved at marginal tax rates and a concentrated job loss nearer average
+rates; means-tested support offsets part of the gap, and concentration, not
+employment state, does most of the work. An interior transition path yields
+\FullTransitionCushion\ per cent cushioning and a
+\pounds\FullTransitionExchequer\,million Exchequer cost. Sensitivity
+analysis covers pensions, adjustment shares, spell durations, worker
+selection, and take-up.
 \end{abstract}
 
 \medskip
@@ -70,6 +74,7 @@ take-up.
 \input{sections/results}
 \input{sections/policy}
 \input{sections/discussion}
+\input{sections/declarations}
 
 \clearpage
 \input{sections/references}

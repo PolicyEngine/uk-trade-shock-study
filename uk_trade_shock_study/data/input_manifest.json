@@ -111,32 +111,14 @@
   "build_products_note": "results/referee_fixes.json is rewritten by `analysis/referee_fixes.py --only ...` and stamped in place by `analysis/write_referee_macros.py`; results/submission_summary.json is written by `analysis/write_submission_results.py --diagnostics`. Both run inside `make paper-values`, so both are build products of the paper, not inputs to it.",
   "quoted_results": [
     {
-      "path": "results/full_tariff_displacement.json",
-      "sha256": "3756c6f734b1b06328684cad0edee60fa67a0c74b6973264e04e7c419f8f4cd4",
-      "quoted_by": "analysis/write_paper_results.py",
-      "produced_by": "make results"
-    },
-    {
-      "path": "results/full_tariff_wage_cut.json",
-      "sha256": "baf9bbf79393635967abec2796c563b591e4a8b7d2205221c998417cd89b37f1",
-      "quoted_by": "analysis/write_paper_results.py",
-      "produced_by": "make results"
-    },
-    {
-      "path": "results/full_tariff_inactivity.json",
-      "sha256": "dd3766e1446550c91463f83f2ae21177b4c23f6f8453791797c66d44cb4e6af2",
-      "quoted_by": "analysis/write_paper_results.py",
-      "produced_by": "make results"
+      "path": "results/bootstrap_uncertainty.json",
+      "sha256": "039a24ad7bcac840e6398b1818e61244f893a6cf2ae9db269681525475add3d6",
+      "quoted_by": "analysis/write_submission_results.py",
+      "produced_by": "make submission-results"
     },
     {
       "path": "results/epd_displacement.json",
       "sha256": "2ceb0ee282678dfc56c5ee5622a0b1ff3c9cc29873284be882eb682e100ebfd3",
-      "quoted_by": "analysis/write_paper_results.py",
-      "produced_by": "make results"
-    },
-    {
-      "path": "results/epd_wage_cut.json",
-      "sha256": "bc5b59b45c21058ec92a97d4ad0fcb7ff89b1ffa121e31925090755775f2acea",
       "quoted_by": "analysis/write_paper_results.py",
       "produced_by": "make results"
     },
@@ -147,14 +129,38 @@
       "produced_by": "make results"
     },
     {
-      "path": "results/measured_displacement.json",
-      "sha256": "ad4d1508a98fc165083caf228574fa821f16503964596b176466f4909a558c8b",
+      "path": "results/epd_rentsharing.json",
+      "sha256": "0ed5367e8500cea1accf0f83d103138da4ecbd87aa3c0a1646f17948e887ef0a",
       "quoted_by": "analysis/write_paper_results.py",
       "produced_by": "make results"
     },
     {
-      "path": "results/measured_wage_cut.json",
-      "sha256": "52a0fe883c2c11087d2fecdd916120f42faebe29e5e63742fd0451953b64fadf",
+      "path": "results/epd_transition_central.json",
+      "sha256": "37c5e7193a65d6ce47dffde13ac036e7b7db7f968834606678066807c2fdfb2d",
+      "quoted_by": "analysis/write_paper_results.py",
+      "produced_by": "make results"
+    },
+    {
+      "path": "results/epd_wage_cut.json",
+      "sha256": "bc5b59b45c21058ec92a97d4ad0fcb7ff89b1ffa121e31925090755775f2acea",
+      "quoted_by": "analysis/write_paper_results.py",
+      "produced_by": "make results"
+    },
+    {
+      "path": "results/factorial_decomposition.json",
+      "sha256": "e7272c8e88910b89130d6bd40a1fa0f8c10e3ef129a0e395ab2ea2feecacc70f",
+      "quoted_by": "analysis/write_factorial_results.py",
+      "produced_by": "make submission-results"
+    },
+    {
+      "path": "results/full_tariff_displacement.json",
+      "sha256": "3756c6f734b1b06328684cad0edee60fa67a0c74b6973264e04e7c419f8f4cd4",
+      "quoted_by": "analysis/write_paper_results.py",
+      "produced_by": "make results"
+    },
+    {
+      "path": "results/full_tariff_inactivity.json",
+      "sha256": "dd3766e1446550c91463f83f2ae21177b4c23f6f8453791797c66d44cb4e6af2",
       "quoted_by": "analysis/write_paper_results.py",
       "produced_by": "make results"
     },
@@ -171,16 +177,22 @@
       "produced_by": "make results"
     },
     {
-      "path": "results/full_tariff_transition_central.json",
-      "sha256": "85d88701b7776fac1384bbbd23e8f63f75527c7f048f3b8d7ea5b29242ae8e09",
+      "path": "results/full_tariff_reallocation.json",
+      "sha256": "17571bdc7e312d6dd6ae13db782ee78aae133f50e004da9da3c204d33bf8cf18",
       "quoted_by": "analysis/write_paper_results.py",
-      "produced_by": "make results"
+      "produced_by": "make results (analysis/run_reallocation.py)"
     },
     {
-      "path": "results/epd_transition_central.json",
-      "sha256": "37c5e7193a65d6ce47dffde13ac036e7b7db7f968834606678066807c2fdfb2d",
+      "path": "results/full_tariff_reallocation_lag3.json",
+      "sha256": "8a5c457be41cdf4688a0b9c081c65c49d854e67a019e0c53636ecb256072fc13",
       "quoted_by": "analysis/write_paper_results.py",
-      "produced_by": "make results"
+      "produced_by": "make results (analysis/run_reallocation.py)"
+    },
+    {
+      "path": "results/full_tariff_reallocation_lowpenalty.json",
+      "sha256": "f5bf60588ea8d4a687e8ce5a392fd5d087e2293998533b31ed48ba038b7b0425",
+      "quoted_by": "analysis/write_paper_results.py",
+      "produced_by": "make results (analysis/run_reallocation.py)"
     },
     {
       "path": "results/full_tariff_rentsharing.json",
@@ -189,16 +201,82 @@
       "produced_by": "make results"
     },
     {
-      "path": "results/epd_rentsharing.json",
-      "sha256": "0ed5367e8500cea1accf0f83d103138da4ecbd87aa3c0a1646f17948e887ef0a",
+      "path": "results/full_tariff_transition_central.json",
+      "sha256": "85d88701b7776fac1384bbbd23e8f63f75527c7f048f3b8d7ea5b29242ae8e09",
       "quoted_by": "analysis/write_paper_results.py",
       "produced_by": "make results"
+    },
+    {
+      "path": "results/full_tariff_wage_cut.json",
+      "sha256": "baf9bbf79393635967abec2796c563b591e4a8b7d2205221c998417cd89b37f1",
+      "quoted_by": "analysis/write_paper_results.py",
+      "produced_by": "make results"
+    },
+    {
+      "path": "results/hmrc_destination_event_study.json",
+      "sha256": "6e5b8341714c71f644dec9ec728629545597f8735be8f25ac36a6e90de60dcad",
+      "quoted_by": "analysis/write_trade_benchmark_results.py",
+      "produced_by": "make trade-event-study"
+    },
+    {
+      "path": "results/hmrc_destination_event_study_monthly.csv",
+      "sha256": "43022dc597eafb69246bb56b2b9402a9cfeda1639b3ad474ce90b34b03847d80",
+      "quoted_by": "analysis/write_trade_benchmark_results.py",
+      "produced_by": "make trade-event-study"
+    },
+    {
+      "path": "results/leave_one_record_out.json",
+      "sha256": "8713a5cc7059984aca679689e67635d7cea904d6ecbd507d1ce803afa478a5a3",
+      "quoted_by": "analysis/write_factorial_results.py",
+      "produced_by": "make submission-results"
+    },
+    {
+      "path": "results/leave_one_sector_out.json",
+      "sha256": "01d68b53af772de80b3ed46965e6c6e292bd95336e24f1dfc16120fae3d84ea2",
+      "quoted_by": "analysis/write_submission_results.py",
+      "produced_by": "make submission-results"
+    },
+    {
+      "path": "results/lfs_qrf_benchmark.diagnostics.json",
+      "sha256": "c51745d194fc8cf51c1b84239cc586f7bfb89d525d369f1a6c1903b780eb848e",
+      "quoted_by": "analysis/write_lfs_benchmark_results.py",
+      "produced_by": "make lfs-benchmarks"
+    },
+    {
+      "path": "results/lfs_qrf_benchmark_summary.json",
+      "sha256": "6ec0fdcdc91d2ad37b8b1eef0938339ccb6991423d4b7e8447cc7144aa731b3a",
+      "quoted_by": "analysis/write_lfs_benchmark_results.py",
+      "produced_by": "make lfs-benchmarks"
     },
     {
       "path": "results/lfs_selection_sensitivity.json",
       "sha256": "d9e9e1331b452aa969de0b6cac9059695dd63a881ce413628f9ae55b7a9ea856",
       "quoted_by": "analysis/write_lfs_selection_results.py",
       "produced_by": "make results"
+    },
+    {
+      "path": "results/measured_displacement.json",
+      "sha256": "ad4d1508a98fc165083caf228574fa821f16503964596b176466f4909a558c8b",
+      "quoted_by": "analysis/write_paper_results.py",
+      "produced_by": "make results"
+    },
+    {
+      "path": "results/measured_wage_cut.json",
+      "sha256": "52a0fe883c2c11087d2fecdd916120f42faebe29e5e63742fd0451953b64fadf",
+      "quoted_by": "analysis/write_paper_results.py",
+      "produced_by": "make results"
+    },
+    {
+      "path": "results/scenario_testing.json",
+      "sha256": "24f00c869588f4b32607a2c58e1804cadf5add843069199d6d98a6221cace213",
+      "quoted_by": "analysis/write_paper_results.py",
+      "produced_by": "make results (analysis/scenario_testing.py)"
+    },
+    {
+      "path": "results/submission/submission_obr_12m_concentrated_wage_cut.json",
+      "sha256": "e47ada4b4d3725381c1c41461d68c9816927e8ef360f37955788975e6426e594",
+      "quoted_by": "analysis/write_submission_results.py, analysis/factorial_decomposition.py",
+      "produced_by": "make submission-results"
     },
     {
       "path": "results/submission/submission_obr_12m_displacement.json",
@@ -240,6 +318,12 @@
       "path": "results/submission/submission_obr_6m_wage_cut.json",
       "sha256": "d618c7181546e0206066cb8feb778dae04ec3065eb56db26838a63c5e90be4ef",
       "quoted_by": "analysis/write_submission_results.py",
+      "produced_by": "make submission-results"
+    },
+    {
+      "path": "results/submission/submission_unit_12m_concentrated_wage_cut.json",
+      "sha256": "823ba2e115e916879c2525496c60eeb59a41314c20add108677d320cf0d2e25a",
+      "quoted_by": "analysis/write_submission_results.py, analysis/factorial_decomposition.py",
       "produced_by": "make submission-results"
     },
     {
@@ -285,70 +369,16 @@
       "produced_by": "make submission-results"
     },
     {
-      "path": "results/submission/submission_obr_12m_concentrated_wage_cut.json",
-      "sha256": "e47ada4b4d3725381c1c41461d68c9816927e8ef360f37955788975e6426e594",
-      "quoted_by": "analysis/write_submission_results.py, analysis/factorial_decomposition.py",
-      "produced_by": "make submission-results"
+      "path": "results/supply_chain_displacement.json",
+      "sha256": "b41cb22de61800c44f13fc12955658f211a3f3560ea66cf6ab243e9a220d37eb",
+      "quoted_by": "analysis/write_paper_results.py",
+      "produced_by": "make results (analysis/supply_chain_scenario.py)"
     },
     {
-      "path": "results/submission/submission_unit_12m_concentrated_wage_cut.json",
-      "sha256": "823ba2e115e916879c2525496c60eeb59a41314c20add108677d320cf0d2e25a",
-      "quoted_by": "analysis/write_submission_results.py, analysis/factorial_decomposition.py",
-      "produced_by": "make submission-results"
-    },
-    {
-      "path": "results/leave_one_sector_out.json",
-      "sha256": "01d68b53af772de80b3ed46965e6c6e292bd95336e24f1dfc16120fae3d84ea2",
-      "quoted_by": "analysis/write_submission_results.py",
-      "produced_by": "make submission-results"
-    },
-    {
-      "path": "results/bootstrap_uncertainty.json",
-      "sha256": "039a24ad7bcac840e6398b1818e61244f893a6cf2ae9db269681525475add3d6",
-      "quoted_by": "analysis/write_submission_results.py",
-      "produced_by": "make submission-results"
-    },
-    {
-      "path": "results/factorial_decomposition.json",
-      "sha256": "e7272c8e88910b89130d6bd40a1fa0f8c10e3ef129a0e395ab2ea2feecacc70f",
-      "quoted_by": "analysis/write_factorial_results.py",
-      "produced_by": "make submission-results"
-    },
-    {
-      "path": "results/leave_one_record_out.json",
-      "sha256": "8713a5cc7059984aca679689e67635d7cea904d6ecbd507d1ce803afa478a5a3",
-      "quoted_by": "analysis/write_factorial_results.py",
-      "produced_by": "make submission-results"
-    },
-    {
-      "path": "results/lfs_qrf_benchmark_summary.json",
-      "sha256": "6ec0fdcdc91d2ad37b8b1eef0938339ccb6991423d4b7e8447cc7144aa731b3a",
-      "quoted_by": "analysis/write_lfs_benchmark_results.py",
-      "produced_by": "make lfs-benchmarks"
-    },
-    {
-      "path": "results/lfs_qrf_benchmark.diagnostics.json",
-      "sha256": "c51745d194fc8cf51c1b84239cc586f7bfb89d525d369f1a6c1903b780eb848e",
-      "quoted_by": "analysis/write_lfs_benchmark_results.py",
-      "produced_by": "make lfs-benchmarks"
-    },
-    {
-      "path": "results/hmrc_destination_event_study.json",
-      "sha256": "6e5b8341714c71f644dec9ec728629545597f8735be8f25ac36a6e90de60dcad",
-      "quoted_by": "analysis/write_trade_benchmark_results.py",
-      "produced_by": "make trade-event-study"
-    },
-    {
-      "path": "results/hmrc_destination_event_study_monthly.csv",
-      "sha256": "43022dc597eafb69246bb56b2b9402a9cfeda1639b3ad474ce90b34b03847d80",
-      "quoted_by": "analysis/write_trade_benchmark_results.py",
-      "produced_by": "make trade-event-study"
-    },
-    {
-      "path": "results/validation_sectors.json",
-      "sha256": "151a777b562e803f1105ed03d1cf9e9a10e88a4f9abaf68eac8e4ef95e669263",
-      "quoted_by": "analysis/write_validation_macros.py",
-      "produced_by": "make inputs"
+      "path": "results/supply_chain_wage_cut.json",
+      "sha256": "0412685860ab26b81abe1145e5a7ca8a0f87d5076987d1e9e667d83b860b64c7",
+      "quoted_by": "analysis/write_paper_results.py",
+      "produced_by": "make results (analysis/supply_chain_scenario.py)"
     },
     {
       "path": "results/takeup_diagnosis.json",
@@ -356,6 +386,12 @@
       "quoted_by": "analysis/write_referee_macros.py",
       "produced_by": "analysis/takeup_sensitivity.py",
       "note": "Legacy-vintage all-entitled take-up grid; write_referee_macros.py READS it as the fallback source for \\TakeupEntitledStale/Full/Spread and never writes it."
+    },
+    {
+      "path": "results/validation_sectors.json",
+      "sha256": "151a777b562e803f1105ed03d1cf9e9a10e88a4f9abaf68eac8e4ef95e669263",
+      "quoted_by": "analysis/write_validation_macros.py",
+      "produced_by": "make inputs"
     }
   ]
 }

@@ -5,6 +5,13 @@ OR different assignment designs. This script reads the eight central
 artifacts, checks that they share the declared production draw count AND the
 declared record-selection design, and writes a small generated LaTeX file.
 
+It also emits the appendix's exploratory reallocation, supply-chain and
+factorial figures (``EXPLORATORY_DRAWS``, ``SCENARIO_TESTING``). Those runs
+are small-assignment stress exercises and are checked against the design the
+appendix claims for them, NOT against the production draw count: they are
+not comparable with the central scenarios and the appendix does not claim
+they are.
+
 Why the second check exists. ``shocks.PRESETS`` builds every scenario in
 ``CENTRAL``, ``ANCHORS`` and ``REQUIRED_TRANSITION`` from
 ``TradeShockScenario``'s DEFAULT ``selection_method="bernoulli"``, while the
@@ -48,6 +55,45 @@ ANCHORS = (
     "full_tariff_obr_low_displacement",
     "full_tariff_obr_low_wage_cut",
 )
+
+#: Exploratory small-assignment artifacts the appendix quotes, mapped to the
+#: assignment count the prose claims for each ("five paired assignments", "the
+#: exploratory ten-assignment microsimulation").
+#:
+#: They are deliberately kept OUT of the comparability check below: each is a
+#: 5- or 10-assignment stress exercise, not a production run, so folding them
+#: into ``compared`` would trip the 100-draw guard and would also assert a
+#: comparability nobody claims. What they get instead is the check that they
+#: still carry the design the appendix describes.
+#:
+#: Why they are read here at all: these numbers used to be typed into the
+#: appendix by hand. When the prose was reverted to an earlier draft the main
+#: text was re-macro-ified and the appendix was not, so it printed a vintage
+#: the paper's own figures contradicted.
+EXPLORATORY_DRAWS = {
+    "full_tariff_reallocation": 5,
+    "full_tariff_reallocation_lag3": 5,
+    "full_tariff_reallocation_lowpenalty": 5,
+    "supply_chain_displacement": 10,
+    "supply_chain_wage_cut": 10,
+}
+
+#: Appendix macro prefix per reallocation-penalty variant.
+REALLOCATION_PREFIXES = {
+    "full_tariff_reallocation": "ReallocCentral",
+    "full_tariff_reallocation_lag3": "ReallocLag",
+    "full_tariff_reallocation_lowpenalty": "ReallocLowPenalty",
+}
+
+#: The factorial adjustment surface behind Figure 1
+#: (``analysis/scenario_testing.py``). It stores cells, one per
+#: (export-demand calibration, displacement share), rather than draws.
+SCENARIO_TESTING = "scenario_testing"
+SCENARIO_ASSIGNMENTS_PER_CELL = 5
+
+#: The surface's pure wage-cut endpoint: none of the sector loss is taken on
+#: the extensive margin, so one cell per export-demand calibration.
+WAGE_CUT_DISPLACEMENT_SHARE = 0.0
 
 
 #: Where a scenario artifact may record the record-selection design. The first
@@ -192,6 +238,102 @@ def check_selection_methods(
 
 def _fmt(value: float, scale: float = 1.0, digits: int = 1) -> str:
     return f"{value * scale:.{digits}f}"
+
+
+def _wage_cut_endpoint(scenario: dict) -> tuple[float, float]:
+    """Lowest and highest cushioning on the surface's wage-cut endpoint.
+
+    The appendix quotes this range as evidence that the endpoint is stable
+    across export-demand calibrations, so it must be read off the artifact
+    Figure 1 is drawn from rather than transcribed from it. The two checks
+    below pin the two things the sentence asserts: that the cells are the
+    five-assignment ones, and that there is exactly one per calibration.
+    """
+    design = scenario["design"]
+    if design["n_assignments_per_cell"] != SCENARIO_ASSIGNMENTS_PER_CELL:
+        raise ValueError(
+            f"{SCENARIO_TESTING}.json now uses "
+            f"{design['n_assignments_per_cell']} assignments per cell; the "
+            f"appendix describes {SCENARIO_ASSIGNMENTS_PER_CELL} common "
+            "assignments. Update the prose and this constant together."
+        )
+    endpoint = [
+        cell["cushioning_pct_mean"]
+        for cell in scenario["cells"]
+        if cell["displacement_share"] == WAGE_CUT_DISPLACEMENT_SHARE
+    ]
+    if len(endpoint) != len(design["elasticities"]):
+        raise ValueError(
+            "the wage-cut endpoint must hold one cell per export-demand "
+            f"calibration: found {len(endpoint)} cells at displacement share "
+            f"{WAGE_CUT_DISPLACEMENT_SHARE} against "
+            f"{len(design['elasticities'])} elasticities"
+        )
+    return min(endpoint), max(endpoint)
+
+
+def _exploratory_macros(results_dir: Path) -> dict[str, str]:
+    """Macros for the appendix's exploratory reallocation, supply-chain and
+    factorial exercises.
+
+    Every value here is a small-assignment stress figure. The appendix says so
+    in each section; this function's only job is to make sure the printed
+    numbers come from the artifacts rather than from memory.
+    """
+    data = {}
+    for name, expected in EXPLORATORY_DRAWS.items():
+        item = _load(results_dir, name)
+        if item["n_draws"] != expected:
+            raise ValueError(
+                f"{name}.json carries {item['n_draws']} assignments, but the "
+                f"appendix describes it as a {expected}-assignment exercise. "
+                "Update the prose and EXPLORATORY_DRAWS together."
+            )
+        data[name] = item
+
+    low, high = _wage_cut_endpoint(_load(results_dir, SCENARIO_TESTING))
+    macros = {
+        "ScenarioWageEndpointMin": _fmt(low, 1.0, 1),
+        "ScenarioWageEndpointMax": _fmt(high, 1.0, 1),
+    }
+
+    for name, prefix in REALLOCATION_PREFIXES.items():
+        item = data[name]
+        macros[f"{prefix}Gross"] = _fmt(
+            _mean([d["gross_earnings_loss"] for d in item["draws"]]), 1 / 1e6, 0
+        )
+        macros[f"{prefix}Exchequer"] = _fmt(item["exchequer_cost_mean"], 1 / 1e6, 0)
+        macros[f"{prefix}ExchequerSD"] = _fmt(item["exchequer_cost_sd"], 1 / 1e6, 0)
+        macros[f"{prefix}Cushion"] = _fmt(item["cushioning_rate_mean"], 100, 1)
+        macros[f"{prefix}CushionSD"] = _fmt(item["cushioning_rate_sd"], 100, 1)
+
+    # The supply-chain pair predates the Universal Credit award-cache
+    # correction and is deliberately frozen there (it records no
+    # `selection_method`, and its cushioning rate is null). The appendix
+    # discloses the vintage; these macros keep the LEVELS it prints tied to
+    # the artifact, which is what drifted.
+    displaced = data["supply_chain_displacement"]
+    wage_cut = data["supply_chain_wage_cut"]
+    macros.update(
+        {
+            "SupplyChainDisplacedWorkers": _fmt(
+                displaced["displaced_weighted_mean"], 1 / 1_000, 1
+            ),
+            "SupplyChainDisplacedExchequer": _fmt(
+                displaced["exchequer_cost_mean"], 1 / 1e6, 0
+            ),
+            "SupplyChainDisplacedExchequerSD": _fmt(
+                displaced["exchequer_cost_sd"], 1 / 1e6, 0
+            ),
+            "SupplyChainDisplacedPoverty": _fmt(
+                displaced["poverty_rate_change_bhc_mean"], 100, 3
+            ),
+            "SupplyChainWageExchequer": _fmt(
+                wage_cut["exchequer_cost_mean"], 1 / 1e6, 0
+            ),
+        }
+    )
+    return macros
 
 
 def main() -> None:
@@ -439,6 +581,8 @@ def main() -> None:
         macros[f"{prefix}CushionSD"] = _fmt(item["cushioning_rate_sd"], 100, 1)
         macros[f"{prefix}Gross"] = _fmt(_mean([d["gross_earnings_loss"] for d in item["draws"]]), 1 / 1e6, 0)
         macros[f"{prefix}Workers"] = _fmt(item.get("reallocated_weighted_mean", 0.0), 1 / 1_000, 1)
+
+    macros.update(_exploratory_macros(args.results_dir))
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     lines = ["% Generated by analysis/write_paper_results.py; do not edit by hand."]

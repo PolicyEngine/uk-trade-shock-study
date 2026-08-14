@@ -280,7 +280,73 @@ other means-tested support. The latter channel is nonlinear: entitlement
 depends on household composition, existing income, rent, capital, and claiming
 behaviour rather than on the individual earnings loss alone. The plain FRS
 input contains no usable household-capital measure, so the model cannot
-establish the empirical importance of UC's capital test. New-style JSA is not
+establish the empirical importance of UC's capital test.
+
+The most direct evidence is arithmetic, not simulation. For a single worker
+at the exposed-sector mean of \pounds48,272, income tax and employee National
+Insurance take \ScheduleMarginalRate\ per cent of a marginal pound but
+\ScheduleAverageRate\ per cent of the whole year's earnings, because losing
+the year also gives up the untaxed personal allowance. The statutory schedule
+alone therefore predicts a gap of \ScheduleImpliedGap\ percentage points,
+essentially the realised headline gap, before any simulation. The near-exact
+match is partly coincidental: the population object is wage-bill-weighted,
+and its tax-and-NI wedge of \ScheduleWedgeWeighted\ points is pulled back by
+\ScheduleWedgeOffsets\ points of means-tested offsets. The one-worker
+benchmark fixes the sign and rough size, not the level.
+
+Table~\ref{tab:mechanism} separates the two things the poles change at once.
+The factorial's middle cell---a concentrated wage cut with no job
+loss---splits the \FactorialGapTotal\ point gap into \FactorialConcStep\
+points of loss concentration and \FactorialStateStep\ of employment state,
+the latter \FactorialStateShare\ per cent of the total. Income tax relieves
+\WageChannelIncomeTax\ per cent of the diffuse loss against
+\DispChannelIncomeTax\ per cent of the displaced one, while Universal Credit
+runs the other way, \WageChannelUC\ against \DispChannelUC\ per cent: on the
+concentration step means-tested support gives back \FactorialConcStepUCAbs\
+points of the \FactorialConcStepIncomeTax\ that income tax opens up, roughly
+half. The split is an accounting identity on all \FactorialChannelSeeds\
+assignments, and two audits find nothing behind the state step. Dropping each
+of the \LOOHouseholds\ loss-contributing households in turn leaves the
+contrast between \LOOMin\ and \LOOMax\ points, always positive; the
+zero-hours diagnostic puts the hours channel at
+$\ZeroHoursChannel\pm\ZeroHoursChannelSE$ points and the status-only residual
+at $\ZeroHoursStatusResidual\pm\ZeroHoursStatusResidualSE$, both
+indistinguishable from zero.
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Channel decomposition of the wage-minus-displacement cushioning
+gap, unit 12-month stress}
+\label{tab:mechanism}
+\begin{tabular}{lrr}
+\toprule
+Channel & Loss concentration & Employment state \\
+& (pp) & (pp) \\
+\midrule
+Income tax & $\FactorialConcStepIncomeTax$ & $\FactorialStateStepIncomeTax$ \\
+Employee National Insurance & $\FactorialConcStepNI$ & $\FactorialStateStepNI$ \\
+Universal Credit & $\FactorialConcStepUC$ & $\FactorialStateStepUC$ \\
+Other benefits & $\FactorialConcStepOtherBenefits$ & $\FactorialStateStepOtherBenefits$ \\
+Pension and other residual & $\FactorialConcStepResidual$ & $\FactorialStateStepResidual$ \\
+\midrule
+Total & $\FactorialConcStep$ & $\FactorialStateStep$ \\
+\bottomrule
+\end{tabular}
+\begin{minipage}{.94\textwidth}\footnotesize
+\emph{Notes:} each entry is the change in that channel's relief as a share of
+the gross loss, in percentage points. The loss-concentration column is the
+diffuse wage cut minus the concentrated wage cut; the employment-state column
+is the concentrated wage cut minus displacement. Columns are computed on
+\FactorialChannelSeeds\ common assignments and sum to their totals, which in
+turn sum to the \FactorialGapTotal\ point headline gap. Positive entries
+widen the gap; Universal Credit's negative entry narrows it. The residual is
+employee pension and salary-sacrifice contributions, which the HBAI
+disposable-income concept treats as an outflow.
+\end{minipage}
+\end{table}
+
+New-style JSA is not
 activated by the imposed transition, an omission worth up to
 \JSACushionPoints\ percentage points of a representative displaced worker's
 gross loss---up to two-thirds of the headline gap---at the maximum
@@ -336,7 +402,7 @@ salary-sacrifice changes respond to the shock but sit outside employee
 disposable income, which explains why the Exchequer cost does not equal the
 household-side cushioning amount. Displacement also produces more assignment
 dispersion because a small number of high-weight records can determine whether
-earnings are lost entirely. Appendix~\ref{app:support} provides the formal
+earnings are lost entirely. Appendix~\ref{app:mc} provides the formal
 reconciliation and draw distributions. Figure~\ref{fig:exchequer-results}
 shows the assignment distribution.
 

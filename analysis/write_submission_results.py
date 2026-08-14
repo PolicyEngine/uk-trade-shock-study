@@ -226,6 +226,30 @@ def main() -> None:
                 ],
                 2,
             ),
+            # Signed balanced-minus-Bernoulli gaps at BOTH anchors. The
+            # manuscript used to hand-type "within 0.6 of a percentage point"
+            # for the unit anchor (it is 0.75) and did not report the OBR
+            # anchor at all, where the two designs disagree by 1.8 points.
+            # Emitting both stops the agreement being quoted more favourably
+            # than the artifact supports.
+            "AssignmentGapUnit": fmt(
+                diagnostics["contrasts"]["unit_balanced_vs_bernoulli"][
+                    "balanced_cushioning_percent"
+                ]
+                - diagnostics["contrasts"]["unit_balanced_vs_bernoulli"][
+                    "bernoulli_cushioning_percent"
+                ],
+                2,
+            ),
+            "AssignmentGapOBR": fmt(
+                diagnostics["contrasts"]["obr_balanced_vs_bernoulli"][
+                    "balanced_cushioning_percent"
+                ]
+                - diagnostics["contrasts"]["obr_balanced_vs_bernoulli"][
+                    "bernoulli_cushioning_percent"
+                ],
+                2,
+            ),
             "BalancedUnitCushion": fmt(
                 diagnostics["contrasts"]["unit_balanced_vs_bernoulli"][
                     "balanced_cushioning_percent"
@@ -344,6 +368,12 @@ def main() -> None:
         "cushioning_difference_max_pp": max(leave_differences),
     }
     bootstrap = load(args.bootstrap)
+    # RATIO-OF-POOLED-SUMS. Immune to the near-zero per-draw denominators that
+    # skew the mean-of-ratios interval, so it is the more defensible primary
+    # statistic -- and it is WIDER, not narrower. Two manuscript sections used
+    # to state this estimator was absent from the stored artifact; it is
+    # present, and quoting its absence while shipping it is exactly the kind
+    # of stale prose the generated-macro pipeline exists to prevent.
     estimates = bootstrap["estimates"]
     design = bootstrap["design"]
     diff = estimates["cushioning_difference"]
@@ -356,6 +386,18 @@ def main() -> None:
             "BootstrapCushionDifferenceSE": fmt(diff["bootstrap_se"] * 100, 1),
             "BootstrapCushionDifferenceCILower": fmt(diff["ci_2_5"] * 100, 1),
             "BootstrapCushionDifferenceCIUpper": fmt(diff["ci_97_5"] * 100, 1),
+            "BootstrapPooledDifference": fmt(
+                bootstrap["estimates"]["cushioning_difference_pooled"]["point"] * 100, 1
+            ),
+            "BootstrapPooledDifferenceSE": fmt(
+                bootstrap["estimates"]["cushioning_difference_pooled"]["bootstrap_se"] * 100, 1
+            ),
+            "BootstrapPooledCILower": fmt(
+                bootstrap["estimates"]["cushioning_difference_pooled"]["ci_2_5"] * 100, 1
+            ),
+            "BootstrapPooledCIUpper": fmt(
+                bootstrap["estimates"]["cushioning_difference_pooled"]["ci_97_5"] * 100, 1
+            ),
             "BootstrapDisplacementCushionSE": fmt(
                 estimates["displacement_cushioning"]["bootstrap_se"] * 100, 1
             ),

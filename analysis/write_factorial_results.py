@@ -89,6 +89,11 @@ def main() -> None:
         ):
             macros[f"FactorialStateStep{label}"] = fmt(state[key])
             macros[f"FactorialConcStep{label}"] = fmt(conc[key])
+            # Magnitudes, for prose that carries the sign in words. Universal
+            # Credit's contribution to the concentration step is negative --
+            # it offsets the gap -- and "worth -7.3 points" reads as a typo.
+            macros[f"FactorialConcStep{label}Abs"] = fmt(abs(conc[key]))
+            macros[f"FactorialStateStep{label}Abs"] = fmt(abs(state[key]))
         # Channel LEVELS, not just steps.  The manuscript reconciles the
         # displacement margin against the Dolls, Fuest and Peichl (2012) UK
         # unemployment-shock decomposition, which reports the tax, social
@@ -199,12 +204,38 @@ def main() -> None:
         macros["DollsBenefitRatio"] = fmt(
             dolls_benefits / disp_benefits if disp_benefits else float("nan")
         )
+        # The pension/salary-sacrifice residual is a component of THIS paper's
+        # sum with no counterpart in Dolls et al.'s, and it is signed UPWARD.
+        # Setting it aside to put the two on a comparable basis therefore
+        # WIDENS the discrepancy rather than explaining it away. An earlier
+        # revision emitted only its share of the raw gap and read that share
+        # as "most of the difference is accounted for", which inverts the
+        # direction: a term present on one side only, pushing that side up,
+        # cannot explain why that side is low. Emit the comparable-basis sum
+        # and gap so the manuscript quotes the widening rather than a ratio
+        # that invites the wrong inference.
         macros["ResidualShareOfDollsGap"] = fmt(
             100 * disp_residual / dolls_gap if dolls_gap else float("nan"), 0
         )
+        disp_sum_comparable = disp_sum - disp_residual
+        macros["DispSumExPension"] = fmt(disp_sum_comparable)
+        macros["DollsGapExPension"] = fmt(dolls_total - disp_sum_comparable)
         macros["ResidualShareOfDispSum"] = fmt(
             100 * disp_residual / disp_sum if disp_sum else float("nan"), 0
         )
+        # HSV progressivity implied by the weighted tax-and-NI schedule.
+        # T(y)=y-lambda*y^(1-tau) gives 1-m=(1-tau)(1-a), so tau=(m-a)/(1-a).
+        # Both this and the naive m-a it is contrasted against were hand-typed
+        # in an earlier draft and went stale when the wedge moved; generate
+        # them so the contrast cannot drift from the levels it is derived
+        # from.
+        m_rate = 100 * (
+            levels["wage_cut"]["income_tax"]
+            + levels["wage_cut"]["employee_national_insurance"]
+        )
+        a_rate = conc_tax_ni
+        macros["ScheduleTau"] = f"{(m_rate - a_rate) / (100 - a_rate):.2f}"
+        macros["ScheduleTauNaive"] = f"{wedge / 100:.2f}"
         macros["ScheduleWedgeWeighted"] = fmt(wedge)
         macros["ScheduleWedgeOffsets"] = fmt(wedge - conc_step_seeds)
 
@@ -217,6 +248,27 @@ def main() -> None:
         macros["FactorialStateStepChannelSeeds"] = fmt(
             sums["concentrated_wage_cut"] - sums["displacement"]
         )
+
+    # ZERO-HOURS DECOMPOSITION of the employment-state step, when it has been
+    # run. Splits the step into the hours channel (which gates three
+    # childcare entitlements through in_work) and a status-only residual that
+    # ought to be exactly zero, since employment_status is read by no tax or
+    # benefit formula. The manuscript previously asserted the step WAS the
+    # hours effect; measured, the hours channel is a small fraction of it and
+    # the remainder is noise around zero.
+    zero_hours_path = args.factorial.parent / "zero_hours_residual.json"
+    if zero_hours_path.exists():
+        zh = json.loads(zero_hours_path.read_text())
+        n_zh = zh["design"]["n_seeds"]
+        macros["ZeroHoursSeeds"] = str(n_zh)
+        for key, label in (
+            ("hours_channel_pp", "ZeroHoursChannel"),
+            ("status_only_residual_pp", "ZeroHoursStatusResidual"),
+            ("employment_state_step_pp", "ZeroHoursStateStep"),
+        ):
+            block = zh[key]
+            macros[label] = fmt(block["mean"], 2)
+            macros[f"{label}SE"] = fmt(block["sd"] / (n_zh ** 0.5), 2)
 
     loo = json.loads(args.loo.read_text())
     macros.update(

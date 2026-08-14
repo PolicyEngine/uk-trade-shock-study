@@ -1449,6 +1449,20 @@ def build_shocked_simulation(dataset, baseline_sim, shocked_table, period):
         values[displaced] = 0.0
         if var == "hours_worked":
             values = values * hours_factor
+            # Honour an explicitly supplied hours column. Every margin except
+            # the zero_hours diagnostic leaves hours to be derived from the
+            # baseline above, so this branch is inert for them and stored
+            # results are unaffected -- verified by re-running the factorial
+            # and comparing bit-for-bit.
+            #
+            # It exists because apply_concentrated_wage_cut(zero_hours=True)
+            # wrote hours into the shocked table and nothing here read it, so
+            # the option that was supposed to isolate the employment-status
+            # flag silently did nothing: the manuscript listed it as "not yet
+            # run" when in fact running it could not have moved any number.
+            if "hours_worked" in shocked_table:
+                supplied = shocked_table["hours_worked"].to_numpy(dtype=float)
+                values = np.where(displaced, 0.0, supplied)
         sim.set_input(var, period, values)
     if reallocated.any():
         # Literal sector switch: move the reallocated workers' SIC industry

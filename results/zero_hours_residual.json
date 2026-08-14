@@ -1,0 +1,376 @@
+{
+  "design": {
+    "n_seeds": 50,
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49
+    ],
+    "elasticity": 1.0,
+    "selection_method": "balanced",
+    "period": 2026,
+    "note": "employment_state_step splits into an hours channel and a status-only residual. zero_hours=True removes hours from the concentrated cell, so status_only_residual is the step attributable to the employment_status flags alone."
+  },
+  "employment_state_step_pp": {
+    "mean": -0.452130932313343,
+    "sd": 3.2585930650274233
+  },
+  "status_only_residual_pp": {
+    "mean": -0.536146931178681,
+    "sd": 3.214846923200874,
+    "max_abs": 10.517616293916626
+  },
+  "hours_channel_pp": {
+    "mean": 0.08401599886533806,
+    "sd": 0.2142299388256616
+  },
+  "draws": [
+    {
+      "seed": 0,
+      "concentrated": 0.326356408623639,
+      "concentrated_zero_hours": 0.326356408623639,
+      "displacement": 0.326356408623639
+    },
+    {
+      "seed": 1,
+      "concentrated": 0.3097320626733342,
+      "concentrated_zero_hours": 0.3097320626733342,
+      "displacement": 0.355325570006942
+    },
+    {
+      "seed": 2,
+      "concentrated": 0.29769532421269734,
+      "concentrated_zero_hours": 0.29769532421269734,
+      "displacement": 0.33239155688713806
+    },
+    {
+      "seed": 3,
+      "concentrated": 0.3794015470232452,
+      "concentrated_zero_hours": 0.3696562465482355,
+      "displacement": 0.3231445851902346
+    },
+    {
+      "seed": 4,
+      "concentrated": 0.322563179947263,
+      "concentrated_zero_hours": 0.322563179947263,
+      "displacement": 0.32301240860777547
+    },
+    {
+      "seed": 5,
+      "concentrated": 0.35791380377212084,
+      "concentrated_zero_hours": 0.35791380377212084,
+      "displacement": 0.3881141770098329
+    },
+    {
+      "seed": 6,
+      "concentrated": 0.4284950693810508,
+      "concentrated_zero_hours": 0.427901143758168,
+      "displacement": 0.427901143758168
+    },
+    {
+      "seed": 7,
+      "concentrated": 0.42278176091127884,
+      "concentrated_zero_hours": 0.42263268595283654,
+      "displacement": 0.4211419363684132
+    },
+    {
+      "seed": 8,
+      "concentrated": 0.30603326082492627,
+      "concentrated_zero_hours": 0.3005631352711389,
+      "displacement": 0.29627573956681913
+    },
+    {
+      "seed": 9,
+      "concentrated": 0.3811152330308752,
+      "concentrated_zero_hours": 0.37457405365382945,
+      "displacement": 0.37933127501895364
+    },
+    {
+      "seed": 10,
+      "concentrated": 0.39179709893089865,
+      "concentrated_zero_hours": 0.39179709893089865,
+      "displacement": 0.4257923306479658
+    },
+    {
+      "seed": 11,
+      "concentrated": 0.36081435091671554,
+      "concentrated_zero_hours": 0.36081435091671554,
+      "displacement": 0.368296211853885
+    },
+    {
+      "seed": 12,
+      "concentrated": 0.37308205577587805,
+      "concentrated_zero_hours": 0.37308205577587805,
+      "displacement": 0.35669009621689224
+    },
+    {
+      "seed": 13,
+      "concentrated": 0.507650351946414,
+      "concentrated_zero_hours": 0.49909688351024983,
+      "displacement": 0.4893429282760276
+    },
+    {
+      "seed": 14,
+      "concentrated": 0.3013392496499521,
+      "concentrated_zero_hours": 0.3013392496499521,
+      "displacement": 0.3156669648262639
+    },
+    {
+      "seed": 15,
+      "concentrated": 0.37653905366727175,
+      "concentrated_zero_hours": 0.37653905366727175,
+      "displacement": 0.34794816753292573
+    },
+    {
+      "seed": 16,
+      "concentrated": 0.39467198072413345,
+      "concentrated_zero_hours": 0.39467198072413345,
+      "displacement": 0.39763636867357455
+    },
+    {
+      "seed": 17,
+      "concentrated": 0.33541991740443466,
+      "concentrated_zero_hours": 0.33541991740443466,
+      "displacement": 0.3358597453876217
+    },
+    {
+      "seed": 18,
+      "concentrated": 0.33063793070015757,
+      "concentrated_zero_hours": 0.3285851226015381,
+      "displacement": 0.3532188197849715
+    },
+    {
+      "seed": 19,
+      "concentrated": 0.3550895611827684,
+      "concentrated_zero_hours": 0.35419962037483294,
+      "displacement": 0.3650272335380477
+    },
+    {
+      "seed": 20,
+      "concentrated": 0.38375460256338306,
+      "concentrated_zero_hours": 0.38375460256338306,
+      "displacement": 0.3197728399879966
+    },
+    {
+      "seed": 21,
+      "concentrated": 0.3731262706267096,
+      "concentrated_zero_hours": 0.3731262706267096,
+      "displacement": 0.3731262706267096
+    },
+    {
+      "seed": 22,
+      "concentrated": 0.33568204440920923,
+      "concentrated_zero_hours": 0.3355334938824671,
+      "displacement": 0.3304827759732348
+    },
+    {
+      "seed": 23,
+      "concentrated": 0.3636857435445295,
+      "concentrated_zero_hours": 0.3636857435445295,
+      "displacement": 0.3730695914276509
+    },
+    {
+      "seed": 24,
+      "concentrated": 0.3369952426060386,
+      "concentrated_zero_hours": 0.3369952426060386,
+      "displacement": 0.3573064348607284
+    },
+    {
+      "seed": 25,
+      "concentrated": 0.3134102466064703,
+      "concentrated_zero_hours": 0.3128141191887203,
+      "displacement": 0.3478366049815312
+    },
+    {
+      "seed": 26,
+      "concentrated": 0.34673349418202154,
+      "concentrated_zero_hours": 0.34673349418202154,
+      "displacement": 0.364971140339869
+    },
+    {
+      "seed": 27,
+      "concentrated": 0.3450313738612942,
+      "concentrated_zero_hours": 0.3450313738612942,
+      "displacement": 0.38872547197647495
+    },
+    {
+      "seed": 28,
+      "concentrated": 0.36186205299055496,
+      "concentrated_zero_hours": 0.36186205299055496,
+      "displacement": 0.36186205299055496
+    },
+    {
+      "seed": 29,
+      "concentrated": 0.304310848106805,
+      "concentrated_zero_hours": 0.304310848106805,
+      "displacement": 0.3441695711856751
+    },
+    {
+      "seed": 30,
+      "concentrated": 0.3836726794945721,
+      "concentrated_zero_hours": 0.3836726794945721,
+      "displacement": 0.34004151353536294
+    },
+    {
+      "seed": 31,
+      "concentrated": 0.3479375847241774,
+      "concentrated_zero_hours": 0.3479375847241774,
+      "displacement": 0.45311374766334367
+    },
+    {
+      "seed": 32,
+      "concentrated": 0.36187685322827406,
+      "concentrated_zero_hours": 0.36187685322827406,
+      "displacement": 0.3898453417834362
+    },
+    {
+      "seed": 33,
+      "concentrated": 0.4215062771841704,
+      "concentrated_zero_hours": 0.4215062771841704,
+      "displacement": 0.443158726799115
+    },
+    {
+      "seed": 34,
+      "concentrated": 0.393143231004015,
+      "concentrated_zero_hours": 0.391357920577942,
+      "displacement": 0.3720170576288177
+    },
+    {
+      "seed": 35,
+      "concentrated": 0.3164901916428278,
+      "concentrated_zero_hours": 0.3164901916428278,
+      "displacement": 0.31130872244367236
+    },
+    {
+      "seed": 36,
+      "concentrated": 0.3551796836788233,
+      "concentrated_zero_hours": 0.3551796836788233,
+      "displacement": 0.3167711425004714
+    },
+    {
+      "seed": 37,
+      "concentrated": 0.48904132621042223,
+      "concentrated_zero_hours": 0.48904132621042223,
+      "displacement": 0.48565749393367
+    },
+    {
+      "seed": 38,
+      "concentrated": 0.2999660776078882,
+      "concentrated_zero_hours": 0.29789933890829107,
+      "displacement": 0.29479923085889537
+    },
+    {
+      "seed": 39,
+      "concentrated": 0.3799170778870536,
+      "concentrated_zero_hours": 0.3799170778870536,
+      "displacement": 0.3799170778870536
+    },
+    {
+      "seed": 40,
+      "concentrated": 0.373123831468995,
+      "concentrated_zero_hours": 0.373123831468995,
+      "displacement": 0.3819447906884745
+    },
+    {
+      "seed": 41,
+      "concentrated": 0.3411878584167748,
+      "concentrated_zero_hours": 0.3411878584167748,
+      "displacement": 0.3596494867910844
+    },
+    {
+      "seed": 42,
+      "concentrated": 0.3833184297134456,
+      "concentrated_zero_hours": 0.3812335366962971,
+      "displacement": 0.38555224366039037
+    },
+    {
+      "seed": 43,
+      "concentrated": 0.40478061728077047,
+      "concentrated_zero_hours": 0.40478061728077047,
+      "displacement": 0.3281667738651782
+    },
+    {
+      "seed": 44,
+      "concentrated": 0.34070355452643514,
+      "concentrated_zero_hours": 0.34070355452643514,
+      "displacement": 0.3228767679560885
+    },
+    {
+      "seed": 45,
+      "concentrated": 0.37582138918663743,
+      "concentrated_zero_hours": 0.37449083317116605,
+      "displacement": 0.46822111248326265
+    },
+    {
+      "seed": 46,
+      "concentrated": 0.3765094159326994,
+      "concentrated_zero_hours": 0.3765094159326994,
+      "displacement": 0.36779856003405603
+    },
+    {
+      "seed": 47,
+      "concentrated": 0.3534133287660954,
+      "concentrated_zero_hours": 0.3534133287660954,
+      "displacement": 0.34573169593443825
+    },
+    {
+      "seed": 48,
+      "concentrated": 0.32961373813189737,
+      "concentrated_zero_hours": 0.32961373813189737,
+      "displacement": 0.3569219232511648
+    },
+    {
+      "seed": 49,
+      "concentrated": 0.34197529135979793,
+      "concentrated_zero_hours": 0.34197529135979793,
+      "displacement": 0.3256751925740219
+    }
+  ]
+}

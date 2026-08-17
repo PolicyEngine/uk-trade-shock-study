@@ -91,9 +91,14 @@ draw-averaged statistic. The wage-minus-displacement cushioning difference is
 \BootstrapCushionDifference\ percentage points with a bootstrap standard
 error of \BootstrapCushionDifferenceSE\ points and a 95 per cent percentile
 interval of \BootstrapCushionDifferenceCILower\ to
-\BootstrapCushionDifferenceCIUpper\ points: the interval excludes zero, so
-the sign of the primary contrast is not an artefact of which households the
-FRS happened to sample, although its magnitude is estimated imprecisely.
+\BootstrapCushionDifferenceCIUpper\ points. (The bootstrap point of
+\BootstrapCushionDifference\ differs from the \PrimaryCushionDifference-point
+headline because it is computed on the \BootstrapDraws\ common assignment
+draws underlying the resampling rather than the full \SubmissionDraws-draw
+paired estimator; the difference is draw-subset drift, not a conflicting
+estimate.) The interval lies entirely above zero, so the sign of the
+primary contrast is not an artefact of which households the FRS happened to
+sample, although its magnitude is estimated imprecisely.
 Margin-level bootstrap SEs are \BootstrapDisplacementCushionSE\ points
 (displacement cushioning), \BootstrapWageCushionSE\ points (wage-cut
 cushioning), and \pounds\BootstrapDisplacementExchequerSE\ million and
@@ -310,7 +315,10 @@ of the \LOOHouseholds\ loss-contributing households in turn leaves the
 contrast between \LOOMin\ and \LOOMax\ points, always positive; the
 zero-hours diagnostic puts the hours channel at
 $\ZeroHoursChannel\pm\ZeroHoursChannelSE$ points and the status-only residual
-at $\ZeroHoursStatusResidual\pm\ZeroHoursStatusResidualSE$, both
+at $\ZeroHoursStatusResidual\pm\ZeroHoursStatusResidualSE$ (these $\pm$
+values are Monte Carlo standard errors over the \ZeroHoursSeeds\ seeds, an
+exception to the assignment-SD convention): the hours channel is
+statistically resolved but economically negligible, and the residual is
 indistinguishable from zero.
 
 \begin{table}[htbp]
@@ -419,12 +427,22 @@ On paired seeds, full minus EPD displacement differs by
 $\EPDWorkerDifferenceThousands\pm\EPDWorkerDifferenceSDThousands$ thousand
 workers and \pounds $\EPDExchequerDifference\pm\EPDExchequerDifferenceSD$
 million of Exchequer cost. The contrast is driven primarily by the lower auto
-tariff and the exemption of pharmaceuticals in the EPD schedule. It should be
-interpreted as the fiscal value of changing the declared sector shock while
-holding the household model and assignment draws fixed. It does not include
-quota allocation, above-quota trade, price responses, NHS pricing concessions,
-or other general-equilibrium effects. Figure~\ref{fig:epd-results} summarises
-the paired comparison.
+tariff and the exemption of pharmaceuticals in the EPD schedule, and it should
+be interpreted as the fiscal value of changing the declared sector shock while
+holding the household model and assignment draws fixed. Two caveats withdraw
+it as a quantitative result. First, every paired difference is comparable to
+or smaller than its own assignment dispersion---the Exchequer contrast of
+\pounds\EPDExchequerDifference\ million carries an assignment SD of
+\pounds\EPDExchequerDifferenceSD\ million---so at the reported draw count the
+EPD contrast is not distinguishable from allocation noise. Second, it prices
+a change in the sector calibration whose own rank-order check fails
+(Section~\ref{sec:results-benchmarks}); under the EPD schedule the top-ten
+rank correlation is \RankCorrTopTenEPD. The comparison is therefore retained
+as a qualitative illustration of the counterfactual machinery, not as an
+estimate of the deal's value. It also does not include quota allocation,
+above-quota trade, price responses, NHS pricing concessions, or other
+general-equilibrium effects. Figure~\ref{fig:epd-results} summarises the
+paired comparison.
 
 \begin{figure}[htbp]
 \centering

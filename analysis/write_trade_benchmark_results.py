@@ -436,7 +436,7 @@ def main() -> None:
         # when the zeros are handled properly. The manuscript must quote them
         # beside the headline, because they are a third of its size.
         # Power diagnostics for the tariff-intensity split. Emitted so the
-        # supplement quotes the artifact rather than hand arithmetic, which is
+        # appendix quotes the artifact rather than hand arithmetic, which is
         # how a 0.59 came to sit beside a stored 0.66.
         "HMRCHighTariffMDE": (
             f"{power['steel_and_auto_chapters']['minimum_detectable_log_effect_80_power']:.2f}"

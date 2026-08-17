@@ -21,10 +21,15 @@ results/bootstrap_contributions.npz
 # `make assignment-inclusion`.
 /results/assignment_inclusion_diagnostic.json
 
-# Compiled manuscript: a build product of `make paper`. Tracking it lets a
-# stale PDF ship beside corrected sources, which is how a withdrawn claim
-# survives a correction.
-/paper/main.pdf
+# Compiled manuscript: `paper/main.pdf` is deliberately tracked as a
+# convenience artifact, accepting the stale-PDF hazard the earlier rule here
+# warned about. Mitigation: rebuild the PDF in the same commit as any source
+# change (CI does not compile the paper). LaTeX build residue stays ignored.
+paper/*.log
+paper/*.aux
+paper/*.out
+paper/*.fls
+paper/*.fdb_latexmk
 /paper/supplement.pdf
 
 # LFS/FRS benchmark microdata: both carry person-level FRS records

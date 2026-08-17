@@ -94,7 +94,23 @@ score dominated by the total wage-bill target, per-division losses are
 matched softly rather than exactly and best-of-candidates selection carries
 no formal unbiasedness guarantee. The claim that the balanced design removes
 the declared amount in expectation is therefore established empirically, by
-its agreement with the unbiased comparator, not by construction. Selected
+its agreement with the unbiased comparator, not by construction. A natural
+alternative would dispense with random assignment altogether: because
+incidence is rules-based, each exposed record's displacement counterfactual
+could be simulated once and probability-weighted, computing the expected
+loss and relief exactly and eliminating assignment dispersion. Two
+considerations keep the assignment design here. First, single-record
+enumeration is exact only to first order in the risks: households containing
+more than one exposed worker experience joint displacements, with
+probability of order $s^2$, in which the Universal Credit response is
+nonlinear in the number displaced, and enumerating one displacement at a
+time omits those states, whereas the draw-based design integrates over them.
+Second, the paired-draw architecture carries the rest of the evidence---the
+factorial decomposition, the EPD pairing and the bootstrap's common-draw
+design all condition on shared assignments---and enumeration would remove
+only assignment dispersion, not the survey-sampling uncertainty the
+bootstrap scores either way. An enumeration estimator with an explicit
+second-order household correction is left as a robustness extension. Selected
 workers move to unemployment with earnings, hours, pension contributions and
 statutory pay zeroed. An independent Bernoulli estimator, which preserves
 the declared first-order probabilities exactly but has much larger

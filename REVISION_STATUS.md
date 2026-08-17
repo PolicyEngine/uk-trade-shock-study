@@ -70,17 +70,27 @@ audit.
 3. **The LFS worker-selection sensitivity runs on the pre-award-cache-fix
    vintage** while shifting the gap by up to ~45 per cent of its size;
    re-run on the corrected pipeline.
-4. **The interior transition path never exercises the extensive margin**
-   (workers remain employed for PolicyEngine purposes); the abstract and
-   intro quote its 41.8 per cent without that caveat.
-5. **Framing**: the reviewer recommends leading with the adjustment-margin
-   mechanism (including the Dolls et al. UK-ordering reversal under UC)
-   rather than the trade calibration that fails its own falsification test.
-   This conflicts with the deliberate 14 August restoration of the trade
-   framing and is a decision for the author.
-6. **Estimator**: with rules-based incidence and ~1,018 exposed records,
-   exact probability-weighted enumeration per worker would remove assignment
-   dispersion entirely; adopt or justify the Monte Carlo design.
+4. ~~The interior transition path never exercises the extensive margin~~
+   **Resolved 17 August**: the abstract now labels the path "annualised" and
+   the intro carries the full caveat (workers remain employed for benefit
+   purposes; no within-year unemployment or benefit spell), cross-referenced
+   to the methodology, which already stated it.
+5. ~~Framing~~ **Decided 17 August: mechanism-led.** New title "Wage Cuts or
+   Job Losses? Tax--Benefit Cushioning of Trade-Shock Adjustment in the UK";
+   keywords reordered (automatic stabilisers and adjustment margins first);
+   the intro opens on the margin question with the tariffs as calibrated
+   application; the contributions paragraph now leads with the quantified
+   offset structure (14.8-point wedge pulled back by 7.6 points of
+   means-tested offsets), the take-up dependence, and the Dolls et al.
+   UK-ordering reversal, with the reproducible framework third. This
+   supersedes the 14 August trade-framing restoration.
+6. ~~Estimator~~ **Decided 17 August: justify, not adopt.** The methodology
+   now states why exact per-record enumeration is not used in this vintage:
+   it is exact only to first order (joint displacements in multi-worker
+   households, order $s^2$, with nonlinear UC response, are omitted), and
+   the paired-draw architecture underpins the factorial decomposition, EPD
+   pairing and bootstrap. An enumeration estimator with a second-order
+   household correction is named as a robustness extension.
 7. Editorial: caveat-density (state each disclaimer once), policy-section
    content, literature trim, affected-household poverty in Table 1, the
    partial-WCA sensitivity for the inactivity family, ORCID at submission.

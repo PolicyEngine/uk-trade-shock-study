@@ -1,10 +1,129 @@
 # Major-revision status
 
-Updated 12 August 2026. Records the disposition of the original journal
+Updated 17 August 2026. Records the disposition of the original journal
 readiness audit, the August 2026 referee report (reject-and-resubmit), three
 further rounds of independent review, and a full economics referee report.
 The source memos for the earlier rounds have been removed from the
 replication package; their dispositions are recorded below.
+
+## Fifth-round review (17 August 2026, post-restoration)
+
+Three independent reviews of the restored manuscript: a referee-style
+economics review, a line-by-line numbers audit, and a replication-package
+audit.
+
+### Fixed in this round
+
+- Methodology overstated balanced/Bernoulli agreement ("half a percentage
+  point"; the macros give 36.6 vs 35.9 = 0.7pp). Now "within one percentage
+  point", with both values quoted from macros.
+- The shock-mechanics appendix described only Bernoulli selection as the
+  mechanism; it now distinguishes the balanced primary estimator from the
+  Bernoulli comparator.
+- The abstract's $\pm$ is now labelled as assignment dispersion, the
+  bootstrap point (7.6) is quoted beside its interval so the 7.3 headline and
+  the interval's centre reconcile, and the same reconciliation (draw-subset
+  drift, 25 common draws vs the 50-draw paired estimator) is stated in the
+  results bootstrap paragraph.
+- The zero-hours diagnostic quoted standard errors after $\pm$ without
+  noting the exception to the assignment-SD convention, and called the hours
+  channel (0.08, SE 0.03 — about 2.8 SEs from zero) "indistinguishable from
+  zero". The sentence now labels the SEs and calls the hours channel
+  statistically resolved but economically negligible; the convention
+  exception is noted in the Monte Carlo appendix.
+- "Roughly four percentage points" for the pension-gross drop is now "four
+  to five" in the intro and discussion (artifact: wage −4.36, displacement
+  −4.88).
+- "The full comparator draw count" for the take-up grid was ambiguous (the
+  grid uses 25 assignments; the Bernoulli comparator scenario has 50); the
+  methodology and appendix now quote `\TakeupSeeds` directly.
+- Known residual, not fixed: `\TakeupConventionSpread` (3.5) is the
+  difference of the rounded endpoints (36.5 − 33.0); the unrounded artifact
+  difference is 3.45, which rounds to 3.4. The writer should emit the
+  unrounded difference; downstream claims ("about half the headline gap")
+  hold either way.
+- Package hygiene: the `.gitignore` rule that contradicted the tracked
+  `paper/main.pdf` is replaced by an explicit tracked-PDF policy (rebuild in
+  the same commit as any source change; CI does not compile the paper);
+  a third party's local filesystem path in
+  `results/lfs_imputed_frs_transition_parameters.diagnostics.json` is
+  scrubbed to a basename; README's account of where the EPD/LFS material
+  lives and what `make check` runs is corrected; a stale "supplement"
+  comment in `write_trade_benchmark_results.py` now says "appendix".
+
+### Audit claims checked and rejected
+
+- The numbers audit alleged the take-up paragraph's "about half the headline
+  gap" was a stale-vintage survivor, quoting a 7.0pp spread; the pinned
+  macros give a 3.5pp spread (33.0 to 36.5) against the 7.3pp gap, so the
+  sentence is correct and unchanged.
+- The package audit alleged a stale `write_supplement_macros.py` /
+  `generated_supplement.tex` remnant; neither file exists in the tree.
+
+### Open items from the referee-style review (author decisions)
+
+1. **New Style JSA is bounded but not simulated** (worth up to 5.0pp against
+   the 7.3pp gap, loading entirely on the displacement side). Simulating it
+   is mechanical statutory work and the reviewer's top demand.
+2. **Redundancy pay is entirely absent** (direct tax-free cushioning up;
+   UC capital-gating down). At minimum a JSA-style bound is needed.
+3. **The LFS worker-selection sensitivity runs on the pre-award-cache-fix
+   vintage** while shifting the gap by up to ~45 per cent of its size;
+   re-run on the corrected pipeline.
+4. **The interior transition path never exercises the extensive margin**
+   (workers remain employed for PolicyEngine purposes); the abstract and
+   intro quote its 41.8 per cent without that caveat.
+5. **Framing**: the reviewer recommends leading with the adjustment-margin
+   mechanism (including the Dolls et al. UK-ordering reversal under UC)
+   rather than the trade calibration that fails its own falsification test.
+   This conflicts with the deliberate 14 August restoration of the trade
+   framing and is a decision for the author.
+6. **Estimator**: with rules-based incidence and ~1,018 exposed records,
+   exact probability-weighted enumeration per worker would remove assignment
+   dispersion entirely; adopt or justify the Monte Carlo design.
+7. Editorial: caveat-density (state each disclaimer once), policy-section
+   content, literature trim, affected-household poverty in Table 1, the
+   partial-WCA sensitivity for the inactivity family, ORCID at submission.
+   Journal fit suggested: Fiscal Studies first, Review of Income and Wealth,
+   International Journal of Microsimulation.
+
+## Fourth-round disposition (17 August 2026)
+
+The 14 August commits restored the 5 August manuscript (trade framing, title,
+section order) on top of the corrected artifacts, then regenerated every
+pinned macro. Earlier sections of this file therefore quote numbers and
+describe manuscript decisions from superseded vintages; the current state is:
+
+- **Headline numbers.** The pinned submission macros now give a
+  wage-minus-displacement gap of **7.3pp** (wage cut 43.9, displacement
+  36.6 ± 4.6), bootstrap contrast 7.6pp with 95 per cent interval
+  5.8–10.7, factorial split 7.2 concentration + 0.1 state, pension-gross
+  gap 7.3 → 7.8. References below to the 10.0pp gap and 34.0 displacement
+  cushioning describe the earlier calibration vintage, not the manuscript.
+- **Title and framing.** The referee-round reframing around adjustment
+  margins (point 2 below) was deliberately reversed: the restored manuscript
+  leads with the trade framing ("Labour-Market Adjustment and Fiscal
+  Incidence of Trade Exposure in the UK") for fresh submission. A
+  resubmission to the venue that requested the reframing would need to
+  defend this choice in the response letter.
+- **Supplement.** The standalone online supplement (point 8 below) was
+  folded back into the main paper's appendix; `paper/supplement.tex` no
+  longer exists. The Makefile and README now reflect this.
+- **EPD counterfactual.** Withdrawn as a quantitative result in the results
+  and policy sections themselves: each paired difference is comparable to or
+  smaller than its assignment SD, and the underlying sector calibration
+  fails its rank-order check. Retained as a qualitative illustration of the
+  counterfactual machinery.
+- **Uncertainty language.** The restored results section had reintroduced
+  "the interval excludes zero"; the phrasing is now descriptive (the
+  interval lies entirely above zero) with the record-resampling caveat
+  retained, consistent with the point-3 disposition below.
+- **Still open.** The drift hazards listed under the third round remain:
+  the customs totals (£55,600m / £52,500m) and the FRS record counts
+  (34,966 / 12,800 / largest person weight above 19 thousand) quoted in the
+  methodology and appendix have no backing artifact in the repository and
+  regenerate only from licensed inputs; the hardcoded LFS-selection pound
+  figures in the results section are labelled vintage-consistent but typed.
 
 ## Third-round disposition (11 August 2026)
 
@@ -255,9 +374,11 @@ closed in code but need a licensed-data run to close in the manuscript.
 - Leave-one-division-out reruns cover all 23 exposed divisions. The primary
   contrast remains positive in every rerun, ranging from 7.6 to 11.3
   percentage points.
-- The complete gate passes 321 tests (4 skipped), validates the frozen input
-  manifest, regenerates all manuscript values and builds a visually inspected
-  main paper plus an online supplement.
+- The complete gate passes the full synthetic test suite (328 passing,
+  5 skipped as of 17 August 2026; 321/4 at the time of this round), validates
+  the frozen input manifest, regenerates all manuscript values and builds a
+  visually inspected manuscript (then a main paper plus an online supplement;
+  now a single document — see the fourth-round disposition).
 
 ## Deliberately outside the current estimand
 

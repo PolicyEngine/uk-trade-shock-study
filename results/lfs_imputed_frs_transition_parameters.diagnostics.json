@@ -1,6 +1,6 @@
 {
   "method": "Five-quarter LFS donor cells (SIC division \u00d7 sex \u00d7 age band), credibility-shrunk to sector means and sector-mass aligned to open BRES 2024 employee totals; receiver levels calibrated to direct weighted LFS targets, with an income-tercile sensitivity estimate",
-  "lfs_source": "/Users/janansadeqian/Downloads/UKDA-9490-tab/tab/lgwt24_5q_js24_js25_eul.tab",
+  "lfs_source": "lgwt24_5q_js24_js25_eul.tab",
   "lfs_employed_wave1_records": 2084,
   "lfs_calibrated_manufacturing_records": 177,
   "transition_cell_count": 133,

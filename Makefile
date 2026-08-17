@@ -119,6 +119,5 @@ paper-values:
 
 paper: paper-values
 	cd paper && latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
-	cd paper && latexmk -pdf -interaction=nonstopmode -halt-on-error supplement.tex
 
 reproduce: check inputs results submission-results figures paper

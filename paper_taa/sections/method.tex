@@ -6,6 +6,24 @@ pipeline (\path{analysis_taa/costing.py}) that downloads and pins its raw
 files and emits every manuscript value as a machine-generated macro; no
 reported number is typed by hand.
 
+Following the companion studies' convention, the epistemic status of
+every input is stated once, before any number is reported:
+
+\begin{center}
+\small
+\begin{tabular}{p{0.30\textwidth}p{0.60\textwidth}}
+\toprule
+Object & Status \\
+\midrule
+Redundancy flows & \textbf{Data} (ONS LFS RED02; small, noisy survey cells---the flow-sensitivity note below quantifies the consequence). \\
+Earnings levels & \textbf{Data} (ASHE 2025 full-time weekly, not uprated to the costing year---a conservative, labelled choice). \\
+Statutory rates & \textbf{Data} (DWP 2026--27 published rates; the proposed UI rate is the Green Paper definition at its 2026--27 equivalent). \\
+Re-employment share, wage penalty, take-up, UI duration, contribution-condition share, trade-exposed share & \textbf{Assumed}, each bracketed low/central/high and entering the pipeline exactly once. \\
+Arm arithmetic & \textbf{Computed} from the above; no estimation step anywhere in the pipeline. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
 \paragraph{Eligible flows.} Annual redundancy flows come from the ONS
 Labour Force Survey redundancy series: the four quarters to June 2026 give
 \TaaFlowManuf\ manufacturing redundancies and \TaaFlowAll\ across all

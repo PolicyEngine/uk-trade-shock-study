@@ -9,6 +9,8 @@ LaTeX macros, and every assumption labelled in NOTES.md.
 
 Inputs (data/raw/, see NOTES.md for URLs and provenance):
   - red02aug2026.xlsx                  ONS LFS RED02, redundancies by industry
+  - red01nsaaug2026.xls                ONS LFS RED01 (NSA), redundancy levels
+                                       people/men/women back to 1995
   - ashetable42025provisional.zip      ASHE 2025 provisional, Table 4 (unzipped
                                        to data/raw/ashe_table4/)
   - benefit_pension_rates_2026_27.pdf  DWP proposed benefit rates 2026-27
@@ -18,15 +20,17 @@ Inputs (data/raw/, see NOTES.md for URLs and provenance):
 
 Outputs: out/results.json, out/generated_taa.tex
 
-Usage:  .venv/bin/python costing.py     (deps: openpyxl only)
+Usage:  .venv/bin/python costing.py     (deps: openpyxl + xlrd)
 """
 
 import hashlib
 import json
 import re
+import statistics
 from pathlib import Path
 
 import openpyxl
+import xlrd
 
 ROOT = Path(__file__).resolve().parent
 RAW = ROOT / "data" / "raw"
@@ -48,6 +52,9 @@ PINNED = {
         "cb845995ce8d93eecd8d9cb15357d7a74c4d7b49c28166e382cd3216bb581fd9",
     "nao_british_steel_press_release.html":
         "2f0f02494e55f694eefea6b9b66542209fd98ec7f0c075eede32d730668345e8",
+    # Added 18 Aug 2026 for the cyclical-stress and demographic modules:
+    "red01nsaaug2026.xls":
+        "79a52829a002dc0942e2249839056c5514ceb4998ff0f6f7dd9591ad22e75c2d",
 }
 
 
@@ -117,6 +124,90 @@ def read_ashe():
 
 
 # --------------------------------------------------------------------------
+# 2b. Historical redundancy series and demographic composition
+#     - RED01 (NSA): whole-economy levels, people/men/women, monthly-rolling
+#       windows Mar-May 1995 onwards ('..' before then).  Annual flow for a
+#       calendar year = sum of the four non-overlapping quarters
+#       Jan-Mar + Apr-Jun + Jul-Sep + Oct-Dec (same convention as section 1).
+#       Some period labels carry a trailing footnote digit (e.g.
+#       'Jan-Mar 20193' = Jan-Mar 2019, footnote 3) -- stripped by regex.
+#     - RED02 'Industry - levels': same annual sums for all-industry and
+#       manufacturing, available from calendar 2009.
+#     - RED02 'Age - levels': redundancies by age band (16-24/25-34/35-49/
+#       50+), from Jan-Mar 2009.
+# --------------------------------------------------------------------------
+CAL_QUARTERS = ["Jan-Mar", "Apr-Jun", "Jul-Sep", "Oct-Dec"]
+RED01_PERIOD_RE = re.compile(
+    r"^(Jan-Mar|Apr-Jun|Jul-Sep|Oct-Dec) (\d{4})\d?$")  # optional footnote
+
+
+def read_red01_annual():
+    """Calendar-year annual redundancy flows (people, men, women) from RED01
+    NSA, plus the latest-year (Jul 2025-Jun 2026) people/men totals for the
+    sex composition.  Returns (annual, latest_year_sex)."""
+    wb = xlrd.open_workbook(RAW / "red01nsaaug2026.xls")
+    ws = wb.sheet_by_name("All")
+    by_year = {}
+    latest = {"people": 0.0, "men": 0.0}
+    for i in range(ws.nrows):
+        lab = str(ws.cell_value(i, 0)).strip()
+        people, men, women = (ws.cell_value(i, 1), ws.cell_value(i, 3),
+                              ws.cell_value(i, 5))
+        if not isinstance(people, float):
+            continue
+        m = RED01_PERIOD_RE.match(lab)
+        if m and 1995 <= int(m.group(2)) <= 2026:
+            y = int(m.group(2))
+            by_year.setdefault(y, []).append((people, men, women))
+        # latest-year sex composition uses the same four non-overlapping
+        # quarters as the section-1 eligible flow (Jul 2025 - Jun 2026):
+        if lab in RED02_QUARTERS:
+            latest["people"] += people
+            latest["men"] += men
+    annual = {y: {"people": sum(v[0] for v in q),
+                  "men": sum(v[1] for v in q),
+                  "women": sum(v[2] for v in q)}
+              for y, q in by_year.items() if len(q) == 4}  # complete years
+    if not annual or latest["people"] == 0:
+        raise ValueError("RED01 parse failed")
+    return annual, latest
+
+
+def read_red02_history_and_age():
+    """From the pinned RED02: (a) calendar-year annual all-industry and
+    manufacturing flows (available 2009 onwards); (b) latest-year
+    (Jul 2025 - Jun 2026) age composition of all-industry redundancies."""
+    wb = openpyxl.load_workbook(RAW / "red02aug2026.xlsx", read_only=True)
+    ws = wb["Industry - levels"]
+    rows = list(ws.iter_rows(values_only=True))
+    codes = rows[6]
+    col_all, col_manuf = codes.index("A-U"), codes.index("C")
+    period = {}
+    for r in rows:
+        if (isinstance(r[0], str)
+                and isinstance(r[col_all], (int, float))
+                and isinstance(r[col_manuf], (int, float))):
+            period[r[0].strip()] = (float(r[col_all]), float(r[col_manuf]))
+    annual = {}
+    for y in range(2009, 2027):
+        labs = [f"{q} {y}" for q in CAL_QUARTERS]
+        if all(lab in period for lab in labs):
+            annual[y] = {"all": sum(period[lab][0] for lab in labs),
+                         "manuf": sum(period[lab][1] for lab in labs)}
+    ws_age = wb["Age - levels"]
+    rows_age = list(ws_age.iter_rows(values_only=True))
+    # columns: 0 period, 1 all 16+, 2 16-24, 3 25-34, 4 35-49, 5 50+
+    age = {"all": 0.0, "fifty_plus": 0.0}
+    for r in rows_age:
+        if isinstance(r[0], str) and r[0].strip() in RED02_QUARTERS:
+            age["all"] += float(r[1])
+            age["fifty_plus"] += float(r[5])
+    if not annual or age["all"] == 0:
+        raise ValueError("RED02 history/age parse failed")
+    return annual, age
+
+
+# --------------------------------------------------------------------------
 # 3. Statutory / policy parameters (sources: pinned PDF + Green Paper HTML;
 #    every figure cross-checked against the raw file — see NOTES.md)
 # --------------------------------------------------------------------------
@@ -156,6 +247,22 @@ PARAMS = {
     # Cross-check anchor (pinned press releases): ad-hoc steel support
     "steel_port_talbot_m": 102.0,    # HMG share only (Transition Board totals £122m incl. £20m Tata)
     "steel_scunthorpe_m": 377.0,     # NAO, Apr 2025 - Jan 2026
+    # ---- Module 1: wage-insurance parameter grid (narrow, central take-up) --
+    "wi_grid_replacement": [0.30, 0.50, 0.70],
+    "wi_grid_duration_years": [1, 2, 3],
+    # penalty axis reuses PARAMS["penalty"] {15%, 21.5%, 28%}
+    # ISERBS-parameterised cell (1995 civil-service redundancy insurance
+    # analogue): top-up to 90% of previous pay for 78 weeks (1.5 years):
+    "iserbs_target_replacement": 0.90,
+    "iserbs_duration_weeks": 78,
+    # ---- Module 2: cyclical stress episodes (calendar years) ----------------
+    "stress_gfc_years": [2008, 2009],    # peak = max annual flow within
+    "stress_covid_years": [2020, 2021],
+    # ---- Module 3: self-financing break-even, 2026-27 tax/NIC (gov.uk) ------
+    "income_tax_personal_allowance": 12570.0,  # frozen since 2021-22
+    "income_tax_basic_rate": 0.20,
+    "nic_employee_main_rate": 0.08,      # Class 1 main rate since 6 Apr 2024
+    "nic_primary_threshold_annual": 12570.0,   # aligned with PA
 }
 
 SCEN = ["low", "central", "high"]
@@ -248,18 +355,153 @@ def cost_arms(flows, ashe):
 
 
 # --------------------------------------------------------------------------
+# 4b. Added analysis modules (grid, ISERBS, cyclical stress, break-even,
+#     demographics).  All narrow eligibility (manufacturing flow, ASHE
+#     manufacturing mean weekly pay), central take-up/re-employment.
+# --------------------------------------------------------------------------
+def analysis_modules(res, flows, ashe, red01_annual, red01_latest_sex,
+                     red02_annual, red02_age):
+    p = PARAMS
+    flow = flows["manuf"]                      # narrow eligible flow /yr
+    mean_wk = ashe["manuf"]["mean"]            # £/wk pre-displacement
+    reemp = p["reemployment"]["central"]       # 0.70
+    mods = {}
+
+    # --- Module 1: wage-insurance parameter grid ---------------------------
+    # cost(R, D, pen) = flow x reemp x R x pen x mean_wk x 52 x D / 1e6
+    # (same steady-state convention as Arm A: D annual cohorts in payment,
+    # no catch-up/attrition).
+    grid = {}
+    for pen_name in ["low", "central", "high"]:
+        pen = p["penalty"][pen_name]
+        for R in p["wi_grid_replacement"]:
+            for D in p["wi_grid_duration_years"]:
+                grid[f"pen{pen_name}_r{int(R*100)}_d{D}"] = (
+                    flow * reemp * R * pen * mean_wk * 52 * D / 1e6)
+    mods["wi_grid"] = {
+        "cells_m_per_yr": grid,
+        "min_m_per_yr": min(grid.values()),
+        "max_m_per_yr": max(grid.values()),
+        "convention": "narrow eligibility, central re-employment 0.70; "
+                      "steady state = D cohorts in payment",
+    }
+
+    # --- Module 1b: ISERBS-parameterised cell ------------------------------
+    # Payment = max(0, 90% of previous earnings - new earnings).  At the
+    # central 21.5% penalty, new pay = 78.5% of previous, so the top-up rate
+    # is 90 - 78.5 = 11.5% of previous pay; 78 weeks (1.5 years).
+    topup_rate = max(0.0, p["iserbs_target_replacement"]
+                     - (1 - p["penalty"]["central"]))
+    iserbs_per_worker_yr = topup_rate * mean_wk * 52
+    iserbs_cost = (flow * reemp * topup_rate * mean_wk
+                   * p["iserbs_duration_weeks"]) / 1e6
+    mods["iserbs"] = {
+        "topup_rate_of_prior_pay": topup_rate,
+        "per_worker_per_yr": iserbs_per_worker_yr,
+        "cost_m_per_yr": iserbs_cost,
+        "duration_weeks": p["iserbs_duration_weeks"],
+    }
+
+    # --- Module 2: cyclical/historical stress ------------------------------
+    # Manufacturing annual flows in stress episodes.  GFC and Covid peaks:
+    # direct RED02 manufacturing calendar-year sums (RED02 industry detail
+    # starts Jan-Mar 2009; RED01 whole-economy confirms 2009 > 2008 and
+    # 2020 > 2021, so both peak years lie inside RED02 coverage).
+    # Historical median: RED01 whole-economy median annual flow over the
+    # complete calendar years, scaled to manufacturing by the CURRENT
+    # manufacturing share of all-industry redundancies (ASSUMPTION).
+    hist_years = sorted(red01_annual)
+    people = {y: red01_annual[y]["people"] for y in hist_years}
+    gfc_year = max(p["stress_gfc_years"], key=lambda y: people[y])
+    covid_year = max(p["stress_covid_years"], key=lambda y: people[y])
+    manuf_share_now = flows["manuf"] / flows["all"]
+    med_all = statistics.median(people.values())
+    stress_flows = {
+        "gfc": red02_annual[gfc_year]["manuf"],
+        "covid": red02_annual[covid_year]["manuf"],
+        "hist_median": med_all * manuf_share_now,
+    }
+    total_central_narrow = res["totals"]["narrow"]["central"]
+    # All four arms are linear in the eligible flow, so the stressed total
+    # programme cost is the central narrow total scaled by the flow ratio.
+    stress_costs = {k: total_central_narrow * v / flow
+                    for k, v in stress_flows.items()}
+    mods["stress"] = {
+        "red01_annual_people": {str(y): people[y] for y in hist_years},
+        "hist_median_all_industry": med_all,
+        "hist_years_range": [hist_years[0], hist_years[-1]],
+        "gfc_peak_year": gfc_year, "covid_peak_year": covid_year,
+        "manuf_share_of_all_current": manuf_share_now,
+        "stress_manuf_flows": stress_flows,
+        "flow_ratio_to_current": {k: v / flow
+                                  for k, v in stress_flows.items()},
+        "total_programme_cost_m_per_yr": stress_costs,
+    }
+
+    # --- Module 3: self-financing break-even -------------------------------
+    # Per-month fiscal value of one month less non-employment for a central
+    # manufacturing worker re-employed at the post-displacement wage.
+    # Convention: the marginal month is assumed to fall inside the first
+    # 6 months of the claim, so the forgone-benefit saving = UC single-25+
+    # standard allowance + NS JSA (weekly x 52/12).  See NOTES.md.
+    post_wage_annual = (1 - p["penalty"]["central"]) * mean_wk * 52
+    taxable = max(0.0, post_wage_annual - p["income_tax_personal_allowance"])
+    nicable = max(0.0, post_wage_annual - p["nic_primary_threshold_annual"])
+    tax_nic_annual = (taxable * p["income_tax_basic_rate"]
+                      + nicable * p["nic_employee_main_rate"])
+    benefit_month = (p["uc_single_25plus_monthly_2026_27"]
+                     + p["jsa_weekly_2026_27"] * 52 / 12)
+    fiscal_per_month = benefit_month + tax_nic_annual / 12
+    wi_per_worker_yr = (p["wi_replacement"] * p["penalty"]["central"]
+                        * mean_wk * 52)
+    breakeven_months = wi_per_worker_yr / fiscal_per_month
+    mods["breakeven"] = {
+        "post_displacement_wage_annual": post_wage_annual,
+        "income_tax_annual": taxable * p["income_tax_basic_rate"],
+        "employee_nic_annual": nicable * p["nic_employee_main_rate"],
+        "benefit_saving_per_month": benefit_month,
+        "tax_nic_per_month": tax_nic_annual / 12,
+        "fiscal_value_per_month": fiscal_per_month,
+        "wage_insurance_per_worker_per_yr": wi_per_worker_yr,
+        "breakeven_months_per_insured_worker": breakeven_months,
+    }
+
+    # --- Module 4: demographic composition of the eligible flow ------------
+    # All-industry redundancies, latest year (Jul 2025 - Jun 2026); RED02/
+    # RED01 do not split age or sex by industry (ASSUMPTION: manufacturing
+    # composition proxied by all-industry).
+    male_share = 100 * red01_latest_sex["men"] / red01_latest_sex["people"]
+    fifty_share = 100 * red02_age["fifty_plus"] / red02_age["all"]
+    mods["demographics"] = {
+        "male_share_pct": male_share,
+        "fifty_plus_share_pct": fifty_share,
+        "basis": "all-industry redundancies, Jul 2025 - Jun 2026 "
+                 "(RED01 NSA sex split; RED02 age bands)",
+    }
+    return mods
+
+
+# --------------------------------------------------------------------------
 # 5. LaTeX macro generation (\newcommand, prefix Taa; numbers never typed)
 # --------------------------------------------------------------------------
 def fmt(x, dp=0):
     return f"{x:,.{dp}f}"
 
 
-def latex_macros(res, ashe, flows, red02_detail):
+def latex_macros(res, ashe, flows, red02_detail, mods):
     p = PARAMS
     m = []
 
     def add(name, value):
         m.append(f"\\newcommand{{\\Taa{name}}}{{{value}}}")
+
+    def add_csname(name, value):
+        # For macro names containing digits (requested grid naming
+        # \TaaGridR30D1 etc.): LaTeX control words cannot contain digits,
+        # so define and use these via \csname:
+        #   \csname TaaGridR30D1\endcsname
+        m.append(f"\\expandafter\\newcommand"
+                 f"\\csname Taa{name}\\endcsname{{{value}}}")
 
     # Eligible flows (persons/yr)
     add("FlowManuf", fmt(flows["manuf"]))
@@ -318,6 +560,38 @@ def latex_macros(res, ashe, flows, red02_detail):
         tag = (tag[:-4] + {"2025": "TwentyFive", "2026": "TwentySix"}[tag[-4:]])
         add(f"RedManuf{tag}", fmt(man))
         add(f"RedAll{tag}", fmt(tot))
+
+    # ---- Added analysis modules (appended; existing macros above are
+    # ---- byte-identical to the previous version of this file) -------------
+    m.append("% --- added analysis modules: wage-insurance grid, ISERBS, "
+             "cyclical stress, break-even, demographics ---")
+    # Module 1: 3x3 grid at the central (21.5%) penalty, £m/yr.  Digit-bearing
+    # names as specified; use via \csname TaaGridR30D1\endcsname.
+    for R in p["wi_grid_replacement"]:
+        for D in p["wi_grid_duration_years"]:
+            add_csname(f"GridR{int(R*100)}D{D}",
+                       fmt(mods["wi_grid"]["cells_m_per_yr"]
+                           [f"pencentral_r{int(R*100)}_d{D}"]))
+    add("GridMin", fmt(mods["wi_grid"]["min_m_per_yr"]))
+    add("GridMax", fmt(mods["wi_grid"]["max_m_per_yr"]))
+    add("IserbsCost", fmt(mods["iserbs"]["cost_m_per_yr"]))
+    add("IserbsPerWorker", fmt(mods["iserbs"]["per_worker_per_yr"]))
+    # Module 2: cyclical stress (£m/yr, central narrow total programme)
+    st = mods["stress"]
+    add("CostPeakGFC", fmt(st["total_programme_cost_m_per_yr"]["gfc"]))
+    add("CostPeakCovid", fmt(st["total_programme_cost_m_per_yr"]["covid"]))
+    add("CostHistMedian",
+        fmt(st["total_programme_cost_m_per_yr"]["hist_median"]))
+    add("FlowRatioGFC", fmt(st["flow_ratio_to_current"]["gfc"], 1))
+    # Module 3: self-financing break-even
+    add("FiscalPerMonth", fmt(mods["breakeven"]["fiscal_value_per_month"]))
+    add("BreakEvenMonths",
+        fmt(mods["breakeven"]["breakeven_months_per_insured_worker"], 1))
+    # Module 4: demographic composition (%, all-industry latest year)
+    add("EligMaleShare", fmt(mods["demographics"]["male_share_pct"], 1))
+    add("EligFiftyPlusShare",
+        fmt(mods["demographics"]["fifty_plus_share_pct"], 1))
+
     header = ("% generated_taa.tex -- auto-generated by costing.py; do not edit.\n"
               "% All values trace to pinned raw files or labelled assumptions "
               "in NOTES.md.\n")
@@ -330,6 +604,10 @@ def main():
     flows = {"all": flow_all, "manuf": flow_manuf}
     ashe = read_ashe()
     res = cost_arms(flows, ashe)
+    red01_annual, red01_latest_sex = read_red01_annual()
+    red02_annual, red02_age = read_red02_history_and_age()
+    mods = analysis_modules(res, flows, ashe, red01_annual, red01_latest_sex,
+                            red02_annual, red02_age)
     res["inputs"] = {
         "redundancy_flows": {"annual_all": flow_all,
                              "annual_manufacturing": flow_manuf,
@@ -340,10 +618,13 @@ def main():
         "parameters": {k: v for k, v in PARAMS.items()},
         "pinned_files_sha256": PINNED,
     }
+    res["modules"] = mods
+    res["inputs"]["red02_annual_history"] = {
+        str(y): red02_annual[y] for y in sorted(red02_annual)}
     OUT.mkdir(exist_ok=True)
     (OUT / "results.json").write_text(json.dumps(res, indent=2))
     (OUT / "generated_taa.tex").write_text(
-        latex_macros(res, ashe, flows, red02_detail))
+        latex_macros(res, ashe, flows, red02_detail, mods))
     print(f"Wrote {OUT/'results.json'} and {OUT/'generated_taa.tex'}")
 
     # Console summary
@@ -365,6 +646,31 @@ def main():
           "central totals as % of it: "
           + ", ".join(f"{e} {v:.0f}%" for e, v
                       in cc["total_central_pct_of_steel"].items()))
+
+    # Added modules
+    g = mods["wi_grid"]["cells_m_per_yr"]
+    print("\nWage-insurance grid at central 21.5% penalty (GBP m/yr):")
+    print("        " + "".join(f"{d}yr".rjust(10) for d in (1, 2, 3)))
+    for R in (30, 50, 70):
+        print(f"  R{R}%  " + "".join(
+            f"{g[f'pencentral_r{R}_d{d}']:>10,.0f}" for d in (1, 2, 3)))
+    print(f"  27-cell grid min {mods['wi_grid']['min_m_per_yr']:,.0f}, "
+          f"max {mods['wi_grid']['max_m_per_yr']:,.0f}")
+    i = mods["iserbs"]
+    print(f"ISERBS cell (90% top-up, 78wk): GBP {i['cost_m_per_yr']:,.0f}m/yr"
+          f"; per worker GBP {i['per_worker_per_yr']:,.0f}/yr")
+    st = mods["stress"]
+    sc = st["total_programme_cost_m_per_yr"]
+    print(f"Stress totals (central narrow): GFC {sc['gfc']:,.0f}m "
+          f"(flow x{st['flow_ratio_to_current']['gfc']:.1f}), "
+          f"Covid {sc['covid']:,.0f}m, hist median {sc['hist_median']:,.0f}m")
+    b = mods["breakeven"]
+    print(f"Break-even: fiscal value GBP {b['fiscal_value_per_month']:,.0f}"
+          f"/month -> {b['breakeven_months_per_insured_worker']:.1f} months "
+          "of reduced non-employment per insured worker")
+    d = mods["demographics"]
+    print(f"Eligible-flow composition (all-industry): male "
+          f"{d['male_share_pct']:.1f}%, 50+ {d['fifty_plus_share_pct']:.1f}%")
 
 
 if __name__ == "__main__":

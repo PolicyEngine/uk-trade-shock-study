@@ -1,8 +1,10 @@
 # TAA costing pipeline — sources and assumptions
 
 First-pass annual costings of four candidate UK worker-side trade-adjustment
-policies. One rerunnable script (`costing.py`, dependency: `openpyxl` only),
-mirroring the conventions of
+policies, plus four added analysis modules (wage-insurance parameter grid,
+ISERBS cell, cyclical stress, self-financing break-even, demographic
+composition — sections 9–12). One rerunnable script (`costing.py`,
+dependencies: `openpyxl` + `xlrd`), mirroring the conventions of
 [PolicyEngine/uk-trade-shock-study](https://github.com/PolicyEngine/uk-trade-shock-study):
 pinned raw inputs verified by SHA256, all reported numbers generated (never
 typed) into LaTeX `\newcommand` macros prefixed `Taa`.
@@ -21,6 +23,7 @@ All downloads made 18 August 2026.
 | `pathways_to_work_green_paper.html` | DWP "Pathways to Work: Reforming Benefits and Support to Get Britain Working" Green Paper (Mar 2025), gov.uk consultation page | `0af072c1…27f5a073` |
 | `port_talbot_22m_press_release.html` | gov.uk press release "UK government provides £22m extra support for Port Talbot steelworkers and businesses" | `cb845995…3216bb581fd9` |
 | `nao_british_steel_press_release.html` | NAO press release "Government spends £377 million in 9 months to keep British Steel's Scunthorpe site operating" (Mar 2026) | `2f0f0249…30668345e8` |
+| `red01nsaaug2026.xls` | ONS RED01 (NSA) "Redundancies levels and rates (not seasonally adjusted)", August 2026 edition, people/men/women, monthly-rolling windows from Mar–May 1995: `https://www.ons.gov.uk/file?uri=/employmentandlabourmarket/peoplenotinwork/redundancies/datasets/redundancieslevelsandratesnotseasonallyadjustedred01nsa/current/red01nsaaug2026.xls` (downloaded 18 Aug 2026; legacy `.xls`, hence the added `xlrd` dependency) | `79a52829…22e75c2d` |
 
 Full hashes are hard-coded in `costing.py` (`PINNED`) and verified on every run.
 
@@ -135,3 +138,127 @@ not confidence intervals.
    (part-timers, who earn less, are ignored; biases costs up slightly).
 5. Arm interactions ignored — the four arms are costed independently and
    the "TOTAL" simply adds them.
+
+## 9. Wage-insurance parameter grid and ISERBS cell (added module)
+
+- Factorial grid, **narrow** eligibility (manufacturing flow 64,463/yr, ASHE
+  manufacturing mean £891.20/wk), central re-employment 70%:
+  replacement rate {30, 50, 70%} × maximum duration {1, 2, 3 years} ×
+  penalty {15, 21.5, 28%}. Cost formula identical to Arm A:
+  flow × 0.70 × R × penalty × £891.20 × 52 × D (steady state = D annual
+  cohorts in payment simultaneously, no catch-up/attrition — same
+  up-biasing ASSUMPTION as Arm A).
+- The 3×3 table at the central 21.5% penalty is emitted as
+  `TaaGridR30D1` … `TaaGridR70D3` (£m/yr); `\TaaGridMin`/`\TaaGridMax`
+  are the min/max over all 27 cells (min = 30%×1yr×15%; max = 70%×3yr×28%).
+- NOTE on macro names: LaTeX control words cannot contain digits, so the
+  nine grid macros are defined with
+  `\expandafter\newcommand\csname TaaGridR30D1\endcsname{…}` and must be
+  used as `\csname TaaGridR30D1\endcsname`. All other added macros are
+  ordinary digit-free `\newcommand`s.
+- **ISERBS-parameterised cell**: the 1995 civil-service Insurance Scheme
+  for Early Retirement and Severance-style design — payment = max(0, 90%
+  of previous earnings − new earnings), i.e. a top-up to 90% of prior pay,
+  for 78 weeks (1.5 years), same flow and 70% re-employment. At the
+  central 21.5% penalty the implied top-up rate is 90 − 78.5 = **11.5%**
+  of prior pay. Arithmetic relation worth noting: this is close to Arm A's
+  50% × 21.5% = **10.75%** of prior pay — the ISERBS design at these
+  parameters is nearly the same transfer per week as Arm A, paid for 1.5
+  rather than 2 years (hence `\TaaIserbsCost` £361m/yr ≈ ¾ × Arm A's
+  £450m/yr × 11.5/10.75). Unlike Arm A, the ISERBS payment is earnings-
+  linked ex post (max(0, ·) truncation); at the central-penalty mean-wage
+  calculation the truncation never binds, so the formula is linear.
+
+## 10. Cyclical/historical stress (added module)
+
+- Annual series convention: calendar-year flow = sum of the four
+  non-overlapping quarters Jan–Mar + Apr–Jun + Jul–Sep + Oct–Dec (mirrors
+  section 2). Two sources:
+  - **All-industry (and men/women) back to 1995**: pinned RED01 NSA
+    (`All` sheet). Numeric data run Mar–May 1995 → Apr–Jun 2026; complete
+    calendar years are **1996–2025** (1995 lacks Jan–Mar and is excluded
+    from the median). Some period labels carry a trailing footnote digit
+    (e.g. `Jan-Mar 20193` = Jan–Mar 2019 footnote 3); the parser strips it.
+  - **Manufacturing**: RED02 `Industry - levels`, available from calendar
+    2009 only.
+- Stress flows (manufacturing, /yr):
+  - **GFC peak**: RED01 confirms 2009 (940,525 all-industry) > 2008
+    (660,211), so the peak calendar year lies inside RED02 coverage;
+    manufacturing 2009 = **188,171** (direct RED02, no scaling). CAVEAT:
+    RED02 industry detail starts Jan–Mar 2009, so a hypothetical
+    Oct-2008-to-Sep-2009 window cannot be tested for manufacturing; on the
+    all-industry series calendar 2009 is the peak year regardless.
+  - **Covid peak**: 2020 (909,542) > 2021; manufacturing 2020 =
+    **116,420** (direct RED02).
+  - **Historical median**: median of RED01 all-industry annual flows
+    1996–2025 = **565,794**, scaled to manufacturing by the CURRENT
+    manufacturing share of all-industry redundancies (64,463 / 511,407 =
+    12.6%) → **71,319** (ASSUMPTION: constant manufacturing share; the
+    actual share was 20.0% in 2009 and 12.8% in 2020, so this understates
+    manufacturing-heavy recessions).
+- Costing: all four arms are **linear in the eligible flow**, so the
+  stressed total programme cost = central narrow total (£770m/yr) × flow
+  ratio. GFC ratio 188,171/64,463 = 2.9 (`\TaaFlowRatioGFC`). Cross-check
+  consistency: RED01 latest-year total (Jul 2025–Jun 2026) = 511,407,
+  identical to the RED02 all-industry flow of section 2.
+
+## 11. Self-financing break-even (added module; statutory arithmetic only)
+
+- Question: how many months of reduced non-employment per insured worker
+  make Arm A (central, narrow) self-financing?
+- Per-month fiscal value of one month less non-employment for a central
+  manufacturing worker re-employed at the post-displacement wage
+  (£891.20 × (1 − 0.215) = £699.59/wk, £36,379/yr):
+  - Forgone-benefit saving: UC single-25+ standard allowance £424.90/mo
+    + NS JSA £95.55/wk × 52/12 = £414.05/mo → £838.95/mo. CONVENTION:
+    the marginal month is assumed to fall within the first 6 months of the
+    claim (when NS JSA is payable); internally consistent since the
+    resulting break-even (3.6 months) < 6. JSA and UC are treated as
+    additive; in reality NS JSA counts pound-for-pound as unearned income
+    against UC, so for UC-entitled claimants this DOUBLE-COUNTS up to the
+    JSA amount — the benefit saving is an upper bound and the break-even
+    months therefore a lower bound. For claimants without UC entitlement
+    (savings/partner income) the JSA-only saving applies instead.
+  - Tax + employee NICs on one month of re-employment earnings, simple
+    2026-27 calculation (rates from gov.uk "Income Tax rates and Personal
+    Allowances" and "Rates and allowances: National Insurance
+    contributions"): personal allowance £12,570 (frozen), basic rate 20%,
+    employee Class 1 main rate 8% above the primary threshold (aligned
+    with the PA at £12,570; main rate 8% since 6 April 2024). Post-
+    displacement pay £36,379 is below the higher-rate threshold, so
+    basic-rate-only arithmetic is exact: (£36,379 − £12,570) × 28% =
+    £6,666/yr → £555.54/mo.
+  - Total `\TaaFiscalPerMonth` = £1,394/mo.
+- Arm A per-worker annual cost (central) = 50% × 21.5% × £891.20 × 52 =
+  £4,982/yr → break-even `\TaaBreakEvenMonths` = 4,982 / 1,394 =
+  **3.6 months** of average non-employment reduction per insured worker
+  per year of payment.
+- ILLUSTRATIVE comparison: Hyman, Kovak and Leive, "Wage Insurance for
+  Displaced Workers" (NBER Working Paper 32464, 2024; Federal Reserve Bank
+  of New York Staff Report 1105) find, from a US TAA/ATAA age-50
+  eligibility discontinuity, that wage-insurance eligibility raises
+  short-run employment probabilities enough to shorten non-employment by
+  several months within the first two years, and conclude the US programme
+  was roughly self-financing through reduced UI benefits and higher tax
+  receipts. Their setting (US benefit levels, 50+ workers, 50% replacement
+  capped) differs from this one in most institutional details — the
+  comparison indicates plausibility of the 3.6-month hurdle, not a
+  forecast.
+
+## 12. Demographic composition of the eligible flow (added module)
+
+- Latest-year (Jul 2025 – Jun 2026, same four non-overlapping quarters as
+  section 2) composition of **all-industry** redundancies:
+  - Male share: RED01 NSA men/people = 274,286 / 511,407 = **53.6%**
+    (`\TaaEligMaleShare`).
+  - 50+ share: RED02 `Age - levels` 50+/all-16+ = 176,973 / 511,407 =
+    **34.6%** (`\TaaEligFiftyPlusShare`).
+- ASSUMPTION: neither pinned source splits age or sex by industry, so the
+  all-industry composition proxies the manufacturing (narrow) eligible
+  flow; manufacturing is plausibly more male and older than the
+  all-industry average, so both shares are likely understated.
+- Why it matters: the strongest causal evidence for wage insurance
+  (Hyman–Kovak–Leive's US ATAA discontinuity) is identified at the age-50
+  eligibility cut-off — with over a third of the UK eligible flow aged
+  50+, the sub-population for which the evidence is strongest is a large
+  share of the caseload.

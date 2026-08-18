@@ -13,13 +13,13 @@ re-employment plus survivor earnings cuts), and a factorial **mixed
 wage/job-loss** family. An Economic
 Prosperity Deal counterfactual
 (full tariffs vs deal-mitigated: autos 25%→10% in-quota, conditional steel
-relief, pharma exempt) is retained in the code and reported in the paper's
-results and policy sections, but **withdrawn as a quantitative result** in
-both places: the paired full-minus-EPD contrast is comparable to or smaller
-than its own assignment dispersion on every quantity reported, and it prices
-a change in a sector calibration whose own rank-order check does not
-corroborate it. The manuscript reports it as a qualitative illustration of
-the counterfactual machinery only.
+relief, pharma exempt) is retained in the code but **withdrawn as a
+quantitative result**: the paired full-minus-EPD contrast is comparable to
+or smaller than its own assignment dispersion on every quantity reported,
+and it prices a change in a sector calibration whose own rank-order check
+does not corroborate it. The main paper's results and policy sections state
+the withdrawal and the detail lives in the online supplement as a
+qualitative illustration of the counterfactual machinery only.
 
 Companion to [uk-ai-study](../uk-ai-study), whose conventions this repo
 mirrors. The disposition of successive referee rounds is tracked in
@@ -75,14 +75,16 @@ mirrors. The disposition of successive referee rounds is tracked in
 11. `analysis/write_factorial_results.py` — validates both new artifacts and
     emits their manuscript macros.
 
-The manuscript builds as a single document (`paper/main.tex`): the HMRC
-event-study detail and the exploratory sensitivity sections live in its
-appendix (`paper/sections/appendix.tex`), the LFS imputation benchmarks in
-the methodology and results sections, and the EPD detail (withdrawn as a
-quantitative result) in the results and policy sections. An earlier draft
-split this material into a standalone online supplement; that split was
-reversed when the 5 August manuscript was restored, and no
-`paper/supplement.tex` exists in the current tree.
+The manuscript builds as a short main paper (`paper/main.tex`) plus a
+standalone online supplement (`paper/supplement.tex` +
+`paper/sections/supplement_body.tex`). The main paper keeps the core
+appendices (provenance, shock mechanics, Monte Carlo conventions, factorial
+scenarios, duration scope, monthly-UC bounding); the supplement carries the
+elasticity grid, reallocation sensitivity, observed-outturn stress, HMRC
+destination-panel diagnostic, the EPD counterfactual (withdrawn as a
+quantitative result), and the demographic, supply-chain and constituency
+exercises. The LFS imputation benchmarks stay in the main methodology and
+results sections.
 
 The legacy scenario suite uses 100 assignment draws. The compact submission
 design uses 50 balanced draws; both specifications are declared explicitly.
@@ -184,12 +186,10 @@ for the implemented benchmark.
 
 ## Paper
 
-`paper/main.tex` is the manuscript, including the data, mechanics,
-Monte Carlo and sensitivity appendices (HMRC event-study detail and the
-exploratory sensitivity sections; the LFS imputation benchmarks sit in the
-methodology and results sections, and the EPD detail — withdrawn as a
-quantitative result — in the results and policy sections). `make paper`
-builds its PDF. All numerical values draw from validated generated files.
+`paper/main.tex` is the short main manuscript (core appendices inline);
+`paper/supplement.tex` is the standalone online supplement described above.
+`make paper` builds both PDFs. All numerical values in both draw from
+validated generated files.
 The paper reports a static, partial-equilibrium, first-round fiscal-incidence
 stress test conditional on imposed labour-income changes. It is not a causal
 estimate of the tariffs' production, productivity, employment, macroeconomic

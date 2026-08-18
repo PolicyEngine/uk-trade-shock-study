@@ -1,0 +1,223 @@
+{
+  "arms": {
+    "wage_insurance": {
+      "narrow": {
+        "low": 224.05275984000002,
+        "central": 449.5992047456,
+        "high": 710.9940912256
+      },
+      "broad": {
+        "low": 1836.5239058399998,
+        "central": 3685.2913043855992,
+        "high": 5827.902527865601
+      },
+      "exposed": {
+        "low": 67.215827952,
+        "central": 134.87976142367998,
+        "high": 213.29822736768
+      }
+    },
+    "ui_extension": {
+      "narrow": {
+        "low": 67.51081064000002,
+        "central": 185.98993686000006,
+        "high": 328.9224575
+      },
+      "broad": {
+        "low": 535.5863229600002,
+        "central": 1475.5217045400002,
+        "high": 2609.4542175
+      },
+      "exposed": {
+        "low": 20.253243192000006,
+        "central": 55.79698105800001,
+        "high": 98.67673724999999
+      }
+    },
+    "retraining": {
+      "narrow": {
+        "low": 38.6778,
+        "central": 77.3556,
+        "high": 116.03339999999999
+      },
+      "broad": {
+        "low": 306.8442,
+        "central": 613.6884,
+        "high": 920.5326
+      },
+      "exposed": {
+        "low": 11.60334,
+        "central": 23.20668,
+        "high": 34.810019999999994
+      }
+    },
+    "uc_capital_disregard_bound": {
+      "narrow": {
+        "low": 32.868394439999996,
+        "central": 57.51969026999999,
+        "high": 82.1709861
+      },
+      "broad": {
+        "low": 260.75620116,
+        "central": 456.3233520299999,
+        "high": 651.8905028999999
+      },
+      "exposed": {
+        "low": 9.860518331999998,
+        "central": 17.255907080999997,
+        "high": 24.651295829999995
+      }
+    }
+  },
+  "per_beneficiary": {
+    "wage_insurance_annual_payment": {
+      "low": {
+        "narrow": 3475.6800000000003,
+        "broad": 3591.1199999999994,
+        "exposed": 3475.6800000000003
+      },
+      "central": {
+        "narrow": 4981.808,
+        "broad": 5147.271999999999,
+        "exposed": 4981.808
+      },
+      "high": {
+        "narrow": 6487.936000000001,
+        "broad": 6703.424,
+        "exposed": 6487.936000000001
+      }
+    },
+    "ui_extension_incremental": {
+      "low": 1309.1000000000004,
+      "central": 3205.8000000000006,
+      "high": 5102.5
+    },
+    "retraining_stipend": 3000.0,
+    "uc_six_month_standard_allowance": 2549.3999999999996
+  },
+  "eligible_flows": {
+    "narrow": 64463.0,
+    "broad": 511407.0,
+    "exposed": 19338.899999999998
+  },
+  "totals": {
+    "narrow": {
+      "low": 363.10976492000003,
+      "central": 770.4644318756,
+      "high": 1238.1209348256
+    },
+    "broad": {
+      "low": 2939.71062996,
+      "central": 6230.824760955599,
+      "high": 10009.779848265602
+    },
+    "exposed": {
+      "low": 108.932929476,
+      "central": 231.13932956268,
+      "high": 371.43628044767996
+    }
+  },
+  "cross_checks": {
+    "steel_support_m": 479.0,
+    "total_central_pct_of_steel": {
+      "narrow": 160.8485243999165,
+      "broad": 1300.798488717244,
+      "exposed": 48.25455731997495
+    }
+  },
+  "inputs": {
+    "redundancy_flows": {
+      "annual_all": 511407.0,
+      "annual_manufacturing": 64463.0,
+      "quarters": {
+        "Jul-Sep 2025": {
+          "all": 133786.0,
+          "manufacturing": 19487.0
+        },
+        "Oct-Dec 2025": {
+          "all": 145271.0,
+          "manufacturing": 17803.0
+        },
+        "Jan-Mar 2026": {
+          "all": 126093.0,
+          "manufacturing": 23240.0
+        },
+        "Apr-Jun 2026": {
+          "all": 106257.0,
+          "manufacturing": 3933.0
+        }
+      },
+      "source": "ONS RED02 Aug 2026, Industry - levels"
+    },
+    "ashe_ft_gross_weekly_2025p": {
+      "all": {
+        "median": 766.6,
+        "mean": 920.8,
+        "p25": 583.5
+      },
+      "manuf": {
+        "median": 774.0,
+        "mean": 891.2,
+        "p25": 594.1
+      }
+    },
+    "parameters": {
+      "jsa_weekly_2026_27": 95.55,
+      "jsa_duration_weeks": 26,
+      "uc_single_25plus_monthly_2026_27": 424.9,
+      "esa_pa_25plus_2026_27": 95.55,
+      "esa_support_component_2026_27": 50.35,
+      "ui_weekly_2026_27": 145.9,
+      "ui_duration_months_options": [
+        6,
+        9,
+        12
+      ],
+      "penalty": {
+        "low": 0.15,
+        "central": 0.215,
+        "high": 0.28
+      },
+      "reemployment": {
+        "low": 0.5,
+        "central": 0.7,
+        "high": 0.85
+      },
+      "wi_replacement": 0.5,
+      "wi_duration_years": 2.0,
+      "contrib_share": {
+        "low": 0.8,
+        "central": 0.9,
+        "high": 1.0
+      },
+      "ui_duration_weeks": {
+        "low": 26,
+        "central": 39,
+        "high": 52
+      },
+      "train_stipend": 3000.0,
+      "train_takeup": {
+        "low": 0.2,
+        "central": 0.4,
+        "high": 0.6
+      },
+      "uc_months": 6,
+      "uc_capital_gated_share": {
+        "low": 0.2,
+        "central": 0.35,
+        "high": 0.5
+      },
+      "exposed_share_of_manuf": 0.3,
+      "steel_port_talbot_m": 102.0,
+      "steel_scunthorpe_m": 377.0
+    },
+    "pinned_files_sha256": {
+      "red02aug2026.xlsx": "f653c80c7f48d9f9becffd0002d616ba4b524711ed2f390186b0c242d193feb3",
+      "ashetable42025provisional.zip": "581d23bb7e1746032246b720efe82a34dfb9708f0407b4d752e654d8cecb1284",
+      "benefit_pension_rates_2026_27.pdf": "c13111a6a4a939778bce54b248ce525470b98b730276715632fd5d1eaec3c019",
+      "pathways_to_work_green_paper.html": "0af072c178ca3f601f198e5677708f7d5ff7861a3f64b51df5ad0127b7f5a073",
+      "port_talbot_22m_press_release.html": "cb845995ce8d93eecd8d9cb15357d7a74c4d7b49c28166e382cd3216bb581fd9",
+      "nao_british_steel_press_release.html": "2f0f02494e55f694eefea6b9b66542209fd98ec7f0c075eede32d730668345e8"
+    }
+  }
+}

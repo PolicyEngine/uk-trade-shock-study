@@ -110,7 +110,8 @@ Full hashes are hard-coded in `costing.py` (`PINNED`) and verified on every run.
 
 ## 6. Cross-check anchor
 
-Ad-hoc steel support ≈ **£499m**: Port Talbot Transition Board £122m
+Ad-hoc steel support ≈ **£479m of government money**: Port Talbot HMG
+share £102m (the £122m Transition Board fund includes £20m from Tata Steel)
 (£102m UK Government + £20m Tata Steel; pinned gov.uk press release) +
 British Steel Scunthorpe £377m (Apr 2025–Jan 2026; pinned NAO press
 release, which projects £615m by Jun 2026 — the £377m is therefore a
@@ -156,8 +157,12 @@ not confidence intervals.
   `\expandafter\newcommand\csname TaaGridR30D1\endcsname{…}` and must be
   used as `\csname TaaGridR30D1\endcsname`. All other added macros are
   ordinary digit-free `\newcommand`s.
-- **ISERBS-parameterised cell**: the 1995 civil-service Insurance Scheme
-  for Early Retirement and Severance-style design — payment = max(0, 90%
+- **ISERBS-parameterised cell**: the Iron and Steel Employees
+  Re-adaptation Benefits Scheme (SI 1988/538, Schedule 1) — the UK's
+  statutory steel wage-insurance scheme operated under the ECSC framework
+  until 2002. Parameters used: weekly top-up to 90% of previous earnings,
+  78 weeks (the bottom of the statutory 78–130-week range — the
+  conservative duration choice).
   of previous earnings − new earnings), i.e. a top-up to 90% of prior pay,
   for 78 weeks (1.5 years), same flow and 70% re-employment. At the
   central 21.5% penalty the implied top-up rate is 90 − 78.5 = **11.5%**

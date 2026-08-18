@@ -14,9 +14,15 @@ toward the low end of their steady-state range. A single-quarter audit
 makes the flow sensitivity concrete: annualising each quarter alone spans
 roughly 16{,}000 to 93{,}000 manufacturing redundancies a year, so every
 narrow cost cell inherits a wide flow band before any scenario dial
-moves. The costings below therefore lean on the
-four-quarter sum, and Section~\ref{sec:results-cyclical} bounds the
-cyclical dimension explicitly.
+moves. Excluding the anomalous quarter and annualising the
+remaining three gives \TaaFlowManufExAnom\ manufacturing redundancies a
+year, under which the designed-transfer total below rises from
+\pounds\TaaTotalABCCentralNarrow\ to
+\pounds\TaaTotalABCCentralNarrowExAnom\,million: flow noise, not the
+scenario dials, is the largest single uncertainty in the narrow
+costings, and every narrow figure should be read with that band in mind.
+Section~\ref{sec:results-cyclical} bounds the cyclical dimension
+explicitly.
 
 \subsection{Annual costs}
 
@@ -39,23 +45,30 @@ Arm & Narrow & Broad & Memo: trade-exposed \\
 A. Wage insurance & \TaaWageInsCostCentralNarrow & \TaaWageInsCostCentralBroad & \TaaWageInsCostCentralExposed \\
 B. UI extension & \TaaUiExtCostCentralNarrow & \TaaUiExtCostCentralBroad & \TaaUiExtCostCentralExposed \\
 C. Retraining stipend & \TaaTrainCostCentralNarrow & \TaaTrainCostCentralBroad & \TaaTrainCostCentralExposed \\
-D. UC disregard (exposure bound) & \TaaUcDisCostCentralNarrow & \TaaUcDisCostCentralBroad & \TaaUcDisCostCentralExposed \\
 \midrule
-Total & \TaaTotalCostCentralNarrow & \TaaTotalCostCentralBroad & \TaaTotalCostCentralExposed \\
-Scenario bracket (low--high) & \TaaTotalCostLowNarrow--\TaaTotalCostHighNarrow & \TaaTotalCostLowBroad--\TaaTotalCostHighBroad & \TaaTotalCostLowExposed--\TaaTotalCostHighExposed \\
+Total, designed transfers (A--C) & \TaaTotalABCCentralNarrow & \TaaTotalABCCentralBroad & \TaaTotalABCCentralExposed \\
+Scenario bracket (low--high) & \TaaTotalABCLowNarrow--\TaaTotalABCHighNarrow & \TaaTotalABCLowBroad--\TaaTotalABCHighBroad & \TaaTotalABCLowExposed--\TaaTotalABCHighExposed \\
+\midrule
+Memo: D. UC disregard exposure bound & \TaaUcDisCostCentralNarrow & \TaaUcDisCostCentralBroad & \TaaUcDisCostCentralExposed \\
 \bottomrule
 \end{tabular}
 \begin{minipage}{.94\textwidth}\footnotesize
 \emph{Notes:} gross steady-state envelopes; no tax or Universal Credit
 clawback, no behavioural response, arms costed independently and summed.
-Independence overstates the total: Arm B substitutes for UC
-pound-for-pound where claimants hold both entitlements, and Arm A's
-taxable payments would be tapered against UC, so the four-arm total is an
-upper bound on the gross cost of enacting all four together. Arm D is a
-labelled maximum-exposure bound, not a costing
-(Section~\ref{sec:design}). Scenario brackets move all take-up,
-re-employment and penalty dials together in the cost-increasing
-direction, so they are outer bounds, not confidence intervals.
+Arms A and B assume full take-up among the eligible (a deliberate
+cost-increasing convention; only Arm C carries a take-up dial), and Arm B
+is costed at full benefit exhaustion---every claimant draws the entire
+39-week entitlement---so its central figure is closer to an upper bound
+than a central estimate. Independence also overstates the joint total:
+Arm B substitutes for UC pound-for-pound where claimants hold both
+entitlements, and Arm A's taxable payments would be tapered against UC.
+Arm D is an exposure bound, not a costing, priced on the single-adult
+standard allowance only (no couple rates, housing or child elements) and
+six months of the twelve-month design; it is excluded from all totals
+(Section~\ref{sec:design}). The UI arm uses the Green Paper rate at its
+2026--27 uprated equivalent (\pounds\TaaUiWeekly). Scenario brackets
+move the modelled dials together in the cost-increasing direction, so
+they are outer bounds, not confidence intervals.
 \end{minipage}
 \end{table}
 
@@ -63,8 +76,7 @@ Per-beneficiary magnitudes make the arms comparable to existing
 benefits. The central wage-insurance payment is
 \pounds\TaaWageInsPerWorkerCentralManuf\ a year for a re-employed
 manufacturing worker (half of a 21.5 per cent earnings loss on the
-\pounds\TaaMeanWeeklyManuf\ mean full-time manufacturing wage)---roughly
-the annual value of the proposed Unemployment Insurance itself. The UI
+\pounds\TaaMeanWeeklyManuf\ mean full-time manufacturing wage). The UI
 extension is worth \pounds\TaaUiExtPerWorkerCentral\ per claimant (the
 gap between \pounds\TaaUiWeekly\ a week for nine months and the current
 \pounds\TaaJsaWeekly\ New Style JSA for six). The retraining stipend is
@@ -103,7 +115,7 @@ Replacement rate & 1 year & 2 years & 3 years \\
 \end{tabular}
 \begin{minipage}{.8\textwidth}\footnotesize
 \emph{Notes:} 21.5 per cent central penalty, 70 per cent re-employment,
-central take-up. The 50 per cent / 2-year cell is Arm A's headline
+full take-up among the re-employed. The 50 per cent / 2-year cell is Arm A's headline
 (Table~\ref{tab:taa-costs}). Full 27-cell range including the 15 and 28
 per cent penalty variants: \pounds\TaaGridMin--\TaaGridMax\,million.
 \end{minipage}
@@ -114,13 +126,18 @@ ISERBS topped a re-employed steelworker's pay up to 90 per cent of prior
 earnings for 78 weeks: at the central penalty that implies a top-up of
 11.5 per cent of prior pay---almost identical per week to Arm A's 50 per
 cent of a 21.5 per cent gap (10.75 per cent)---but over a shorter
-horizon. Applied to today's narrow flow, the ISERBS parameterisation
-costs \pounds\TaaIserbsCost\,million a year
-(\pounds\TaaIserbsPerWorker\ per re-employed worker): the scheme the UK actually ran for three decades is,
-in gross cost, \emph{cheaper} than the US-style arm costed here. A
-British government seeking a precedent-anchored design could restore the
-ISERBS parameters for all manufacturing redundancies for less than the
-headline arm.
+horizon. Applied to today's narrow flow at 78 weeks (the bottom of the statutory
+78--130-week range---the conservative duration choice), the ISERBS
+parameterisation costs \pounds\TaaIserbsCost\,million a year
+(\pounds\TaaIserbsPerWorker\ per re-employed worker): the same order of
+gross cost as the US-style arm. The point comparison should not be
+pressed harder than that: both payments are convex in the individual wage
+gap and are evaluated here at the mean penalty, which understates both
+costs and understates the ISERBS cost by more (its deductible structure
+pays nothing until the gap exceeds ten per cent of prior pay), so the
+ranking between the two designs is not identified by this calculation.
+What the cell establishes is that a precedent-anchored British design
+sits inside the same cost class as the imported one.
 
 \subsection{Cyclical stress}\label{sec:results-cyclical}
 
@@ -131,11 +148,16 @@ historical manufacturing redundancy flows: at the 2009 financial-crisis
 peak (\TaaFlowRatioGFC\ times the current flow) the programme costs \pounds\TaaCostPeakGFC\,million; at the
 2020 pandemic peak, \pounds\TaaCostPeakCovid\,million; at the 1996--2025
 historical median (share-scaled from the all-industry series, a labelled
-assumption), \pounds\TaaCostHistMedian\,million. The linear scaling
-ignores the recession-time deterioration in re-employment rates, which
-would shift cost from the wage-insurance arm toward the UI arm; the
-direction of the total is nonetheless clear, and any fiscal provision for
-a statutory scheme should be set against the peak, not the recent flow.
+assumption), \pounds\TaaCostHistMedian\,million. The linear scaling holds the behavioural
+dials at their steady-state values, and they move in opposing directions
+in a recession: re-employment falls, which cuts Arm A per head, while
+Arm B is already costed at full exhaustion and cannot rise per head, so
+the scaled total is neither a floor nor a ceiling. The stress ratios also
+inherit the base-flow band: against the ex-anomalous-quarter flow the
+2009 ratio is \TaaFlowRatioGFCExAnom\ rather than \TaaFlowRatioGFC.
+What survives the caveats is the order: flows roughly triple in a deep
+recession, and any fiscal provision for a statutory scheme should be set
+against the peak, not the recent flow.
 
 \subsection{The self-financing threshold}\label{sec:results-breakeven}
 
@@ -148,12 +170,15 @@ made (Universal Credit standard allowance plus contributory JSA under
 the first-six-months convention) plus the income tax and employee
 National Insurance paid on a month of re-employment earnings at the
 post-displacement wage. Against Arm~A's central per-worker cost of
-\pounds\TaaWageInsPerWorkerCentralManuf\ a year, the arm is
-self-financing if insured workers return to work
-\TaaBreakEvenMonths\ months earlier on average than they otherwise
-would---comfortably inside the several-months reduction implied by the
-\citet{hyman2024} employment effects over a two-year horizon, though
-that comparison imports US behaviour into UK institutions and is
+\pounds\TaaWageInsPerWorkerCentralManuf\ \emph{per year of payment},
+the arm is self-financing if insured workers return to work
+\TaaBreakEvenMonths\ months earlier per year of entitlement---or
+\TaaBreakEvenMonthsFull\ months over the full two-year entitlement,
+computed with the contributory-JSA saving applying only to the first six
+months of the counterfactual spell. The full-entitlement hurdle sits at
+the top of, not comfortably inside, the several-months reduction implied
+by the \citet{hyman2024} employment effects over a two-year horizon, and
+that comparison imports US behaviour into UK institutions: it is
 illustrative, not predictive. The threshold is also a lower bound in one
 mechanical respect (the benefit-saving convention adds UC and JSA where
 a real claimant may hold only one) and an upper bound in another (it
@@ -175,7 +200,9 @@ re-employment slowest \citep{hijzen2010}. The composition matters for
 design: an instrument whose evidence base is strongest for older
 workers is being costed here for a flow disproportionately made of
 them. Industry-level demographic splits are not published at usable
-cell sizes; the microsimulation stage will carry the full
+cell sizes, and manufacturing is plausibly older and more male than the
+all-industry flow, so both shares likely understate the narrow
+population's; the microsimulation stage will carry the full
 household-composition incidence.
 
 \subsection{Scale: the ad-hoc comparison}
@@ -184,14 +211,17 @@ Government money committed around the two current steel interventions is
 roughly \pounds\TaaSteelSupportTotal\,million
 (\pounds\TaaSteelPortTalbot\,million at Port Talbot,
 \pounds\TaaSteelScunthorpe\,million at Scunthorpe to January 2026, the
-latter still accruing). The central narrow-eligibility programme---all
-four arms, every manufacturing redundancy in the country---costs
-\TaaTotalCentralPctSteelNarrow\ per cent of that; the trade-exposed memo
-programme costs \TaaTotalCentralPctSteelExposed\ per cent. A designed,
+latter still accruing). Those commitments span roughly two years, so
+about \pounds\TaaSteelPerYear\,million a year; the central
+narrow-eligibility designed-transfer programme
+(\pounds\TaaTotalABCCentralNarrow\,million for every manufacturing
+redundancy in the country) is about \TaaABCMultipleSteelPerYear\ times
+that annual rate. A designed,
 national, rules-based insurance system for manufacturing displacement is,
 in gross annual cost, the same kind of money the UK has committed to two
 plants in two years. The broad programme is different money
-(\TaaTotalCentralPctSteelBroad\ per cent of the steel anchor): extending
+(\pounds\TaaTotalABCCentralBroad\,million a year against the steel
+commitments' roughly \pounds\TaaSteelPerYear\,million): extending
 trade-adjustment instruments into general redundancy insurance is a
 welfare-state reform, not a trade policy, and the bracket between the
 narrow and broad columns is the price of avoiding a certification

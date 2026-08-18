@@ -1,0 +1,52 @@
+\section{The microsimulation stage}\label{sec:roadmap}
+
+The public-data envelopes answer ``roughly how much''; they cannot answer
+``who receives it, net of what, at what net Exchequer cost.'' Those are
+tax--benefit questions, and the second stage answers them with the same
+architecture as the companion study: FRS 2024--25 households in
+PolicyEngine UK, with each arm implemented as a hypothetical statutory
+rule.
+
+Four interactions make the net numbers differ from the gross ones, and
+each is mechanical once the arms are in the rules engine. First, wage
+insurance paid as taxable earnings is taxed at the recipient's marginal
+rate and tapered against Universal Credit at 55 pence in the pound: a
+household on UC keeps well under half of a gross wage-insurance pound, so
+the net Exchequer cost of Arm A is far below its gross cost---and its
+distributional incidence tilts away from the means-tested poor, an effect
+with no US analogue and, to my knowledge, no existing quantification
+anywhere. Second, the UI arm substitutes for UC pound-for-pound where
+recipients are entitled to both, so its incremental cost depends on the
+joint distribution of contribution histories and household means. Third,
+the redundancy-disregard arm's cost is precisely the UC entitlement the
+frozen capital thresholds currently extinguish---computable only from the
+joint capital--redundancy distribution, for which the microsimulation
+stage will combine FRS capital data with statutory redundancy-pay
+formulas applied to observed tenure and age. Fourth, every arm's poverty
+and decile incidence runs through household composition, which the flow
+arithmetic of Section~\ref{sec:method} cannot see.
+
+The displacement population for this stage is the broad-eligibility one:
+all FRS manufacturing employees (roughly 1,100 records) carrying
+LFS-estimated redundancy risk, evaluated by probability-weighted
+enumeration---each worker's displacement counterfactual simulated once
+and weighted by their risk---rather than by Monte Carlo assignment. This
+matters beyond convenience: the companion study's trade-calibrated
+scenario concentrates its loss on so few survey records that assignment
+noise dominates subgroup statistics, whereas a policy costing over the
+full at-risk population uses two orders of magnitude more survey support
+and needs no assignment draws at all. The trade-calibrated scenario
+returns as the narrow-eligibility bounding case, not the workhorse. The
+first implementation step---simulating New Style JSA (and its proposed UI
+successor) in the displacement margin---is shared with the companion
+study's own revision programme, where the unmodelled JSA channel is the
+referee's leading demand; one build serves both papers.
+
+Behaviour enters the second stage the same way it enters the first:
+as bracketed scenarios, now with more structure. The
+\citet{hyman2024} employment effects imply shorter non-employment spells
+under Arm A; implemented as duration scenarios over the enumeration
+population, they bound how much of the gross cost the Exchequer recoups
+through earlier re-employment---the UK answer to whether wage insurance
+can self-finance once the taper clawback, which the US setting lacks, is
+taken into account.

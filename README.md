@@ -194,3 +194,21 @@ The paper reports a static, partial-equilibrium, first-round fiscal-incidence
 stress test conditional on imposed labour-income changes. It is not a causal
 estimate of the tariffs' production, productivity, employment, macroeconomic
 or total household-welfare effects. Licensed FRS inputs are not distributed.
+
+## Companion paper: Insuring Trade Losers (paper_taa/)
+
+`paper_taa/` holds a second manuscript, *Insuring Trade Losers: Designing
+and Costing Trade Adjustment Assistance for the United Kingdom* — the
+constructive sequel to the main paper's finding that displacement is the
+least-insured margin. It designs four worker-side instruments (US-style
+wage insurance, the government's proposed Unemployment Insurance applied
+to displaced workers, a retraining stipend, and a UC redundancy-pay
+capital disregard) and produces first-pass gross costings from public data
+(`analysis_taa/costing.py`: ONS RED02 redundancy flows, ASHE earnings,
+statutory rates; raw inputs pinned by SHA-256 in `data_taa/raw/`, macros
+generated to `paper_taa/generated_taa.tex`). Institutional facts are
+verified against primary sources and dated in
+`paper_taa/institutional_macros.tex`. The full FRS/PolicyEngine
+microsimulation stage is specified in the manuscript's roadmap section and
+shares its first build (New Style JSA simulation) with the main paper's
+revision programme. See issue #30 for the candidate-evaluation record.

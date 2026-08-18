@@ -1,0 +1,79 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1.1in]{geometry}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\definecolor{paperblue}{rgb}{0,0,0.7}
+\usepackage{sectsty}
+\allsectionsfont{\color{paperblue}}
+\usepackage[hang,flushmargin]{footmisc}
+\usepackage[colorlinks=true, citecolor=paperblue, linkcolor=paperblue, urlcolor=paperblue]{hyperref}
+\hypersetup{
+  pdftitle={Insuring Trade Losers: Designing and Costing Trade Adjustment Assistance for the United Kingdom},
+  pdfauthor={Vahid Ahmadi},
+  pdfsubject={First-pass design and costing of worker-side trade adjustment policies for the UK},
+  pdfkeywords={trade adjustment assistance, wage insurance, displacement, Universal Credit, microsimulation, public finances}
+}
+\usepackage{natbib}
+\bibliographystyle{apalike}
+
+\title{\bfseries Insuring Trade Losers:\\[0.15cm] Designing and Costing Trade Adjustment Assistance for the United Kingdom\thanks{\textbf{Acknowledgements:} I thank Max Ghenis and Seyed Mahdi Hosseini for valuable comments and helpful discussions. This is a working paper presenting first-pass public-data costings; the full household microsimulation stage is set out in Section~\ref{sec:roadmap}.}\\[0.7cm]}
+\author{Vahid Ahmadi\thanks{Research Associate at PolicyEngine. Email: \href{mailto:vahid@policyengine.org}{vahid@policyengine.org}.}}
+\date{\small August 2026 --- working draft}
+
+% generated_taa.tex defines grid macros with digits in their names;
+% access those via \csname TaaGridR30D1\endcsname etc.
+\input{generated_taa}
+\input{institutional_macros}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent The United Kingdom protects firms from trade shocks but has no
+statutory instrument for the workers those shocks displace. Since 2024 the
+government has committed roughly
+\pounds\InstAdHocSteelTotal\,million of ad-hoc support around two steel
+interventions, none of it designed or costed as worker-side insurance,
+while the trade strategy expands firm-side defence instruments. This paper
+designs four candidate trade-adjustment policies---wage insurance on the US
+model, the government's own proposed Unemployment Insurance applied to
+displaced workers, a retraining stipend, and a Universal Credit
+redundancy-pay disregard---and produces first-pass annual costings from
+public data under narrow (manufacturing) and broad (all-redundancy)
+eligibility with bracketed take-up. Central estimates put the three designed transfers together at
+\pounds\TaaTotalABCCentralNarrow\,million a year under narrow
+eligibility---about \TaaABCMultipleSteelPerYear\ times the annual rate
+of the ad-hoc steel commitments---scaling linearly to
+\pounds\TaaCostPeakGFC\,million at financial-crisis redundancy flows.
+Statutory arithmetic puts wage insurance's self-financing threshold at
+\TaaBreakEvenMonths\ months of faster re-employment per year of
+entitlement; and the wage-insurance scheme the UK itself ran for
+steelworkers until 2002 (ISERBS) would cost
+\pounds\TaaIserbsCost\,million a year extended to all manufacturing. A companion microsimulation stage, specified here, will
+locate the household-level incidence and net fiscal cost of each arm within
+the tax--benefit system, where means-testing claws back gross payments.
+\end{abstract}
+
+\medskip
+\noindent\textbf{Keywords:} trade adjustment assistance, wage insurance, displacement, Universal Credit, microsimulation, public finances
+
+\smallskip
+\noindent\textbf{JEL codes:} F16, J65, H24, I38, J68
+
+\newpage
+\input{sections/intro}
+\input{sections/literature}
+\input{sections/institutional}
+\input{sections/design}
+\input{sections/method}
+\input{sections/results}
+\input{sections/roadmap}
+\input{sections/discussion}
+\input{sections/declarations}
+
+\clearpage
+\input{sections/references}
+
+\end{document}

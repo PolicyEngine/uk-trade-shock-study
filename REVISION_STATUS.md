@@ -15,15 +15,23 @@ require the licensed data, on branch `revision/concentration-reframe`.
 
 ### Implemented
 
-- **M3 (reframe around concentration).** New title "Concentration, Not Job
-  Loss: Tax--Benefit Cushioning of Earnings Shocks in the Universal Credit
-  Era". The abstract is rewritten for a sixty-second reader (149 words with
-  macros resolved, not only under the test's macro-stripping count) and now
-  leads with the concentration finding, quotes the Dolls et al. reversal,
-  and closes by naming the unmodelled instruments with the JSA bound. The
-  intro states upfront that the near-zero employment-state step is a
-  property of the modelled rules and would move against the headline once
-  JSA is simulated.
+- **M3 (partially adopted; framing is an author decision).** The referee's
+  full recommendation---reframe the paper around concentration with the
+  tariffs as application---was implemented and then reversed by the author
+  on 18 August: this is, by design, a **trade-shock paper**. Final title:
+  "Who Bears a Trade Shock? Wage Cuts, Job Losses, and Tax--Benefit
+  Cushioning in the UK". What survives from M3: the abstract is rewritten
+  for a sixty-second reader (149 words with macros resolved, not only under
+  the test's macro-stripping count), reports the concentration finding and
+  the Dolls et al. reversal prominently, and closes by naming the
+  unmodelled instruments with the JSA bound; the intro states upfront that
+  the near-zero employment-state step is a property of the modelled rules
+  and would move against the headline once JSA is simulated; the
+  contributions paragraph leads with the quantified offset structure. The
+  response letter should defend the trade framing on the ground that the
+  estimand (who bears the 2025 tariff exposure, conditional on a declared
+  loss) is the paper's question, and the concentration mechanism is its
+  answer, not its subject.
 - **M4 (online supplement restored).** `paper/supplement.tex` +
   `sections/supplement_body.tex` now carry the elasticity grid,
   reallocation, observed-outturn, HMRC destination-panel detail, the EPD

@@ -1,0 +1,66 @@
+\section{The microsimulation stage}\label{sec:roadmap}
+
+The first-pass results of Section~\ref{sec:results} run the declared
+first stages against published expenditure-by-decile tables and
+representative-worker statutory arithmetic. The full stage runs them
+inside PolicyEngine UK on the enhanced Family Resources Survey, and four
+things change.
+
+First, the consumption channel moves from decile tables to household
+records: the enhanced FRS carries imputed household consumption across
+the twelve COICOP divisions plus the sub-items that matter most for
+trade shocks (petrol and diesel separately, in pounds and litres;
+electricity and gas separately; bus fares), imputed by quantile
+regression forest from the LCFS 2023--24 and calibrated to
+administrative energy and fuel totals. Each episode's price vector
+therefore prices each household's own basket, jointly with that
+household's benefit entitlements---the covariance between exposure and
+cushioning that decile tables cannot see. Tariff-line and
+category-level first stages must be pre-aggregated to those roughly
+sixteen categories, and the imputation freezes budget-share
+\emph{patterns} at the 2023--24 donor vintage across simulated years, a
+limitation the stage will state. Second, the earnings channels run through the companion study's
+displacement machinery on the same households, so the two channels of a
+given episode land on a common population and their incidence can be
+compared household-by-household rather than distribution-by-
+distribution. Third, the rulebook axis becomes exact: PolicyEngine's parameter
+history carries dated, legislatively cited values through the whole
+window (the Covid-era Universal Credit uplift and its October 2021
+removal, the March 2022 fuel-duty cut, the 2022 and 2023 upratings),
+its own test suite exercises the 2020--2023 rule years, and
+counterfactual-rulebook runs---an earlier year's parameters applied to
+a later survey vintage---are native to the architecture. Each episode
+is therefore scored under the rules in force at its date, under the
+preceding year's rules (isolating uprating lag), and with the
+discretionary interventions switched off (isolating the automatic
+component)---the three-way decomposition of
+Section~\ref{sec:framework} computed rather than approximated. Two
+verified limits shape the earlier years: no 2021-vintage enhanced-FRS
+data year exists (the earliest survey base is 2022--23), so 2021
+rulebooks are applied to later households with incomes re-deflated;
+and the survey's Universal Credit/legacy-benefit split follows
+reported receipt rather than the historical rollout, so 2021--22
+rule-year results understate legacy-benefit interactions and are
+restricted to the tax and UC-parameter channels. Fourth, the poverty and inequality outputs gain their
+correct household equivalisation and the Exchequer effects their full
+statutory coverage.
+
+The build order follows the data dependencies. The consumption-channel
+implementation extends PolicyEngine's existing consumption variables
+(used today for carbon and VAT analysis) with the episode price
+vectors---a parameter reform per episode, no new imputation. The
+earnings channels are re-runs of existing machinery with episode
+calibrations. The rulebook runs require only parameter-year switches
+plus explicit flags for the discretionary layers (the Energy Price
+Guarantee being the largest). The licensed inputs are the same FRS/EFRS
+files the companion study uses; nothing else is gated.
+
+Two honest limits will survive the full stage. The consumption
+imputation carries its own error, inherited from the LCFS donor
+models, and imputation error correlated with benefit status would bias
+the exposure-cushioning covariance; the stage will report the
+imputation diagnostics alongside the results. And the rulebook
+decomposition attributes to ``discretion'' whatever the parameter
+history records as legislated change, which bundles genuine shock
+response with policy that would have happened anyway---a labelling
+choice, stated as such, not an identification claim.

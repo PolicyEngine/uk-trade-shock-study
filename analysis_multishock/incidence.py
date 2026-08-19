@@ -689,6 +689,45 @@ def latex_macros(res):
     if ceta_row["bottom_decile_pct_of_spend_per_gbp_bn"] is not None:
         add("CetaNormBottomPctPerBn",
             fmt(ceta_row["bottom_decile_pct_of_spend_per_gbp_bn"], 3))
+
+    # --- Referee-fix addendum (report R1, Aug 2026) -------------------------
+    # M3: window-average TCA incidence.  The published GBP250 cumulative
+    # implies an average effect of implied share x end-state over the window;
+    # headline the window-average annual burden, keep end-state as a variant.
+    tca = res["episodes"]["E1_tca_food"]
+    share = tca["cross_check"]["implied_average_effect_share_of_end_state"]
+    add("TcaImpliedAvgShare", fmt(share, 2))
+    _e1d = tca["central"]["per_decile_end_state_annual"]
+    for idx, dn in ((0, "DecOne"), (9, "DecTen")):
+        add(f"TcaWindowAvgGbp{dn}", fmt(_e1d[idx]["gbp_per_year"] * share))
+        add(f"TcaWindowAvgPctSpend{dn}",
+            fmt(_e1d[idx]["pct_of_total_spend"] * share, 2))
+    add("TcaWindowAvgAggBn",
+        fmt(tca["central"]["aggregate_end_state_gbp_bn_per_year"] * share, 1))
+    # M4a: energy demand-response variant.  Fixed-basket burden scaled by
+    # (1 - 0.5*e*dp/p), e = 0.35 (labelled assumption bracketing observed
+    # 2022-23 weather-adjusted gas demand reductions).
+    en = res["episodes"]["E2_energy"]
+    dpp = en["price_factors"]["gross"]  # stored as the price RISE fraction (+1.7792 = +177.9%)
+    demand_scale = 1.0 - 0.5 * 0.35 * dpp
+    add("EnergyDemandScalePct", fmt(100 * demand_scale))
+    add("EnergyGrossGbpDecOneDemand",
+        fmt(en["gross"]["per_decile"][0]["gbp_per_year"] * demand_scale))
+    add("EnergyGrossAggBnDemand",
+        fmt(en["gross"]["aggregate_gbp_bn_per_year"] * demand_scale, 1))
+    # M1: imported-component bound (Dhingra-Page: >70% of the CPI rise was
+    # imported), applied as a crude labelled bound on the trade-transmitted
+    # share of the retail energy shock.
+    add("EnergyImportedShareBound", fmt(70))
+    add("EnergyGrossAggBnImported",
+        fmt(en["gross"]["aggregate_gbp_bn_per_year"] * 0.70, 1))
+    # M6: what the per-GBPbn ratio actually measures -- affected-category
+    # budget shares by decile (pct of total spending).
+    for idx, dn in ((0, "DecOne"), (9, "DecTen")):
+        add(f"TcaBudgetSharePct{dn}",
+            fmt(_e1d[idx]["pct_of_total_spend"] / 0.08, 1))
+        add(f"EnergyBudgetSharePct{dn}",
+            fmt(en["gross"]["per_decile"][idx]["pct_of_total_spend"] / dpp, 1))
     return m
 
 

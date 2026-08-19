@@ -1,0 +1,72 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1.1in]{geometry}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\definecolor{paperblue}{rgb}{0,0,0.7}
+\usepackage{sectsty}
+\allsectionsfont{\color{paperblue}}
+\usepackage[hang,flushmargin]{footmisc}
+\usepackage[colorlinks=true, citecolor=paperblue, linkcolor=paperblue, urlcolor=paperblue]{hyperref}
+\hypersetup{
+  pdftitle={Who Bore Britain's Trade Shocks? A Household Anatomy of the Post-Covid Episodes},
+  pdfauthor={Vahid Ahmadi},
+  pdfsubject={Comparative household incidence of UK trade shocks 2021-2026 through the tax-benefit system},
+  pdfkeywords={trade shocks, tariffs, Brexit, terms of trade, microsimulation, automatic stabilisers, public finances}
+}
+\usepackage{natbib}
+\bibliographystyle{apalike}
+
+\title{\bfseries Who Bore Britain's Trade Shocks?\\[0.15cm] A Household Anatomy of the Post-Covid Episodes\thanks{\textbf{Acknowledgements:} I thank Max Ghenis and Seyed Mahdi Hosseini for valuable comments and helpful discussions. This is a working paper presenting first-pass public-data results; the household-microsimulation stage is specified in Section~\ref{sec:roadmap}.}\\[0.7cm]}
+\author{Vahid Ahmadi\thanks{Research Associate at PolicyEngine. Email: \href{mailto:vahid@policyengine.org}{vahid@policyengine.org}.}}
+\date{\small August 2026 --- working draft}
+
+\input{generated_multishock}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent Britain's post-Covid decade delivered four major trade
+shocks and a placebo: the TCA border (2021), the sharpest
+terms-of-trade deterioration since the 1970s (2022), the US tariffs
+(2025), the India agreement (2026), and CPTPP accession. This paper
+studies them under one household lens---each episode a declared first
+stage from published estimates or government projections, mapped onto
+households through prices and earnings, compared in ratios because
+sizes span two orders of magnitude. First-pass results: the negative
+shocks were regressive (energy cost the bottom decile
+\MsEnergyGrossPctSpendDecOne\ per cent of spending versus
+\MsEnergyGrossPctSpendDecTen\ at the top; TCA food
+\MsTcaPctSpendDecOne\ versus \MsTcaPctSpendDecTen), the projected
+positive gains are proportional and negligible, and the cushioning was
+margin-specific: automatic on earnings
+(\MsUSTariffDisplacementCushionPct--\MsUSTariffWageCutCushionPct\ per
+cent), discretionary on prices (the Energy Price Guarantee absorbed
+\MsEnergyCushionSharePct\ per cent), with indexation a year late---%
+\pounds\MsUcLagCostGbp\ per Universal Credit household in the crisis
+year. A verified PolicyEngine microsimulation stage is specified.
+\end{abstract}
+
+\medskip
+\noindent\textbf{Keywords:} trade shocks, tariffs, Brexit, terms of trade, microsimulation, automatic stabilisers, public finances
+
+\smallskip
+\noindent\textbf{JEL codes:} F13, F14, F16, D31, H23, I38
+
+\newpage
+\input{sections/intro}
+\input{sections/literature}
+\input{sections/framework}
+\input{sections/episodes}
+\input{sections/method}
+\input{sections/results}
+\input{sections/roadmap}
+\input{sections/discussion}
+\input{sections/declarations}
+
+\clearpage
+\input{sections/references}
+
+\end{document}

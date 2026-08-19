@@ -4,21 +4,24 @@
 
 Table~\ref{tab:ms-anatomy} is the paper's central object: the five
 episodes side by side under the common lens. Three regularities
-organise everything that follows. First, \emph{Britain's negative trade
-shocks were regressive and its positive ones were not progressive}: the
-energy shock cost the bottom decile \MsEnergyGrossPctSpendDecOne\ per
-cent of its spending against \MsEnergyGrossPctSpendDecTen\ per cent at
-the top, the TCA food shock \MsTcaPctSpendDecOne\ against
-\MsTcaPctSpendDecTen\ per cent, while the India agreement's consumer
+organise everything that follows. First, \emph{the negative shocks were regressive and the positive ones
+were not progressive}: the gross energy shock would have cost the
+bottom decile \MsEnergyGrossPctSpendDecOne\ per cent of its spending
+against \MsEnergyGrossPctSpendDecTen\ per cent at the top (before the
+policy response and demand adjustment), the TCA food shock \MsTcaWindowAvgPctSpendDecOne\ against
+\MsTcaWindowAvgPctSpendDecTen\ per cent of spending on the
+window-average path (\MsTcaPctSpendDecOne\ against
+\MsTcaPctSpendDecTen\ at end-state), while the India agreement's consumer
 gains are spread almost exactly proportionally
 (\MsCetaBottomPctSpend\ versus \MsCetaTopPctSpend\ per cent of
 spending) and are two orders of magnitude smaller. Second,
-\emph{intensity per pound of shock differs}: normalised per
-\pounds 1 billion of gross shock, the energy episode put
-\MsEnergyNormBottomPctPerBn\ points of bottom-decile spending at
-stake, the TCA \MsTcaNormBottomPctPerBn, and the CETA gains only
-\MsCetaNormBottomPctPerBn---the composition of a trade shock, not just
-its size, determines who bears it. Third, \emph{the cushioning came
+\emph{regressivity follows the affected category's budget-share
+gradient}: food takes \MsTcaBudgetSharePctDecOne\ per cent of
+bottom-decile spending against \MsTcaBudgetSharePctDecTen\ at the
+top, energy \MsEnergyBudgetSharePctDecOne\ against
+\MsEnergyBudgetSharePctDecTen, while clothing and footwear---where
+the CETA gains land---are flat across the distribution: the
+composition of a shock, not just its size, determines who bears it. Third, \emph{the cushioning came
 from different parts of the state}: the one earnings-led episode was
 cushioned automatically (\MsUSTariffDisplacementCushionPct--%
 \MsUSTariffWageCutCushionPct\ per cent through the tax--benefit
@@ -35,14 +38,14 @@ late (Section~\ref{sec:results-rulebook}).
 \scriptsize
 \begin{tabular}{lllrrrl}
 \toprule
-Episode & Gross shock & Channel & \multicolumn{2}{c}{\% of spending} & Per \pounds bn & Cushioning \\
- & & & Decile 1 & Decile 10 & (D1 pts/\pounds bn) & \\
+Episode & Gross shock & Channel & \multicolumn{2}{c}{\% of spending} & Category budget & Cushioning \\
+ & & & Decile 1 & Decile 10 & share D1/D10 (\%) & \\
 \midrule
-TCA food NTBs (2021--23) & \pounds\MsTcaAggBnPerYear bn/yr & prices (food) & \MsTcaPctSpendDecOne & \MsTcaPctSpendDecTen & \MsTcaNormBottomPctPerBn & embedded in estimate \\
-Energy terms-of-trade (2022--23) & \pounds\MsEnergyGrossAggBn bn/yr & prices (energy) & \MsEnergyGrossPctSpendDecOne & \MsEnergyGrossPctSpendDecTen & \MsEnergyNormBottomPctPerBn & discretionary \MsEnergyCushionSharePct\% \\
-US tariffs (2025--26) & \pounds\MsUSTariffGrossShockMillions m/yr & earnings & \multicolumn{2}{c}{consumer side zero} & --- & automatic \MsUSTariffDisplacementCushionPct--\MsUSTariffWageCutCushionPct\% \\
-India CETA (2026--) & \pounds\MsCetaTotalMillions m/yr (gain) & prices (clothing-led) & \MsCetaBottomPctSpend & \MsCetaTopPctSpend & \MsCetaNormBottomPctPerBn & n/a \\
-CPTPP (2024--), placebo & \pounds\MsCptppGdpBn bn GDP & aggregate only & \multicolumn{2}{c}{no structure claimed} & --- & n/a \\
+TCA food NTBs (2021--23), policy & \pounds\MsTcaWindowAvgAggBn bn/yr (window avg) & prices (food) & \MsTcaWindowAvgPctSpendDecOne & \MsTcaWindowAvgPctSpendDecTen & \MsTcaBudgetSharePctDecOne\,/\,\MsTcaBudgetSharePctDecTen & embedded in estimate \\
+Energy terms-of-trade (2022--23), market & \pounds\MsEnergyGrossAggBn bn/yr (gross, fixed basket) & prices (energy) & \MsEnergyGrossPctSpendDecOne & \MsEnergyGrossPctSpendDecTen & \MsEnergyBudgetSharePctDecOne\,/\,\MsEnergyBudgetSharePctDecTen & discretionary (EPG) \MsEnergyCushionSharePct\% \\
+US tariffs (2025--26), policy & \pounds\MsUSTariffGrossShockMillions m/yr & earnings & \multicolumn{2}{c}{consumer side zero} & --- & automatic \MsUSTariffDisplacementCushionPct--\MsUSTariffWageCutCushionPct\% \\
+India CETA (2026--), policy & \pounds\MsCetaTotalMillions m/yr (gain) & prices (clothing-led) & \MsCetaBottomPctSpend & \MsCetaTopPctSpend & flat & n/a \\
+CPTPP (2024--), near-zero benchmark & \pounds\MsCptppGdpBn bn GDP & aggregate only & \multicolumn{2}{c}{no structure claimed} & --- & n/a \\
 \bottomrule
 \end{tabular}
 \begin{minipage}{.96\textwidth}\footnotesize
@@ -51,45 +54,71 @@ tables; fixed baskets, no substitution, no behavioural response.
 Episodes 1--2 rest on published estimates, episodes 4--5 on government
 projections, episode 3 on the companion study; the distinction is
 constitutive (Section~\ref{sec:episodes}). Deciles are of equivalised
-disposable income. The per-\pounds bn column normalises bottom-decile
-spending exposure by gross shock size. Cushioning entries measure
-different mechanisms and are not summable.
+disposable income. The budget-share column reports the affected category's share of each
+decile's total spending---the gradient that generates each episode's
+incidence. The episodes are typed policy/market: the energy episode is
+a trade-\emph{transmitted} market shock, not a trade-policy act.
+Cushioning entries measure different mechanisms and are not summable;
+the common cushioning estimand of Section~\ref{sec:framework} is
+computed at the microsimulation stage, not here.
 \end{minipage}
 \end{table}
 
 \subsection{Episode detail}
 
-\paragraph{TCA food prices.} An 8 per cent NTB-attributed food price
-rise costs households \pounds\MsTcaAnnGbpDecOne\ (bottom decile) to
-\pounds\MsTcaAnnGbpDecTen\ (top decile) a year at end-state---
-regressive as a share of spending (\MsTcaPctSpendDecOne\ versus
-\MsTcaPctSpendDecTen\ per cent) because food budget shares fall with
-income. The pipeline's cumulative aggregate cross-check against the
-published \pounds\MsTcaPublishedCumulGbp\ per household comes in at
-ratio \MsTcaCrossCheckRatio\ under a linear phase-in: the published
-estimate implies the price effect was back-loaded (an average effect
-about \MsTcaImpliedAvgEffectShare\ of end-state over the window),
-which the first-pass linear ramp overstates. The diagnostic is
-reported, not calibrated away; the microsimulation stage will carry
-the published path.
+\paragraph{TCA food prices.} The headline incidence uses the
+window-average path implied by the published cumulative: the
+\pounds\MsTcaPublishedCumulGbp-per-household estimate implies an
+average effect of about \MsTcaImpliedAvgShare\ of the 8 per cent
+end-state over the window, giving \pounds\MsTcaWindowAvgGbpDecOne\
+(bottom decile) to \pounds\MsTcaWindowAvgGbpDecTen\ (top decile) a
+year, \pounds\MsTcaWindowAvgAggBn\ billion a year in aggregate---
+regressive as a share of spending
+(\MsTcaWindowAvgPctSpendDecOne\ versus
+\MsTcaWindowAvgPctSpendDecTen\ per cent) because food takes
+\MsTcaBudgetSharePctDecOne\ per cent of bottom-decile spending
+against \MsTcaBudgetSharePctDecTen\ at the top. The end-state
+figures (\pounds\MsTcaAnnGbpDecOne--\MsTcaAnnGbpDecTen\ a year;
+\pounds\MsTcaAggBnPerYear\ billion) are reported as a labelled
+variant: the pipeline's linear-ramp cross-check against the published
+cumulative comes in at ratio \MsTcaCrossCheckRatio, showing the price
+effect was back-loaded, so end-state overstates the lived burden. The
+microsimulation stage will carry the published path.
 
 \paragraph{The energy shock and the EPG.} At cap levels, the gross
 price shock (\pounds\MsEnergyCapBase\ to \pounds\MsEnergyCapPeak\
-typical bill, +\MsEnergyGrossFactorPct\ per cent) would have cost the
-bottom decile \pounds\MsEnergyGrossGbpDecOne\ a year---%
-\MsEnergyGrossPctSpendDecOne\ per cent of its total spending, more
-than double the top decile's share. The Energy Price Guarantee
-truncated the rise to +\MsEnergyNetFactorPct\ per cent, absorbing
-\pounds\MsEnergyCushionGbpDecOne\ a year for a bottom-decile household
-and \MsEnergyCushionSharePct\ per cent of the aggregate gross shock
-(\pounds\MsEnergyCushionAggBn\ billion a year at the cap-level
-run-rate; \pounds\MsEnergyCushionAggSixMonthsBn\ billion over the
-six-month EPG window, the same order as the OBR's
-\pounds\MsEnergyObrEpgBn\ billion costing). Because the EPG capped the
-\emph{price}, its cushioning share is constant across deciles: a
-proportional subsidy on a regressive shock, so the post-EPG burden
-remained regressive---a design fact the household-record stage can
-contrast with targeted alternatives.
+typical bill, +\MsEnergyGrossFactorPct\ per cent) \emph{would have}
+cost the bottom decile \pounds\MsEnergyGrossGbpDecOne\ a year at
+fixed baskets---\MsEnergyGrossPctSpendDecOne\ per cent of its total
+spending, more than double the top decile's share. Three labelled
+qualifications bound that number. A demand-response variant (unit
+elasticity applied at half weight, consistent with the double-digit
+weather-adjusted demand reductions observed in 2022--23) scales the
+burden to \MsEnergyDemandScalePct\ per cent of the fixed-basket
+figure (\pounds\MsEnergyGrossGbpDecOneDemand\ for the bottom decile;
+\pounds\MsEnergyGrossAggBnDemand\ billion aggregate). An
+imported-component bound, applying the \citet{dhingrapage2023}
+finding that over \MsEnergyImportedShareBound\ per cent of the CPI
+rise was imported, caps the trade-transmitted share of the gross
+aggregate at roughly \pounds\MsEnergyGrossAggBnImported\ billion;
+the remainder is domestic cost and margin. And the annualised
+run-rate holds the October 2022 cap for a full year, which no
+household experienced; the six-month window figure is
+\pounds\MsEnergyCushionAggSixMonthsBn\ billion of EPG absorption
+against the OBR's \pounds\MsEnergyObrEpgBn\ billion costing---a
+context anchor, not a validation. Within those bounds the shape is
+robust: the Energy Price Guarantee truncated the rise to
++\MsEnergyNetFactorPct\ per cent, absorbing
+\pounds\MsEnergyCushionGbpDecOne\ a year for a bottom-decile
+household and \MsEnergyCushionSharePct\ per cent of the gross shock.
+Because the EPG capped the \emph{price}, its cushioning share is
+constant across deciles by construction. Whether the overall
+discretionary response was progressive cannot be judged from the EPG
+alone: the Energy Bills Support Scheme's flat \pounds 400, the
+means-tested cost-of-living payments and the council-tax rebate---
+jointly of the same order as the EPG and deliberately targeted---are
+not modelled in this first pass, and the distributional verdict on
+the discretionary stack is deferred to the microsimulation stage.
 
 \paragraph{The US tariffs.} The UK consumer side is zero---no
 retaliation occurred---so this episode's incidence is entirely
@@ -102,10 +131,12 @@ study's headline carried over as this episode's second stage.
 \paragraph{The India gains, and the placebo.} At full pass-through the
 CETA duty cuts are worth \pounds\MsCetaGainGbpPtHundredDecOne\ a year
 to a bottom-decile household and \pounds\MsCetaGainGbpPtHundredDecTen\
-to a top-decile one---\MsCetaVerdict\ as a share of spending, and
-economically negligible at any pass-through dial
+to a top-decile one---\MsCetaVerdict\ as a share of spending, though
+pro-rich in pounds (the top decile gains about three times as much in
+cash), and economically negligible at any pass-through dial
 (\pounds\MsCetaGainGbpPtFiftyDecOne--\MsCetaGainGbpPtFiftyDecTen\ at
-50 per cent). The CPTPP placebo behaves as a placebo should: its
+50 per cent). The CPTPP row is a near-zero benchmark, included as a
+data-limitation case rather than a placebo test: its
 \pounds\MsCptppGdpBn\ billion long-run GDP estimate divides to
 \pounds\MsCptppNaiveGbpPerHousehold\ per household per year with no
 defensible distributional structure, and the pipeline reports exactly
@@ -116,17 +147,25 @@ that and nothing more.
 The vintage axis is seeded with two statutory facts. First, the
 uprating lag: Universal Credit's standard allowance rose 3.1 per cent
 in April 2022 (indexed to the previous September's inflation) while
-prices rose at double digits, so a single adult on UC fell
-\pounds\MsUcLagCostGbp\ behind contemporaneous indexation over
-2022--23---\MsUcLagCostPctAllowance\ per cent of the annual allowance,
-lost to timing alone, at exactly the moment the terms-of-trade shock
-peaked. Second, sequencing: the \pounds\MsUcUpliftRemovalGbp-a-year
+prices rose at double digits. Against month-by-month contemporaneous
+indexation---an upper-bound counterfactual no benefit system
+operates---a single adult's standard allowance fell
+\pounds\MsUcLagCostGbp\ short over 2022--23
+(\MsUcLagCostPctAllowance\ per cent of the annual allowance); against
+the policy-feasible alternative of a single April 2022 uprating at
+contemporaneous annual CPI, \pounds\MsUcLagCostFlatAltGbp. Both
+figures are for the single-adult standard allowance only, before
+elements and caseload weighting; the range, not either point, is the
+seed result, and it is lost to timing alone, at exactly the moment
+the terms-of-trade shock peaked. Second, sequencing: the \pounds\MsUcUpliftRemovalGbp-a-year
 Covid uplift was removed in October 2021, months before the energy
 shock landed, so the lowest-income households entered the largest
 price-led trade shock of the period from a rulebook trough. Together
-with the EPG's 46-per-cent discretionary absorption, the seed picture
-of the British response to the 2020s trade shocks is: \emph{automatic
-on the earnings margin, discretionary on the price margin, and lagged
-precisely where the price shocks bit hardest}. The microsimulation
+with the EPG's absorption of \MsEnergyCushionSharePct\ per cent of the
+gross price shock, the seed picture of the British response is:
+\emph{automatic on the earnings margin, discretionary on the price
+margin, and lagged precisely where the price shocks bit hardest}---with
+the progressivity of the full discretionary stack an open question for
+the microsimulation stage. The microsimulation
 stage turns these representative-household facts into
 population-weighted decompositions.

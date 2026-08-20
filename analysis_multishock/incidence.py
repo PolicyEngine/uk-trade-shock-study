@@ -559,7 +559,7 @@ def module_three(e1, e2, e3, e4, e5):
         f4["pct_of_total_spend"][0], f4["pct_of_total_spend"][9],
         "gain", "n/a", D["ceta_total_m"] / 1000)
 
-    add("E5 CPTPP placebo", D["cptpp_gdp_bn"],
+    add("E5 CPTPP benchmark", D["cptpp_gdp_bn"],
         "GBP bn GDP, long-run central", "gain",
         "aggregate GDP (no household mapping)", None, None, "gain",
         "n/a", None)
@@ -577,6 +577,83 @@ def fmt(x, dp=0):
     return f"{x:,.{dp}f}"
 
 
+# Observed weather-adjusted fall in domestic energy consumption during the
+# 2022-23 crisis, used for the cash-outlay variant.  ASSUMPTION (NOTES).
+ENERGY_OBSERVED_DEMAND_FALL = 0.12
+# Dhingra & Page: MORE than this share of the CPI rise was imported.
+IMPORTED_SHARE_LOWER_BOUND = 0.70
+
+
+def derived_variants(res):
+    """Variants and gradients the manuscript reports.
+
+    Kept in one place and written to results.json so the artifact and the
+    paper cannot drift apart.  ASSUMPTION tags mark values that are not
+    read from a pinned input.
+    """
+    tca = res["episodes"]["E1_tca_food"]
+    en = res["episodes"]["E2_energy"]
+    share = tca["cross_check"]["implied_average_effect_share_of_end_state"]
+    d = {"tca_window_average": {"share_of_end_state": share, "per_decile": []}}
+    for row in tca["central"]["per_decile_end_state_annual"]:
+        d["tca_window_average"]["per_decile"].append({
+            "decile": row["decile"],
+            "gbp_per_year": round(row["gbp_per_year"] * share, 1),
+            "pct_of_total_spend": round(row["pct_of_total_spend"] * share, 3),
+        })
+    d["tca_window_average"]["aggregate_gbp_bn_per_year"] = round(
+        tca["central"]["aggregate_end_state_gbp_bn_per_year"] * share, 2)
+
+    # Energy: cash-outlay variant on an OBSERVED quantity response.  The
+    # fixed-basket number is the first-order WELFARE measure (envelope
+    # theorem); households that cut consumption spent less cash but bore the
+    # foregone consumption as welfare loss, so the two answer different
+    # questions and both are reported.  ASSUMPTION: observed weather-adjusted
+    # domestic demand reduction, set in PARAMS and cited in NOTES.
+    p_ratio = 1.0 + en["price_factors"]["gross"]
+    q = 1.0 - ENERGY_OBSERVED_DEMAND_FALL
+    d["energy_cash_outlay"] = {
+        "observed_demand_fall": ENERGY_OBSERVED_DEMAND_FALL,
+        "price_ratio": round(p_ratio, 4),
+        "expenditure_ratio": round(p_ratio * q, 4),
+        "burden_scale_vs_fixed_basket": round(
+            (p_ratio * q - 1.0) / (p_ratio - 1.0), 4),
+        "note": "cash outlay, not welfare; fixed-basket remains the "
+                "first-order welfare measure",
+    }
+    d["energy_cash_outlay"]["aggregate_gbp_bn_per_year"] = round(
+        en["gross"]["aggregate_gbp_bn_per_year"]
+        * d["energy_cash_outlay"]["burden_scale_vs_fixed_basket"], 1)
+    d["energy_cash_outlay"]["decile_one_gbp_per_year"] = round(
+        en["gross"]["per_decile"][0]["gbp_per_year"]
+        * d["energy_cash_outlay"]["burden_scale_vs_fixed_basket"])
+
+    # Trade-transmitted share: a LOWER bound.  Dhingra-Page report that MORE
+    # than this share of the CPI rise was imported, so applying it yields a
+    # floor, not a cap.  Where an Ofgem wholesale-component decomposition is
+    # available it supersedes this; see NOTES.
+    d["energy_trade_transmitted"] = {
+        "imported_share_lower_bound": IMPORTED_SHARE_LOWER_BOUND,
+        "aggregate_gbp_bn_lower_bound": round(
+            en["gross"]["aggregate_gbp_bn_per_year"]
+            * IMPORTED_SHARE_LOWER_BOUND, 1),
+        "direction": "lower bound (source reports 'more than' this share)",
+    }
+
+    # Category budget shares by decile: what the per-GBPbn ratio actually
+    # measured.  share = burden %-of-spend divided by the price rise.
+    d["budget_shares_pct_of_spend"] = {"food": [], "domestic_energy": []}
+    for row in tca["central"]["per_decile_end_state_annual"]:
+        d["budget_shares_pct_of_spend"]["food"].append({
+            "decile": row["decile"],
+            "pct": round(row["pct_of_total_spend"] / tca["central"]["price_rise"], 2)})
+    for row in en["gross"]["per_decile"]:
+        d["budget_shares_pct_of_spend"]["domestic_energy"].append({
+            "decile": row["decile"],
+            "pct": round(row["pct_of_total_spend"] / en["price_factors"]["gross"], 2)})
+    return d
+
+
 def latex_macros(res):
     m = []
 
@@ -586,7 +663,7 @@ def latex_macros(res):
 
     e1, e2 = res["episodes"]["E1_tca_food"], res["episodes"]["E2_energy"]
     e3, e4 = res["episodes"]["E3_us_tariffs"], res["episodes"]["E4_india_ceta"]
-    e5, m2 = res["episodes"]["E5_cptpp_placebo"], res["module2_uc_uprating"]
+    e5, m2 = res["episodes"]["E5_cptpp_benchmark"], res["module2_uc_uprating"]
 
     # E1
     add("TcaFoodRisePct", fmt(100 * D["tca_food_rise_central"]))
@@ -649,6 +726,8 @@ def latex_macros(res):
 
     # E4
     add("CetaTotalMillions", fmt(D["ceta_total_m"]))
+    add("CetaAllocatedMillions",
+        fmt(D["ceta_clothing_m"] + D["ceta_footwear_m"] + D["ceta_foodbev_m"], 1))
     add("CetaClothingMillions", fmt(D["ceta_clothing_m"], 1))
     add("CetaFootwearMillions", fmt(D["ceta_footwear_m"], 1))
     add("CetaFoodBevMillions", fmt(D["ceta_foodbev_m"], 1))
@@ -690,44 +769,30 @@ def latex_macros(res):
         add("CetaNormBottomPctPerBn",
             fmt(ceta_row["bottom_decile_pct_of_spend_per_gbp_bn"], 3))
 
-    # --- Referee-fix addendum (report R1, Aug 2026) -------------------------
-    # M3: window-average TCA incidence.  The published GBP250 cumulative
-    # implies an average effect of implied share x end-state over the window;
-    # headline the window-average annual burden, keep end-state as a variant.
-    tca = res["episodes"]["E1_tca_food"]
-    share = tca["cross_check"]["implied_average_effect_share_of_end_state"]
-    add("TcaImpliedAvgShare", fmt(share, 2))
-    _e1d = tca["central"]["per_decile_end_state_annual"]
+    # --- Derived variants, read from res["derived"] so the macros and the
+    #     artifact are guaranteed to agree (they are computed once, upstream).
+    dv = res["derived"]
+    add("TcaImpliedAvgShare", fmt(dv["tca_window_average"]["share_of_end_state"], 2))
+    _wa = dv["tca_window_average"]["per_decile"]
     for idx, dn in ((0, "DecOne"), (9, "DecTen")):
-        add(f"TcaWindowAvgGbp{dn}", fmt(_e1d[idx]["gbp_per_year"] * share))
-        add(f"TcaWindowAvgPctSpend{dn}",
-            fmt(_e1d[idx]["pct_of_total_spend"] * share, 2))
-    add("TcaWindowAvgAggBn",
-        fmt(tca["central"]["aggregate_end_state_gbp_bn_per_year"] * share, 1))
-    # M4a: energy demand-response variant.  Fixed-basket burden scaled by
-    # (1 - 0.5*e*dp/p), e = 0.35 (labelled assumption bracketing observed
-    # 2022-23 weather-adjusted gas demand reductions).
-    en = res["episodes"]["E2_energy"]
-    dpp = en["price_factors"]["gross"]  # stored as the price RISE fraction (+1.7792 = +177.9%)
-    demand_scale = 1.0 - 0.5 * 0.35 * dpp
-    add("EnergyDemandScalePct", fmt(100 * demand_scale))
-    add("EnergyGrossGbpDecOneDemand",
-        fmt(en["gross"]["per_decile"][0]["gbp_per_year"] * demand_scale))
-    add("EnergyGrossAggBnDemand",
-        fmt(en["gross"]["aggregate_gbp_bn_per_year"] * demand_scale, 1))
-    # M1: imported-component bound (Dhingra-Page: >70% of the CPI rise was
-    # imported), applied as a crude labelled bound on the trade-transmitted
-    # share of the retail energy shock.
-    add("EnergyImportedShareBound", fmt(70))
-    add("EnergyGrossAggBnImported",
-        fmt(en["gross"]["aggregate_gbp_bn_per_year"] * 0.70, 1))
-    # M6: what the per-GBPbn ratio actually measures -- affected-category
-    # budget shares by decile (pct of total spending).
-    for idx, dn in ((0, "DecOne"), (9, "DecTen")):
-        add(f"TcaBudgetSharePct{dn}",
-            fmt(_e1d[idx]["pct_of_total_spend"] / 0.08, 1))
-        add(f"EnergyBudgetSharePct{dn}",
-            fmt(en["gross"]["per_decile"][idx]["pct_of_total_spend"] / dpp, 1))
+        add(f"TcaWindowAvgGbp{dn}", fmt(_wa[idx]["gbp_per_year"]))
+        add(f"TcaWindowAvgPctSpend{dn}", fmt(_wa[idx]["pct_of_total_spend"], 2))
+    add("TcaWindowAvgAggBn", fmt(dv["tca_window_average"]["aggregate_gbp_bn_per_year"], 1))
+
+    co = dv["energy_cash_outlay"]
+    add("EnergyObservedDemandFallPct", fmt(100 * co["observed_demand_fall"]))
+    add("EnergyCashOutlayScalePct", fmt(100 * co["burden_scale_vs_fixed_basket"]))
+    add("EnergyCashOutlayGbpDecOne", fmt(co["decile_one_gbp_per_year"]))
+    add("EnergyCashOutlayAggBn", fmt(co["aggregate_gbp_bn_per_year"], 1))
+
+    tt = dv["energy_trade_transmitted"]
+    add("EnergyImportedShareLowerBound", fmt(100 * tt["imported_share_lower_bound"]))
+    add("EnergyTradeTransmittedAggBnFloor", fmt(tt["aggregate_gbp_bn_lower_bound"], 1))
+
+    bs = dv["budget_shares_pct_of_spend"]
+    for key, tag in (("food", "Tca"), ("domestic_energy", "Energy")):
+        for idx, dn in ((0, "DecOne"), (1, "DecTwo"), (8, "DecNine"), (9, "DecTen")):
+            add(f"{tag}BudgetSharePct{dn}", fmt(bs[key][idx]["pct"], 1))
     return m
 
 
@@ -759,11 +824,32 @@ def main():
         },
         "episodes": {
             "E1_tca_food": e1, "E2_energy": e2, "E3_us_tariffs": e3,
-            "E4_india_ceta": e4, "E5_cptpp_placebo": e5,
+            "E4_india_ceta": e4, "E5_cptpp_benchmark": e5,
         },
         "module2_uc_uprating": m2,
     }
     res["module3_comparability"] = module_three(e1, e2, e3, e4, e5)
+
+    # --- Derived variants, computed INTO the artifact (not only into the
+    # LaTeX macros), so results.json contains every number the paper
+    # reports and the data-availability statement is honest.
+    res["derived"] = derived_variants(res)
+    # The comparability table headlines the TCA window-average path, so the
+    # stored row must be the window-average one, not the superseded
+    # end-state row it replaced.
+    share = res["episodes"]["E1_tca_food"]["cross_check"][
+        "implied_average_effect_share_of_end_state"]
+    for row in res["module3_comparability"]:
+        if row.get("episode", "").startswith("E1"):
+            for k in ("bottom_decile_pct_of_spend", "top_decile_pct_of_spend"):
+                if isinstance(row.get(k), (int, float)):
+                    row[k + "_end_state"] = row[k]
+                    row[k] = round(row[k] * share, 3)
+            row["gross_shock_end_state"] = row["gross_shock"]
+            row["gross_shock"] = res["derived"]["tca_window_average"][
+                "aggregate_gbp_bn_per_year"]
+            row["gross_shock_label"] = "GBP bn/yr, window-average path"
+            row["basis"] = "window-average path (end-state retained as *_end_state)"
 
     (OUT / "results.json").write_text(json.dumps(res, indent=1))
     macros = latex_macros(res)
@@ -786,7 +872,7 @@ def main():
     print(f"E4 CETA: bottom {e4['progressivity']['bottom_decile_gain_pct_of_spend']}% "
           f"vs top {e4['progressivity']['top_decile_gain_pct_of_spend']}% of spend -> "
           f"{e4['progressivity']['verdict']}")
-    print(f"E5 CPTPP placebo: GBP {e5['naive_mean_gbp_per_household_per_year']}/hh/yr")
+    print(f"E5 CPTPP benchmark: GBP {e5['naive_mean_gbp_per_household_per_year']}/hh/yr")
     print(f"M2 UC lag: GBP {m2['uprating_lag_cost_gbp_fy_2022_23']:.0f} "
           f"({m2['uprating_lag_cost_pct_of_allowance']}% of allowance); "
           f"flat alt GBP {m2['flat_alternative_gbp']:.0f}; uplift GBP 1,040")

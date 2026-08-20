@@ -6,6 +6,53 @@ further rounds of independent review, and a full economics referee report.
 The source memos for the earlier rounds have been removed from the
 replication package; their dispositions are recorded below.
 
+## Multishock paper: first referee round (19 August 2026)
+
+`paper_multishock/` ("Who Bore Britain's Trade Shocks?") received a fresh
+referee-style review on the day of its first draft (verdict: major
+revision, boundary reject-and-resubmit; every checked number reproduced
+exactly). Fixed same day:
+
+- **M1 (framing):** the episode set is now typed policy/market throughout
+  --- the energy episode is a trade-transmitted market shock, never a
+  policy act; the "trade policy portfolio ledger" claim is withdrawn; an
+  imported-component bound (Dhingra-Page >70%, ~GBP44.7bn of the gross
+  GBP63.9bn) is reported.
+- **M3 (TCA headline):** headline moved from end-state to the
+  window-average path implied by the published GBP250 cumulative
+  (GBP58-94/household/yr, GBP2.2bn/yr aggregate, 0.35 vs 0.20% of
+  spending); end-state retained as a labelled variant with the
+  back-loading diagnostic.
+- **M4 (energy conventions):** demand-response variant added (69% of
+  fixed-basket, GBP44.0bn); the "discretion cushioned proportionally, so
+  the burden remained regressive" conclusion is withdrawn --- the EBSS,
+  cost-of-living payments and council-tax rebate (the progressive
+  discretionary instruments) are named as unmodelled and the verdict on
+  the discretionary stack deferred to the microsimulation stage; the
+  "as required" phrase retired from NOTES.
+- **M5 (uprating lag):** both conventions now reported (GBP230 flat-April
+  to GBP393 monthly-contemporaneous), correctly labelled as the
+  single-adult standard allowance only.
+- **M6 (normalised column):** the per-GBP-bn column --- shown by the
+  referee to be a ratio artifact in which shock size cancels --- is
+  replaced by affected-category budget shares by decile (food 14.9/8.3,
+  energy 7.0/3.2, D1/D10), which say the same thing honestly.
+- **M7/M8:** the measured-vs-promised asymmetry is restated as the
+  non-mechanical fact (no UK FTA has ever been ex-post evaluated at
+  household level); the CPTPP row is relabelled from "placebo" to
+  near-zero benchmark.
+- **M9 + minors:** universal-negative novelty claim softened; abstract
+  enumeration, "would have cost" gross labelling, IMF citation, transfer
+  clarification, CETA pounds-pro-rich note all fixed.
+
+**Open (the referee's condition for publishability):** execute the
+microsimulation stage --- the common cushioning estimand is currently
+computed for none of the five episodes within the paper itself; the
+first pass is seed arithmetic plus the companion study's imported
+results. Also open: full discretionary stack modelling (EBSS/CoL
+payments), the E4 earnings channel, and FYE2022 income-construction
+material moving from NOTES to a paper appendix.
+
 ## Sixth round: fresh referee report and no-data revision (18 August 2026)
 
 A fresh referee-style review of the reframed manuscript (simulated Fiscal

@@ -648,7 +648,7 @@ def latex_macros(res):
     add("USTariffWageCutCushionPct", fmt(D["ust_wage_cut_cushion_pct"], 1))
 
     # E4
-    add("CetaTotalMillions", fmt(D["ceta_total_m"], 1))
+    add("CetaTotalMillions", fmt(D["ceta_total_m"]))
     add("CetaClothingMillions", fmt(D["ceta_clothing_m"], 1))
     add("CetaFootwearMillions", fmt(D["ceta_footwear_m"], 1))
     add("CetaFoodBevMillions", fmt(D["ceta_foodbev_m"], 1))

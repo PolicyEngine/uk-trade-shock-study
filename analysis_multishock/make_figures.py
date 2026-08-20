@@ -598,10 +598,10 @@ def write_tables(d: Data):
     # Cite keys are placeholders: map them onto the manuscript's .bib.
     rows = [
         ("E1 TCA food NTBs", "Dec 2019--\\newline Mar 2023", "Policy",
-         "Consumer prices (food)", "\\citet{bakker2023}",
+         "Consumer prices (food)", "\\citet{bakker2026}",
          "$+8\\%$ on food prices (6\\% low variant)", "Estimate\\newline (ex post)"),
         ("E2 Energy 2022--23", "Oct 2022--\\newline Mar 2023", "Market",
-         "Consumer prices (energy)", "\\textsc{ofgem-cap}; \\textsc{hmt-epg}",
+         "Consumer prices (energy)", "\\citet{ofgem2022}; \\citet{obrenergy2022}",
          "Cap \\pounds1{,}277 $\\to$ \\pounds3{,}549; EPG \\pounds2{,}500",
          "Observed\\newline (statutory)"),
         ("E3 US tariffs 2025", "2025", "Policy\\newline (foreign)",

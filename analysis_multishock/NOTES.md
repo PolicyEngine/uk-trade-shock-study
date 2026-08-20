@@ -188,3 +188,35 @@ pipeline root).
   textiles in COICOP 5.2.
 - Module 2: full benefit-unit modelling (housing element, LHA freeze,
   deductions), caseload-weighted aggregate cost of the uprating lag.
+
+## Second stage: the energy episode on households (20 August 2026)
+
+`second_stage_energy.py` runs the 2022-23 energy episode through
+PolicyEngine UK on the enhanced FRS (`enhanced_frs_2023_24.h5`,
+53,508 household records, PolicyEngine's private data repository --
+licensed, not redistributed here; set `HF_TOKEN` in the environment to
+download it).
+
+Conventions and their status:
+
+- **Energy rebasing (ASSUMPTION).** The enhanced FRS calibrates energy
+  spending to current-vintage price-cap rates, so the level reflects
+  today's prices while the cross-household distribution reflects
+  quantities. The weighted mean is rebased to the FY2021-22 mean cap
+  (GBP 1,208), preserving relative positions. Rebase factor is recorded
+  in the artifact's `meta` block.
+- **Uprating shortfall base (DATA).** Applied to the named uprated cash
+  benefits summed at household level (GBP 255bn), not to
+  `household_benefits`, which is a broader aggregate exceeding the
+  DWP/HMRC cash benefit bill.
+- **Automatic in-year cushioning is zero by construction, not by
+  assumption**: a price shock leaves nominal incomes unchanged, so no
+  means-tested entitlement responds within the year. This is the
+  substantive finding, not a modelling shortcut.
+- **Discretionary instruments (DATA, gov.uk scheme parameters).** EPG
+  (modelled as the gap between the counterfactual and realised capped
+  prices), EBSS GBP 400 flat, and the 2022-23 cost-of-living payments
+  (GBP 650 means-tested, GBP 300 pensioner, GBP 150 disability) assigned
+  on simulated entitlement. The council-tax rebate is not modelled.
+- **Variance decomposition** is of the realised burden as a share of net
+  income, between versus within income deciles, weighted.

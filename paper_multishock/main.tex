@@ -1,6 +1,8 @@
 \documentclass[11pt]{article}
 \usepackage[margin=1.1in]{geometry}
 \usepackage{booktabs}
+\usepackage{array}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
 \usepackage{amsmath}
 \usepackage{graphicx}
 \usepackage{xcolor}
@@ -8,6 +10,7 @@
 \usepackage{sectsty}
 \allsectionsfont{\color{paperblue}}
 \usepackage[hang,flushmargin]{footmisc}
+\PassOptionsToPackage{hyphens}{url}
 \usepackage[colorlinks=true, citecolor=paperblue, linkcolor=paperblue, urlcolor=paperblue]{hyperref}
 \hypersetup{
   pdftitle={Who Bore Britain's Trade Shocks? A Household Anatomy of the Post-Covid Episodes},
@@ -23,6 +26,8 @@
 \date{\small August 2026 --- working draft}
 
 \input{generated_multishock}
+
+\providecommand{\doi}[1]{\textsc{doi}:~\url{https://doi.org/#1}}
 
 \begin{document}
 \maketitle
@@ -49,9 +54,12 @@ cent), discretionary on prices (the Energy Price Guarantee absorbed
 \MsEnergyCushionSharePct\ per cent of the gross shock), with
 indexation a year late---\pounds\MsUcLagCostFlatAltGbp\ to
 \pounds\MsUcLagCostGbp\ for a single adult's Universal Credit
-standard allowance in the crisis year, by convention. A PolicyEngine
-microsimulation stage, specified against verified model capabilities,
-completes the study.
+standard allowance in the crisis year, by convention. Two bounds are carried throughout: decile gradients are real but
+capture a small share of the variance in who was hurt, and the
+consumption-basket channel priced here is smaller than the
+net-nominal-position and labour-income channels it omits. A
+PolicyEngine microsimulation stage, specified against verified model
+capabilities, addresses the first and completes the study.
 \end{abstract}
 
 \medskip

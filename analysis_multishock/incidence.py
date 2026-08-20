@@ -10,7 +10,7 @@ Runs five post-Covid UK trade-shock episodes through a common household lens:
       earnings side imported as declared constants from the companion study)
   E4  India CETA 2026+                         (DBT IA Annex 9 Table 18 duty
       savings on final goods, allocated by category spending)
-  E5  CPTPP placebo                            (DBT central +GBP 2.0bn GDP)
+  E5  CPTPP near-zero benchmark                            (DBT central +GBP 2.0bn GDP)
 
 plus a rulebook-arithmetic module (UC uprating lag 2022-23) and a
 comparability table.
@@ -324,8 +324,14 @@ def episode_e2(fs22, inc22):
     hh_k, hh_all_k = fs22.households_k
     en = [e + g for e, g in zip(elec, gas)]
     en_all = elec_all + gas_all
-    gross_f = D["cap_oct_2022"] / D["cap_winter_2021_22"] - 1.0
-    net_f = D["epg_level"] / D["cap_winter_2021_22"] - 1.0
+    # Both paths on ONE basis: financial-year mean caps.  Mixing a
+    # point-to-point cap ratio with a financial-year mean ratio changes the
+    # denominator of the cushioning rate without saying so.
+    _base_fy = (D["cap_apr_2021"] + D["cap_winter_2021_22"]) / 2.0
+    _counter_fy = (D["cap_apr_2022"] + D["cap_oct_2022"]) / 2.0
+    _realised_fy = (D["cap_apr_2022"] + D["epg_level"]) / 2.0
+    gross_f = _counter_fy / _base_fy - 1.0
+    net_f = _realised_fy / _base_fy - 1.0
     cushion_share = ((D["cap_oct_2022"] - D["epg_level"])
                      / (D["cap_oct_2022"] - D["cap_winter_2021_22"]))
     gross_wk = [e * gross_f for e in en]
@@ -438,7 +444,7 @@ def episode_e5():
         "dbt_central_gdp_gbp_bn_long_run": D["cptpp_gdp_bn"],
         "gdp_pct_long_run": 0.08,
         "naive_mean_gbp_per_household_per_year": round(per_hh, 1),
-        "note": ("Placebo row: a long-run GDP central estimate divided by "
+        "note": ("Near-zero benchmark row: a long-run GDP central estimate divided by "
                  "the household count. No distributional structure is "
                  "claimed or computable from this first stage."),
     }

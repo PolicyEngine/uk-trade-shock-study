@@ -131,10 +131,10 @@ every run.
   **roughly proportional** (ratio 0.98) — and economically negligible
   (£3–£10 per household per year at 100% pass-through).
 
-## 8. E5 — CPTPP placebo
+## 8. E5 — CPTPP near-zero benchmark
 
 - Declared: DBT central +£2.0bn GDP long-run (≈ +0.08%). Naive mean =
-  £2.0bn / 28.4m households = **£70.4/household/yr**. Stated as a placebo:
+  £2.0bn / 28.4m households = **£70.4/household/yr**. Stated as a near-zero benchmark, not a near-zero benchmark test:
   a long-run GDP estimate is not a household price shock; no distributional
   structure is claimed.
 
@@ -166,7 +166,7 @@ every run.
   progressive (gains); < 0.8 the reverse; else roughly proportional.
 - Normalised column: bottom-decile % of spending per £1bn of gross shock, so
   episodes of wildly different size are comparable (E1 0.162, E2 0.194,
-  E4 0.084 %-points per £bn; E3 n/a — consumer side zero; E5 n/a — placebo).
+  E4 0.084 %-points per £bn; E3 n/a — consumer side zero; E5 n/a — near-zero benchmark).
 - E3's size is the *earnings-side* gross (£0.886bn/yr, companion study);
   its consumer row is zero, so no consumer normalisation is offered.
 
@@ -188,35 +188,3 @@ pipeline root).
   textiles in COICOP 5.2.
 - Module 2: full benefit-unit modelling (housing element, LHA freeze,
   deductions), caseload-weighted aggregate cost of the uprating lag.
-
-## Second stage: the energy episode on households (20 August 2026)
-
-`second_stage_energy.py` runs the 2022-23 energy episode through
-PolicyEngine UK on the enhanced FRS (`enhanced_frs_2023_24.h5`,
-53,508 household records, PolicyEngine's private data repository --
-licensed, not redistributed here; set `HF_TOKEN` in the environment to
-download it).
-
-Conventions and their status:
-
-- **Energy rebasing (ASSUMPTION).** The enhanced FRS calibrates energy
-  spending to current-vintage price-cap rates, so the level reflects
-  today's prices while the cross-household distribution reflects
-  quantities. The weighted mean is rebased to the FY2021-22 mean cap
-  (GBP 1,208), preserving relative positions. Rebase factor is recorded
-  in the artifact's `meta` block.
-- **Uprating shortfall base (DATA).** Applied to the named uprated cash
-  benefits summed at household level (GBP 255bn), not to
-  `household_benefits`, which is a broader aggregate exceeding the
-  DWP/HMRC cash benefit bill.
-- **Automatic in-year cushioning is zero by construction, not by
-  assumption**: a price shock leaves nominal incomes unchanged, so no
-  means-tested entitlement responds within the year. This is the
-  substantive finding, not a modelling shortcut.
-- **Discretionary instruments (DATA, gov.uk scheme parameters).** EPG
-  (modelled as the gap between the counterfactual and realised capped
-  prices), EBSS GBP 400 flat, and the 2022-23 cost-of-living payments
-  (GBP 650 means-tested, GBP 300 pensioner, GBP 150 disability) assigned
-  on simulated entitlement. The council-tax rebate is not modelled.
-- **Variance decomposition** is of the realised burden as a share of net
-  income, between versus within income deciles, weighted.

@@ -90,6 +90,14 @@ D = {
     "cap_winter_2021_22": 1277.0,
     "cap_oct_2022": 3549.0,
     "epg_level": 2500.0,
+    # Half-year caps needed for the REALISED FY2022-23 path (Ofgem letters).
+    "cap_apr_2021": 1138.0,
+    "cap_apr_2022": 1971.0,
+    # Wholesale component of the cap, dual fuel / direct debit / TDCV, on the
+    # CfD-in-wholesale restatement that makes the two vintages comparable
+    # (Ofgem model v1.13 restates Oct-21 wholesale as 550 with policy 137).
+    "cap_wholesale_oct_2021": 550.0,
+    "cap_wholesale_oct_2022": 2468.0,
     "obr_epg_cost_bn": 27.0,           # context anchor only
     "obr_energy_subsidy_bn": 47.0,     # context anchor only
     # E3 -- companion study declared constants (earnings side)
@@ -577,9 +585,12 @@ def fmt(x, dp=0):
     return f"{x:,.{dp}f}"
 
 
-# Observed weather-adjusted fall in domestic energy consumption during the
-# 2022-23 crisis, used for the cash-outlay variant.  ASSUMPTION (NOTES).
-ENERGY_OBSERVED_DEMAND_FALL = 0.12
+# Observed weather-adjusted fall in domestic GAS consumption, gas year
+# mid-May 2022 to mid-May 2023 against the preceding twelve months: DESNZ
+# Subnational Electricity and Gas Consumption Statistics, GB, 2022
+# (published 25 Jan 2024) -- the one figure DESNZ states in prose.  Used for
+# the cash-outlay variant.  DATA, not assumption.
+ENERGY_OBSERVED_DEMAND_FALL = 0.127
 # Dhingra & Page: MORE than this share of the CPI rise was imported.
 IMPORTED_SHARE_LOWER_BOUND = 0.70
 
@@ -627,6 +638,49 @@ def derived_variants(res):
     d["energy_cash_outlay"]["decile_one_gbp_per_year"] = round(
         en["gross"]["per_decile"][0]["gbp_per_year"]
         * d["energy_cash_outlay"]["burden_scale_vs_fixed_basket"])
+
+    # REALISED FY2022-23 path.  The gross counterfactual holds the October
+    # 2022 cap for a full year, which no household experienced: the first
+    # half of FY2022-23 was capped at 1,971 and the second at the EPG's
+    # 2,500.  The realised comparison is against the preceding financial
+    # year's two caps (1,138 and 1,277).
+    realised = (D["cap_apr_2022"] + D["epg_level"]) / 2.0
+    base_fy = (D["cap_apr_2021"] + D["cap_winter_2021_22"]) / 2.0
+    r_rise = realised / base_fy - 1.0
+    d["energy_realised_path"] = {
+        "fy2022_23_mean_cap": round(realised, 2),
+        "fy2021_22_mean_cap": round(base_fy, 2),
+        "realised_price_rise": round(r_rise, 4),
+        "gross_counterfactual_price_rise": en["price_factors"]["gross"],
+        "note": "half-year caps 1,971 (Apr-Sep 22) and 2,500 (EPG, Oct 22-Mar 23) "
+                "against 1,138 and 1,277; what households actually faced",
+    }
+    scale = r_rise / en["price_factors"]["gross"]
+    d["energy_realised_path"]["per_decile"] = [
+        {"decile": row["decile"],
+         "gbp_per_year": round(row["gbp_per_year"] * scale, 1),
+         "pct_of_total_spend": round(row["pct_of_total_spend"] * scale, 3)}
+        for row in en["gross"]["per_decile"]]
+    d["energy_realised_path"]["aggregate_gbp_bn_per_year"] = round(
+        en["gross"]["aggregate_gbp_bn_per_year"] * scale, 1)
+
+    # MEASURED trade-transmitted share, superseding the CPI-based bound: the
+    # cap's wholesale component is the traded block; network, policy,
+    # operating costs, margin and VAT are domestic.
+    w0, w1 = D["cap_wholesale_oct_2021"], D["cap_wholesale_oct_2022"]
+    c0, c1 = D["cap_winter_2021_22"], D["cap_oct_2022"]
+    d["energy_wholesale_decomposition"] = {
+        "wholesale_oct_2021": w0, "wholesale_oct_2022": w1,
+        "wholesale_share_of_cap_oct_2021": round(w0 / c0, 4),
+        "wholesale_share_of_cap_oct_2022": round(w1 / c1, 4),
+        "wholesale_share_of_cap_rise": round((w1 - w0) / (c1 - c0), 4),
+        "non_wholesale_rise": round((c1 - c0) - (w1 - w0), 2),
+        "source": "Ofgem default tariff cap letters (6 Aug 2021; 26 Aug 2022), "
+                  "Figure 1; CfD-in-wholesale restatement (model v1.13)",
+    }
+    d["energy_wholesale_decomposition"]["trade_transmitted_aggregate_gbp_bn"] = round(
+        en["gross"]["aggregate_gbp_bn_per_year"]
+        * d["energy_wholesale_decomposition"]["wholesale_share_of_cap_rise"], 1)
 
     # Trade-transmitted share: a LOWER bound.  Dhingra-Page report that MORE
     # than this share of the CPI rise was imported, so applying it yields a
@@ -784,6 +838,26 @@ def latex_macros(res):
     add("EnergyCashOutlayScalePct", fmt(100 * co["burden_scale_vs_fixed_basket"]))
     add("EnergyCashOutlayGbpDecOne", fmt(co["decile_one_gbp_per_year"]))
     add("EnergyCashOutlayAggBn", fmt(co["aggregate_gbp_bn_per_year"], 1))
+
+    rp = dv["energy_realised_path"]
+    add("EnergyRealisedRisePct", fmt(100 * rp["realised_price_rise"], 1))
+    add("EnergyRealisedMeanCapFyTwentyTwo", fmt(rp["fy2022_23_mean_cap"]))
+    add("EnergyRealisedMeanCapFyTwentyOne", fmt(rp["fy2021_22_mean_cap"]))
+    add("EnergyRealisedAggBn", fmt(rp["aggregate_gbp_bn_per_year"], 1))
+    for idx, dn in ((0, "DecOne"), (9, "DecTen")):
+        add(f"EnergyRealisedGbp{dn}", fmt(rp["per_decile"][idx]["gbp_per_year"]))
+        add(f"EnergyRealisedPctSpend{dn}",
+            fmt(rp["per_decile"][idx]["pct_of_total_spend"], 2))
+
+    wd = dv["energy_wholesale_decomposition"]
+    add("EnergyWholesaleBase", fmt(wd["wholesale_oct_2021"]))
+    add("EnergyWholesalePeak", fmt(wd["wholesale_oct_2022"]))
+    add("EnergyWholesaleShareCapBasePct", fmt(100 * wd["wholesale_share_of_cap_oct_2021"], 1))
+    add("EnergyWholesaleShareCapPeakPct", fmt(100 * wd["wholesale_share_of_cap_oct_2022"], 1))
+    add("EnergyWholesaleShareOfRisePct", fmt(100 * wd["wholesale_share_of_cap_rise"], 1))
+    add("EnergyTradeTransmittedAggBn", fmt(wd["trade_transmitted_aggregate_gbp_bn"], 1))
+    add("EnergyRealisedTradeTransmittedAggBn",
+        fmt(rp["aggregate_gbp_bn_per_year"] * wd["wholesale_share_of_cap_rise"], 1))
 
     tt = dv["energy_trade_transmitted"]
     add("EnergyImportedShareLowerBound", fmt(100 * tt["imported_share_lower_bound"]))

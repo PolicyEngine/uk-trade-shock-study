@@ -5,10 +5,11 @@
 Table~\ref{tab:ms-anatomy} is the paper's central object: the five
 episodes side by side under the common lens. Three regularities
 organise everything that follows. First, \emph{the negative shocks were regressive and the positive ones
-were not progressive}: the gross energy shock would have cost the
-bottom decile \MsEnergyGrossPctSpendDecOne\ per cent of its spending
-against \MsEnergyGrossPctSpendDecTen\ per cent at the top (before the
-policy response and demand adjustment), the TCA food shock \MsTcaWindowAvgPctSpendDecOne\ against
+were not progressive}: on the realised 2022--23 path the energy shock
+cost the bottom decile \MsEnergyRealisedPctSpendDecOne\ per cent of its
+spending against \MsEnergyRealisedPctSpendDecTen\ per cent at the top
+(the never-realised gross counterfactual would have been
+\MsEnergyGrossPctSpendDecOne\ against \MsEnergyGrossPctSpendDecTen), the TCA food shock \MsTcaWindowAvgPctSpendDecOne\ against
 \MsTcaWindowAvgPctSpendDecTen\ per cent of spending on the
 window-average path (\MsTcaPctSpendDecOne\ against
 \MsTcaPctSpendDecTen\ at end-state), while the India agreement's consumer
@@ -43,7 +44,7 @@ Episode & Type, channel & Gross & \multicolumn{2}{c}{\% of spending} & Cushionin
  & & shock & D1 & D10 & by mechanism \\
 \midrule
 TCA food, 2021--23 & policy, prices & \pounds\MsTcaWindowAvgAggBn\,bn & \MsTcaWindowAvgPctSpendDecOne & \MsTcaWindowAvgPctSpendDecTen & pass-through conv. \\
-Energy, 2022--23 & market, prices & \pounds\MsEnergyGrossAggBn\,bn & \MsEnergyGrossPctSpendDecOne & \MsEnergyGrossPctSpendDecTen & price subsidy, \MsEnergyCushionSharePct\%$^{i}$ \\
+Energy, 2022--23 & market, prices & \pounds\MsEnergyRealisedAggBn\,bn & \MsEnergyRealisedPctSpendDecOne & \MsEnergyRealisedPctSpendDecTen & price subsidy, \MsEnergyCushionSharePct\%$^{i}$ \\
 US tariffs, 2025--26 & policy, earnings & \pounds\MsUSTariffGrossShockMillions\,m & \multicolumn{2}{c}{zero} & tax--benefit, \MsUSTariffDisplacementCushionPct--\MsUSTariffWageCutCushionPct\%$^{m}$ \\
 India CETA, 2026-- & policy, prices & \pounds\MsCetaTotalMillions\,m$^{g}$ & \MsCetaBottomPctSpend & \MsCetaTopPctSpend & --- \\
 CPTPP, 2024-- & benchmark & \pounds\MsCptppGdpBn\,bn$^{g}$ & \multicolumn{2}{c}{no structure} & --- \\
@@ -61,9 +62,13 @@ different questions and are not comparable with one another; the common
 estimand of Section~\ref{sec:framework} that would make them comparable
 is computed at the microsimulation stage. Deciles are of equivalised
 disposable income; entries are first-order incidence on published
-expenditure-by-decile tables at fixed baskets. TCA on the
-window-average path (end-state variant in the text); energy gross of
-the policy response and demand adjustment. Episodes are typed
+expenditure-by-decile tables at fixed baskets. Both price episodes are on their
+\emph{realised} paths: TCA on the window-average path implied by the
+published cumulative, energy on the caps households actually faced in
+2022--23 (\pounds\MsEnergyRealisedMeanCapFyTwentyTwo\ against
+\pounds\MsEnergyRealisedMeanCapFyTwentyOne, $+$\MsEnergyRealisedRisePct\
+per cent). The end-state and gross-counterfactual variants are reported
+in the text. Episodes are typed
 policy/market: the energy episode is trade-\emph{transmitted}, not a
 policy act. ``Zero'' records that the UK did not retaliate, so no
 consumer price vector exists. Cushioning entries measure different
@@ -82,7 +87,9 @@ Table~\ref{tab:decile-full}.
 \caption{Household incidence by equivalised disposable income decile,
 as a share of each decile's total spending. Costs are plotted as
 positive; the India CETA series is a gain (dotted, open markers). The
-energy episode is shown gross and net of the Energy Price Guarantee.}
+energy episode is shown on its realised 2022--23 path (solid) and as
+the gross counterfactual the Energy Price Guarantee displaced
+(dashed).}
 \label{fig:incidence-profile}
 \end{figure}
 
@@ -118,32 +125,50 @@ cumulative comes in at ratio \MsTcaCrossCheckRatio, showing the price
 effect was back-loaded, so end-state overstates the lived burden. The
 microsimulation stage will carry the published path.
 
-\paragraph{The energy shock and the EPG.} At cap levels, the gross
-price shock (\pounds\MsEnergyCapBase\ to \pounds\MsEnergyCapPeak\
-typical bill, +\MsEnergyGrossFactorPct\ per cent) \emph{would have}
-cost the bottom decile \pounds\MsEnergyGrossGbpDecOne\ a year at
-fixed baskets---\MsEnergyGrossPctSpendDecOne\ per cent of its total
-spending, more than double the top decile's share. Three labelled qualifications bound that number, and each is a
+\paragraph{The energy shock and the EPG.} What households actually
+faced in 2022--23 was a mean capped bill of
+\pounds\MsEnergyRealisedMeanCapFyTwentyTwo\ (\pounds 1{,}971 for the
+first half-year, the Energy Price Guarantee's \pounds 2{,}500 for the
+second) against \pounds\MsEnergyRealisedMeanCapFyTwentyOne\ the year
+before: a realised rise of \MsEnergyRealisedRisePct\ per cent costing
+the bottom decile \pounds\MsEnergyRealisedGbpDecOne\ a year,
+\MsEnergyRealisedPctSpendDecOne\ per cent of its total spending against
+\MsEnergyRealisedPctSpendDecTen\ per cent at the top, and
+\pounds\MsEnergyRealisedAggBn\ billion in aggregate. The
+\emph{counterfactual} shock---the October 2022 cap of
+\pounds\MsEnergyCapPeak\ held for a full year against
+\pounds\MsEnergyCapBase, $+$\MsEnergyGrossFactorPct\ per cent---is the
+figure the policy prevented, and would have cost the bottom decile
+\pounds\MsEnergyGrossGbpDecOne\ a year, \MsEnergyGrossPctSpendDecOne\
+per cent of its spending. Three labelled qualifications bound that number, and each is a
 different kind of bound. First, \emph{welfare versus cash}: the
 fixed-basket figure is the first-order welfare measure, correct to a
 first approximation by the envelope theorem, but households cut
-consumption, so cash outlays rose by less. Applying an observed
-weather-adjusted demand reduction of \MsEnergyObservedDemandFallPct\
-per cent gives a cash-outlay burden of
+consumption, so cash outlays rose by less. Applying the observed
+weather-adjusted reduction in domestic gas consumption of
+\MsEnergyObservedDemandFallPct\ per cent over the gas year to mid-May
+2023 \citep{desnz2024} gives a cash-outlay burden of
 \MsEnergyCashOutlayScalePct\ per cent of the fixed-basket figure
 (\pounds\MsEnergyCashOutlayGbpDecOne\ for the bottom decile;
 \pounds\MsEnergyCashOutlayAggBn\ billion aggregate). The two answer
 different questions---what households paid, and what they lost---and
-the gap between them is itself the foregone consumption. Second,
-\emph{how much of this is trade}: the retail cap bundles wholesale gas,
-which is traded, with network, policy and operating costs and margin,
-which are domestic, so only part of the shock belongs in a trade
-ledger at all. \citet{dhingrapage2023} find that \emph{more than}
+the gap between them is itself the foregone consumption. Second, \emph{how much of this is trade}: the retail cap bundles
+wholesale energy, which is traded, with network, policy and operating
+costs, margin and VAT, which are domestic. Ofgem's published component
+breakdown settles the split \citep{ofgem2022}. Wholesale rose from
+\pounds\MsEnergyWholesaleBase\ to \pounds\MsEnergyWholesalePeak\ of the
+typical bill---from \MsEnergyWholesaleShareCapBasePct\ to
+\MsEnergyWholesaleShareCapPeakPct\ per cent of the cap---so
+\MsEnergyWholesaleShareOfRisePct\ per cent of the cap's \emph{rise} is
+traded energy and the remainder domestic cost. The trade-transmitted
+component of the realised burden is therefore about
+\pounds\MsEnergyRealisedTradeTransmittedAggBn\ billion
+(\pounds\MsEnergyTradeTransmittedAggBn\ billion of the gross
+counterfactual). This measured decomposition supersedes the
+CPI-share bound used in earlier drafts, and is comfortably consistent
+with it: \citet{dhingrapage2023} find that \emph{more than}
 \MsEnergyImportedShareLowerBound\ per cent of the CPI rise was
-imported, which applied here yields a \emph{floor} of roughly
-\pounds\MsEnergyTradeTransmittedAggBnFloor\ billion rather than a
-ceiling; a proper decomposition requires the cap's published wholesale
-component and is specified for the microsimulation stage. Third,
+imported, a floor this decomposition clears. Third,
 \emph{timing}: the annualised run-rate holds the October 2022 cap for
 a full year, which no household experienced; the six-month window
 figure is \pounds\MsEnergyCushionAggSixMonthsBn\ billion of EPG

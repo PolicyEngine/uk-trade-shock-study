@@ -391,7 +391,7 @@ def fig_uprating_lag(d: Data):
     ax.set_xticklabels([m.split("-")[1].capitalize() for m in d.months])
     ax.set_xlabel("Month, financial year 2022-23")
     ax.set_ylabel("Universal Credit standard allowance,\nsingle adult 25+ (\u00a3 per month)")
-    ax.set_ylim(329, 388)
+    ax.set_ylim(0, 400)
     ax.set_xlim(-0.4, len(x) - 0.6)
     ax.grid(axis="x", visible=False)
     ax.set_title("The uprating lag: statutory path against a CPI-indexed counterfactual",
@@ -400,10 +400,10 @@ def fig_uprating_lag(d: Data):
     ax.annotate(
         f"Cumulative shortfall, FY2022-23:\n\u00a3{d.lag_cost:,.0f} "
         f"({d.lag_pct:.1f}% of the annual allowance)",
-        xy=(4.0, (d.actual[4] + d.counter[4]) / 2), xytext=(0.05, 387),
+        xy=(4.0, (d.actual[4] + d.counter[4]) / 2), xytext=(0.15, 250),
         fontsize=7.4, color=INK2, ha="left", va="top", linespacing=1.4,
         arrowprops=dict(arrowstyle="-", lw=0.8, color=MUTED,
-                        connectionstyle="angle3,angleA=0,angleB=80"),
+                        connectionstyle="angle3,angleA=90,angleB=0"),
     )
     for i, ha, dx in ((0, "left", 4), (11, "right", -4)):
         ax.annotate(f"\u00a3{d.shortfall[i]:.0f}/mth",
@@ -432,7 +432,7 @@ def fig_episode_map(d: Data):
 
     # (key, label, x, y, gross GBPbn, sign, market?, note)
     eps = [
-        ("E1", "E1  TCA food NTBs", -1.02, -0.72, 7.37, "cost", False,
+        ("E1", "E1  TCA food NTBs", -1.02, -0.72, 2.19, "cost", False,
          "+8% on food prices"),
         ("E2", "E2  Energy 2022-23", -0.98, -1.60, 63.9, "cost", True,
          "cap \u00a31,277 \u2192 \u00a33,549"),
@@ -440,7 +440,7 @@ def fig_episode_map(d: Data):
          "earnings only; zero consumer row"),
         ("E4", "E4  India CETA", -1.02, 1.15, 0.18, "gain", False,
          "duty cut on final goods"),
-        ("E5", "E5  CPTPP placebo", 0.10, 0.62, 2.0, "gain", False,
+        ("E5", "E5  CPTPP benchmark", 0.10, 0.62, 2.0, "gain", False,
          "GDP only; no household mapping"),
     ]
     lo = np.log10(min(e[4] for e in eps))
@@ -514,7 +514,7 @@ def fig_episode_map(d: Data):
               label="Trade-transmitted market price (not a policy instrument)"),
         Line2D([], [], marker="o", ls="none", ms=7, markerfacecolor="white",
                markeredgecolor=TEAL, markeredgewidth=1.4,
-               label="Placebo / near-zero household benchmark"),
+               label="Near-zero benchmark (no household structure)"),
     ]
     ax.legend(handles=legend, ncol=2, loc="upper center", bbox_to_anchor=(0.5, -0.005),
               fontsize=7.4, handletextpad=0.7, columnspacing=1.4)
@@ -644,13 +644,11 @@ def write_tables(d: Data):
     A("\\end{table}")
     A("")
 
-    path = HERE / "generated_tables.tex"
-    path.write_text("\n".join(L))
-    print(f"wrote {path}")
+    text_all = "\n".join(L)
 
     # Split into per-table files so the manuscript can place each one in its
     # own section (decile detail in results; first stages in episodes).
-    text = "\n".join(L)
+    text = text_all
     preamble = text.split("\\begin{table}")[0]
     bodies = ["\\begin{table}" + b for b in text.split("\\begin{table}")[1:]]
     for name, body in zip(

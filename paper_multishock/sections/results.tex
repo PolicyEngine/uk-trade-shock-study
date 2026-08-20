@@ -38,19 +38,28 @@ late (Section~\ref{sec:results-rulebook}).
 \small
 \begin{tabular}{llrrrl}
 \toprule
-Episode & Type, channel & Gross & \multicolumn{2}{c}{\% of spending} & Cushioning \\
+Episode & Type, channel & Gross & \multicolumn{2}{c}{\% of spending} & Cushioning, \\
 \cmidrule(lr){4-5}
- & & shock & D1 & D10 & \\
+ & & shock & D1 & D10 & by mechanism \\
 \midrule
-TCA food, 2021--23 & policy, prices & \pounds\MsTcaWindowAvgAggBn\,bn & \MsTcaWindowAvgPctSpendDecOne & \MsTcaWindowAvgPctSpendDecTen & in estimate \\
-Energy, 2022--23 & market, prices & \pounds\MsEnergyGrossAggBn\,bn & \MsEnergyGrossPctSpendDecOne & \MsEnergyGrossPctSpendDecTen & EPG \MsEnergyCushionSharePct\% \\
-US tariffs, 2025--26 & policy, earnings & \pounds\MsUSTariffGrossShockMillions\,m & \multicolumn{2}{c}{zero} & auto.\ \MsUSTariffDisplacementCushionPct--\MsUSTariffWageCutCushionPct\% \\
-India CETA, 2026-- & policy, prices & \pounds\MsCetaTotalMillions\,m$^{g}$ & \MsCetaBottomPctSpend & \MsCetaTopPctSpend & n/a \\
-CPTPP, 2024-- & benchmark & \pounds\MsCptppGdpBn\,bn$^{g}$ & \multicolumn{2}{c}{no structure} & n/a \\
+TCA food, 2021--23 & policy, prices & \pounds\MsTcaWindowAvgAggBn\,bn & \MsTcaWindowAvgPctSpendDecOne & \MsTcaWindowAvgPctSpendDecTen & pass-through conv. \\
+Energy, 2022--23 & market, prices & \pounds\MsEnergyGrossAggBn\,bn & \MsEnergyGrossPctSpendDecOne & \MsEnergyGrossPctSpendDecTen & price subsidy, \MsEnergyCushionSharePct\%$^{i}$ \\
+US tariffs, 2025--26 & policy, earnings & \pounds\MsUSTariffGrossShockMillions\,m & \multicolumn{2}{c}{zero} & tax--benefit, \MsUSTariffDisplacementCushionPct--\MsUSTariffWageCutCushionPct\%$^{m}$ \\
+India CETA, 2026-- & policy, prices & \pounds\MsCetaTotalMillions\,m$^{g}$ & \MsCetaBottomPctSpend & \MsCetaTopPctSpend & --- \\
+CPTPP, 2024-- & benchmark & \pounds\MsCptppGdpBn\,bn$^{g}$ & \multicolumn{2}{c}{no structure} & --- \\
 \bottomrule
 \end{tabular}
 \begin{minipage}{.94\textwidth}\footnotesize
-\emph{Notes:} $^{g}$~gain, not cost. Deciles are of equivalised
+\emph{Notes:} $^{g}$~gain, not cost. $^{i}$~an accounting identity:
+because the Guarantee capped a price, the share is constant across
+deciles by construction. $^{m}$~imported from the companion study
+\citep{ahmadi2026}; it is a tax--benefit stabilisation coefficient for
+that episode's earnings channel, and the only entry in this column of
+that kind. The three mechanisms named in this column---a pass-through
+convention, a price subsidy and a stabilisation coefficient---answer
+different questions and are not comparable with one another; the common
+estimand of Section~\ref{sec:framework} that would make them comparable
+is computed at the microsimulation stage. Deciles are of equivalised
 disposable income; entries are first-order incidence on published
 expenditure-by-decile tables at fixed baskets. TCA on the
 window-average path (end-state variant in the text); energy gross of
@@ -114,23 +123,32 @@ price shock (\pounds\MsEnergyCapBase\ to \pounds\MsEnergyCapPeak\
 typical bill, +\MsEnergyGrossFactorPct\ per cent) \emph{would have}
 cost the bottom decile \pounds\MsEnergyGrossGbpDecOne\ a year at
 fixed baskets---\MsEnergyGrossPctSpendDecOne\ per cent of its total
-spending, more than double the top decile's share. Three labelled
-qualifications bound that number. A demand-response variant (unit
-elasticity applied at half weight, consistent with the double-digit
-weather-adjusted demand reductions observed in 2022--23) scales the
-burden to \MsEnergyDemandScalePct\ per cent of the fixed-basket
-figure (\pounds\MsEnergyGrossGbpDecOneDemand\ for the bottom decile;
-\pounds\MsEnergyGrossAggBnDemand\ billion aggregate). An
-imported-component bound, applying the \citet{dhingrapage2023}
-finding that over \MsEnergyImportedShareBound\ per cent of the CPI
-rise was imported, caps the trade-transmitted share of the gross
-aggregate at roughly \pounds\MsEnergyGrossAggBnImported\ billion;
-the remainder is domestic cost and margin. And the annualised
-run-rate holds the October 2022 cap for a full year, which no
-household experienced; the six-month window figure is
-\pounds\MsEnergyCushionAggSixMonthsBn\ billion of EPG absorption
-against the OBR's \pounds\MsEnergyObrEpgBn\ billion costing---a
-context anchor, not a validation. Within those bounds the shape is
+spending, more than double the top decile's share. Three labelled qualifications bound that number, and each is a
+different kind of bound. First, \emph{welfare versus cash}: the
+fixed-basket figure is the first-order welfare measure, correct to a
+first approximation by the envelope theorem, but households cut
+consumption, so cash outlays rose by less. Applying an observed
+weather-adjusted demand reduction of \MsEnergyObservedDemandFallPct\
+per cent gives a cash-outlay burden of
+\MsEnergyCashOutlayScalePct\ per cent of the fixed-basket figure
+(\pounds\MsEnergyCashOutlayGbpDecOne\ for the bottom decile;
+\pounds\MsEnergyCashOutlayAggBn\ billion aggregate). The two answer
+different questions---what households paid, and what they lost---and
+the gap between them is itself the foregone consumption. Second,
+\emph{how much of this is trade}: the retail cap bundles wholesale gas,
+which is traded, with network, policy and operating costs and margin,
+which are domestic, so only part of the shock belongs in a trade
+ledger at all. \citet{dhingrapage2023} find that \emph{more than}
+\MsEnergyImportedShareLowerBound\ per cent of the CPI rise was
+imported, which applied here yields a \emph{floor} of roughly
+\pounds\MsEnergyTradeTransmittedAggBnFloor\ billion rather than a
+ceiling; a proper decomposition requires the cap's published wholesale
+component and is specified for the microsimulation stage. Third,
+\emph{timing}: the annualised run-rate holds the October 2022 cap for
+a full year, which no household experienced; the six-month window
+figure is \pounds\MsEnergyCushionAggSixMonthsBn\ billion of EPG
+absorption against the OBR's \pounds\MsEnergyObrEpgBn\ billion
+costing---a context anchor, not a validation. Within those bounds the shape is
 robust: the Energy Price Guarantee truncated the rise to
 +\MsEnergyNetFactorPct\ per cent, absorbing
 \pounds\MsEnergyCushionGbpDecOne\ a year for a bottom-decile
@@ -167,6 +185,20 @@ distribution by construction.}
 \label{fig:energy-epg}
 \end{figure}
 
+One comparator needs reconciling. \citet{rf2022} report energy budget
+shares of roughly 11 per cent in the second decile against 6 per cent
+in the ninth; the shares computed here are
+\MsEnergyBudgetSharePctDecTwo\ and
+\MsEnergyBudgetSharePctDecNine\ per cent. The gap is definitional,
+not substantive: this paper measures electricity and gas only, as a
+share of \emph{total spending}, on equivalised-income deciles of the
+FYE2022 vintage, whereas the wider comparator includes other domestic
+fuels and is expressed against income. Because the episode's incidence
+is linear in this share, the difference scales the level of every
+energy number reported here---another reason the household-record
+stage, which computes the share directly rather than importing it,
+supersedes this pass.
+
 \paragraph{The US tariffs.} The UK consumer side is zero---no
 retaliation occurred---so this episode's incidence is entirely
 earnings-led: a gross loss of \pounds\MsUSTariffGrossShockMillions\
@@ -175,8 +207,11 @@ million a year cushioned by the automatic tax--benefit system at
 \MsUSTariffWageCutCushionPct\ per cent (wage cuts), the companion
 study's headline carried over as this episode's second stage.
 
-\paragraph{The India gains, and the placebo.} At full pass-through the
-CETA duty cuts are worth \pounds\MsCetaGainGbpPtHundredDecOne\ a year
+\paragraph{The India gains, and the near-zero benchmark.} Of the \pounds\MsCetaTotalMillions\ million of final-goods duty
+reductions, \pounds\MsCetaAllocatedMillions\ million falls in the
+three categories with published spending detail (clothing, footwear,
+food and beverages) and is allocated across deciles; the remainder is
+unmodelled. At full pass-through the CETA duty cuts are worth \pounds\MsCetaGainGbpPtHundredDecOne\ a year
 to a bottom-decile household and \pounds\MsCetaGainGbpPtHundredDecTen\
 to a top-decile one---\MsCetaVerdict\ as a share of spending, though
 pro-rich in pounds (the top decile gains about three times as much in

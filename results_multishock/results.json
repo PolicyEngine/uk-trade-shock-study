@@ -653,7 +653,7 @@
     "verdict": "roughly proportional"
    }
   },
-  "E5_cptpp_placebo": {
+  "E5_cptpp_benchmark": {
    "dbt_central_gdp_gbp_bn_long_run": 2.0,
    "gdp_pct_long_run": 0.08,
    "naive_mean_gbp_per_household_per_year": 70.4,
@@ -770,15 +770,19 @@
  "module3_comparability": [
   {
    "episode": "E1 TCA food NTBs",
-   "gross_shock": 7.37,
-   "gross_shock_label": "GBP bn/yr, end-state 8% on food",
+   "gross_shock": 2.19,
+   "gross_shock_label": "GBP bn/yr, window-average path",
    "sign": "cost",
    "channel": "consumer prices (food)",
-   "bottom_decile_pct_of_spend": 1.193,
-   "top_decile_pct_of_spend": 0.662,
+   "bottom_decile_pct_of_spend": 0.354,
+   "top_decile_pct_of_spend": 0.197,
    "regressivity_verdict": "regressive",
    "cushioning": "n/a (pass-through embedded)",
-   "bottom_decile_pct_of_spend_per_gbp_bn": 0.162
+   "bottom_decile_pct_of_spend_per_gbp_bn": 0.162,
+   "bottom_decile_pct_of_spend_end_state": 1.193,
+   "top_decile_pct_of_spend_end_state": 0.662,
+   "gross_shock_end_state": 7.37,
+   "basis": "window-average path (end-state retained as *_end_state)"
   },
   {
    "episode": "E2 Energy 2022-23 (gross)",
@@ -817,7 +821,7 @@
    "bottom_decile_pct_of_spend_per_gbp_bn": 0.084
   },
   {
-   "episode": "E5 CPTPP placebo",
+   "episode": "E5 CPTPP benchmark",
    "gross_shock": 2.0,
    "gross_shock_label": "GBP bn GDP, long-run central",
    "sign": "gain",
@@ -828,5 +832,163 @@
    "cushioning": "n/a",
    "bottom_decile_pct_of_spend_per_gbp_bn": null
   }
- ]
+ ],
+ "derived": {
+  "tca_window_average": {
+   "share_of_end_state": 0.297,
+   "per_decile": [
+    {
+     "decile": 1,
+     "gbp_per_year": 57.7,
+     "pct_of_total_spend": 0.354
+    },
+    {
+     "decile": 2,
+     "gbp_per_year": 62.6,
+     "pct_of_total_spend": 0.348
+    },
+    {
+     "decile": 3,
+     "gbp_per_year": 69.7,
+     "pct_of_total_spend": 0.365
+    },
+    {
+     "decile": 4,
+     "gbp_per_year": 74.4,
+     "pct_of_total_spend": 0.329
+    },
+    {
+     "decile": 5,
+     "gbp_per_year": 71.9,
+     "pct_of_total_spend": 0.298
+    },
+    {
+     "decile": 6,
+     "gbp_per_year": 84.0,
+     "pct_of_total_spend": 0.298
+    },
+    {
+     "decile": 7,
+     "gbp_per_year": 80.3,
+     "pct_of_total_spend": 0.27
+    },
+    {
+     "decile": 8,
+     "gbp_per_year": 83.6,
+     "pct_of_total_spend": 0.256
+    },
+    {
+     "decile": 9,
+     "gbp_per_year": 90.3,
+     "pct_of_total_spend": 0.246
+    },
+    {
+     "decile": 10,
+     "gbp_per_year": 93.6,
+     "pct_of_total_spend": 0.197
+    }
+   ],
+   "aggregate_gbp_bn_per_year": 2.19
+  },
+  "energy_cash_outlay": {
+   "observed_demand_fall": 0.12,
+   "price_ratio": 2.7792,
+   "expenditure_ratio": 2.4457,
+   "burden_scale_vs_fixed_basket": 0.8126,
+   "note": "cash outlay, not welfare; fixed-basket remains the first-order welfare measure",
+   "aggregate_gbp_bn_per_year": 51.9,
+   "decile_one_gbp_per_year": 1639
+  },
+  "energy_trade_transmitted": {
+   "imported_share_lower_bound": 0.7,
+   "aggregate_gbp_bn_lower_bound": 44.7,
+   "direction": "lower bound (source reports 'more than' this share)"
+  },
+  "budget_shares_pct_of_spend": {
+   "food": [
+    {
+     "decile": 1,
+     "pct": 14.91
+    },
+    {
+     "decile": 2,
+     "pct": 14.64
+    },
+    {
+     "decile": 3,
+     "pct": 15.36
+    },
+    {
+     "decile": 4,
+     "pct": 13.84
+    },
+    {
+     "decile": 5,
+     "pct": 12.56
+    },
+    {
+     "decile": 6,
+     "pct": 12.55
+    },
+    {
+     "decile": 7,
+     "pct": 11.38
+    },
+    {
+     "decile": 8,
+     "pct": 10.78
+    },
+    {
+     "decile": 9,
+     "pct": 10.34
+    },
+    {
+     "decile": 10,
+     "pct": 8.28
+    }
+   ],
+   "domestic_energy": [
+    {
+     "decile": 1,
+     "pct": 6.96
+    },
+    {
+     "decile": 2,
+     "pct": 6.5
+    },
+    {
+     "decile": 3,
+     "pct": 6.02
+    },
+    {
+     "decile": 4,
+     "pct": 5.61
+    },
+    {
+     "decile": 5,
+     "pct": 5.14
+    },
+    {
+     "decile": 6,
+     "pct": 4.37
+    },
+    {
+     "decile": 7,
+     "pct": 4.32
+    },
+    {
+     "decile": 8,
+     "pct": 3.88
+    },
+    {
+     "decile": 9,
+     "pct": 3.59
+    },
+    {
+     "decile": 10,
+     "pct": 3.24
+    }
+   ]
+  }
+ }
 }

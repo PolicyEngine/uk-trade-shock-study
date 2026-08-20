@@ -297,3 +297,75 @@ contemporaneous CPI. The shaded area is the shortfall, summing to
 \pounds\MsUcLagCostGbp\ over 2022--23.}
 \label{fig:uprating-lag}
 \end{figure}
+
+\section{The second stage: the energy episode on households}\label{sec:results-secondstage}
+
+The first pass runs price vectors against published decile tables. This
+section runs the largest episode through the statutory system on
+household records---\SsHouseholdsRecords\ enhanced-FRS households in
+PolicyEngine UK---and computes the estimand
+Section~\ref{sec:framework} defines. Three results follow, and none is
+visible from decile tables.
+
+\paragraph{The automatic system does nothing, and worse than nothing.}
+A price shock leaves nominal incomes unchanged, so nothing in the
+means-tested system triggers: entitlements are computed on incomes that
+did not move, and in-year automatic cushioning of the energy shock is
+\SsAutomaticRatePct\ per cent. The only automatic price-side channel is
+indexation, and it is lagged: applying the April 2022 uprating of 3.1
+per cent against contemporaneous inflation over the year leaves the
+uprated cash-benefit stock (\pounds\SsCashBenefitBaseBn\ billion) short
+by \pounds\SsUpratingShortfallBn\ billion---equivalent to
+\SsUpratingShortfallPctOfShock\ per cent of the gross shock moving
+\emph{against} households while the shock was landing. This is
+\citet{cohenfollette2000}'s macro finding---that stabilisers do little
+against a supply shock---measured at the household level, and it is
+sharper than their version: for a pure price shock the automatic
+response is not merely small but structurally absent, because the
+system conditions on nominal income.
+
+\paragraph{The discretionary response was large and progressive.}
+Against a gross shock of \pounds\SsGrossAggBn\ billion, the
+discretionary instruments together returned
+\SsDiscretionaryRatePct\ per cent: the Energy Price Guarantee
+(\pounds\SsEpgBn\ billion), the Energy Bills Support Scheme
+(\pounds\SsEbssBn\ billion) and the cost-of-living payments
+(\pounds\SsColBn\ billion). The first pass, which modelled the
+Guarantee alone, put cushioning at \MsEnergyCushionSharePct\ per cent
+and inferred that discretion cushioned proportionally. On household
+records the full stack is markedly progressive---%
+\SsCushionPctDecOne\ per cent of the bottom decile's counterfactual
+loss returned against \SsCushionPctDecTen\ per cent of the top
+decile's---because the flat payments are worth far more relative to a
+small bill and the means-tested payments are targeted. The earlier
+inference was an artefact of modelling one instrument; the correction
+runs in the government's favour.
+
+\paragraph{Exposure varies within deciles, not between them.}
+The realised burden falls from \SsBurdenPctIncDecOne\ per cent of net
+income in the bottom decile to \SsBurdenPctIncDecTen\ per cent in the
+top---the regressive gradient the first pass found. But decomposing the
+variance of that burden across all households puts only
+\SsBetweenDecileVarPct\ per cent of it between deciles and
+\SsWithinDecileVarPct\ per cent within them. Inside the bottom decile
+alone the burden runs from \SsPTenDecOne\ per cent of net income at the
+tenth percentile to \SsPNinetyDecOne\ per cent at the ninetieth, a
+ratio of \SsRatioDecOne\ to one; the equivalent spread is at least
+sevenfold in every decile. This is \citet{borusyakjaravel2024}'s result
+reproduced on UK energy exposure, and it settles in the data what
+Section~\ref{sec:framework-decile} could only concede: the gradient is
+real, and it is a small part of the story. A policy that conditions on
+income alone---as the means-tested payments do---is targeting the two
+per cent, which is the precise sense in which
+\citet{levell2025} find a price instrument retains a role.
+
+\begin{figure}[tbp]\centering
+\includegraphics[width=\textwidth]{figures/fig_within_decile.png}
+\caption{What the decile lens hides. Bars are each decile's mean
+realised energy burden as a share of net income; whiskers span the
+tenth to ninetieth percentile of that burden \emph{within} the decile.
+The between-decile gradient accounts for \SsBetweenDecileVarPct\ per
+cent of the variance in exposure; the within-decile spread accounts for
+\SsWithinDecileVarPct\ per cent.}
+\label{fig:within-decile}
+\end{figure}

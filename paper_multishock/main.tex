@@ -23,9 +23,10 @@
 
 \title{\bfseries Who Bore Britain's Trade Shocks?\\[0.15cm] A Household Anatomy of the Post-Covid Episodes\thanks{\textbf{Acknowledgements:} I thank Max Ghenis and Seyed Mahdi Hosseini for valuable comments and helpful discussions. This is a working paper presenting first-pass public-data results; the household-microsimulation stage is specified in Section~\ref{sec:roadmap}.}\\[0.7cm]}
 \author{Vahid Ahmadi\thanks{Research Associate at PolicyEngine. Email: \href{mailto:vahid@policyengine.org}{vahid@policyengine.org}.}}
-\date{\small August 2026 --- working draft}
+\date{\small August 2026}
 
 \input{generated_multishock}
+\input{generated_secondstage}
 
 \providecommand{\doi}[1]{\textsc{doi}:~\url{https://doi.org/#1}}
 
@@ -55,12 +56,21 @@ Ofgem's component data put \MsEnergyWholesaleShareOfRisePct\ per cent
 of the cap's rise in traded wholesale energy), with
 indexation a year late---\pounds\MsUcLagCostFlatAltGbp\ to
 \pounds\MsUcLagCostGbp\ for a single adult's Universal Credit
-standard allowance in the crisis year, by convention. Two bounds are carried throughout: decile gradients are real but
-capture a small share of the variance in who was hurt, and the
-consumption-basket channel priced here is smaller than the
-net-nominal-position and labour-income channels it omits. A
-PolicyEngine microsimulation stage, specified against verified model
-capabilities, addresses the first and completes the study.
+standard allowance in the crisis year, by convention. Running the largest episode through the statutory system on
+\SsHouseholdsRecords\ enhanced-FRS households sharpens all three
+findings. Automatic in-year cushioning of a price shock is
+\SsAutomaticRatePct\ per cent---nominal incomes do not move, so nothing
+in the means-tested system triggers---while lagged indexation left cash
+benefits \pounds\SsUpratingShortfallBn\ billion short, some
+\SsUpratingShortfallPctOfShock\ per cent of the shock moving against
+households as it landed. The discretionary stack returned
+\SsDiscretionaryRatePct\ per cent and was progressive
+(\SsCushionPctDecOne\ per cent of the bottom decile's loss against
+\SsCushionPctDecTen\ of the top's), correcting an inference the
+decile-table pass got wrong by modelling the price cap alone. And
+\SsWithinDecileVarPct\ per cent of the variance in who was exposed lies
+\emph{within} income deciles, not between them: the regressive gradient
+is real and is a small part of the story.
 \end{abstract}
 
 \medskip

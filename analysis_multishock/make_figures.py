@@ -158,6 +158,9 @@ class Data:
 
         # --- E2 energy ---------------------------------------------------
         g = e2["gross"]["per_decile"]
+        rp = res["derived"]["energy_realised_path"]["per_decile"]
+        self.en_real_pct = np.array([x["pct_of_total_spend"] for x in rp])
+        self.en_real_gbp = np.array([x["gbp_per_year"] for x in rp])
         n = e2["net_of_epg"]["per_decile"]
         self.en_gross_gbp = np.array([r["gbp_per_year"] for r in g])
         self.en_gross_pct = np.array([r["pct_of_total_spend"] for r in g])
@@ -220,8 +223,8 @@ def fig_incidence_profile(d: Data):
     fig.subplots_adjust(left=0.125, right=0.755, top=0.925, bottom=0.315)
 
     series = [
-        ("Energy 2022-23, gross cap shock (cost)", d.en_gross_pct, BLUE, "-", "o", BLUE),
-        ("Energy 2022-23, net of the EPG (cost)", d.en_net_pct, BLUE, "--", "o", "white"),
+        ("Energy 2022-23, realised path (cost)", d.en_real_pct, BLUE, "-", "o", BLUE),
+        ("Energy 2022-23, gross counterfactual (cost)", d.en_gross_pct, BLUE, "--", "o", "white"),
         ("TCA food NTBs, window average (cost)", d.tca_win_pct, GREEN, "-", "s", GREEN),
         ("India CETA, 100% pass-through (GAIN)", d.ceta_pct, TEAL, ":", "^", "white"),
     ]
@@ -235,8 +238,8 @@ def fig_incidence_profile(d: Data):
     # Selective direct labels at the right-hand end: identity never rests on
     # colour alone, and this is the relief channel for the sub-3:1 teal.
     for text, yv in (
-        ("Energy, gross", d.en_gross_pct[-1]),
-        ("Energy, net of EPG", d.en_net_pct[-1]),
+        ("Energy, counterfactual", d.en_gross_pct[-1]),
+        ("Energy, realised", d.en_real_pct[-1]),
         ("TCA food, window avg.", d.tca_win_pct[-1]),
         ("India CETA gain", d.ceta_pct[-1]),
     ):
@@ -245,7 +248,7 @@ def fig_incidence_profile(d: Data):
                     annotation_clip=False)
     # Bottom-decile values, placed above-right of the D1 marker.
     for yv, txt in (
-        (d.en_gross_pct[0], f"{d.en_gross_pct[0]:.1f}%"),
+        (d.en_real_pct[0], f"{d.en_real_pct[0]:.1f}%"),
         (d.tca_win_pct[0], f"{d.tca_win_pct[0]:.2f}%"),
         (d.ceta_pct[0], f"{d.ceta_pct[0]:.3f}%"),
     ):

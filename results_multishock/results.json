@@ -891,13 +891,83 @@
    "aggregate_gbp_bn_per_year": 2.19
   },
   "energy_cash_outlay": {
-   "observed_demand_fall": 0.12,
+   "observed_demand_fall": 0.127,
    "price_ratio": 2.7792,
-   "expenditure_ratio": 2.4457,
-   "burden_scale_vs_fixed_basket": 0.8126,
+   "expenditure_ratio": 2.4262,
+   "burden_scale_vs_fixed_basket": 0.8016,
    "note": "cash outlay, not welfare; fixed-basket remains the first-order welfare measure",
-   "aggregate_gbp_bn_per_year": 51.9,
-   "decile_one_gbp_per_year": 1639
+   "aggregate_gbp_bn_per_year": 51.2,
+   "decile_one_gbp_per_year": 1617
+  },
+  "energy_realised_path": {
+   "fy2022_23_mean_cap": 2235.5,
+   "fy2021_22_mean_cap": 1207.5,
+   "realised_price_rise": 0.8513,
+   "gross_counterfactual_price_rise": 1.7792,
+   "note": "half-year caps 1,971 (Apr-Sep 22) and 2,500 (EPG, Oct 22-Mar 23) against 1,138 and 1,277; what households actually faced",
+   "per_decile": [
+    {
+     "decile": 1,
+     "gbp_per_year": 965.1,
+     "pct_of_total_spend": 5.928
+    },
+    {
+     "decile": 2,
+     "gbp_per_year": 996.0,
+     "pct_of_total_spend": 5.53
+    },
+    {
+     "decile": 3,
+     "gbp_per_year": 978.3,
+     "pct_of_total_spend": 5.125
+    },
+    {
+     "decile": 4,
+     "gbp_per_year": 1080.2,
+     "pct_of_total_spend": 4.775
+    },
+    {
+     "decile": 5,
+     "gbp_per_year": 1053.6,
+     "pct_of_total_spend": 4.375
+    },
+    {
+     "decile": 6,
+     "gbp_per_year": 1049.2,
+     "pct_of_total_spend": 3.723
+    },
+    {
+     "decile": 7,
+     "gbp_per_year": 1093.5,
+     "pct_of_total_spend": 3.681
+    },
+    {
+     "decile": 8,
+     "gbp_per_year": 1080.2,
+     "pct_of_total_spend": 3.306
+    },
+    {
+     "decile": 9,
+     "gbp_per_year": 1124.4,
+     "pct_of_total_spend": 3.059
+    },
+    {
+     "decile": 10,
+     "gbp_per_year": 1314.8,
+     "pct_of_total_spend": 2.761
+    }
+   ],
+   "aggregate_gbp_bn_per_year": 30.6
+  },
+  "energy_wholesale_decomposition": {
+   "wholesale_oct_2021": 550.0,
+   "wholesale_oct_2022": 2468.0,
+   "wholesale_share_of_cap_oct_2021": 0.4307,
+   "wholesale_share_of_cap_oct_2022": 0.6954,
+   "wholesale_share_of_cap_rise": 0.8442,
+   "non_wholesale_rise": 354.0,
+   "source": "Ofgem default tariff cap letters (6 Aug 2021; 26 Aug 2022), Figure 1; CfD-in-wholesale restatement (model v1.13)",
+   "trade_transmitted_aggregate_gbp_bn": 53.9
   },
   "energy_trade_transmitted": {
    "imported_share_lower_bound": 0.7,

@@ -13,7 +13,7 @@
 \usepackage[hang,flushmargin]{footmisc}
 \usepackage[colorlinks=true, citecolor=paperblue, linkcolor=paperblue, urlcolor=paperblue]{hyperref}
 \hypersetup{
-  pdftitle={Wage Cuts or Job Losses? Tax-Benefit Cushioning of Trade-Shock Adjustment in the UK},
+  pdftitle={Who Bears a Trade Shock? Wage Cuts, Job Losses, and Tax-Benefit Cushioning in the UK},
   pdfauthor={Vahid Ahmadi},
   pdfsubject={UK tax--benefit microsimulation under trade-related labour-income stress scenarios},
   pdfkeywords={automatic stabilisers, adjustment margins, microsimulation, tariffs, trade shocks, public finances}
@@ -21,7 +21,7 @@
 \usepackage{natbib}
 \bibliographystyle{apalike}
 
-\title{\bfseries Wage Cuts or Job Losses?\\[0.15cm] Tax--Benefit Cushioning of Trade-Shock Adjustment in the UK\thanks{\textbf{Acknowledgements:} I thank Max Ghenis and Seyed Mahdi Hosseini for valuable comments and helpful discussions.}\\[0.7cm]}
+\title{\bfseries Who Bears a Trade Shock?\\[0.15cm] Wage Cuts, Job Losses, and Tax--Benefit Cushioning in the UK\thanks{\textbf{Acknowledgements:} I thank Max Ghenis and Seyed Mahdi Hosseini for valuable comments and helpful discussions.}\\[0.7cm]}
 \author{Vahid Ahmadi\thanks{Research Associate at PolicyEngine. Email: \href{mailto:vahid@policyengine.org}{vahid@policyengine.org}.}}
 \date{\small August 2026}
 
@@ -39,31 +39,29 @@
 \maketitle
 
 \begin{abstract}
-\noindent For the same aggregate earnings loss, the UK tax--benefit system
-cushions intensive-margin adjustment far more than extensive-margin
-adjustment. Using the 2024--25 Family Resources Survey and PolicyEngine UK,
-I fix a sector-specific earnings loss of roughly
-\pounds\FullWageGross\,million a year, calibrated to 2025 US
-tariffs, and vary its incidence across incumbent wage cuts, displacement,
-and mixed transition paths. Wage cuts are cushioned at
-\SubmissionUnitWageCushion\ per cent, displacement at
-$\SubmissionUnitDisplacedCushion \pm \SubmissionUnitDisplacedCushionSD$ per
-cent (assignment dispersion): a
-\PrimaryCushionDifference-percentage-point gap (household-bootstrap point
-\BootstrapCushionDifference, 95 per cent interval
-\BootstrapCushionDifferenceCILower--\BootstrapCushionDifferenceCIUpper,
-omitting clustering and first-stage uncertainty), because a broad loss is
-relieved at marginal tax rates, a concentrated job loss nearer average
-rates; means-tested support offsets part of the gap; concentration, not
-employment state, does most of the work. An annualised interior transition
-path yields \FullTransitionCushion\ per cent cushioning and a
-\pounds\FullTransitionExchequer\,million Exchequer cost. Sensitivities
-cover pensions, adjustment shares, spell durations, worker selection, and
-take-up.
+\noindent Who bears a trade shock depends not only on its size but on the
+labour-market margin through which earnings fall. I fix a sector earnings
+loss of roughly \pounds\FullWageGross\,million a year, calibrated to the
+2025 US tariffs on UK goods, on Family Resources Survey households in
+PolicyEngine UK, and vary its incidence. Broad
+wage cuts are cushioned at \SubmissionUnitWageCushion\ per cent,
+concentrated displacement at \SubmissionUnitDisplacedCushion\ (assignment
+dispersion \SubmissionUnitDisplacedCushionSD): a
+\PrimaryCushionDifference-percentage-point gap (household-bootstrap
+interval
+\BootstrapCushionDifferenceCILower--\BootstrapCushionDifferenceCIUpper).
+A factorial decomposition attributes almost all of the gap to loss
+concentration---relief at marginal rather than average rates---and only
+\FactorialStateShare\ per cent to the employment state itself, reversing the
+UK ordering of \citet{dolls2012} under Universal Credit. Displacement-side
+cushioning is a claiming object: take-up conventions move it by
+\TakeupConventionSpread\ points. New Style JSA, redundancy pay and
+behavioural responses are unmodelled; the JSA omission alone is bounded
+at up to \JSACushionPoints\ points.
 \end{abstract}
 
 \medskip
-\noindent\textbf{Keywords:} automatic stabilisers, adjustment margins, microsimulation, tariffs, trade shocks, public finances
+\noindent\textbf{Keywords:} trade shocks, tariffs, adjustment margins, automatic stabilisers, microsimulation, public finances
 
 \smallskip
 \noindent\textbf{JEL codes:} F13, F16, H23, H24, I38, J65

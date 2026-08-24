@@ -29,10 +29,6 @@
 \input{generated_secondstage}
 \input{generated_grid}
 \input{generated_extra}
-% Derived by hand from generated macros (16.5/48.7): the EPG's cushioning
-% share on the financial-year basis of Section 6. Kept beside the generated
-% point-to-point figure \MsEnergyCushionSharePct until the pipeline emits it.
-\newcommand{\MsEnergyCushionShareFyPct}{\SsGridPaperEpgRatePct}
 
 \providecommand{\doi}[1]{\textsc{doi}:~\url{https://doi.org/#1}}
 
@@ -72,11 +68,14 @@ rulebook, which the calculator's shocked re-run confirms rather than
 measures. The system's one automatic price-side channel, indexation,
 arrived late---the April 2022 uprating left benefit income
 \SsUpratingShortfallPctOfBenefitIncome\ per cent short in real terms
-over the year. What cushioned was discretionary and progressive:
-\SsDiscretionaryRatePct\ per cent of the counterfactual shock returned,
-\SsCushionPctDecOne\ per cent of the bottom decile's loss against
-\SsCushionPctDecTen\ per cent of the top's---correcting a first-pass
-inference drawn from the price cap alone. And on the preferred basis
+over the year. What cushioned was discretionary and progressive: the energy-specific
+instruments returned \SsGridPaperEbssRatePct\ per cent of the
+counterfactual shock, and the full stack---including cost-of-living
+payments legislated against the wider inflation episode, an
+attribution choice stated in the text---\SsDiscretionaryRatePct\ per
+cent, \SsCushionPctDecOne\ per cent of the bottom decile's loss
+against \SsCushionPctDecTen\ per cent of the top's---correcting a
+first-pass inference drawn from the price cap alone. And on the preferred basis
 \SsWithinPct\ per cent of the variance in exposure lies within income
 deciles rather than between them, so the regressive gradient is real
 and is a small part of who was exposed.

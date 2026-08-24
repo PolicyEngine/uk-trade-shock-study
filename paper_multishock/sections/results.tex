@@ -41,9 +41,9 @@ late (Section~\ref{sec:results-rulebook}).
 \small
 \begin{tabular}{llrrrl}
 \toprule
-Episode & Type, channel & Gross & \multicolumn{2}{c}{\% of spending} & Cushioning, \\
+Episode & Type, channel & Shock & \multicolumn{2}{c}{\% of spending} & Cushioning, \\
 \cmidrule(lr){4-5}
- & & shock & D1 & D10 & by mechanism \\
+ & & (realised path) & D1 & D10 & by mechanism \\
 \midrule
 TCA food, 2021--23 & policy, prices & \pounds\MsTcaWindowAvgAggBn\,bn & \MsTcaWindowAvgPctSpendDecOne & \MsTcaWindowAvgPctSpendDecTen & pass-through conv. \\
 Energy, 2022--23 & market, prices & \pounds\MsEnergyRealisedAggBn\,bn & \MsEnergyRealisedPctSpendDecOne & \MsEnergyRealisedPctSpendDecTen & price subsidy, \MsEnergyCushionShareFyPct\%$^{i}$ \\
@@ -359,9 +359,24 @@ quantified in the two-axis grid of Table~\ref{tab:grid}.
 
 \emph{Coverage.} The Energy Price Guarantee enters as the difference
 between the two capped paths, the Energy Bills Support Scheme as its
-flat \pounds 400, and the 2022--23 cost-of-living payments on simulated
-entitlement. The council-tax rebate and the Warm Home Discount are not
-modelled, so the discretionary total is a lower bound.
+flat \pounds 400 to every weighted household, and the 2022--23
+cost-of-living payments on simulated entitlement in the simulation
+year---an approximation in both directions: simulated entitlement is
+not receipt in the actual 2022 qualifying windows, the \pounds 150
+disability payment is modelled per household rather than per
+qualifying individual, and Housing-Benefit-only households are
+included although they did not qualify for the \pounds 650. The
+council-tax rebate and the Warm Home Discount are not modelled. The
+discretionary total is therefore an approximation with omissions on
+both sides, not a bound.
+
+\emph{Rule year (assumption).} The simulation scores the episode on
+the 2023 parameter system and 2023 incomes---the vintage of the
+enhanced-FRS base---although the episode is FY2022--23. This matters
+most for the benefit-income base of the uprating arithmetic, where
+both rule years are reported below; the discretionary-stack results
+are insensitive to it because the instruments enter as declared cash
+amounts.
 
 \emph{Weights.} PolicyEngine's grossing weights total
 \SsWeightedHouseholdsM\ million households against an ONS count of
@@ -370,7 +385,15 @@ modelled, so the discretionary total is a lower bound.
 equivalised on the HBAI before-housing-costs concept, and burdens are
 expressed as shares of household expenditure rather than income,
 because a ratio with income in the denominator is dominated by
-very low incomes.
+very low incomes. One consequence must be flagged: the burden
+\emph{numerator} is rebased to FY2021--22 cap levels while the
+expenditure \emph{denominator} stays at the enhanced FRS's
+current-vintage price level, and that base is larger than the ONS
+FYE2022 tables the first pass divides by; second-stage shares of
+spending are therefore roughly half their first-pass counterparts by
+construction, and the two stages' shares are comparable in shape but
+not in level. Aggregate pounds, which share a basis, reconcile to
+within about five per cent.
 
 \emph{Reconciliation with the first pass.} On the same
 financial-year basis the first pass puts the counterfactual shock at
@@ -416,14 +439,17 @@ than never.
 
 Benefits rose 3.1 per cent in April 2022, indexed to the previous
 September, against inflation over the year of about 10 per cent. The
-resulting \SsUpratingGapPp-point gap erodes the
-\pounds\SsBenefitIncomeBn\ billion of uprated cash benefit income by
-\pounds\SsUpratingShortfallBn\ billion---%
-\SsUpratingShortfallPctOfBenefitIncome\ per cent of benefit income.
-This sits above the roughly \pounds 12 billion aggregate real fall of
-\citet{obrwelfare2022}, which is computed on a different benefit base
-and price counterfactual; the gap is unreconciled and flagged as such
-(Section~\ref{sec:roadmap}).
+resulting \SsUpratingGapPp-point gap erodes the uprated cash benefit
+income by \SsUpratingShortfallPctOfBenefitIncome\ per cent: on the
+crisis-year 2022 rulebook the base is
+\pounds\SsBenefitIncomeBnRuleTwentyTwo\ billion and the shortfall
+\pounds\SsShortfallBnRuleTwentyTwo\ billion, close to the roughly
+\pounds 12 billion aggregate real fall of \citet{obrwelfare2022}; on
+the simulation's 2023 rule year the base is
+\pounds\SsBenefitIncomeBn\ billion and the shortfall
+\pounds\SsUpratingShortfallBn\ billion. The remaining gap to the OBR
+figure reflects the benefit-base definition and price counterfactual
+and is left unreconciled.
 It is deliberately \emph{not} expressed as a share of the energy
 shock: the numerator is the erosion of benefit income by all inflation,
 and dividing it by one commodity's counterfactual would attribute to
@@ -435,16 +461,28 @@ shock landed.
 \subsection{The discretionary response was large and progressive}
 
 Against a counterfactual shock of \pounds\SsCounterAggBn\ billion
-(\SsCounterRisePct\ per cent on the FY basis), the discretionary
-instruments returned \pounds\SsDiscretionaryBn\ billion, or
-\SsDiscretionaryRatePct\ per cent: the Guarantee
-(\pounds\SsEpgBn\ billion), the Bills Support Scheme
-(\pounds\SsEbssBn\ billion) and the cost-of-living payments
-(\pounds\SsColBn\ billion). It was progressive---%
+(\SsCounterRisePct\ per cent on the FY basis), the
+\emph{energy-specific} instruments---the Guarantee
+(\pounds\SsEpgBn\ billion) and the Bills Support Scheme
+(\pounds\SsEbssBn\ billion)---returned \SsGridPaperEbssRatePct\ per
+cent (\SsGridPaperEbssDOne\ per cent at the bottom decile,
+\SsGridPaperEbssDTen\ at the top). Adding the cost-of-living payments
+(\pounds\SsColBn\ billion) takes the full stack to
+\pounds\SsDiscretionaryBn\ billion, or \SsDiscretionaryRatePct\ per
+cent. The attribution choice must be stated: the cost-of-living
+payments were legislated against the general inflation episode, not
+energy specifically, so dividing them by the energy-only
+counterfactual over-attributes to this shock by the same logic on
+which the preceding subsection refuses to divide the indexation
+shortfall by the energy shock; both rates are therefore carried, the
+energy-specific one as the conservative reading. On either attribution it was progressive---on the full stack,
 \SsCushionPctDecOne\ per cent of the bottom decile's counterfactual
 loss returned against \SsCushionPctDecTen\ per cent of the top
 decile's---because flat payments are worth more relative to a small
-bill and the targeted payments went where they were aimed. Two features
+bill and the targeted payments went where they were aimed. The
+over-compensation of the bottom decile exists only on the full-stack
+attribution: energy-specific, the bottom decile recovers
+\SsGridPaperEbssDOne\ per cent. Two features
 of the profile deserve stating rather than smoothing. The bottom decile
 is \emph{over}-compensated on this accounting, at
 \SsCushionPctDecOne\ per cent, as is the third at
@@ -503,7 +541,7 @@ stack cushions \SsGridPaperFullRatePct\ per cent of the
 counterfactual shock at the paper's rebase and
 \SsGridUnityFullRatePct\ per cent with no rebase at all, and the
 progressive gradient survives every cell (bottom-decile cushioning of
-\SsGridUnityFullDOne\ per cent against \SsGridPaperEpgDTen\ for the
+\SsGridUnityFullDOne\ per cent against \SsGridUnityEpgDTen\ for the
 cap alone in the least favourable cell). The qualitative
 findings---discretionary, large, progressive---hold across the grid;
 the bottom decile's over-compensation is the one result that is
@@ -553,10 +591,12 @@ demand response scaled the shock down without changing who it fell on.
 The realised burden runs from \SsBurdenPctSpendDecOne\ per cent of
 household expenditure in the bottom decile to
 \SsBurdenPctSpendDecTen\ per cent in the top. The gradient is
-regressive but shallower than the first pass suggested and not
-monotone---the third decile (\SsBurdenPctSpendDecThree\ per cent) sits
-marginally above the first---which is itself informative: expressed
-against expenditure rather than income, and on equivalised deciles,
+regressive and not monotone---the third decile
+(\SsBurdenPctSpendDecThree\ per cent) sits marginally above the
+first. The share \emph{levels} are about half their first-pass
+counterparts by the denominator convention declared in
+Section~\ref{sec:secondstage-method}, so only the shape, not the
+level, is comparable across the two stages; within that comparison,
 energy exposure separates households far less cleanly by income than
 decile tables imply.
 Decomposing the variance of that burden puts

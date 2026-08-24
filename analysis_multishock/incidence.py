@@ -332,8 +332,9 @@ def episode_e2(fs22, inc22):
     _realised_fy = (D["cap_apr_2022"] + D["epg_level"]) / 2.0
     gross_f = _counter_fy / _base_fy - 1.0
     net_f = _realised_fy / _base_fy - 1.0
-    cushion_share = ((D["cap_oct_2022"] - D["epg_level"])
-                     / (D["cap_oct_2022"] - D["cap_winter_2021_22"]))
+    cushion_share = (gross_f - net_f) / gross_f          # FY basis
+    cushion_share_p2p = ((D["cap_oct_2022"] - D["epg_level"])
+                         / (D["cap_oct_2022"] - D["cap_winter_2021_22"]))
     gross_wk = [e * gross_f for e in en]
     net_wk = [e * net_f for e in en]
     cushion_yr = [(g - n) * 52 for g, n in zip(gross_wk, net_wk)]
@@ -350,6 +351,7 @@ def episode_e2(fs22, inc22):
         "epg_cushion": {
             "per_decile_gbp_per_year": [round(c, 1) for c in cushion_yr],
             "share_of_gross_shock": round(cushion_share, 4),
+            "cap_ratio_point_to_point": round(cushion_share_p2p, 4),
             "aggregate_gbp_bn_per_year": round(gross_bn - net_bn, 1),
             "aggregate_gbp_bn_six_months": round((gross_bn - net_bn) / 2, 1),
             "note": ("Cushioning share is constant across deciles by "
@@ -773,6 +775,8 @@ def latex_macros(res):
     add("EnergyCushionAggSixMonthsBn", fmt(
         e2["epg_cushion"]["aggregate_gbp_bn_six_months"], 1))
     add("EnergyCushionSharePct", fmt(
+        100 * e2["epg_cushion"]["cap_ratio_point_to_point"], 1))
+    add("EnergyCushionShareFyPct", fmt(
         100 * e2["epg_cushion"]["share_of_gross_shock"], 1))
     add("EnergyObrEpgBn", fmt(D["obr_epg_cost_bn"]))
     add("EnergyObrSubsidyBn", fmt(D["obr_energy_subsidy_bn"]))

@@ -51,7 +51,7 @@ from matplotlib.lines import Line2D
 from matplotlib.patches import Patch
 
 HERE = Path(__file__).resolve().parent
-RESULTS = HERE.parent / "out" / "results.json"
+RESULTS = HERE / "out" / "results.json"  # pipeline output (layout fixed Aug 2026)
 
 # --- PolicyEngine brand palette (canonical hexes, as in the sibling paper) ---
 BLUE = "#2C6496"          # series slot 1
@@ -324,8 +324,8 @@ def fig_energy_epg(d: Data):
               fontsize=7.6, columnspacing=1.2)
     note(
         fig,
-        "Bar height = the gross shock (Ofgem typical dual-fuel cap \u00a31,277 \u2192 \u00a33,549, i.e. +177.9% applied to electricity and\n"
-        "gas spending); the EPG holds the cap at \u00a32,500 (+95.8%). Segments are separated by a hairline gap and the cushion\n"
+        "Bar height = the gross shock (financial-year mean cap \u00a31,208 \u2192 \u00a32,760, i.e. +128.6% applied to electricity and\n"
+        "gas spending); the EPG truncates the FY mean to \u00a32,236 (+85.1%). Segments are separated by a hairline gap and the cushion\n"
         "segment is hatched, so the split survives greyscale printing. Spend base: ONS Family Spending 3.1E, FYE2022.",
     )
     save(fig, "fig_energy_epg.png")

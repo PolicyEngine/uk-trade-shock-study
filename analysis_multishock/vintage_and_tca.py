@@ -50,6 +50,13 @@ APRIL_2023_UPRATING = 0.101   # DATA: CPI Sep 2022, applied April 2023
 # window-average path = published-cumulative rescale (0.30 of end-state).
 TCA_END_STATE = 0.08
 TCA_WINDOW_SHARE = 0.30
+# Rebase (ASSUMPTION, mirrors the energy convention): the enhanced-FRS
+# food imputation sits at its own calibrated level, so the weighted mean
+# is rebased to the first pass's ONS FYE2022 base -- GBP 258.8/yr at the
+# 8% end-state (results.json, E1 central) implies GBP 3,235/yr mean food
+# spend.  The share denominators stay current-vintage, the same hybrid
+# declared for energy.
+TCA_FOOD_BASE_YR = 258.8 / TCA_END_STATE
 
 
 def deciles_of(equiv_income, w):
@@ -71,7 +78,7 @@ def main() -> None:
     vars_ = sim.tax_benefit_system.variables
 
     # --- Copy every dataset input to the 2022 period ------------------------
-    n = 0
+    n, failed = 0, []
     for ent in ("person", "benunit", "household"):
         df = pd.read_hdf(args.dataset, ent)
         for col in df.columns:
@@ -79,8 +86,10 @@ def main() -> None:
                 try:
                     sim.set_input(col, 2022, df[col].values)
                     n += 1
-                except Exception:
-                    pass
+                except Exception as e:
+                    failed.append((col, str(e)[:60]))
+    if failed:
+        print(f"WARNING: {len(failed)} input copies failed:", failed)
 
     w = np.asarray(sim.calculate("household_weight", 2023))
 
@@ -114,7 +123,8 @@ def main() -> None:
         sim.calculate("equiv_hbai_household_net_income", 2023))
     dec = deciles_of(equiv_income, w)
 
-    burden = food * TCA_END_STATE * TCA_WINDOW_SHARE   # window-average path
+    food_rebase = TCA_FOOD_BASE_YR / wmean(food, w)
+    burden = food * food_rebase * TCA_END_STATE * TCA_WINDOW_SHARE  # window-avg
     G = weighted(burden, w) / 1e9
     dshare = [100 * weighted(burden[dec == d], w[dec == d])
               / weighted(total_spend[dec == d], w[dec == d]) for d in range(10)]
@@ -138,6 +148,7 @@ def main() -> None:
         "VinColHouseholdsRuleTwentyTwoM": f"{col_hh_22:,.1f}",
         "VinColHouseholdsRuleTwentyThreeM": f"{col_hh_23:,.1f}",
         "TcaSsAggBn": f"{G:,.1f}",
+        "TcaSsFoodRebase": f"{food_rebase:.3f}",
         "TcaSsPctSpendDecOne": f"{dshare[0]:.2f}",
         "TcaSsPctSpendDecTen": f"{dshare[9]:.2f}",
         "TcaSsGbpDecOne": f"{dgbp[0]:,.0f}",

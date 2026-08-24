@@ -13,7 +13,7 @@
 \PassOptionsToPackage{hyphens}{url}
 \usepackage[colorlinks=true, citecolor=paperblue, linkcolor=paperblue, urlcolor=paperblue]{hyperref}
 \hypersetup{
-  pdftitle={Who Bore Britain's Trade Shocks? A Household Anatomy of the Post-Covid Episodes},
+  pdftitle={Who Bears the Trade Shocks? Household Incidence Through the UK Tax-Benefit System},
   pdfauthor={Vahid Ahmadi},
   pdfsubject={Comparative household incidence of UK trade shocks 2021-2026 through the tax-benefit system},
   pdfkeywords={trade shocks, tariffs, Brexit, terms of trade, microsimulation, automatic stabilisers, public finances}
@@ -21,12 +21,18 @@
 \usepackage{natbib}
 \bibliographystyle{apalike}
 
-\title{\bfseries Who Bore Britain's Trade Shocks?\\[0.15cm] A Household Anatomy of the Post-Covid Episodes\thanks{\textbf{Acknowledgements:} I thank Max Ghenis and Seyed Mahdi Hosseini for valuable comments and helpful discussions.}\\[0.7cm]}
+\title{\bfseries Who Bears the Trade Shocks?\\[0.15cm] Household Incidence Through the UK Tax--Benefit System\thanks{\textbf{Acknowledgements:} I thank Max Ghenis and Seyed Mahdi Hosseini for valuable comments and helpful discussions.}\\[0.7cm]}
 \author{Vahid Ahmadi\thanks{Research Associate at PolicyEngine. Email: \href{mailto:vahid@policyengine.org}{vahid@policyengine.org}.}}
 \date{\small August 2026}
 
 \input{generated_multishock}
 \input{generated_secondstage}
+\input{generated_grid}
+\input{generated_extra}
+% Derived by hand from generated macros (16.5/48.7): the EPG's cushioning
+% share on the financial-year basis of Section 6. Kept beside the generated
+% point-to-point figure \MsEnergyCushionSharePct until the pipeline emits it.
+\newcommand{\MsEnergyCushionShareFyPct}{\SsGridPaperEpgRatePct}
 
 \providecommand{\doi}[1]{\textsc{doi}:~\url{https://doi.org/#1}}
 
@@ -51,7 +57,9 @@ proportional and negligible, and the cushioning was margin-specific:
 automatic on earnings
 (\MsUSTariffDisplacementCushionPct--\MsUSTariffWageCutCushionPct\ per
 cent), discretionary on prices (the Energy Price Guarantee absorbed
-\MsEnergyCushionSharePct\ per cent of the counterfactual shock, and
+\MsEnergyCushionSharePct\ per cent of the counterfactual shock on the
+point-to-point cap basis, \MsEnergyCushionShareFyPct\ per cent on the
+second stage's financial-year basis, and
 Ofgem's component data put \MsEnergyWholesaleShareOfRisePct\ per cent
 of the cap's rise in traded wholesale energy), with
 indexation a year late---\pounds\MsUcLagCostFlatAltGbp\ to

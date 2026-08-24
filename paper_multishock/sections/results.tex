@@ -28,7 +28,9 @@ cushioned automatically (\MsUSTariffDisplacementCushionPct--%
 \MsUSTariffWageCutCushionPct\ per cent through the tax--benefit
 system, from the companion study), while the price-led energy episode
 was cushioned by discretion---the Energy Price Guarantee absorbed
-\MsEnergyCushionSharePct\ per cent of the gross shock---and the
+\MsEnergyCushionSharePct\ per cent of the gross shock on the
+point-to-point cap basis (\MsEnergyCushionShareFyPct\ per cent on the
+financial-year basis of Section~\ref{sec:results-secondstage})---and the
 automatic price-side mechanism, benefit indexation, arrived a year
 late (Section~\ref{sec:results-rulebook}).
 
@@ -53,7 +55,9 @@ CPTPP, 2024-- & benchmark & \pounds\MsCptppGdpBn\,bn$^{g}$ & \multicolumn{2}{c}{
 \begin{minipage}{.94\textwidth}\footnotesize
 \emph{Notes:} $^{g}$~gain, not cost. $^{i}$~an accounting identity:
 because the Guarantee capped a price, the share is constant across
-deciles by construction. $^{m}$~imported from the companion study
+deciles by construction; it is the point-to-point cap ratio, and equals
+\MsEnergyCushionShareFyPct\ per cent on the financial-year basis of
+Section~\ref{sec:results-secondstage}. $^{m}$~imported from the companion study
 \citep{ahmadi2026}; it is a tax--benefit stabilisation coefficient for
 that episode's earnings channel, and the only entry in this column of
 that kind. The three mechanisms named in this column---a pass-through
@@ -143,8 +147,9 @@ the bottom decile \pounds\MsEnergyRealisedGbpDecOne\ a year,
 \MsEnergyRealisedPctSpendDecTen\ per cent at the top, and
 \pounds\MsEnergyRealisedAggBn\ billion in aggregate. The
 \emph{counterfactual} shock---the October 2022 cap of
-\pounds\MsEnergyCapPeak\ held for a full year against
-\pounds\MsEnergyCapBase, $+$\MsEnergyGrossFactorPct\ per cent---is the
+\pounds\MsEnergyCapPeak\ carried through the financial-year mean, giving
+\pounds\SsCounterFyCap\ against the FY2021--22 mean of
+\pounds\MsEnergyRealisedMeanCapFyTwentyOne, $+$\MsEnergyGrossFactorPct\ per cent---is the
 figure the policy prevented, and would have cost the bottom decile
 \pounds\MsEnergyGrossGbpDecOne\ a year, \MsEnergyGrossPctSpendDecOne\
 per cent of its spending. Three labelled qualifications bound that number, and each is a
@@ -192,7 +197,10 @@ costing---a context anchor, not a validation. Within those bounds the shape is
 robust: the Energy Price Guarantee truncated the rise to
 +\MsEnergyNetFactorPct\ per cent, absorbing
 \pounds\MsEnergyCushionGbpDecOne\ a year for a bottom-decile
-household and \MsEnergyCushionSharePct\ per cent of the gross shock.
+household and \MsEnergyCushionSharePct\ per cent of the gross shock on
+the point-to-point cap basis---\MsEnergyCushionShareFyPct\ per cent on
+the financial-year basis (\pounds\SsEpgBn\ of \pounds\SsCounterAggBn\
+billion, Section~\ref{sec:results-secondstage}).
 Because the EPG capped the \emph{price}, its cushioning share is
 constant across deciles by construction. Two qualifications follow
 from the frontier evidence. First, decile means understate the
@@ -283,8 +291,11 @@ seed result. Neither the lag nor its cost is a discovery of this
 paper: \citet{cribb2023} quantified the 2022--23 shortfall and scored
 the discretionary cost-of-living payments against a timely-indexation
 counterfactual, and \citet{obrwelfare2022} put the aggregate real fall
-at roughly \pounds 12 billion---a figure the household-record stage
-should reproduce as a validation target. What is new here is the
+at roughly \pounds 12 billion---a figure the second stage's
+\pounds\SsUpratingShortfallBn\ billion (Section~\ref{sec:results-secondstage})
+does not reproduce: the bases and price counterfactuals differ, the two
+are stated side by side rather than reconciled, and the reconciliation
+is an explicit task of the extension (Section~\ref{sec:roadmap}). What is new here is the
 join: the lag priced against trade-shock incidence, on the same
 households, across episodes. The lag also does not wash out over the
 cycle: \citet{judgemurphy2023} count ten of fifteen years in which
@@ -296,7 +307,7 @@ Covid uplift was removed in October 2021, months before the energy
 shock landed, so the lowest-income households entered the largest
 price-led trade shock of the period from a rulebook trough. Together
 with the EPG's absorption of \MsEnergyCushionSharePct\ per cent of the
-gross price shock, the seed picture of the British response is:
+gross price shock (point-to-point cap basis), the seed picture of the British response is:
 \emph{automatic on the earnings margin, discretionary on the price
 margin, and lagged precisely where the price shocks bit hardest}---with
 the progressivity of the full discretionary stack an open question for
@@ -337,8 +348,13 @@ spending to current-vintage price levels, so its level reflects today's
 prices while the cross-household distribution reflects quantities. The
 weighted mean is rebased to the FY2021--22 mean cap---a factor of
 \SsRebaseFactor---preserving each household's relative position. Every
-aggregate below is linear in this factor and should be read as
-conditional on it; the within-decile results are invariant to it.
+shock aggregate below is linear in this factor and should be read as
+conditional on it; the within-decile results are invariant to it. The
+cushioning \emph{rates} are not: the flat-cash instruments (the Bills
+Support Scheme, the cost-of-living payments) do not scale with the
+rebase while the shock denominator does, so the discretionary rate and
+the decile cushioning shares depend on the factor. The dependence is
+quantified in the two-axis grid of Table~\ref{tab:grid}.
 
 \emph{Coverage.} The Energy Price Guarantee enters as the difference
 between the two capped paths, the Energy Bills Support Scheme as its
@@ -397,7 +413,11 @@ resulting \SsUpratingGapPp-point gap erodes the
 \pounds\SsBenefitIncomeBn\ billion of uprated cash benefit income by
 \pounds\SsUpratingShortfallBn\ billion---%
 \SsUpratingShortfallPctOfBenefitIncome\ per cent of benefit income.
-This is deliberately \emph{not} expressed as a share of the energy
+This sits above the roughly \pounds 12 billion aggregate real fall of
+\citet{obrwelfare2022}, which is computed on a different benefit base
+and price counterfactual; the gap is unreconciled and flagged as such
+(Section~\ref{sec:roadmap}).
+It is deliberately \emph{not} expressed as a share of the energy
 shock: the numerator is the erosion of benefit income by all inflation,
 and dividing it by one commodity's counterfactual would attribute to
 energy what food, services and rents also did. What the number
@@ -423,17 +443,105 @@ is \emph{over}-compensated on this accounting, at
 \SsCushionPctDecOne\ per cent, as is the third at
 \SsCushionPctDecThree; and the gradient is not monotone, the sixth
 decile (\SsCushionPctDecSix\ per cent) sitting below the fifth. The
-over-compensation is real but narrow in meaning: it says the
-instruments returned more than the counterfactual energy cost to those
-households, not that they were made whole against inflation generally,
-which the preceding subsection shows they were not. The
+over-compensation is narrow in two ways: the bootstrap below puts it
+within sampling error of exact compensation, and it says only that the
+instruments returned about as much as the counterfactual energy cost
+to those households---not that they were made whole against inflation
+generally, which the preceding subsection shows they were not. The
 first-pass inference that discretion cushioned \emph{proportionally}
 was an artefact of modelling the price cap alone; adding the
 instruments the cap sat alongside reverses it, and the correction runs
-in the government's favour.
+in the government's favour. Figure~\ref{fig:decomp} shows the anatomy in
+pounds: the counterfactual shock by decile, split into the part the
+household bore and what each instrument returned. A household bootstrap
+(\SsBootReps\ resamples of the record base) puts a 95 per cent
+sampling interval of \SsRateLo--\SsRateHi\ per cent around the
+\SsDiscretionaryRatePct\ per cent aggregate rate, and
+\SsCushionDecOneLo--\SsCushionDecOneHi\ per cent around the bottom
+decile's \SsCushionPctDecOne: the over-compensation of the bottom
+decile is therefore not statistically distinguishable from exact
+compensation, and the same intervals put the \emph{net} borne amount
+in each of the bottom five deciles indistinguishable from zero. These
+are sampling intervals over the survey base only; imputation
+uncertainty from the consumption donor models is not captured
+(Section~\ref{sec:results-withindec}).
 
-\subsection{Exposure varies within deciles, not between them}
+\begin{figure}[tbp]\centering
+\includegraphics[width=\textwidth]{figures/fig_decomp.png}
+\caption{The anatomy of the energy episode in pounds a year by
+equivalised disposable income decile: the counterfactual shock
+(dashed line), the part borne by the household net of all modelled
+instruments, and the parts returned by the Energy Price Guarantee, the
+Bills Support Scheme and the cost-of-living payments. Whiskers are 95
+per cent household-bootstrap sampling intervals on the net position;
+in the bottom five deciles it is indistinguishable from zero.
+Sampling uncertainty only; imputation uncertainty is not captured.}
+\label{fig:decomp}
+\end{figure}
 
+\subsection{The two-axis sensitivity grid}\label{sec:results-grid}
+
+Table~\ref{tab:grid} varies the two conventions the headline rates
+depend on: the rebase factor (the paper's computed \SsRebaseFactor,
+an intermediate 0.8, and 1.0, no rebase) and the discretionary stack,
+built up one instrument at a time. Two facts organise the twelve
+cells. First, the Guarantee's cushioning rate
+(\SsGridPaperEpgRatePct\ per cent) is invariant to \emph{both}
+axes---to the rebase because a price cap scales with the bill it
+truncates, and across deciles by the accounting identity already
+noted---so every pound of progressivity and every point of
+rebase-sensitivity in the headline comes from the flat-cash
+instruments. Second, the headline is bounded, not fragile: the full
+stack cushions \SsGridPaperFullRatePct\ per cent of the
+counterfactual shock at the paper's rebase and
+\SsGridUnityFullRatePct\ per cent with no rebase at all, and the
+progressive gradient survives every cell (bottom-decile cushioning of
+\SsGridUnityFullDOne\ per cent against \SsGridPaperEpgDTen\ for the
+cap alone in the least favourable cell). The qualitative
+findings---discretionary, large, progressive---hold across the grid;
+the bottom decile's over-compensation is the one result that is
+basis-dependent, present at the paper's rebase
+(\SsGridPaperFullDOne\ per cent) and absent without rebasing
+(\SsGridUnityFullDOne\ per cent).
+
+\begin{table}[tbp]
+\centering
+\caption{Cushioning under two conventions: rebase factor $\times$
+discretionary stack}
+\label{tab:grid}
+\small
+\input{table_grid}
+\begin{minipage}{.85\textwidth}\footnotesize
+\emph{Notes:} Each cell is arithmetic on the same simulated
+households; the measured automatic response is zero in every cell
+(Section~\ref{sec:results-secondstage}), so no re-simulation is
+required. ``Rate'' is the discretionary cushioning rate against the
+counterfactual shock on the financial-year basis; D1 and D10 are the
+bottom- and top-decile rates. The EPG row's rate is constant across
+rebase and deciles by construction.
+\end{minipage}
+\end{table}
+
+\begin{figure}[tbp]\centering
+\includegraphics[width=\textwidth]{figures/fig_grid.png}
+\caption{The two-axis grid of Table~\ref{tab:grid} as a heatmap.
+Cell shading is the discretionary cushioning rate against the
+counterfactual shock; each cell also reports the bottom- and
+top-decile rates. The EPG row is invariant to both axes---a price cap
+scales with the bill it truncates and is constant across deciles by
+construction---so the progressivity and the rebase-sensitivity of the
+headline both come entirely from the flat-cash instruments.}
+\label{fig:grid}
+\end{figure}
+
+\subsection{Exposure varies within deciles, not between them}\label{sec:results-withindec}
+
+Figure~\ref{fig:paths} plots the three shock paths of the design on
+one distribution: the gross counterfactual, the realised path, and the
+cash-outlay path (the realised burden scaled by the observed demand
+response, the first pass's welfare-versus-cash distinction carried to
+household records). The paths differ in level, not shape: policy and
+demand response scaled the shock down without changing who it fell on.
 The realised burden runs from \SsBurdenPctSpendDecOne\ per cent of
 household expenditure in the bottom decile to
 \SsBurdenPctSpendDecTen\ per cent in the top. The gradient is
@@ -446,12 +554,16 @@ decile tables imply.
 Decomposing the variance of that burden puts
 \SsBetweenPct\ per cent of it between deciles and
 \SsWithinPct\ per cent within them on the paper's preferred basis
-(expenditure share, trimmed at the first and ninety-ninth percentiles);
+(expenditure share, trimmed at the first and ninety-ninth percentiles;
+household-bootstrap 95 per cent interval
+\SsWithinLo--\SsWithinHi\ per cent for the within-share);
 untrimmed the between-share is \SsBetweenPctUntrimmed\ per cent and in
-logs \SsBetweenPctLog\ per cent. The conclusion is robust to the basis
-even though the exact figure is not: on any of them, the gradient the
-first pass measured is a small part of the dispersion in who was
-exposed. Within the bottom decile alone the burden runs from
+logs \SsBetweenPctLog\ per cent. The trimmed expenditure-share figure is the paper's estimate; the
+near-zero untrimmed between-share is dominated by a handful of extreme
+imputed shares in the tails and is reported as a data-quality
+diagnostic on the imputation, not as a robustness check. On every
+basis, though, the gradient the first pass measured is a small part of
+the dispersion in who was exposed. Within the bottom decile alone the burden runs from
 \SsPTenDecOne\ per cent of spending at the tenth percentile to
 \SsPNinetyDecOne\ per cent at the ninetieth.
 
@@ -459,7 +571,8 @@ Two limits bound what this establishes. The exposure is
 \emph{imputed}---enhanced-FRS energy spending is a quantile-regression
 forest fitted to LCFS donors---so part of the within-decile dispersion
 is donor-model variation, and the decomposition is a bound rather than
-a measurement of true dispersion; \citet{levell2025} use transaction
+a measurement of true dispersion, and the bootstrap interval above is
+sampling uncertainty only, blind to the donor-model error; \citet{levell2025} use transaction
 data precisely for this reason. And the estimand is the variance of one
 commodity's expenditure share, not the variance of welfare changes from
 product-level trade exposure, which is what
@@ -475,4 +588,15 @@ decile. On the trimmed expenditure-share basis the between-decile
 gradient accounts for \SsBetweenPct\ per cent of the variance in
 exposure and the within-decile spread for \SsWithinPct\ per cent.}
 \label{fig:within-decile}
+\end{figure}
+
+\begin{figure}[tbp]\centering
+\includegraphics[width=\textwidth]{figures/fig_paths.png}
+\caption{Three shock paths by equivalised disposable income decile,
+as a share of household expenditure, on the second stage's
+financial-year basis: the gross counterfactual (no policy), the
+realised path (Energy Price Guarantee in force), and the cash-outlay
+path (realised scaled by the observed weather-adjusted demand
+response, the first-pass convention). Level shifts, common shape.}
+\label{fig:paths}
 \end{figure}

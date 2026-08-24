@@ -72,9 +72,14 @@ is computed for the energy episode in
 Section~\ref{sec:results-secondstage} and not for the others. Deciles are of equivalised
 disposable income; entries are first-order incidence on published
 expenditure-by-decile tables at fixed baskets. Both price episodes are on their
-\emph{realised} paths: TCA on the window-average path implied by the
-published cumulative, energy on the caps households actually faced in
-2022--23 (\pounds\MsEnergyRealisedMeanCapFyTwentyTwo\ against
+\emph{realised} paths, but on different clocks, and the asymmetry
+matters for the D1 comparison: energy is an annualised crisis-year
+rate, while TCA is the published cumulative averaged over a window
+padded with pre-entry zeros---at the end-state (crisis-period) rate
+the TCA row reads \MsTcaPctSpendDecOne\ against
+\MsTcaPctSpendDecTen\ per cent. TCA is on the window-average path
+implied by the published cumulative, energy on the caps households
+actually faced in 2022--23 (\pounds\MsEnergyRealisedMeanCapFyTwentyTwo\ against
 \pounds\MsEnergyRealisedMeanCapFyTwentyOne, $+$\MsEnergyRealisedRisePct\
 per cent). The end-state and gross-counterfactual variants are reported
 in the text. Episodes are typed
@@ -338,7 +343,8 @@ contemporaneous CPI. The shaded area is the shortfall, summing to
 
 The largest episode is run through the statutory system on
 \SsHouseholdsRecords\ enhanced-FRS household records in PolicyEngine UK
-\SsPolicyEngineVersion. Four conventions govern the numbers that follow
+\SsPolicyEngineVersion\ (dataset \texttt{enhanced\_frs\_2023\_24.h5},
+2023 vintage). Four conventions govern the numbers that follow
 and each is a choice a reader could make differently.
 
 \emph{One basis for both paths.} The counterfactual and realised energy
@@ -367,7 +373,9 @@ quantified in the two-axis grid of Table~\ref{tab:grid}.
 between the two capped paths, the Energy Bills Support Scheme as its
 flat \pounds 400 to every weighted household (so the modelled
 \pounds\SsEbssBn\ billion exceeds the roughly \pounds 11 billion
-scheme outturn by about the weight excess), and the 2022--23
+scheme outturn by about 14 per cent: the \SsWeightExcessPct\ per cent
+weight excess plus a small residual from non-domestic-supply
+households in the weighted base), and the 2022--23
 cost-of-living payments on simulated entitlement in the simulation
 year---an approximation in both directions: simulated entitlement is
 not receipt in the actual 2022 qualifying windows, the \pounds 150
@@ -403,7 +411,10 @@ current-vintage price level, and that base is larger than the ONS
 FYE2022 tables the first pass divides by; second-stage shares of
 spending are therefore roughly half their first-pass counterparts by
 construction, and the two stages' shares are comparable in shape but
-not in level. Aggregate pounds, which share a basis, reconcile to
+not in level. The variance decomposition and the within-decile
+quantile ratios are unaffected: putting the denominator on the same
+price base rescales every household's share by a common factor, which
+changes neither the between/within split nor any ratio of quantiles. Aggregate pounds, which share a basis, reconcile to
 within about five per cent.
 
 \emph{Reconciliation with the first pass.} On the same
@@ -431,7 +442,11 @@ path---and the change in every entitlement is
 shock); but because no modelled entitlement takes energy consumption as
 an input, this re-run confirms that the model encodes the statutory
 structure rather than measuring an independent quantity, and the claim
-rests on the rulebook, which is verifiable line by line. This is
+rests on the rulebook, which is verifiable line by line. It is also a
+first-order claim: a shock of this size moved nominal incomes in
+general equilibrium---wage bargaining, self-employment margins---and
+those excluded channels (Section~\ref{sec:framework}) would trigger
+means-tested responses the first-order calculation cannot. This is
 \citet{cohenfollette2000}'s macro finding---that automatic stabilisers
 do little against a supply shock---at the household level, and sharper
 than their version, because for a pure price shock the mechanical
@@ -524,8 +539,14 @@ sampling interval of \SsRateLo--\SsRateHi\ per cent around the
 \SsCushionDecOneLo--\SsCushionDecOneHi\ per cent around the bottom
 decile's \SsCushionPctDecOne: the over-compensation of the bottom
 decile is therefore not statistically distinguishable from exact
-compensation, and the same intervals put the \emph{net} borne amount
-in each of the bottom five deciles indistinguishable from zero. These
+compensation, and the net borne amount spans zero in each of the
+bottom five deciles (95 per cent intervals
+\pounds\SsNetLoDecOne--\SsNetHiDecOne,
+\pounds\SsNetLoDecTwo--\SsNetHiDecTwo,
+\pounds\SsNetLoDecThree--\SsNetHiDecThree,
+\pounds\SsNetLoDecFour--\SsNetHiDecFour\ and
+\pounds\SsNetLoDecFive--\SsNetHiDecFive\ a year for deciles one to
+five). These
 are sampling intervals over the survey base only; imputation
 uncertainty from the consumption donor models is not captured
 (Section~\ref{sec:results-withindec}).
@@ -561,8 +582,8 @@ counterfactual shock at the paper's rebase and
 \SsGridUnityFullRatePct\ per cent with no rebase at all, and the
 progressive gradient survives every cell: without rebasing, the full
 modelled stack returns \SsGridUnityFullDOne\ per cent of the bottom
-decile's loss against \SsGridUnityEpgDTen\ per cent for the cap
-alone in the same cell. The qualitative
+decile's loss against \SsGridUnityFullDTen\ per cent of the top
+decile's. The qualitative
 findings---discretionary, large, progressive---hold across the grid;
 the bottom decile's over-compensation is the one result that is
 basis-dependent, present at the paper's rebase
@@ -647,8 +668,10 @@ Two limits bound what this establishes. The exposure is
 \emph{imputed}---enhanced-FRS energy spending is a quantile-regression
 forest fitted to LCFS donors---so part of the within-decile dispersion
 is donor-model variation, and the decomposition is a bound rather than
-a measurement of true dispersion, and the bootstrap interval above is
-sampling uncertainty only, blind to the donor-model error; \citet{levell2025} use transaction
+a measurement of true dispersion, the bootstrap interval above is
+sampling uncertainty only, blind to the donor-model error, and a
+direct validation of the imputed within-decile spread against the
+LCFS donor sample, which observes it, is left to the extension; \citet{levell2025} use transaction
 data precisely for this reason. And the estimand is the variance of one
 commodity's expenditure share, not the variance of welfare changes from
 product-level trade exposure, which is what
@@ -689,19 +712,24 @@ against each household's imputed food consumption on the same
 the first pass's decile-table figure within the declared base gap.
 The burden is regressive (\SsTcaSsPctSpendDecOne\ per cent of
 bottom-decile spending against \SsTcaSsPctSpendDecTen\ at the top,
-on the second stage's share basis) and pro-poor in pounds reversed
-(\pounds\SsTcaSsGbpDecOne\ against \pounds\SsTcaSsGbpDecTen\ a
-year), and \SsTcaSsWithinPct\ per cent of the variance in exposure
+on the second stage's share basis) and pro-rich in pounds
+(\pounds\SsTcaSsGbpDecOne\ at the bottom against
+\pounds\SsTcaSsGbpDecTen\ at the top), and \SsTcaSsWithinPct\ per cent of the variance in exposure
 lies within deciles (trimmed basis; within the bottom decile the
 burden runs \SsTcaSsPTenDecOne--\SsTcaSsPNinetyDecOne\ per cent of
 spending at the tenth to ninetieth percentile). The cushioning
 decomposition is short and is the point: the automatic response is
 structurally zero, as for any price shock; indexation ran late, as
-above; and the discretionary layer is \emph{empty}---no instrument
-was legislated against the TCA food-price effect. The contrast with
-the energy episode is the paper's sharpest comparative fact: against
-one price-led trade shock the state deployed a discretionary stack
-returning \SsGridPaperEbssRatePct--\SsDiscretionaryRatePct\ per
-cent of the counterfactual loss; against the other, of the same sign
-and the same regressivity, it deployed nothing. Composition and
-salience, not incidence, decided which shock was cushioned.
+above; and no episode-specific instrument exists---nothing was
+legislated against the TCA food-price effect. The contrast with the
+energy episode must be drawn on the episode-specific basis, by the
+same attribution logic as the discretionary subsection above: the
+general cost-of-living payments that are the non-conservative part of
+the energy stack also cushioned food-price inflation in 2022--23, so
+they cannot count toward energy and as zero for food. Episode-specific,
+the contrast stands and is the paper's sharpest comparative fact:
+against one price-led trade shock the state legislated instruments
+returning \SsGridPaperEbssRatePct\ per cent of the counterfactual
+loss; against the other, of the same sign and the same regressivity,
+it legislated none. Composition and salience, not incidence, decided
+which shock got its own instruments.

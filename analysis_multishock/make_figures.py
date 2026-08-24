@@ -600,7 +600,7 @@ def write_tables(d: Data):
     # --- tab:first-stages ------------------------------------------------
     # Cite keys are placeholders: map them onto the manuscript's .bib.
     rows = [
-        ("E1 TCA food NTBs", "Dec 2019--\\newline Mar 2023", "Policy",
+        ("E1 TCA food NTBs", "Dec 2019--\\newline Mar 2023$^{w}$", "Policy",
          "Consumer prices (food)", "\\citet{bakker2026}",
          "$+8\\%$ on food prices (6\\% low variant)", "Estimate\\newline (ex post)"),
         ("E2 Energy 2022--23", "Oct 2022--\\newline Mar 2023", "Market",
@@ -643,6 +643,8 @@ def write_tables(d: Data):
     A("trade-transmitted market price. Source entries are short cite keys; see the")
     A("bibliography. E3's consumer-price row is exactly zero (the UK imposed no")
     A("retaliatory tariffs), so its household incidence runs through earnings alone.")
+    A("$^{w}$~the \\emph{estimation} window of the cited study; the TCA itself")
+    A("entered into force in January 2021.")
     A("\\end{minipage}")
     A("\\end{table}")
     A("")

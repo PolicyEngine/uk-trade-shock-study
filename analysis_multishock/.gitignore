@@ -1,0 +1,8 @@
+# Working copies written by make_figures.py/incidence.py; canonical copies
+# are committed under paper_multishock/. `raw` is a symlink to
+# ../data_multishock/raw for local runs.
+fig_*.png
+generated_table_*.tex
+raw
+out/results.json
+out/generated_multishock.tex

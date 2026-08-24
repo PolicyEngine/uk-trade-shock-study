@@ -47,7 +47,7 @@ Episode & Type, channel & Shock & \multicolumn{2}{c}{\% of spending} & Cushionin
 \midrule
 TCA food, 2021--23 & policy, prices & \pounds\MsTcaWindowAvgAggBn\,bn & \MsTcaWindowAvgPctSpendDecOne & \MsTcaWindowAvgPctSpendDecTen & none legislated (0\%)$^{t}$ \\
 Energy, 2022--23 & market, prices & \pounds\MsEnergyRealisedAggBn\,bn & \MsEnergyRealisedPctSpendDecOne & \MsEnergyRealisedPctSpendDecTen & price subsidy, \MsEnergyCushionShareFyPct\%$^{i}$ \\
-US tariffs, 2025--26 & policy, earnings & \pounds\MsUSTariffGrossShockMillions\,m & \multicolumn{2}{c}{zero} & tax--benefit, \MsUSTariffDisplacementCushionPct--\MsUSTariffWageCutCushionPct\%$^{m}$ \\
+US tariffs, 2025--26 & policy, earnings & \pounds\MsUSTariffGrossShockMillions\,m & \multicolumn{2}{c}{zero} & ---$^{m}$ \\
 India CETA, 2026-- & policy, prices & \pounds\MsCetaTotalMillions\,m$^{g}$ & \MsCetaBottomPctSpend & \MsCetaTopPctSpend & --- \\
 CPTPP, 2024-- & benchmark & \pounds\MsCptppGdpBn\,bn$^{g}$ & \multicolumn{2}{c}{no structure} & --- \\
 \bottomrule
@@ -61,15 +61,14 @@ shock is structurally zero. $^{i}$~an accounting identity:
 because the Guarantee capped a price, the share is constant across
 deciles by construction; it is on the financial-year basis used
 throughout (the point-to-point cap ratio is
-\MsEnergyCushionSharePct\ per cent). $^{m}$~imported from the companion study
-\citep{ahmadi2026}; it is a tax--benefit stabilisation coefficient for
-that episode's earnings channel, and the only entry in this column of
-that kind. The three mechanisms named in this column---a pass-through
-convention, a price subsidy and a stabilisation coefficient---answer
-different questions and are not comparable with one another; the common
-estimand of Section~\ref{sec:framework} that would make them comparable
-is computed for the energy episode in
-Section~\ref{sec:results-secondstage} and not for the others. Deciles are of equivalised
+\MsEnergyCushionSharePct\ per cent). $^{m}$~this column carries only the common cushioning estimand of
+Section~\ref{sec:framework}, computed at the household stage for the
+two price episodes; the tariff episode's earnings-channel
+stabilisation coefficient
+(\MsUSTariffDisplacementCushionPct--\MsUSTariffWageCutCushionPct\ per
+cent, imported from the companion study \citep{ahmadi2026}) answers a
+different question and is reported in this note rather than in the
+column. Deciles are of equivalised
 disposable income; entries are first-order incidence on published
 expenditure-by-decile tables at fixed baskets. Both price episodes are on their
 \emph{realised} paths, but on different clocks, and the asymmetry
@@ -92,7 +91,8 @@ estimand of Section~\ref{sec:framework} is computed at the
 microsimulation stage, not here. Category budget-share gradients, which
 generate these incidence patterns, are in
 Figure~\ref{fig:budget-shares}; full per-decile detail in
-Table~\ref{tab:decile-full}.
+Table~\ref{tab:decile-full} (whose derived columns are computed by
+the figure generator from the pinned artifact, on the same FY basis).
 \end{minipage}
 \end{table}
 
@@ -599,6 +599,13 @@ volumes---but it cautions against reading the rebased cell as the
 truth and the unrebased one as a variant. The paper's headline
 statements are therefore confined to what holds across the grid, and
 the basis-dependent over-compensation is reported as exactly that.
+One dial the grid does not vary is the counterfactual \emph{path}
+itself: holding the October 2022 cap through a full financial year is
+a convention, not a forecast---the Guarantee pre-empted that cap
+before it ever bound---and an ex-ante articulated path would give a
+different denominator. The choice is declared
+(Section~\ref{sec:secondstage-method}) and varying it is extension
+work.
 
 \begin{table}[tbp]
 \centering
@@ -707,9 +714,13 @@ The common cushioning estimand is computed for a second episode---and
 this one is a trade-\emph{policy} act. The TCA food-price first stage
 (the window-average path of Section~\ref{sec:results}) is priced
 against each household's imputed food consumption on the same
-\SsHouseholdsRecords\ records:
-\pounds\SsTcaSsAggBn\ billion a year in aggregate, reconciling with
-the first pass's decile-table figure within the declared base gap.
+\SsHouseholdsRecords\ records, rebased so the weighted mean matches
+the first pass's ONS FYE2022 food-spend base (factor
+\SsTcaSsFoodRebase; the same convention as the energy episode's cap
+rebase, with the same hybrid share denominators). The aggregate,
+\pounds\SsTcaSsAggBn\ billion a year, therefore matches the first
+pass by construction of the mean---the new content of this stage is
+the distribution, not the level.
 The burden is regressive (\SsTcaSsPctSpendDecOne\ per cent of
 bottom-decile spending against \SsTcaSsPctSpendDecTen\ at the top,
 on the second stage's share basis) and pro-rich in pounds

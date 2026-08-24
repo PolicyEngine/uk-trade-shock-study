@@ -119,5 +119,14 @@ paper-values:
 
 paper: paper-values
 	cd paper && latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
+	cd paper && latexmk -pdf -interaction=nonstopmode -halt-on-error supplement.tex
 
 reproduce: check inputs results submission-results figures paper
+
+# --- Multishock paper: referee-round grid, decomposition and bootstrap ------
+# Requires the enhanced FRS dataset; pass DATASET=<path to enhanced_frs.h5>.
+multishock-grid:
+	cd analysis_multishock && $(PYTHON) grid_energy.py --dataset $(DATASET)
+	cd analysis_multishock && $(PYTHON) fig_grid.py
+	cd analysis_multishock && $(PYTHON) fig_extra.py --dataset $(DATASET)
+	cp analysis_multishock/out/generated_grid.tex analysis_multishock/out/table_grid.tex paper_multishock/

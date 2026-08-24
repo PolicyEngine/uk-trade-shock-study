@@ -37,7 +37,9 @@ Anchor & Months & Margin & Gross loss & Exchequer & Cushioning & Poverty \\
 OBR's trade-elasticity assumptions; unit uses 1.0. Values
 after $\pm$ are assignment SDs. Displacement uses balanced numerical
 integration; wage cuts are deterministic apart from the common UC claiming
-redraw. Three- and six-month rows scale the annual probability of a coherent
+redraw. The deterministic wage-cut cushion varies slightly across scales
+(43.6 to 43.9 per cent) because the tax schedule is convex in the scaled
+loss. Three- and six-month rows scale the annual probability of a coherent
 full-year displaced state; they match expected worker-month loss but do not
 simulate partial-year unemployment spells (Appendix~\ref{app:monthlyuc}
 bounds the annualisation bias). The OBR three-month cell is omitted: its
@@ -96,9 +98,10 @@ interval of \BootstrapCushionDifferenceCILower\ to
 headline because it is computed on the \BootstrapDraws\ common assignment
 draws underlying the resampling rather than the full \SubmissionDraws-draw
 paired estimator; the difference is draw-subset drift, not a conflicting
-estimate.) The interval lies entirely above zero, so the sign of the
-primary contrast is not an artefact of which households the FRS happened to
-sample, although its magnitude is estimated imprecisely.
+estimate.) Across record resamples the contrast keeps its sign---the
+interval lies entirely above zero---while its magnitude is imprecise; the
+inferential content claimed for the interval is that resampling
+sensitivity, no more.
 Margin-level bootstrap SEs are \BootstrapDisplacementCushionSE\ points
 (displacement cushioning), \BootstrapWageCushionSE\ points (wage-cut
 cushioning), and \pounds\BootstrapDisplacementExchequerSE\ million and
@@ -110,8 +113,7 @@ first-stage or parameter uncertainty, which remain scenario dimensions. One
 convention should be noted: a resample can zero a displacement draw's gross
 loss, leaving that draw's cushioning ratio undefined; replicates average
 over the defined draws, and near-zero-gross resamples with unstable ratios
-are retained. The interval is therefore a record-resampling sensitivity, not
-evidence that a conditional scenario contrast is statistically identified.
+are retained.
 
 \paragraph{Pension-contribution channel.} The HBAI disposable-income concept treats employee pension and salary-sacrifice contributions as an outflow, so a hypothesis worth testing is that part of the headline gap is reduced retirement saving rather than tax--benefit insurance. It is not. Recomputing both margins under a pension-gross income concept (disposable income plus employee pension and salary-sacrifice contributions, unit 12-month stress, balanced assignment over \PensionSeeds\ draws) lowers wage-cut cushioning from \FullWageCushion\ to \WageCushionPensionGross\ per cent and displacement cushioning from \PensionDisplacedCushionHBAI\ to \DisplacedCushionPensionGross\ per cent---the pension outflow falls by close to the same share of the gross loss on both margins (\PensionShareWage\ and \PensionShareDisplaced\ per cent respectively; wage cuts scale contributions, displacement zeroes them)---so the wage-minus-displacement gap moves only from \GapHBAIPension\ to \GapPensionGross\ percentage points. The headline contrast is a statutory tax--benefit asymmetry, not a pension-accounting artefact. What the pension channel does affect is the \emph{level} of measured cushioning on both margins, and the implied loss of deferred retirement consumption is not captured by the cushioning rate.
 
@@ -147,7 +149,7 @@ The frozen HMRC customs build totals \pounds55.6 billion of 2024 US-bound goods 
 Sector agreement is much weaker. The stored validation artifact reports a rank correlation of \RankCorrTopTen\ between the full-schedule predicted and realised falls among the ten largest exposed divisions, and a correlation of \ShockRateCorrAll\ between full-schedule and observed downside shock rates across all mapped divisions. Machinery and motor vehicles decline broadly in the expected direction, while aerospace, electrical equipment and basic metals do not. The aggregate match can therefore be coincidental and must not be used to validate Equation~\eqref{eq:shock}. As a separate policy benchmark, the OBR's March 2025 scenario uses a demand elasticity of 0.4, implying an 8 per cent export-demand fall after a 20 percentage-point tariff and a direct export-demand effect just under 0.2 per cent of GDP \citep{obr2025}. The paper's $\varepsilon=1$ reference is 2.5 times that elasticity and additionally assumes full wage-bill incidence; it is a deliberately strong stress, not a central forecast.
 
 \paragraph{Product--destination panel.} The monthly HMRC panel
-(Appendix~\ref{app:trade-panel}) supports a post-policy decline concentrated
+(detailed in the online supplement) supports a post-policy decline concentrated
 in large US export products---the capped value-weighted specification
 estimates a \HMRCWeightedEffect\ per cent change in US-bound exports
 relative to the same products sent to Canada, Japan and Australia---but the
@@ -259,7 +261,10 @@ as a fourth convention. The claiming rate binds: displacement cushioning is
 \TakeupDisplacedCentral\ per cent at the 0.80 default, and
 \TakeupFullConvention\ per cent at full take-up---a spread of
 \TakeupConventionSpread\ percentage points, about half the headline
-wage-minus-displacement gap. This is
+wage-minus-displacement gap. (The grid's 0.80 cell of
+\TakeupDisplacedCentral\ per cent sits below the balanced primary's
+\SubmissionUnitDisplacedCushion\ because the grid runs on the Bernoulli
+comparator; the difference is the estimator, not the claiming convention.) This is
 \TakeupInertBasis. Concretely, an average of \TakeupRedrawnBenunits\ benefit
 units per assignment---up to \TakeupRedrawnMax\ in a single draw, about
 \TakeupRedrawnWeighted\ thousand weighted units---move from no UC award at
@@ -396,7 +401,7 @@ the decile profile.
 A constituency-level surface was produced in earlier drafts but is not
 reported: it rests on imputed industry assignments rather than observed
 local industry structure, and a map invites exactly the seat-ranking
-reading it cannot support. Appendix~\ref{app:constituency} documents the
+reading it cannot support. The online supplement documents the
 machinery for future use with observed local industry data.
 
 \subsection{Fiscal incidence}\label{sec:results-fiscal}
@@ -423,30 +428,12 @@ shows the assignment distribution.
 
 \subsection{EPD counterfactual}\label{sec:results-epd}
 
-On paired seeds, full minus EPD displacement differs by
-$\EPDWorkerDifferenceThousands\pm\EPDWorkerDifferenceSDThousands$ thousand
-workers and \pounds $\EPDExchequerDifference\pm\EPDExchequerDifferenceSD$
-million of Exchequer cost. The contrast is driven primarily by the lower auto
-tariff and the exemption of pharmaceuticals in the EPD schedule, and it should
-be interpreted as the fiscal value of changing the declared sector shock while
-holding the household model and assignment draws fixed. Two caveats withdraw
-it as a quantitative result. First, every paired difference is comparable to
-or smaller than its own assignment dispersion---the Exchequer contrast of
-\pounds\EPDExchequerDifference\ million carries an assignment SD of
-\pounds\EPDExchequerDifferenceSD\ million---so at the reported draw count the
-EPD contrast is not distinguishable from allocation noise. Second, it prices
-a change in the sector calibration whose own rank-order check fails
-(Section~\ref{sec:results-benchmarks}); under the EPD schedule the top-ten
-rank correlation is \RankCorrTopTenEPD. The comparison is therefore retained
-as a qualitative illustration of the counterfactual machinery, not as an
-estimate of the deal's value. It also does not include quota allocation,
-above-quota trade, price responses, NHS pricing concessions, or other
-general-equilibrium effects. Figure~\ref{fig:epd-results} summarises the
-paired comparison.
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=.85\textwidth]{../results/figures/epd_counterfactual.png}
-\caption{Full-schedule and EPD scenario comparison. Error bars are assignment standard deviations.}
-\label{fig:epd-results}
-\end{figure}
+The paired full-minus-EPD comparison is withdrawn as a quantitative result
+and reported only in the online supplement: every paired difference is
+comparable to or smaller than its own assignment dispersion (the Exchequer
+contrast of \pounds\EPDExchequerDifference\ million carries an assignment SD
+of \pounds\EPDExchequerDifferenceSD\ million), and it prices a change in the
+sector calibration whose own rank-order check fails
+(Section~\ref{sec:results-benchmarks}; under the EPD schedule the top-ten
+rank correlation is \RankCorrTopTenEPD). The supplement retains the paired
+design as a qualitative illustration of the counterfactual machinery.

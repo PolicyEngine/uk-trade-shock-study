@@ -6,6 +6,118 @@ further rounds of independent review, and a full economics referee report.
 The source memos for the earlier rounds have been removed from the
 replication package; their dispositions are recorded below.
 
+## Multishock paper: first referee round (19 August 2026)
+
+`paper_multishock/` ("Who Bore Britain's Trade Shocks?") received a fresh
+referee-style review on the day of its first draft (verdict: major
+revision, boundary reject-and-resubmit; every checked number reproduced
+exactly). Fixed same day:
+
+- **M1 (framing):** the episode set is now typed policy/market throughout
+  --- the energy episode is a trade-transmitted market shock, never a
+  policy act; the "trade policy portfolio ledger" claim is withdrawn; an
+  imported-component bound (Dhingra-Page >70%, ~GBP44.7bn of the gross
+  GBP63.9bn) is reported.
+- **M3 (TCA headline):** headline moved from end-state to the
+  window-average path implied by the published GBP250 cumulative
+  (GBP58-94/household/yr, GBP2.2bn/yr aggregate, 0.35 vs 0.20% of
+  spending); end-state retained as a labelled variant with the
+  back-loading diagnostic.
+- **M4 (energy conventions):** demand-response variant added (69% of
+  fixed-basket, GBP44.0bn); the "discretion cushioned proportionally, so
+  the burden remained regressive" conclusion is withdrawn --- the EBSS,
+  cost-of-living payments and council-tax rebate (the progressive
+  discretionary instruments) are named as unmodelled and the verdict on
+  the discretionary stack deferred to the microsimulation stage; the
+  "as required" phrase retired from NOTES.
+- **M5 (uprating lag):** both conventions now reported (GBP230 flat-April
+  to GBP393 monthly-contemporaneous), correctly labelled as the
+  single-adult standard allowance only.
+- **M6 (normalised column):** the per-GBP-bn column --- shown by the
+  referee to be a ratio artifact in which shock size cancels --- is
+  replaced by affected-category budget shares by decile (food 14.9/8.3,
+  energy 7.0/3.2, D1/D10), which say the same thing honestly.
+- **M7/M8:** the measured-vs-promised asymmetry is restated as the
+  non-mechanical fact (no UK FTA has ever been ex-post evaluated at
+  household level); the CPTPP row is relabelled from "placebo" to
+  near-zero benchmark.
+- **M9 + minors:** universal-negative novelty claim softened; abstract
+  enumeration, "would have cost" gross labelling, IMF citation, transfer
+  clarification, CETA pounds-pro-rich note all fixed.
+
+**Open (the referee's condition for publishability):** execute the
+microsimulation stage --- the common cushioning estimand is currently
+computed for none of the five episodes within the paper itself; the
+first pass is seed arithmetic plus the companion study's imported
+results. Also open: full discretionary stack modelling (EBSS/CoL
+payments), the E4 earnings channel, and FYE2022 income-construction
+material moving from NOTES to a paper appendix.
+
+## Sixth round: fresh referee report and no-data revision (18 August 2026)
+
+A fresh referee-style review of the reframed manuscript (simulated Fiscal
+Studies referee, no knowledge of prior rounds) returned **major revision**
+with eight major comments. This round implements everything that does not
+require the licensed data, on branch `revision/concentration-reframe`.
+
+### Implemented
+
+- **M3 (partially adopted; framing is an author decision).** The referee's
+  full recommendation---reframe the paper around concentration with the
+  tariffs as application---was implemented and then reversed by the author
+  on 18 August: this is, by design, a **trade-shock paper**. Final title:
+  "Who Bears a Trade Shock? Wage Cuts, Job Losses, and Tax--Benefit
+  Cushioning in the UK". What survives from M3: the abstract is rewritten
+  for a sixty-second reader (149 words with macros resolved, not only under
+  the test's macro-stripping count), reports the concentration finding and
+  the Dolls et al. reversal prominently, and closes by naming the
+  unmodelled instruments with the JSA bound; the intro states upfront that
+  the near-zero employment-state step is a property of the modelled rules
+  and would move against the headline once JSA is simulated; the
+  contributions paragraph leads with the quantified offset structure. The
+  response letter should defend the trade framing on the ground that the
+  estimand (who bears the 2025 tariff exposure, conditional on a declared
+  loss) is the paper's question, and the concentration mechanism is its
+  answer, not its subject.
+- **M4 (online supplement restored).** `paper/supplement.tex` +
+  `sections/supplement_body.tex` now carry the elasticity grid,
+  reallocation, observed-outturn, HMRC destination-panel detail, the EPD
+  counterfactual (withdrawn framing intact), demographic, supply-chain and
+  constituency sections. The main results/policy sections keep two-sentence
+  withdrawal pointers; the previously skipped supplement guard test now
+  runs and passes. Main-paper PDF shrinks from ~708KB to ~509KB.
+- **M6 (convention bracket).** The take-up paragraph reconciles the
+  balanced primary (36.6) against the Bernoulli grid's 0.80 cell (35.2)
+  explicitly: the difference is the estimator, not the claiming convention.
+- **M7 (transition path demoted).** Removed from the abstract entirely
+  (the interior path stays in the results with its annualisation caveat).
+- **M8 (partial).** Redundant inferential-stance sentences removed from
+  the bootstrap paragraph (one stance: record-resampling sensitivity);
+  further caveat consolidation remains open.
+- Minors: Table 1 note explains the 43.6-to-43.9 deterministic wage-cut
+  variation (schedule convexity); the discussion names the headline cell as
+  the bottom of the cross-cell range; "annualized" -> "annualised";
+  declarations carry the repository URL and promise an archived DOI at
+  publication.
+- **Checked and not changed:** the referee's claim that
+  `\TakeupConventionSpread` (3.5) comes from differencing rounded endpoints
+  is wrong — `write_referee_macros.py` differences unrounded rates and the
+  CI freshness gate reproduces 3.5.
+
+### Open (require licensed data / author runs)
+
+- **M1**: simulate New Style JSA in the displacement margin (central
+  scenario), bound redundancy pay.
+- **M2**: implement exact per-record enumeration as the primary
+  displacement estimator, with the joint-displacement (order $s^2$) check.
+- **M5**: re-run LFS selection, supply-chain and the all-entitled take-up
+  grid on the final pipeline vintage.
+- **M8** (rest): reduce main text by roughly a third (caveat
+  consolidation, literature trim).
+- Minor: replace the national poverty column in Table 1 with the
+  affected-household change (writer edit + regeneration); read the JSA
+  weekly rate from the simulation parameter tree.
+
 ## Fifth-round review (17 August 2026, post-restoration)
 
 Three independent reviews of the restored manuscript: a referee-style

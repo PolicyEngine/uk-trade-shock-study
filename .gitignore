@@ -30,7 +30,6 @@ paper/*.aux
 paper/*.out
 paper/*.fls
 paper/*.fdb_latexmk
-/paper/supplement.pdf
 
 # LFS/FRS benchmark microdata: both carry person-level FRS records
 # (person_id, age, gender, employment_income, survey weight) and are licensed

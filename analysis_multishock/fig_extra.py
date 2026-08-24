@@ -5,9 +5,9 @@
    discretionary instrument returned (EPG, EBSS, cost-of-living payments),
    in pounds a year, with bootstrap intervals on the borne component.
 2. fig_paths.png   -- three shock paths by decile as a share of spending:
-   gross counterfactual, realised, and cash-outlay (the REALISED burden
-   scaled by the observed demand response; note the first pass applies
-   the same scale to the gross counterfactual instead).
+   gross counterfactual, realised, and cash-outlay (the gross
+   counterfactual scaled by the observed demand response -- the same
+   convention as the first pass).
 3. Household-bootstrap (sampling) intervals on the headline second-stage
    quantities, emitted as macros.  These are SAMPLING intervals over the
    53,508-record base only: imputation (donor-model) uncertainty is not
@@ -23,9 +23,10 @@ import numpy as np
 
 from second_stage_energy import P, weighted, wmean, wquantile, variance_split
 
-CASH_OUTLAY_SCALE = 0.77   # observed demand response (MsEnergyCashOutlayScalePct);
-                           # applied here to the realised path (the first pass
-                           # applies it to the gross counterfactual)
+CASH_OUTLAY_SCALE = 0.77   # observed demand response; matches the first pass's
+                           # MsEnergyCashOutlayScalePct (incidence.py computes
+                           # 0.769) and is applied to the gross counterfactual,
+                           # the same convention as the first pass
 N_BOOT = 999
 SEED = 0
 
@@ -91,7 +92,7 @@ def main() -> None:
                                                        w[dec == d])
          for d in range(10)])
     p_gross, p_real = pct(dE_counter), pct(dE_realised)
-    p_cash = p_real * CASH_OUTLAY_SCALE
+    p_cash = p_gross * CASH_OUTLAY_SCALE
 
     # --- Household bootstrap (sampling only) -------------------------------
     rng = np.random.default_rng(SEED)
@@ -194,7 +195,7 @@ def main() -> None:
     ax.plot(x, p_real, color=BLUE, ls="-", marker="o",
             label="Realised path (EPG in force)")
     ax.plot(x, p_cash, color=GREY, ls=":", marker="s", mfc="white",
-            label="Cash outlay (realised × observed demand response)")
+            label="Cash outlay (counterfactual × observed demand response)")
     ax.set_xticks(x)
     ax.set_xlabel("Equivalised disposable income decile")
     ax.set_ylabel("% of household expenditure")

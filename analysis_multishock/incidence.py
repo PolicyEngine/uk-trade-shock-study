@@ -802,8 +802,8 @@ def latex_macros(res):
             add(f"CetaGainGbp{name}Dec{DEC[d]}",
                 fmt(s["per_decile_gain_gbp_per_year"][d], 2))
     full = e4["scenarios"]["hundred"]
-    add("CetaBottomPctSpend", fmt(full["pct_of_total_spend"][0], 3))
-    add("CetaTopPctSpend", fmt(full["pct_of_total_spend"][9], 3))
+    add("CetaBottomPctSpend", fmt(full["pct_of_total_spend"][0], 4))
+    add("CetaTopPctSpend", fmt(full["pct_of_total_spend"][9], 4))
     add("CetaVerdict", e4["progressivity"]["verdict"])
 
     # E5

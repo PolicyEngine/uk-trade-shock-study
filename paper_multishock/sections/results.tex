@@ -45,7 +45,7 @@ Episode & Type, channel & Shock & \multicolumn{2}{c}{\% of spending} & Cushionin
 \cmidrule(lr){4-5}
  & & (realised path) & D1 & D10 & by mechanism \\
 \midrule
-TCA food, 2021--23 & policy, prices & \pounds\MsTcaWindowAvgAggBn\,bn & \MsTcaWindowAvgPctSpendDecOne & \MsTcaWindowAvgPctSpendDecTen & pass-through conv. \\
+TCA food, 2021--23 & policy, prices & \pounds\MsTcaWindowAvgAggBn\,bn & \MsTcaWindowAvgPctSpendDecOne & \MsTcaWindowAvgPctSpendDecTen & none legislated (0\%)$^{t}$ \\
 Energy, 2022--23 & market, prices & \pounds\MsEnergyRealisedAggBn\,bn & \MsEnergyRealisedPctSpendDecOne & \MsEnergyRealisedPctSpendDecTen & price subsidy, \MsEnergyCushionShareFyPct\%$^{i}$ \\
 US tariffs, 2025--26 & policy, earnings & \pounds\MsUSTariffGrossShockMillions\,m & \multicolumn{2}{c}{zero} & tax--benefit, \MsUSTariffDisplacementCushionPct--\MsUSTariffWageCutCushionPct\%$^{m}$ \\
 India CETA, 2026-- & policy, prices & \pounds\MsCetaTotalMillions\,m$^{g}$ & \MsCetaBottomPctSpend & \MsCetaTopPctSpend & --- \\
@@ -53,7 +53,11 @@ CPTPP, 2024-- & benchmark & \pounds\MsCptppGdpBn\,bn$^{g}$ & \multicolumn{2}{c}{
 \bottomrule
 \end{tabular}
 \begin{minipage}{.94\textwidth}\footnotesize
-\emph{Notes:} $^{g}$~gain, not cost. $^{i}$~an accounting identity:
+\emph{Notes:} $^{g}$~gain, not cost. $^{t}$~the common cushioning
+estimand, computed at the household stage
+(Section~\ref{sec:results-tca-ss}): no discretionary instrument was
+legislated against this episode and the automatic response to a price
+shock is structurally zero. $^{i}$~an accounting identity:
 because the Guarantee capped a price, the share is constant across
 deciles by construction; it is on the financial-year basis used
 throughout (the point-to-point cap ratio is
@@ -122,8 +126,10 @@ regressive as a share of spending
 (\MsTcaWindowAvgPctSpendDecOne\ versus
 \MsTcaWindowAvgPctSpendDecTen\ per cent) because food takes
 \MsTcaBudgetSharePctDecOne\ per cent of bottom-decile spending
-against \MsTcaBudgetSharePctDecTen\ at the top. This is an anchoring choice, not a
-cross-check that happened to pass: the pipeline's own linear-ramp
+against \MsTcaBudgetSharePctDecTen\ at the top. (The estimation window opens in December 2019, thirteen months before
+the TCA took effect; the linear-ramp and window-average conventions
+both absorb the pre-entry months as zeros.) This is an anchoring
+choice, not a cross-check that happened to pass: the pipeline's own linear-ramp
 cumulative overshoots the published figure by a factor of
 \MsTcaCrossCheckRatio, and the window-average path is obtained by
 rescaling to the published cumulative. The TCA row therefore carries no
@@ -359,7 +365,9 @@ quantified in the two-axis grid of Table~\ref{tab:grid}.
 
 \emph{Coverage.} The Energy Price Guarantee enters as the difference
 between the two capped paths, the Energy Bills Support Scheme as its
-flat \pounds 400 to every weighted household, and the 2022--23
+flat \pounds 400 to every weighted household (so the modelled
+\pounds\SsEbssBn\ billion exceeds the roughly \pounds 11 billion
+scheme outturn by about the weight excess), and the 2022--23
 cost-of-living payments on simulated entitlement in the simulation
 year---an approximation in both directions: simulated entitlement is
 not receipt in the actual 2022 qualifying windows, the \pounds 150
@@ -372,11 +380,14 @@ both sides, not a bound.
 
 \emph{Rule year (assumption).} The simulation scores the episode on
 the 2023 parameter system and 2023 incomes---the vintage of the
-enhanced-FRS base---although the episode is FY2022--23. This matters
-most for the benefit-income base of the uprating arithmetic, where
-both rule years are reported below; the discretionary-stack results
-are insensitive to it because the instruments enter as declared cash
-amounts.
+enhanced-FRS base---although the episode is FY2022--23. The
+rulebook-vintage run below scores the same households under the 2022
+parameter system as the crisis-year counterfactual; the
+discretionary-stack results are insensitive to the rule year because
+the instruments enter as declared cash amounts, and the
+cost-of-living eligibility flags are nearly identical under the two
+vintages (\SsVinColHouseholdsRuleTwentyTwoM\ against
+\SsVinColHouseholdsRuleTwentyThreeM\ million flagged households).
 
 \emph{Weights.} PolicyEngine's grossing weights total
 \SsWeightedHouseholdsM\ million households against an ONS count of
@@ -439,17 +450,25 @@ than never.
 
 Benefits rose 3.1 per cent in April 2022, indexed to the previous
 September, against inflation over the year of about 10 per cent. The
-resulting \SsUpratingGapPp-point gap erodes the uprated cash benefit
-income by \SsUpratingShortfallPctOfBenefitIncome\ per cent: on the
-crisis-year 2022 rulebook the base is
-\pounds\SsBenefitIncomeBnRuleTwentyTwo\ billion and the shortfall
-\pounds\SsShortfallBnRuleTwentyTwo\ billion, close to the roughly
-\pounds 12 billion aggregate real fall of \citet{obrwelfare2022}; on
-the simulation's 2023 rule year the base is
-\pounds\SsBenefitIncomeBn\ billion and the shortfall
-\pounds\SsUpratingShortfallBn\ billion. The remaining gap to the OBR
-figure reflects the benefit-base definition and price counterfactual
-and is left unreconciled.
+cost of that gap is here computed with a genuine rulebook-vintage
+run rather than a flat base-times-gap multiplication: the enhanced
+FRS is a single-period dataset, so every input column is copied to
+the 2022 period and the \emph{same} households are scored under the
+2022 and 2023 parameter systems. The legislated April 2023 uprating
+(10.1 per cent) moves the fourteen uprated cash benefits from
+\pounds\SsVinBenefitBaseRuleTwentyTwo\ to
+\pounds\SsVinBenefitBaseRuleTwentyThree\ billion---%
+\pounds\SsVinUpratingEffectBn\ billion through the full statutory
+structure, tapers included, or \pounds\SsVinPerPointBn\ billion per
+uprating point. At that measured rate, the \SsUpratingGapPp\ points
+withheld in the crisis year cost
+\pounds\SsVinLagCostBn\ billion (the final step is linear in the
+rate, an approximation declared as such)---against the roughly
+\pounds 12 billion aggregate real fall of \citet{obrwelfare2022} on a
+different base and counterfactual, and below the
+\pounds\SsUpratingShortfallBn\ billion a flat multiplication of the
+2023-rules base (\pounds\SsBenefitIncomeBn\ billion) would give,
+because tapers claw back part of any uprating.
 It is deliberately \emph{not} expressed as a share of the energy
 shock: the numerator is the erosion of benefit income by all inflation,
 and dividing it by one commodity's counterfactual would attribute to
@@ -540,14 +559,25 @@ instruments. Second, the headline is bounded, not fragile: the full
 stack cushions \SsGridPaperFullRatePct\ per cent of the
 counterfactual shock at the paper's rebase and
 \SsGridUnityFullRatePct\ per cent with no rebase at all, and the
-progressive gradient survives every cell (bottom-decile cushioning of
-\SsGridUnityFullDOne\ per cent against \SsGridUnityEpgDTen\ for the
-cap alone in the least favourable cell). The qualitative
+progressive gradient survives every cell: without rebasing, the full
+modelled stack returns \SsGridUnityFullDOne\ per cent of the bottom
+decile's loss against \SsGridUnityEpgDTen\ per cent for the cap
+alone in the same cell. The qualitative
 findings---discretionary, large, progressive---hold across the grid;
 the bottom decile's over-compensation is the one result that is
 basis-dependent, present at the paper's rebase
 (\SsGridPaperFullDOne\ per cent) and absent without rebasing
-(\SsGridUnityFullDOne\ per cent).
+(\SsGridUnityFullDOne\ per cent). One external anchor bears on the
+choice of cell and must be confronted rather than footnoted: at a
+rebase of one the EPG absorption is \pounds 27.2 billion, close to
+the OBR's \pounds 27 billion EPG costing, while the paper's rebase
+gives \pounds\SsEpgBn\ billion. The near-match is partly
+coincidental---the OBR priced the Guarantee against the higher caps
+then expected for 2023, over a longer window, on price-dependent
+volumes---but it cautions against reading the rebased cell as the
+truth and the unrebased one as a variant. The paper's headline
+statements are therefore confined to what holds across the grid, and
+the basis-dependent over-compensation is reported as exactly that.
 
 \begin{table}[tbp]
 \centering
@@ -583,10 +613,8 @@ headline both come entirely from the flat-cash instruments.}
 
 Figure~\ref{fig:paths} plots the three shock paths of the design on
 one distribution: the gross counterfactual, the realised path, and the
-cash-outlay path (here the \emph{realised} burden scaled by the
-observed demand response; the first pass applies the same scale to the
-gross counterfactual, so the two cash-outlay figures are not the same
-object). The paths differ in level, not shape: policy and
+cash-outlay path (the gross counterfactual scaled by the observed
+demand response, the same convention as the first pass). The paths differ in level, not shape: policy and
 demand response scaled the shock down without changing who it fell on.
 The realised burden runs from \SsBurdenPctSpendDecOne\ per cent of
 household expenditure in the bottom decile to
@@ -644,8 +672,36 @@ exposure and the within-decile spread for \SsWithinPct\ per cent.}
 as a share of household expenditure, on the second stage's
 financial-year basis: the gross counterfactual (no policy), the
 realised path (Energy Price Guarantee in force), and the cash-outlay
-path (the realised burden scaled by the observed weather-adjusted
-demand response; the first pass applies this scale to the
-counterfactual path instead). Level shifts, common shape.}
+path (the gross counterfactual scaled by the observed weather-adjusted
+demand response, the first-pass convention). Level shifts, common
+shape.}
 \label{fig:paths}
 \end{figure}
+
+\subsection{A second episode through the second stage: the TCA food shock}\label{sec:results-tca-ss}
+
+The common cushioning estimand is computed for a second episode---and
+this one is a trade-\emph{policy} act. The TCA food-price first stage
+(the window-average path of Section~\ref{sec:results}) is priced
+against each household's imputed food consumption on the same
+\SsHouseholdsRecords\ records:
+\pounds\SsTcaSsAggBn\ billion a year in aggregate, reconciling with
+the first pass's decile-table figure within the declared base gap.
+The burden is regressive (\SsTcaSsPctSpendDecOne\ per cent of
+bottom-decile spending against \SsTcaSsPctSpendDecTen\ at the top,
+on the second stage's share basis) and pro-poor in pounds reversed
+(\pounds\SsTcaSsGbpDecOne\ against \pounds\SsTcaSsGbpDecTen\ a
+year), and \SsTcaSsWithinPct\ per cent of the variance in exposure
+lies within deciles (trimmed basis; within the bottom decile the
+burden runs \SsTcaSsPTenDecOne--\SsTcaSsPNinetyDecOne\ per cent of
+spending at the tenth to ninetieth percentile). The cushioning
+decomposition is short and is the point: the automatic response is
+structurally zero, as for any price shock; indexation ran late, as
+above; and the discretionary layer is \emph{empty}---no instrument
+was legislated against the TCA food-price effect. The contrast with
+the energy episode is the paper's sharpest comparative fact: against
+one price-led trade shock the state deployed a discretionary stack
+returning \SsGridPaperEbssRatePct--\SsDiscretionaryRatePct\ per
+cent of the counterfactual loss; against the other, of the same sign
+and the same regressivity, it deployed nothing. Composition and
+salience, not incidence, decided which shock was cushioned.

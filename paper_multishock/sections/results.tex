@@ -28,9 +28,9 @@ cushioned automatically (\MsUSTariffDisplacementCushionPct--%
 \MsUSTariffWageCutCushionPct\ per cent through the tax--benefit
 system, from the companion study), while the price-led energy episode
 was cushioned by discretion---the Energy Price Guarantee absorbed
-\MsEnergyCushionSharePct\ per cent of the gross shock on the
-point-to-point cap basis (\MsEnergyCushionShareFyPct\ per cent on the
-financial-year basis of Section~\ref{sec:results-secondstage})---and the
+\MsEnergyCushionShareFyPct\ per cent of the gross shock on the
+financial-year basis (the point-to-point cap ratio is
+\MsEnergyCushionSharePct\ per cent)---and the
 automatic price-side mechanism, benefit indexation, arrived a year
 late (Section~\ref{sec:results-rulebook}).
 
@@ -46,7 +46,7 @@ Episode & Type, channel & Gross & \multicolumn{2}{c}{\% of spending} & Cushionin
  & & shock & D1 & D10 & by mechanism \\
 \midrule
 TCA food, 2021--23 & policy, prices & \pounds\MsTcaWindowAvgAggBn\,bn & \MsTcaWindowAvgPctSpendDecOne & \MsTcaWindowAvgPctSpendDecTen & pass-through conv. \\
-Energy, 2022--23 & market, prices & \pounds\MsEnergyRealisedAggBn\,bn & \MsEnergyRealisedPctSpendDecOne & \MsEnergyRealisedPctSpendDecTen & price subsidy, \MsEnergyCushionSharePct\%$^{i}$ \\
+Energy, 2022--23 & market, prices & \pounds\MsEnergyRealisedAggBn\,bn & \MsEnergyRealisedPctSpendDecOne & \MsEnergyRealisedPctSpendDecTen & price subsidy, \MsEnergyCushionShareFyPct\%$^{i}$ \\
 US tariffs, 2025--26 & policy, earnings & \pounds\MsUSTariffGrossShockMillions\,m & \multicolumn{2}{c}{zero} & tax--benefit, \MsUSTariffDisplacementCushionPct--\MsUSTariffWageCutCushionPct\%$^{m}$ \\
 India CETA, 2026-- & policy, prices & \pounds\MsCetaTotalMillions\,m$^{g}$ & \MsCetaBottomPctSpend & \MsCetaTopPctSpend & --- \\
 CPTPP, 2024-- & benchmark & \pounds\MsCptppGdpBn\,bn$^{g}$ & \multicolumn{2}{c}{no structure} & --- \\
@@ -55,9 +55,9 @@ CPTPP, 2024-- & benchmark & \pounds\MsCptppGdpBn\,bn$^{g}$ & \multicolumn{2}{c}{
 \begin{minipage}{.94\textwidth}\footnotesize
 \emph{Notes:} $^{g}$~gain, not cost. $^{i}$~an accounting identity:
 because the Guarantee capped a price, the share is constant across
-deciles by construction; it is the point-to-point cap ratio, and equals
-\MsEnergyCushionShareFyPct\ per cent on the financial-year basis of
-Section~\ref{sec:results-secondstage}. $^{m}$~imported from the companion study
+deciles by construction; it is on the financial-year basis used
+throughout (the point-to-point cap ratio is
+\MsEnergyCushionSharePct\ per cent). $^{m}$~imported from the companion study
 \citep{ahmadi2026}; it is a tax--benefit stabilisation coefficient for
 that episode's earnings channel, and the only entry in this column of
 that kind. The three mechanisms named in this column---a pass-through
@@ -197,10 +197,11 @@ costing---a context anchor, not a validation. Within those bounds the shape is
 robust: the Energy Price Guarantee truncated the rise to
 +\MsEnergyNetFactorPct\ per cent, absorbing
 \pounds\MsEnergyCushionGbpDecOne\ a year for a bottom-decile
-household and \MsEnergyCushionSharePct\ per cent of the gross shock on
-the point-to-point cap basis---\MsEnergyCushionShareFyPct\ per cent on
+household---\MsEnergyCushionShareFyPct\ per cent of the gross shock on
 the financial-year basis (\pounds\SsEpgBn\ of \pounds\SsCounterAggBn\
-billion, Section~\ref{sec:results-secondstage}).
+billion, Section~\ref{sec:results-secondstage}); the point-to-point
+cap ratio, (3{,}549-2{,}500)/(3{,}549-1{,}277), is
+\MsEnergyCushionSharePct\ per cent and is not used further.
 Because the EPG capped the \emph{price}, its cushioning share is
 constant across deciles by construction. Two qualifications follow
 from the frontier evidence. First, decile means understate the
@@ -306,8 +307,8 @@ sequencing: the \pounds\MsUcUpliftRemovalGbp-a-year
 Covid uplift was removed in October 2021, months before the energy
 shock landed, so the lowest-income households entered the largest
 price-led trade shock of the period from a rulebook trough. Together
-with the EPG's absorption of \MsEnergyCushionSharePct\ per cent of the
-gross price shock (point-to-point cap basis), the seed picture of the British response is:
+with the EPG's absorption of \MsEnergyCushionShareFyPct\ per cent of the
+gross price shock, the seed picture of the British response is:
 \emph{automatic on the earnings margin, discretionary on the price
 margin, and lagged precisely where the price shocks bit hardest}---with
 the progressivity of the full discretionary stack an open question for
@@ -376,21 +377,27 @@ financial-year basis the first pass puts the counterfactual shock at
 \pounds\MsEnergyGrossAggBn\ billion and the realised path at
 \pounds\MsEnergyRealisedAggBn\ billion, against
 \pounds\SsCounterAggBn\ and \pounds\SsRealisedAggBn\ billion here. The
-residual gap of about five per cent is the household base: the first
-pass grosses ONS expenditure tables to the ONS household count, the
-second stage uses PolicyEngine's grossing weights, which exceed it by
-\SsWeightExcessPct\ per cent. Ratios are unaffected by this and levels
-should be read with it in mind.
+residual gap of about five per cent is smaller than the
+\SsWeightExcessPct\ per cent excess of PolicyEngine's grossing weights
+over the ONS household count, so the household base explains at most
+part of it: the imputed consumption distribution and the rebase
+convention offset the remainder, and the decomposition of the gap is
+not attempted here. Ratios are unaffected and levels should be read
+with the unreconciled gap in mind.
 
 \subsection{The automatic response, measured}
 
-The tax--benefit calculator is run twice---once on baseline inputs and
-once with energy inputs shocked to the realised path---and the change
-in every entitlement recorded. The measured change is
-\pounds\SsAutomaticBn\ billion, or \SsAutomaticRatePct\ per cent of the
-shock. Nothing moves, and the reason is structural rather than
-incidental: every means-tested award in the UK conditions on nominal
-income, and a price shock leaves nominal income untouched. This is
+Every means-tested award in the UK conditions on nominal income, and a
+price shock leaves nominal income untouched: the automatic response is
+therefore zero by the structure of the statutory rules, not as an
+empirical finding. The tax--benefit calculator is run twice---once on
+baseline inputs and once with energy inputs shocked to the realised
+path---and the change in every entitlement is
+\pounds\SsAutomaticBn\ billion (\SsAutomaticRatePct\ per cent of the
+shock); but because no modelled entitlement takes energy consumption as
+an input, this re-run confirms that the model encodes the statutory
+structure rather than measuring an independent quantity, and the claim
+rests on the rulebook, which is verifiable line by line. This is
 \citet{cohenfollette2000}'s macro finding---that automatic stabilisers
 do little against a supply shock---at the household level, and sharper
 than their version, because for a pure price shock the mechanical
@@ -538,9 +545,10 @@ headline both come entirely from the flat-cash instruments.}
 
 Figure~\ref{fig:paths} plots the three shock paths of the design on
 one distribution: the gross counterfactual, the realised path, and the
-cash-outlay path (the realised burden scaled by the observed demand
-response, the first pass's welfare-versus-cash distinction carried to
-household records). The paths differ in level, not shape: policy and
+cash-outlay path (here the \emph{realised} burden scaled by the
+observed demand response; the first pass applies the same scale to the
+gross counterfactual, so the two cash-outlay figures are not the same
+object). The paths differ in level, not shape: policy and
 demand response scaled the shock down without changing who it fell on.
 The realised burden runs from \SsBurdenPctSpendDecOne\ per cent of
 household expenditure in the bottom decile to
@@ -596,7 +604,8 @@ exposure and the within-decile spread for \SsWithinPct\ per cent.}
 as a share of household expenditure, on the second stage's
 financial-year basis: the gross counterfactual (no policy), the
 realised path (Energy Price Guarantee in force), and the cash-outlay
-path (realised scaled by the observed weather-adjusted demand
-response, the first-pass convention). Level shifts, common shape.}
+path (the realised burden scaled by the observed weather-adjusted
+demand response; the first pass applies this scale to the
+counterfactual path instead). Level shifts, common shape.}
 \label{fig:paths}
 \end{figure}

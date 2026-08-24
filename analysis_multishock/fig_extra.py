@@ -5,8 +5,9 @@
    discretionary instrument returned (EPG, EBSS, cost-of-living payments),
    in pounds a year, with bootstrap intervals on the borne component.
 2. fig_paths.png   -- three shock paths by decile as a share of spending:
-   gross counterfactual, realised, and cash-outlay (the realised burden
-   scaled by the observed demand response, first-pass convention).
+   gross counterfactual, realised, and cash-outlay (the REALISED burden
+   scaled by the observed demand response; note the first pass applies
+   the same scale to the gross counterfactual instead).
 3. Household-bootstrap (sampling) intervals on the headline second-stage
    quantities, emitted as macros.  These are SAMPLING intervals over the
    53,508-record base only: imputation (donor-model) uncertainty is not
@@ -22,7 +23,9 @@ import numpy as np
 
 from second_stage_energy import P, weighted, wmean, wquantile, variance_split
 
-CASH_OUTLAY_SCALE = 0.77   # first-pass convention (MsEnergyCashOutlayScalePct)
+CASH_OUTLAY_SCALE = 0.77   # observed demand response (MsEnergyCashOutlayScalePct);
+                           # applied here to the realised path (the first pass
+                           # applies it to the gross counterfactual)
 N_BOOT = 300
 SEED = 0
 

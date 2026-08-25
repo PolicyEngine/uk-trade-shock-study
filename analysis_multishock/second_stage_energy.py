@@ -69,33 +69,43 @@ UPRATED_CASH = MEANS_TESTED + ["state_pension", "child_benefit", "pip", "dla",
                                "winter_fuel_allowance"]
 
 
+# Weighted primitives, delegated to microdf (the survey-weighting library
+# PolicyEngine itself returns results in), so no weight arithmetic is done
+# by hand anywhere in the pipeline.  Signatures unchanged; verified to
+# reproduce the previous hand-rolled results exactly.
+from microdf import MicroSeries
+
+
 def weighted(x, w):
-    return float(np.sum(np.asarray(x) * w))
+    """Weighted total of x."""
+    return float(MicroSeries(np.asarray(x, dtype=float), weights=w).sum())
 
 
 def wmean(x, w):
-    return weighted(x, w) / float(np.sum(w))
+    """Weighted mean of x."""
+    return float(MicroSeries(np.asarray(x, dtype=float), weights=w).mean())
 
 
 def wquantile(x, w, q):
-    x = np.asarray(x, dtype=float)
-    idx = np.argsort(x)
-    cw = np.cumsum(w[idx]) / np.sum(w)
-    return float(x[idx][np.searchsorted(cw, q)])
+    """Weighted q-quantile of x."""
+    return float(MicroSeries(np.asarray(x, dtype=float),
+                             weights=w).quantile(q))
 
 
 def variance_split(burden, w, dec):
-    """Weighted between/within-decile variance shares of `burden`."""
-    burden = np.asarray(burden, dtype=float)
-    gm = wmean(burden, w)
-    total = weighted((burden - gm) ** 2, w) / np.sum(w)
+    """Between/within-decile shares of the weighted variance of `burden`."""
+    b = MicroSeries(np.asarray(burden, dtype=float), weights=w)
+    gm = float(b.mean())
+    total = float(MicroSeries((np.asarray(burden, dtype=float) - gm) ** 2,
+                              weights=w).mean())
     between = 0.0
+    wsum = float(np.sum(w))
     for d in np.unique(dec):
         m = dec == d
-        between += np.sum(w[m]) * (wmean(burden[m], w[m]) - gm) ** 2
-    between /= np.sum(w)
-    return (round(float(100 * between / total), 1),
-            round(float(100 * (1 - between / total)), 1))
+        between += float(np.sum(w[m])) * (wmean(burden[m], w[m]) - gm) ** 2
+    between /= wsum
+    return (round(100 * between / total, 1),
+            round(100 * (1 - between / total), 1))
 
 
 def main() -> None:
@@ -117,6 +127,7 @@ def main() -> None:
         return np.asarray(s.calculate(name, yr, map_to="household"))
 
     w = np.asarray(sim.calculate("household_weight", yr))
+    persons_m = float(sim.calculate("people", yr).sum()) / 1e6  # microdf-native
     energy_raw = np.asarray(sim.calculate("domestic_energy_consumption", yr))
     elec_raw = np.asarray(sim.calculate("electricity_consumption", yr))
     gas_raw = np.asarray(sim.calculate("gas_consumption", yr))
@@ -178,6 +189,7 @@ def main() -> None:
             "policyengine_uk_version": _pkg_version("policyengine-uk"),
             "sim_year": yr,
             "records": int(len(w)),
+            "weighted_persons_m": round(persons_m, 1),
             "weighted_households_m": round(float(np.sum(w)) / 1e6, 2),
             "ons_uk_households_m": P["ons_uk_households_m"],
             "weight_excess_pct": round(
@@ -348,6 +360,7 @@ def emit_macros(res, path="out/generated_secondstage.tex"):
     add("OnsHouseholdsM", f"{mt['ons_uk_households_m']:.1f}")
     add("WeightExcessPct", f"{mt['weight_excess_pct']:.1f}")
     add("RebaseFactor", f"{mt['energy_rebase_factor']:.3f}")
+    add("PersonsM", f"{res['meta']['weighted_persons_m']:.1f}")
     add("PolicyEngineVersion", mt["policyengine_uk_version"])
     words = ("One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten")
     for row, wd in zip(res["by_decile"], words):

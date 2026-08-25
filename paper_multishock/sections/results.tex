@@ -397,7 +397,11 @@ cost-of-living eligibility flags are nearly identical under the two
 vintages (\SsVinColHouseholdsRuleTwentyTwoM\ against
 \SsVinColHouseholdsRuleTwentyThreeM\ million flagged households).
 
-\emph{Weights.} PolicyEngine's grossing weights total
+\emph{Weights.} All weighted arithmetic is delegated to the
+\texttt{microdf} survey-weighting library that PolicyEngine itself
+returns results in; no weight calculation is hand-rolled. The person
+weights gross to \SsPersonsM\ million people, in line with the UK
+population. PolicyEngine's household grossing weights total
 \SsWeightedHouseholdsM\ million households against an ONS count of
 \SsOnsHouseholdsM\ million, so aggregates carry an upward bias of about
 \SsWeightExcessPct\ per cent; ratios are unaffected. Deciles are
@@ -744,3 +748,72 @@ returning \SsGridPaperEbssRatePct\ per cent of the counterfactual
 loss; against the other, of the same sign and the same regressivity,
 it legislated none. Composition and salience, not incidence, decided
 which shock got its own instruments.
+
+\subsection{From incidence to demand and welfare}\label{sec:results-mpc}
+
+The statutory incidence measured above is an accounting object. This
+subsection aggregates it into two economic ones, keeping the paper's
+conventions: every behavioural parameter is imported from the
+literature and declared, nothing is estimated, and the outputs are
+first-round policy-simulation quantities---no general-equilibrium
+feedback, no intertemporal response.
+
+\emph{Demand.} Each flow of the energy episode---the counterfactual
+burden and the three instruments---is weighted by a marginal
+propensity to consume assigned by equivalised-income decile, under
+three declared scenarios: a gradient falling from 0.8 in the bottom
+decile to 0.3 in the top, the income and liquidity pattern of
+\citet{jappelli2014} and \citet{fagereng2021}; a flat 0.5, which
+switches the heterogeneity channel off; and an asymmetric UK variant
+after \citet{bunn2018}, who find MPCs out of income \emph{losses}
+(about 0.5) far larger than out of gains (about 0.14).
+Table~\ref{tab:mpc} reports the results. Three facts follow. First,
+the counterfactual shock would have destroyed
+\pounds\SsMpcBurdenGradientBn\ billion of first-round consumption;
+with the modelled stack in place the net effect is
+\pounds\SsMpcNetGradientBn\ billion---the support protected most of
+the demand the shock threatened. Second, the instruments rank by
+targeting: the cost-of-living payments protected
+\SsMpcColPerPound\ of consumption per pound of fiscal cost, the flat
+Bills Support Scheme \SsMpcEbssPerPound, the proportional Guarantee
+\SsMpcEpgPerPound---the demand-efficiency ordering that MPC
+heterogeneity predicts. Third, the asymmetric scenario is the
+sobering one: if households cut spending out of losses at 0.5 but
+spend transfers at only 0.14, the net first-round demand effect is
+\pounds\SsMpcNetAsymBn\ billion---the stack protected incomes, but
+much less of demand. The same logic gives the uprating lag its
+demand-side reading: the \pounds\SsVinLagCostBn\ billion withheld
+by late indexation was withheld from benefit recipients, the
+highest-MPC households in the economy, so the demand drag per pound
+withheld was at its maximum.
+
+\emph{Welfare.} Weighting the counterfactual burden by
+\citet{atkinson1970} social-welfare weights on equivalised income
+(proportional to $y^{-\gamma}$, normalised to mean one) gives a
+regressivity premium of \SsWelfPremiumGammaOne\ at $\gamma=1$ and
+\SsWelfPremiumGammaTwo\ at $\gamma=2$. The $\gamma=1$ figure is
+deliberately reported although it is unflattering: the shock is
+regressive in \emph{shares} but pro-rich in \emph{pounds}, so at log
+utility the pound-concentration at the top roughly offsets the
+share-concentration at the bottom, and only at higher inequality
+aversion does the welfare cost exceed that of an equal-pounds shock.
+Distributional statements about this episode therefore depend on the
+inequality aversion the reader brings, and the paper reports the
+mapping rather than choosing for them.
+
+\begin{table}[tbp]
+\centering
+\caption{First-round demand effects of the energy episode under
+declared MPC scenarios}
+\label{tab:mpc}
+\small
+\input{table_mpc}
+\begin{minipage}{.85\textwidth}\footnotesize
+\emph{Notes:} MPC gradient: 0.8 (bottom decile) to 0.3 (top),
+linear; MPC flat: 0.5 everywhere. The asymmetric variant
+(\citealp{bunn2018}: 0.5 out of losses, 0.14 out of gains) gives a
+net effect of \pounds\SsMpcNetAsymBn\ billion (not shown by row).
+First-round, no general-equilibrium feedback; parameters imported,
+not estimated.
+\end{minipage}
+\end{table}

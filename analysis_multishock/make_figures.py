@@ -85,6 +85,7 @@ def decile_ax(ax, ylabel, xlabel=DECILE_AXIS):
 
 def note(fig, text, y=0.015):
     """Source/method note, bottom-left, inside the fixed canvas."""
+    fig._has_note = True
     fig.text(0.012, y, text, fontsize=6.8, color=MUTED, ha="left", va="bottom",
              linespacing=1.45)
 
@@ -93,7 +94,10 @@ def save(fig, name):
     """Save at exactly WIDTH inches, AI-schema layout (tight_layout with a
     reserved bottom strip for the source note)."""
     path = HERE / name
-    fig.tight_layout()
+    if getattr(fig, "_has_note", False):
+        fig.tight_layout(rect=(0.005, 0.14, 0.995, 0.995))
+    else:
+        fig.tight_layout()
     fig.savefig(path, dpi=DPI)
     plt.close(fig)
     w, h = fig.get_size_inches()

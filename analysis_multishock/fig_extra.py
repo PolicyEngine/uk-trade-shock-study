@@ -154,8 +154,8 @@ def main() -> None:
     apply_style()
 
     # 1. Decomposition.
-    fig, ax = plt.subplots(figsize=(WIDTH, 5.2))
-    fig.subplots_adjust(left=0.13, right=0.97, top=0.91, bottom=0.33)
+    fig, ax = plt.subplots(figsize=(WIDTH, 5.8))
+    fig.subplots_adjust(left=0.13, right=0.97, top=0.92, bottom=0.36)
     borne = np.maximum(net_borne, 0)
     over = np.minimum(net_borne, 0)
     ax.bar(x, borne, color=BLUE, label="Borne by the household", zorder=3)
@@ -177,8 +177,11 @@ def main() -> None:
     ax.set_xticks(x)
     ax.set_xlabel("Equivalised disposable income decile")
     ax.set_ylabel("£ per household per year")
+    ax.set_title("Who bore the energy shock, and what each instrument returned",
+                 color=INK)
     ax.legend(fontsize=8, ncol=2, loc="upper center",
               bbox_to_anchor=(0.5, -0.14), frameon=False)
+    note(fig, "Whiskers: household-bootstrap 95% sampling intervals on the net position; FY basis.")
     save(fig, "fig_decomp.png")
     shutil.copy("fig_decomp.png", "../paper_multishock/figures/fig_decomp.png")
 

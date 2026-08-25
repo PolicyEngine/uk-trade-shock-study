@@ -146,15 +146,16 @@ def main() -> None:
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
-    from make_figures import apply_style, BLUE, TEAL, BLUE_LIGHT, INK
+    from make_figures import apply_style, save, note, WIDTH, BLUE, TEAL, BLUE_LIGHT, INK
+    import shutil
 
     GREY = "#808080"
     x = np.arange(1, 11)
     apply_style()
 
     # 1. Decomposition.
-    fig, ax = plt.subplots(figsize=(7.2, 5.2))
-    fig.subplots_adjust(left=0.11, right=0.97, top=0.91, bottom=0.30)
+    fig, ax = plt.subplots(figsize=(WIDTH, 5.2))
+    fig.subplots_adjust(left=0.13, right=0.97, top=0.91, bottom=0.33)
     borne = np.maximum(net_borne, 0)
     over = np.minimum(net_borne, 0)
     ax.bar(x, borne, color=BLUE, label="Borne by the household", zorder=3)
@@ -180,11 +181,13 @@ def main() -> None:
                  color=INK)
     ax.legend(fontsize=8, ncol=2, loc="upper center",
               bbox_to_anchor=(0.5, -0.14), frameon=False)
-    fig.savefig("../paper_multishock/figures/fig_decomp.png", dpi=300)
+    note(fig, "Source: fig_extra.py on the enhanced FRS (PolicyEngine UK); FY basis; whiskers are household-bootstrap 95% intervals.")
+    save(fig, "fig_decomp.png")
+    shutil.copy("fig_decomp.png", "../paper_multishock/figures/fig_decomp.png")
 
     # 2. Paths.
-    fig, ax = plt.subplots(figsize=(7.2, 4.2))
-    fig.subplots_adjust(left=0.10, right=0.97, top=0.90, bottom=0.24)
+    fig, ax = plt.subplots(figsize=(WIDTH, 4.2))
+    fig.subplots_adjust(left=0.12, right=0.97, top=0.89, bottom=0.28)
     ax.plot(x, p_gross, color=BLUE, ls="--", marker="o", mfc="white",
             label="Gross counterfactual (no policy)")
     ax.plot(x, p_real, color=BLUE, ls="-", marker="o",
@@ -197,7 +200,9 @@ def main() -> None:
     ax.set_title("Three shock paths, one distribution", color=INK)
     ax.legend(fontsize=9, loc="upper center", bbox_to_anchor=(0.5, -0.18),
               ncol=2, frameon=False)
-    fig.savefig("../paper_multishock/figures/fig_paths.png", dpi=300)
+    note(fig, "Source: fig_extra.py on the enhanced FRS (PolicyEngine UK); shares on the second stage's hybrid basis.")
+    save(fig, "fig_paths.png")
+    shutil.copy("fig_paths.png", "../paper_multishock/figures/fig_paths.png")
 
     print(json.dumps({"within_ci": [round(within_lo, 1), round(within_hi, 1)],
                       "rate_ci": [round(rate_lo, 1), round(rate_hi, 1)],

@@ -6,7 +6,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
-from make_figures import apply_style, BLUE, INK  # noqa: E402
+from make_figures import apply_style, save, note, WIDTH, BLUE, INK  # noqa: E402
 
 cells = json.load(open("out/grid_energy.json"))["cells"]
 stacks = ["none", "epg", "epg_ebss", "full"]
@@ -23,8 +23,8 @@ for c in cells:
     A[i][j] = c
 
 apply_style()
-fig, ax = plt.subplots(figsize=(7.2, 4.4))
-fig.subplots_adjust(left=0.16, right=0.88, top=0.90, bottom=0.12)
+fig, ax = plt.subplots(figsize=(WIDTH, 4.4))
+fig.subplots_adjust(left=0.19, right=0.86, top=0.88, bottom=0.17)
 im = ax.imshow(M, cmap=plt.matplotlib.colors.LinearSegmentedColormap.from_list(
     "pe", ["white", BLUE]), vmin=0, vmax=100, aspect="auto")
 for i in range(len(stacks)):
@@ -46,5 +46,8 @@ cb = fig.colorbar(im, ax=ax, fraction=0.04, pad=0.02)
 cb.set_label("Rate, % of counterfactual shock")
 for spine in ax.spines.values():
     spine.set_visible(False)
-fig.savefig("../paper_multishock/figures/fig_grid.png", dpi=300)
+note(fig, "Source: grid_energy.py on the enhanced FRS (PolicyEngine UK); rates on the financial-year basis.")
+save(fig, "fig_grid.png")
+import shutil
+shutil.copy("fig_grid.png", "../paper_multishock/figures/fig_grid.png")
 print("written")

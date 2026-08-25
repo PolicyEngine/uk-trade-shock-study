@@ -24,7 +24,9 @@ import numpy as np
 
 from second_stage_energy import P, weighted, wmean
 
-REBASES = [None, 0.8, 1.0]          # None = paper's computed rebase
+REBASES = [None, 0.8, 1.0]          # None = paper's computed rebase (table)
+# Fine rebase sweep for the heatmap: 0.55 to 1.05 in steps of 0.05.
+REBASES_FINE = [round(0.55 + 0.05 * i, 2) for i in range(11)]
 STACKS = ["none", "epg", "epg_ebss", "full"]
 STACK_LABEL = {"none": "None", "epg": "EPG only",
                "epg_ebss": "EPG + EBSS", "full": "Full stack"}
@@ -99,12 +101,30 @@ def main() -> None:
                     100 * weighted(disc[m], w[m]) / weighted(dE_counter[m], w[m]), 1)
             cells.append(cell)
 
+    # Fine sweep (figure only; the table keeps the three canonical columns).
+    cells_fine = []
+    for rb in REBASES_FINE:
+        energy = energy_raw * rb
+        dE_counter = energy * counter_rise
+        epg_cushion = energy * (counter_rise - realised_rise)
+        G = weighted(dE_counter, w)
+        for stack in STACKS:
+            disc = np.zeros_like(energy)
+            if stack in ("epg", "epg_ebss", "full"):
+                disc = disc + epg_cushion
+            if stack in ("epg_ebss", "full"):
+                disc = disc + ebss
+            if stack == "full":
+                disc = disc + col
+            cells_fine.append({"rebase": rb, "stack": stack,
+                               "rate_pct": round(100 * weighted(disc, w) / G, 1)})
+
     out = Path(args.outdir)
     out.mkdir(exist_ok=True)
     res = {"meta": {"dataset": Path(args.dataset).name,
                     "paper_rebase": round(paper_rebase, 4),
                     "records": int(len(w))},
-           "cells": cells}
+           "cells": cells, "cells_fine": cells_fine}
     (out / "grid_energy.json").write_text(json.dumps(res, indent=1))
 
     # Macros for the four corners quoted in prose.

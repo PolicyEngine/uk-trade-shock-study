@@ -449,11 +449,10 @@ def fig_episode_map(d: Data):
         legend.append(Line2D([], [], marker="o", ls="none", ms=ms,
                              markerfacecolor="none", markeredgecolor=INK2,
                              markeredgewidth=1.4, label=lab))
-    leg = ax.legend(handles=legend, ncol=2, loc="upper center",
-                    bbox_to_anchor=(0.5, -0.005), fontsize=7.4,
-                    handletextpad=0.9, columnspacing=1.6, labelspacing=1.25,
-                    frameon=True, edgecolor=BASELINE, framealpha=1.0)
-    leg.get_frame().set_linewidth(0.8)
+    ax.legend(handles=legend, ncol=2, loc="upper center",
+              bbox_to_anchor=(0.5, -0.005), fontsize=7.4,
+              handletextpad=0.9, columnspacing=1.6, labelspacing=1.25,
+              frameon=False)
     save(fig, "fig_episode_map.png")
 
 

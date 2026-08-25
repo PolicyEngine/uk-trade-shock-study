@@ -1,42 +1,42 @@
-"""Heatmap for the two-axis grid (Table tab:grid): cushioning rate by
-rebase factor x discretionary stack, annotated with rate and D1/D10.
-House style follows make_figures.py."""
+"""Heatmap for the two-axis grid: discretionary cushioning rate by
+rebase factor (fine sweep, 0.55-1.05 in 0.05 steps) x discretionary
+stack.  The table keeps the three canonical rebase columns; this figure
+uses the 44-cell fine sweep.  House style via make_figures/figstyle."""
 import json
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
-from make_figures import apply_style, save, note, WIDTH, BLUE, INK  # noqa: E402
+from make_figures import apply_style, save, WIDTH, BLUE, INK  # noqa: E402
 
-cells = json.load(open("out/grid_energy.json"))["cells"]
+data = json.load(open("out/grid_energy.json"))
+cells = data["cells_fine"]
+paper_rb = data["meta"]["paper_rebase"]
 stacks = ["none", "epg", "epg_ebss", "full"]
 stack_lab = ["None", "EPG only", "EPG + EBSS", "Full stack"]
 rebases = sorted({c["rebase"] for c in cells})
-reb_lab = [f"{r:.3f}\n(paper)" if abs(r - min(rebases)) < 1e-9 else f"{r:.1f}"
-           for r in rebases]
 
 M = np.zeros((len(stacks), len(rebases)))
-A = [[None] * len(rebases) for _ in stacks]
 for c in cells:
-    i, j = stacks.index(c["stack"]), rebases.index(c["rebase"])
-    M[i, j] = c["rate_pct"]
-    A[i][j] = c
+    M[stacks.index(c["stack"]), rebases.index(c["rebase"])] = c["rate_pct"]
 
 apply_style()
 fig, ax = plt.subplots(figsize=(WIDTH, 4.4))
-fig.subplots_adjust(left=0.19, right=0.86, top=0.88, bottom=0.17)
+ax.grid(False)
 im = ax.imshow(M, cmap=plt.matplotlib.colors.LinearSegmentedColormap.from_list(
     "pe", ["white", BLUE]), vmin=0, vmax=100, aspect="auto")
 for i in range(len(stacks)):
     for j in range(len(rebases)):
-        c = A[i][j]
         col = "white" if M[i, j] > 55 else INK
-        ax.text(j, i - 0.13, f"{c['rate_pct']:.1f}%", ha="center",
-                va="center", fontsize=13, fontweight="bold", color=col)
-        ax.text(j, i + 0.22,
-                f"D1 {c['cushion_pct_d1']:.0f} / D10 {c['cushion_pct_d10']:.0f}",
-                ha="center", va="center", fontsize=8.5, color=col)
-ax.set_xticks(range(len(rebases)), reb_lab)
+        ax.text(j, i, f"{M[i, j]:.0f}", ha="center", va="center",
+                fontsize=8, color=col)
+# Mark the paper's computed rebase with a dashed rule between columns.
+jp = np.interp(paper_rb, rebases, range(len(rebases)))
+ax.axvline(jp, color=INK, lw=1.0, ls=(0, (4, 2)))
+ax.annotate(f"paper ({paper_rb:.3f})", xy=(jp, -0.5), xytext=(jp, -0.62),
+            ha="center", va="bottom", fontsize=8, color=INK,
+            annotation_clip=False)
+ax.set_xticks(range(len(rebases)), [f"{r:.2f}" for r in rebases])
 ax.set_yticks(range(len(stacks)), stack_lab)
 ax.set_xlabel("Rebase factor")
 ax.set_ylabel("Discretionary stack")

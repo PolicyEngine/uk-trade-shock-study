@@ -40,13 +40,10 @@ ax.set_xticks(range(len(rebases)), reb_lab)
 ax.set_yticks(range(len(stacks)), stack_lab)
 ax.set_xlabel("Rebase factor")
 ax.set_ylabel("Discretionary stack")
-ax.set_title("Discretionary cushioning rate across the two-axis grid",
-             color=INK)
 cb = fig.colorbar(im, ax=ax, fraction=0.04, pad=0.02)
 cb.set_label("Rate, % of counterfactual shock")
 for spine in ax.spines.values():
     spine.set_visible(False)
-note(fig, "Source: grid_energy.py on the enhanced FRS (PolicyEngine UK); rates on the financial-year basis.")
 save(fig, "fig_grid.png")
 import shutil
 shutil.copy("fig_grid.png", "../paper_multishock/figures/fig_grid.png")

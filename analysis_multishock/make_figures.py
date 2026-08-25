@@ -93,7 +93,7 @@ def save(fig, name):
     """Save at exactly WIDTH inches, AI-schema layout (tight_layout with a
     reserved bottom strip for the source note)."""
     path = HERE / name
-    fig.tight_layout(rect=(0.005, 0.11, 0.995, 0.995))
+    fig.tight_layout()
     fig.savefig(path, dpi=DPI)
     plt.close(fig)
     w, h = fig.get_size_inches()
@@ -231,16 +231,8 @@ def fig_incidence_profile(d: Data):
     ax.set_yticklabels(["0.01", "0.1", "1", "10"])
     ax.grid(axis="y", which="minor", color=GRID, lw=0.4, alpha=0.7)
     decile_ax(ax, "Burden or gain, % of spending (log scale)")
-    ax.set_title("Household incidence of the four quantified episodes, by income decile",
-                 color=INK)
     ax.legend(ncol=2, loc="upper center", bbox_to_anchor=(0.5, -0.175),
               fontsize=7.6, columnspacing=1.2, handlelength=2.6)
-    note(
-        fig,
-        "Costs are drawn with solid or dashed lines and filled markers; the CETA gain is dotted with open markers and\n"
-        "labelled GAIN. All four series are plotted as magnitudes, so the log axis compares sizes, not signs. Energy is the\n"
-        "October 2022 cap shock; TCA is the window-average path (%.2f of the end-state +8%% effect)." % d.tca_share,
-    )
     save(fig, "fig_incidence_profile.png")
 
 
@@ -286,16 +278,8 @@ def fig_energy_epg(d: Data):
     decile_ax(ax, "Annual cost of the 2022-23 energy shock\n(\u00a3 per household per year)")
     ax.set_ylim(0, 3600)
     ax.set_xlim(0.4, 10.6)
-    ax.set_title("The 2022-23 energy shock and the share of it the EPG absorbed",
-                 color=INK)
     ax.legend(ncol=2, loc="upper center", bbox_to_anchor=(0.5, -0.165),
               fontsize=7.6, columnspacing=1.2)
-    note(
-        fig,
-        "Bar height = the gross shock (financial-year mean cap \u00a31,208 \u2192 \u00a32,760, i.e. +128.6% applied to electricity and\n"
-        "gas spending); the EPG truncates the FY mean to \u00a32,236 (+85.1%). Segments are separated by a hairline gap and the cushion\n"
-        "segment is hatched, so the split survives greyscale printing. Spend base: ONS Family Spending 3.1E, FYE2022.",
-    )
     save(fig, "fig_energy_epg.png")
 
 
@@ -327,15 +311,7 @@ def fig_budget_shares(d: Data):
     decile_ax(ax, "Share of total household spending (%)")
     ax.set_ylim(0, 17.5)
     ax.set_xlim(0.25, 10.4)
-    ax.set_title("Why the incidence looks the way it does: affected-category budget shares",
-                 color=INK)
     ax.legend(ncol=1, loc="upper right", bbox_to_anchor=(1.0, 0.99), fontsize=7.6)
-    note(
-        fig,
-        "Food and energy shares fall steeply with income, which is what makes those two episodes regressive; the clothing &\n"
-        "footwear share is flat, which is what makes the CETA gain roughly proportional. Each share is computed on its own\n"
-        "episode's spending vintage (ONS Family Spending 3.1E), so levels are not strictly comparable across the two vintages.",
-    )
     save(fig, "fig_budget_shares.png")
 
 
@@ -365,8 +341,6 @@ def fig_uprating_lag(d: Data):
     ax.set_ylim(0, 400)
     ax.set_xlim(-0.4, len(x) - 0.6)
     ax.grid(axis="x", visible=False)
-    ax.set_title("The uprating lag: statutory path against a CPI-indexed counterfactual",
-                 color=INK)
 
     ax.annotate(
         f"Cumulative shortfall, FY2022-23:\n\u00a3{d.lag_cost:,.0f} "
@@ -385,12 +359,6 @@ def fig_uprating_lag(d: Data):
                               alpha=0.85))
 
     ax.legend(ncol=1, loc="upper center", bbox_to_anchor=(0.5, -0.155), fontsize=7.6)
-    note(
-        fig,
-        f"Shaded area = the monthly shortfall, summed to the annual figure. The counterfactual holds the April 2021 allowance\n"
-        f"(\u00a3{d.apr21:,.2f}) at constant real value month by month; the actual April 2022 uprating of +3.1% was the September 2021\n"
-        "CPI rate. Separate from, and additional to, the October 2021 removal of the \u00a320/week uplift (\u00a31,040 per year).",
-    )
     save(fig, "fig_uprating_lag.png")
 
 
@@ -461,7 +429,6 @@ def fig_episode_map(d: Data):
     ax.text(-0.06, -2.26, "COST  (\u2212)", fontsize=7.6, color=INK2, ha="right",
             va="bottom")
 
-    ax.set_title("The episode set: sign, transmission channel and gross size", color=INK)
 
     legend = [
         Line2D([], [], marker="o", ls="none", ms=7, markerfacecolor=BLUE,
@@ -487,12 +454,6 @@ def fig_episode_map(d: Data):
                     handletextpad=0.9, columnspacing=1.6, labelspacing=1.25,
                     frameon=True, edgecolor=BASELINE, framealpha=1.0)
     leg.get_frame().set_linewidth(0.8)
-    note(
-        fig,
-        "Position is conceptual, not measured: the quadrants classify each episode by sign and by the channel through which it\n"
-        "reaches households. E2 is the only episode whose first stage is a market price rather than a policy instrument. E5 sits\n"
-        "on the channel axis because a long-run GDP estimate has no household channel; E3's consumer-price row is exactly zero.",
-    )
     save(fig, "fig_episode_map.png")
 
 

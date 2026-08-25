@@ -177,11 +177,8 @@ def main() -> None:
     ax.set_xticks(x)
     ax.set_xlabel("Equivalised disposable income decile")
     ax.set_ylabel("£ per household per year")
-    ax.set_title("Who bore the energy shock, and what each instrument returned",
-                 color=INK)
     ax.legend(fontsize=8, ncol=2, loc="upper center",
               bbox_to_anchor=(0.5, -0.14), frameon=False)
-    note(fig, "Source: fig_extra.py on the enhanced FRS (PolicyEngine UK); FY basis; whiskers are household-bootstrap 95% intervals.")
     save(fig, "fig_decomp.png")
     shutil.copy("fig_decomp.png", "../paper_multishock/figures/fig_decomp.png")
 
@@ -197,10 +194,8 @@ def main() -> None:
     ax.set_xticks(x)
     ax.set_xlabel("Equivalised disposable income decile")
     ax.set_ylabel("% of household expenditure")
-    ax.set_title("Three shock paths, one distribution", color=INK)
     ax.legend(fontsize=9, loc="upper center", bbox_to_anchor=(0.5, -0.18),
               ncol=2, frameon=False)
-    note(fig, "Source: fig_extra.py on the enhanced FRS (PolicyEngine UK); shares on the second stage's hybrid basis.")
     save(fig, "fig_paths.png")
     shutil.copy("fig_paths.png", "../paper_multishock/figures/fig_paths.png")
 

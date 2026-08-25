@@ -53,60 +53,27 @@ from matplotlib.patches import Patch
 HERE = Path(__file__).resolve().parent
 RESULTS = HERE / "out" / "results.json"  # pipeline output (layout fixed Aug 2026)
 
-# --- PolicyEngine brand palette (canonical hexes, as in the sibling paper) ---
-BLUE = "#2C6496"          # series slot 1
-GREEN = "#558B2F"         # series slot 2
-TEAL = "#39C6C0"          # series slot 3
-BLUE_LIGHT = "#D8E6F3"
-DARKEST_BLUE = "#0C1A27"  # ink only, never a series colour
-DARK_GRAY = "#616161"
-GRAY = "#808080"
-MEDIUM_DARK_GRAY = "#D2D2D2"
-LIGHT_GRAY = "#F2F2F2"
+# --- Style: imported VERBATIM from the sibling AI-study paper's figstyle
+# (figstyle.py, copied from uk-ai-study/analysis/figstyle.py), so palette,
+# typography, rcParams and axis conventions are the PolicyEngine schema by
+# construction.  The only local overrides are manuscript layout: a fixed
+# 6.3in text-width canvas (no tight bbox) and 300 dpi for print.
+from figstyle import (  # noqa: F401
+    BLUE, GREEN, TEAL, BLUE_LIGHT, BLUE_PRESSED, DARKEST_BLUE, DARK_GRAY,
+    GRAY, MEDIUM_DARK_GRAY, LIGHT_GRAY, INK, INK2, MUTED, GRID, BASELINE,
+    NEUTRAL, LIGHT_BLUE, SERIES, SEQUENTIAL, DIVERGING, DECILE_AXIS,
+)
+from figstyle import apply_style as _figstyle_apply
 
-INK = DARKEST_BLUE
-INK2 = DARK_GRAY
-MUTED = GRAY
-GRID = LIGHT_GRAY
-BASELINE = MEDIUM_DARK_GRAY
-
-DECILE_AXIS = "Equivalised disposable income decile (1 = lowest)"
 DPI = 300
-WIDTH = 6.3  # manuscript text width, inches -- no figure is ever wider
+WIDTH = 8.0  # AI-paper canvas width (figstyle SINGLE); LaTeX scales to text width
 
 _SERIF = ["Roboto Serif", "Roboto Slab", "Source Serif Pro", "DejaVu Serif"]
 
 
 def apply_style() -> None:
-    plt.rcParams.update(
-        {
-            "font.family": "serif",
-            "font.serif": _SERIF,
-            "font.size": 9,
-            "axes.titlesize": 9.5,
-            "axes.labelsize": 8.5,
-            "xtick.labelsize": 8,
-            "ytick.labelsize": 8,
-            "legend.fontsize": 8,
-            "text.color": INK,
-            "axes.labelcolor": INK2,
-            "axes.edgecolor": BASELINE,
-            "axes.linewidth": 0.8,
-            "xtick.color": MUTED,
-            "ytick.color": MUTED,
-            "axes.grid": True,
-            "grid.color": GRID,
-            "grid.linewidth": 0.6,
-            "axes.axisbelow": True,
-            "axes.spines.top": False,
-            "axes.spines.right": False,
-            "legend.frameon": False,
-            "figure.facecolor": "white",
-            "axes.facecolor": "white",
-            "savefig.facecolor": "white",
-            "hatch.linewidth": 0.6,
-        }
-    )
+    _figstyle_apply()
+    plt.rcParams["hatch.linewidth"] = 0.6
 
 
 def decile_ax(ax, ylabel, xlabel=DECILE_AXIS):
@@ -123,8 +90,10 @@ def note(fig, text, y=0.015):
 
 
 def save(fig, name):
-    """Save at exactly WIDTH inches -- no tight bbox (see module docstring)."""
+    """Save at exactly WIDTH inches, AI-schema layout (tight_layout with a
+    reserved bottom strip for the source note)."""
     path = HERE / name
+    fig.tight_layout(rect=(0.005, 0.11, 0.995, 0.995))
     fig.savefig(path, dpi=DPI)
     plt.close(fig)
     w, h = fig.get_size_inches()
@@ -261,8 +230,7 @@ def fig_incidence_profile(d: Data):
     ax.set_yticks([0.01, 0.1, 1, 10])
     ax.set_yticklabels(["0.01", "0.1", "1", "10"])
     ax.grid(axis="y", which="minor", color=GRID, lw=0.4, alpha=0.7)
-    decile_ax(ax, "Burden (cost) or gain, % of total household spending\n"
-                  "magnitude, log scale")
+    decile_ax(ax, "Burden or gain, % of spending (log scale)")
     ax.set_title("Household incidence of the four quantified episodes, by income decile",
                  color=INK)
     ax.legend(ncol=2, loc="upper center", bbox_to_anchor=(0.5, -0.175),

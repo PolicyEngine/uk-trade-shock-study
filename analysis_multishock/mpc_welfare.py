@@ -9,16 +9,21 @@ Method and sources
 Demand.  First-round consumption effect of each instrument (and of the
 net position) is sum_h w_h * MPC_h * transfer_h, with MPC assigned by
 equivalised-income decile.  Three declared MPC scenarios:
-  - "gradient" (central): MPC falls linearly 0.8 (D1) -> 0.3 (D10),
-    the income/liquidity gradient documented by Jappelli and Pistaferri
-    (2014) and Fagereng, Holm and Natvik (2021).
+  - "gradient" (central): MPC falls linearly 0.8 (D1) -> 0.3 (D10) --
+    a deliberately steep STYLISATION of the cash-on-hand/liquidity
+    gradients of Jappelli-Pistaferri (2014) and Fagereng et al. (2021);
+    mapped into income deciles the empirical gradient is flatter, which
+    the flat-0.5 scenario brackets.
   - "flat": MPC = 0.5 for all households (Fagereng et al.'s first-year
     average), which switches off the heterogeneity channel and isolates
     what the gradient contributes.
   - "asymmetric": UK survey evidence (Bunn, Le Roux, Reinold and
     Surico, 2018) finds MPCs out of negative income shocks (~0.5) far
     larger than out of positive ones (~0.14); burdens are weighted with
-    the former and transfers with the latter, both flat.
+    the former and transfers with the latter, both flat.  NOTE: the low
+    gain-MPC concerns windfalls, while the EPG truncates a loss, so
+    valuing every instrument at 0.14 makes this an OUTER BOUND on the
+    demand gap, not a co-equal scenario.
 All parameters are IMPORTED, bracketed by scenario, never estimated.
 
 Welfare.  Atkinson (1970) social-welfare weights on equivalised income,
@@ -109,7 +114,9 @@ def main() -> None:
         out[f"{k}_per_pound"] = out[f"{k}_gradient"] / (weighted(flows[k], w) / 1e9)
 
     # --- Atkinson-weighted welfare aggregation ------------------------------
-    y = np.maximum(equiv_income, 1000.0)     # floor against near-zero incomes
+    y = np.maximum(equiv_income, 1000.0)     # DECLARED dial: GBP 1,000 floor
+                                             # against near-zero survey incomes;
+                                             # the gamma=2 premium is sensitive to it
     prem = {}
     for gamma in (0.0, 1.0, 2.0):
         lam = y ** (-gamma)

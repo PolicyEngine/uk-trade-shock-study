@@ -1,0 +1,1065 @@
+{
+ "meta": {
+  "run_date": "2026-08-19",
+  "spend_source": "ONS Family Spending workbook 1, sheet 3.1E (equivalised disposable income deciles)",
+  "fye2022_income_construction_max_midpoint_dev_pct": 1.84,
+  "fye2022_constructed_decile_income_gbp_wk": [
+   137.9,
+   229.5,
+   289.0,
+   342.0,
+   399.0,
+   461.5,
+   531.5,
+   616.0,
+   746.0,
+   1251.8
+  ]
+ },
+ "episodes": {
+  "E1_tca_food": {
+   "central": {
+    "price_rise": 0.08,
+    "per_decile_end_state_annual": [
+     {
+      "decile": 1,
+      "gbp_per_year": 194.3,
+      "pct_of_total_spend": 1.193,
+      "pct_of_equiv_disp_income": 2.708
+     },
+     {
+      "decile": 2,
+      "gbp_per_year": 210.9,
+      "pct_of_total_spend": 1.171,
+      "pct_of_equiv_disp_income": 1.767
+     },
+     {
+      "decile": 3,
+      "gbp_per_year": 234.6,
+      "pct_of_total_spend": 1.229,
+      "pct_of_equiv_disp_income": 1.561
+     },
+     {
+      "decile": 4,
+      "gbp_per_year": 250.4,
+      "pct_of_total_spend": 1.107,
+      "pct_of_equiv_disp_income": 1.408
+     },
+     {
+      "decile": 5,
+      "gbp_per_year": 242.1,
+      "pct_of_total_spend": 1.005,
+      "pct_of_equiv_disp_income": 1.167
+     },
+     {
+      "decile": 6,
+      "gbp_per_year": 282.9,
+      "pct_of_total_spend": 1.004,
+      "pct_of_equiv_disp_income": 1.179
+     },
+     {
+      "decile": 7,
+      "gbp_per_year": 270.4,
+      "pct_of_total_spend": 0.91,
+      "pct_of_equiv_disp_income": 0.978
+     },
+     {
+      "decile": 8,
+      "gbp_per_year": 281.6,
+      "pct_of_total_spend": 0.862,
+      "pct_of_equiv_disp_income": 0.879
+     },
+     {
+      "decile": 9,
+      "gbp_per_year": 304.1,
+      "pct_of_total_spend": 0.827,
+      "pct_of_equiv_disp_income": 0.784
+     },
+     {
+      "decile": 10,
+      "gbp_per_year": 315.3,
+      "pct_of_total_spend": 0.662,
+      "pct_of_equiv_disp_income": 0.484
+     }
+    ],
+    "per_decile_cumulative_gbp_linear_phasein": [
+     315.7,
+     342.7,
+     381.3,
+     407.0,
+     393.4,
+     459.7,
+     439.4,
+     457.7,
+     494.2,
+     512.4
+    ],
+    "per_decile_per_year_over_window": [
+     97.1,
+     105.5,
+     117.3,
+     125.2,
+     121.1,
+     141.4,
+     135.2,
+     140.8,
+     152.0,
+     157.7
+    ],
+    "all_households_end_state_gbp_per_year": 258.8,
+    "all_households_cumulative_gbp_linear_phasein": 420.5,
+    "aggregate_end_state_gbp_bn_per_year": 7.37
+   },
+   "low": {
+    "price_rise": 0.06,
+    "per_decile_end_state_annual": [
+     {
+      "decile": 1,
+      "gbp_per_year": 145.7,
+      "pct_of_total_spend": 0.895,
+      "pct_of_equiv_disp_income": 2.031
+     },
+     {
+      "decile": 2,
+      "gbp_per_year": 158.2,
+      "pct_of_total_spend": 0.878,
+      "pct_of_equiv_disp_income": 1.325
+     },
+     {
+      "decile": 3,
+      "gbp_per_year": 176.0,
+      "pct_of_total_spend": 0.922,
+      "pct_of_equiv_disp_income": 1.171
+     },
+     {
+      "decile": 4,
+      "gbp_per_year": 187.8,
+      "pct_of_total_spend": 0.83,
+      "pct_of_equiv_disp_income": 1.056
+     },
+     {
+      "decile": 5,
+      "gbp_per_year": 181.6,
+      "pct_of_total_spend": 0.754,
+      "pct_of_equiv_disp_income": 0.875
+     },
+     {
+      "decile": 6,
+      "gbp_per_year": 212.2,
+      "pct_of_total_spend": 0.753,
+      "pct_of_equiv_disp_income": 0.884
+     },
+     {
+      "decile": 7,
+      "gbp_per_year": 202.8,
+      "pct_of_total_spend": 0.683,
+      "pct_of_equiv_disp_income": 0.734
+     },
+     {
+      "decile": 8,
+      "gbp_per_year": 211.2,
+      "pct_of_total_spend": 0.647,
+      "pct_of_equiv_disp_income": 0.659
+     },
+     {
+      "decile": 9,
+      "gbp_per_year": 228.1,
+      "pct_of_total_spend": 0.62,
+      "pct_of_equiv_disp_income": 0.588
+     },
+     {
+      "decile": 10,
+      "gbp_per_year": 236.5,
+      "pct_of_total_spend": 0.497,
+      "pct_of_equiv_disp_income": 0.363
+     }
+    ],
+    "per_decile_cumulative_gbp_linear_phasein": [
+     236.8,
+     257.0,
+     285.9,
+     305.2,
+     295.1,
+     344.8,
+     329.5,
+     343.2,
+     370.6,
+     384.3
+    ],
+    "per_decile_per_year_over_window": [
+     72.9,
+     79.1,
+     88.0,
+     93.9,
+     90.8,
+     106.1,
+     101.4,
+     105.6,
+     114.0,
+     118.2
+    ],
+    "all_households_end_state_gbp_per_year": 194.1,
+    "all_households_cumulative_gbp_linear_phasein": 315.4,
+    "aggregate_end_state_gbp_bn_per_year": 5.53
+   },
+   "cross_check": {
+    "published_cumulative_per_household_gbp": 250.0,
+    "our_cumulative_linear_phasein_gbp": 420.5,
+    "ratio_ours_to_published": 1.68,
+    "implied_average_effect_share_of_end_state": 0.297,
+    "note": "Published GBP 250 implies an average effect ~30% of the end-state 8% (heavily back-loaded phase-in, and a food-spend base measured before most of the 2022-23 food inflation); our linear phase-in (50%) overshoots it, and the FYE2022 nominal spend base adds the rest of the gap."
+   }
+  },
+  "E2_energy": {
+   "price_factors": {
+    "gross": 1.2857,
+    "net_epg": 0.8513
+   },
+   "base_spend_elec_gas_gbp_per_week": {
+    "per_decile": [
+     21.8,
+     22.5,
+     22.1,
+     24.4,
+     23.8,
+     23.7,
+     24.700000000000003,
+     24.4,
+     25.4,
+     29.7
+    ],
+    "all_households": 24.2
+   },
+   "gross": {
+    "per_decile": [
+     {
+      "decile": 1,
+      "gbp_per_year": 1457.5,
+      "pct_of_total_spend": 8.952,
+      "pct_of_equiv_disp_income": 20.319
+     },
+     {
+      "decile": 2,
+      "gbp_per_year": 1504.3,
+      "pct_of_total_spend": 8.351,
+      "pct_of_equiv_disp_income": 12.605
+     },
+     {
+      "decile": 3,
+      "gbp_per_year": 1477.5,
+      "pct_of_total_spend": 7.74,
+      "pct_of_equiv_disp_income": 9.832
+     },
+     {
+      "decile": 4,
+      "gbp_per_year": 1631.3,
+      "pct_of_total_spend": 7.212,
+      "pct_of_equiv_disp_income": 9.173
+     },
+     {
+      "decile": 5,
+      "gbp_per_year": 1591.2,
+      "pct_of_total_spend": 6.608,
+      "pct_of_equiv_disp_income": 7.669
+     },
+     {
+      "decile": 6,
+      "gbp_per_year": 1584.5,
+      "pct_of_total_spend": 5.622,
+      "pct_of_equiv_disp_income": 6.603
+     },
+     {
+      "decile": 7,
+      "gbp_per_year": 1651.4,
+      "pct_of_total_spend": 5.559,
+      "pct_of_equiv_disp_income": 5.975
+     },
+     {
+      "decile": 8,
+      "gbp_per_year": 1631.3,
+      "pct_of_total_spend": 4.993,
+      "pct_of_equiv_disp_income": 5.093
+     },
+     {
+      "decile": 9,
+      "gbp_per_year": 1698.2,
+      "pct_of_total_spend": 4.62,
+      "pct_of_equiv_disp_income": 4.378
+     },
+     {
+      "decile": 10,
+      "gbp_per_year": 1985.7,
+      "pct_of_total_spend": 4.17,
+      "pct_of_equiv_disp_income": 3.05
+     }
+    ],
+    "aggregate_gbp_bn_per_year": 46.2
+   },
+   "net_of_epg": {
+    "per_decile": [
+     {
+      "decile": 1,
+      "gbp_per_year": 965.1,
+      "pct_of_total_spend": 5.928,
+      "pct_of_equiv_disp_income": 13.454
+     },
+     {
+      "decile": 2,
+      "gbp_per_year": 996.1,
+      "pct_of_total_spend": 5.53,
+      "pct_of_equiv_disp_income": 8.347
+     },
+     {
+      "decile": 3,
+      "gbp_per_year": 978.4,
+      "pct_of_total_spend": 5.125,
+      "pct_of_equiv_disp_income": 6.51
+     },
+     {
+      "decile": 4,
+      "gbp_per_year": 1080.2,
+      "pct_of_total_spend": 4.775,
+      "pct_of_equiv_disp_income": 6.074
+     },
+     {
+      "decile": 5,
+      "gbp_per_year": 1053.6,
+      "pct_of_total_spend": 4.375,
+      "pct_of_equiv_disp_income": 5.078
+     },
+     {
+      "decile": 6,
+      "gbp_per_year": 1049.2,
+      "pct_of_total_spend": 3.723,
+      "pct_of_equiv_disp_income": 4.372
+     },
+     {
+      "decile": 7,
+      "gbp_per_year": 1093.5,
+      "pct_of_total_spend": 3.681,
+      "pct_of_equiv_disp_income": 3.956
+     },
+     {
+      "decile": 8,
+      "gbp_per_year": 1080.2,
+      "pct_of_total_spend": 3.306,
+      "pct_of_equiv_disp_income": 3.372
+     },
+     {
+      "decile": 9,
+      "gbp_per_year": 1124.5,
+      "pct_of_total_spend": 3.059,
+      "pct_of_equiv_disp_income": 2.899
+     },
+     {
+      "decile": 10,
+      "gbp_per_year": 1314.8,
+      "pct_of_total_spend": 2.761,
+      "pct_of_equiv_disp_income": 2.02
+     }
+    ],
+    "aggregate_gbp_bn_per_year": 30.6
+   },
+   "epg_cushion": {
+    "per_decile_gbp_per_year": [
+     492.4,
+     508.2,
+     499.2,
+     551.1,
+     537.6,
+     535.3,
+     557.9,
+     551.1,
+     573.7,
+     670.8
+    ],
+    "share_of_gross_shock": 0.3378,
+    "cap_ratio_point_to_point": 0.4617,
+    "aggregate_gbp_bn_per_year": 15.6,
+    "aggregate_gbp_bn_six_months": 7.8,
+    "note": "Cushioning share is constant across deciles by construction (both shocks proportional to the same spend base); the GBP cushion differs by decile."
+   },
+   "cross_check": {
+    "obr_epg_cost_bn": 27.0,
+    "obr_energy_price_subsidies_bn": 47.0,
+    "note": "Order-of-magnitude context anchor only. Our six-month cushion (GBP ~15bn) sits below OBR's GBP 27bn EPG costing because OBR priced the EPG against the higher caps then expected for Jan-Jun 2023 (GBP ~4,300+), over a longer window, on wholesale-price-dependent volumes; our counterfactual holds the Oct 2022 cap (GBP 3,549) fixed. Same order of magnitude, as required."
+   }
+  },
+  "E3_us_tariffs": {
+   "consumer_side": {
+    "per_decile_gbp_per_year": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "note": "Zero row: the UK imposed no retaliatory tariffs, so there is no consumer-price first stage. The episode's household incidence runs through earnings only."
+   },
+   "earnings_side_declared": {
+    "gross_shock_gbp_m_per_year": 886.0,
+    "displacement_cushioning_pct": 36.6,
+    "wage_cut_cushioning_pct": 43.9,
+    "source": "companion uk-trade-shock-study (declared constants)"
+   }
+  },
+  "E4_india_ceta": {
+   "categories": {
+    "clothing": {
+     "annex_table_gbp_m_per_year": 132.3,
+     "decile_spend_gbp_per_week": [
+      7.6,
+      10.2,
+      11.9,
+      10.2,
+      13.6,
+      14.2,
+      14.9,
+      17.6,
+      18.3,
+      27.9
+     ],
+     "decile_share_of_category_spend": [
+      0.0519,
+      0.0697,
+      0.0813,
+      0.0697,
+      0.0929,
+      0.097,
+      0.1018,
+      0.1202,
+      0.125,
+      0.1906
+     ],
+     "gain_gbp_per_household_per_year_full_passthrough": [
+      2.39,
+      3.21,
+      3.75,
+      3.21,
+      4.28,
+      4.47,
+      4.69,
+      5.54,
+      5.76,
+      8.78
+     ]
+    },
+    "footwear": {
+     "annex_table_gbp_m_per_year": 13.2,
+     "decile_spend_gbp_per_week": [
+      1.8,
+      2.6,
+      2.6,
+      2.2,
+      3.2,
+      3.5,
+      3.5,
+      4.3,
+      5.0,
+      4.8
+     ],
+     "decile_share_of_category_spend": [
+      0.0537,
+      0.0776,
+      0.0776,
+      0.0657,
+      0.0955,
+      0.1045,
+      0.1045,
+      0.1284,
+      0.1493,
+      0.1433
+     ],
+     "gain_gbp_per_household_per_year_full_passthrough": [
+      0.25,
+      0.36,
+      0.36,
+      0.3,
+      0.44,
+      0.48,
+      0.48,
+      0.59,
+      0.69,
+      0.66
+     ]
+    },
+    "food_beverages": {
+     "annex_table_gbp_m_per_year": 11.7,
+     "decile_spend_gbp_per_week": [
+      58.8,
+      64.8,
+      66.0,
+      69.3,
+      73.1,
+      76.2,
+      79.4,
+      78.2,
+      82.1,
+      88.8
+     ],
+     "decile_share_of_category_spend": [
+      0.0798,
+      0.088,
+      0.0896,
+      0.0941,
+      0.0992,
+      0.1034,
+      0.1078,
+      0.1061,
+      0.1114,
+      0.1205
+     ],
+     "gain_gbp_per_household_per_year_full_passthrough": [
+      0.33,
+      0.36,
+      0.37,
+      0.38,
+      0.4,
+      0.42,
+      0.44,
+      0.43,
+      0.45,
+      0.49
+     ]
+    }
+   },
+   "scenarios": {
+    "fifty": {
+     "passthrough": 0.5,
+     "per_decile_gain_gbp_per_year": [
+      1.48,
+      1.96,
+      2.23,
+      1.95,
+      2.56,
+      2.69,
+      2.8,
+      3.28,
+      3.45,
+      4.97
+     ],
+     "pct_of_total_spend": [
+      0.0076,
+      0.0086,
+      0.0086,
+      0.0071,
+      0.008,
+      0.0077,
+      0.0077,
+      0.0081,
+      0.0072,
+      0.0077
+     ],
+     "pct_of_equiv_disp_income": [
+      0.011,
+      0.0089,
+      0.008,
+      0.0059,
+      0.0067,
+      0.0061,
+      0.0055,
+      0.0055,
+      0.0048,
+      0.004
+     ]
+    },
+    "seventyfive": {
+     "passthrough": 0.75,
+     "per_decile_gain_gbp_per_year": [
+      2.22,
+      2.94,
+      3.35,
+      2.92,
+      3.84,
+      4.03,
+      4.21,
+      4.92,
+      5.18,
+      7.45
+     ],
+     "pct_of_total_spend": [
+      0.0113,
+      0.0129,
+      0.0129,
+      0.0107,
+      0.0121,
+      0.0116,
+      0.0116,
+      0.0121,
+      0.0108,
+      0.0115
+     ],
+     "pct_of_equiv_disp_income": [
+      0.0165,
+      0.0134,
+      0.012,
+      0.0088,
+      0.01,
+      0.0092,
+      0.0083,
+      0.0083,
+      0.0072,
+      0.006
+     ]
+    },
+    "hundred": {
+     "passthrough": 1.0,
+     "per_decile_gain_gbp_per_year": [
+      2.96,
+      3.93,
+      4.47,
+      3.9,
+      5.12,
+      5.37,
+      5.61,
+      6.56,
+      6.9,
+      9.93
+     ],
+     "pct_of_total_spend": [
+      0.0151,
+      0.0173,
+      0.0173,
+      0.0143,
+      0.0161,
+      0.0154,
+      0.0155,
+      0.0161,
+      0.0144,
+      0.0154
+     ],
+     "pct_of_equiv_disp_income": [
+      0.022,
+      0.0178,
+      0.0161,
+      0.0117,
+      0.0134,
+      0.0122,
+      0.0111,
+      0.0111,
+      0.0096,
+      0.0079
+     ]
+    }
+   },
+   "progressivity": {
+    "bottom_decile_gain_pct_of_spend": 0.0151,
+    "top_decile_gain_pct_of_spend": 0.0154,
+    "bottom_to_top_ratio": 0.981,
+    "verdict": "roughly proportional"
+   }
+  },
+  "E5_cptpp_benchmark": {
+   "dbt_central_gdp_gbp_bn_long_run": 2.0,
+   "gdp_pct_long_run": 0.08,
+   "naive_mean_gbp_per_household_per_year": 70.4,
+   "note": "Near-zero benchmark row: a long-run GDP central estimate divided by the household count. No distributional structure is claimed or computable from this first stage."
+  }
+ },
+ "module2_uc_uprating": {
+  "parameters": {
+   "uc_single_25plus_monthly": {
+    "apr_2021": 324.84,
+    "apr_2022": 334.91,
+    "apr_2023": 368.74,
+    "uprating_apr_2022_pct": 3.1,
+    "uprating_apr_2023_pct": 10.1
+   },
+   "cpi_anchor": "D7BT April 2021 (allowance effective date)"
+  },
+  "monthly": [
+   {
+    "month": "2022-APR",
+    "cpi_index": 120.0,
+    "actual_allowance": 334.91,
+    "counterfactual_contemporaneous_cpi": 354.05,
+    "shortfall": 19.14
+   },
+   {
+    "month": "2022-MAY",
+    "cpi_index": 120.8,
+    "actual_allowance": 334.91,
+    "counterfactual_contemporaneous_cpi": 356.41,
+    "shortfall": 21.5
+   },
+   {
+    "month": "2022-JUN",
+    "cpi_index": 121.8,
+    "actual_allowance": 334.91,
+    "counterfactual_contemporaneous_cpi": 359.36,
+    "shortfall": 24.45
+   },
+   {
+    "month": "2022-JUL",
+    "cpi_index": 122.5,
+    "actual_allowance": 334.91,
+    "counterfactual_contemporaneous_cpi": 361.43,
+    "shortfall": 26.52
+   },
+   {
+    "month": "2022-AUG",
+    "cpi_index": 123.1,
+    "actual_allowance": 334.91,
+    "counterfactual_contemporaneous_cpi": 363.2,
+    "shortfall": 28.29
+   },
+   {
+    "month": "2022-SEP",
+    "cpi_index": 123.8,
+    "actual_allowance": 334.91,
+    "counterfactual_contemporaneous_cpi": 365.26,
+    "shortfall": 30.35
+   },
+   {
+    "month": "2022-OCT",
+    "cpi_index": 126.2,
+    "actual_allowance": 334.91,
+    "counterfactual_contemporaneous_cpi": 372.34,
+    "shortfall": 37.43
+   },
+   {
+    "month": "2022-NOV",
+    "cpi_index": 126.7,
+    "actual_allowance": 334.91,
+    "counterfactual_contemporaneous_cpi": 373.82,
+    "shortfall": 38.91
+   },
+   {
+    "month": "2022-DEC",
+    "cpi_index": 127.2,
+    "actual_allowance": 334.91,
+    "counterfactual_contemporaneous_cpi": 375.29,
+    "shortfall": 40.38
+   },
+   {
+    "month": "2023-JAN",
+    "cpi_index": 126.4,
+    "actual_allowance": 334.91,
+    "counterfactual_contemporaneous_cpi": 372.93,
+    "shortfall": 38.02
+   },
+   {
+    "month": "2023-FEB",
+    "cpi_index": 127.9,
+    "actual_allowance": 334.91,
+    "counterfactual_contemporaneous_cpi": 377.36,
+    "shortfall": 42.45
+   },
+   {
+    "month": "2023-MAR",
+    "cpi_index": 128.9,
+    "actual_allowance": 334.91,
+    "counterfactual_contemporaneous_cpi": 380.31,
+    "shortfall": 45.4
+   }
+  ],
+  "uprating_lag_cost_gbp_fy_2022_23": 392.84,
+  "uprating_lag_cost_pct_of_allowance": 9.77,
+  "flat_alternative_gbp": 229.67,
+  "flat_alternative_note": "Uprating by April-2022 y/y CPI (9.0%) instead of the lagged 3.1%, held flat for the year.",
+  "uplift_removal": {
+   "gbp_per_month": 86.67,
+   "gbp_per_year": 1040.0,
+   "note": "GBP 20/wk Covid uplift removed October 2021: a discrete pre-shock cut of GBP 1,040/yr, separate from and additional to the uprating lag."
+  }
+ },
+ "module3_comparability": [
+  {
+   "episode": "E1 TCA food NTBs",
+   "gross_shock": 2.19,
+   "gross_shock_label": "GBP bn/yr, window-average path",
+   "sign": "cost",
+   "channel": "consumer prices (food)",
+   "bottom_decile_pct_of_spend": 0.354,
+   "top_decile_pct_of_spend": 0.197,
+   "regressivity_verdict": "regressive",
+   "cushioning": "n/a (pass-through embedded)",
+   "bottom_decile_pct_of_spend_per_gbp_bn": 0.162,
+   "bottom_decile_pct_of_spend_end_state": 1.193,
+   "top_decile_pct_of_spend_end_state": 0.662,
+   "gross_shock_end_state": 7.37,
+   "basis": "window-average path (end-state retained as *_end_state)"
+  },
+  {
+   "episode": "E2 Energy 2022-23 (gross)",
+   "gross_shock": 46.2,
+   "gross_shock_label": "GBP bn/yr, gross cap shock",
+   "sign": "cost",
+   "channel": "consumer prices (energy)",
+   "bottom_decile_pct_of_spend": 8.952,
+   "top_decile_pct_of_spend": 4.17,
+   "regressivity_verdict": "regressive",
+   "cushioning": "EPG cushions 33.8% of the gross shock (all deciles)",
+   "bottom_decile_pct_of_spend_per_gbp_bn": 0.194
+  },
+  {
+   "episode": "E3 US tariffs 2025",
+   "gross_shock": 0.886,
+   "gross_shock_label": "GBP bn/yr, gross earnings shock (companion study)",
+   "sign": "cost",
+   "channel": "earnings only (no UK retaliation)",
+   "bottom_decile_pct_of_spend": 0.0,
+   "top_decile_pct_of_spend": 0.0,
+   "regressivity_verdict": "n/a (zero row)",
+   "cushioning": "automatic stabilisers: 36.6% (displacement) / 43.9% (wage cut)",
+   "bottom_decile_pct_of_spend_per_gbp_bn": null
+  },
+  {
+   "episode": "E4 India CETA (2026+)",
+   "gross_shock": 0.18,
+   "gross_shock_label": "GBP bn/yr duty reduction, final goods, 100% pass-through",
+   "sign": "gain",
+   "channel": "consumer prices (clothing, footwear, food)",
+   "bottom_decile_pct_of_spend": 0.0151,
+   "top_decile_pct_of_spend": 0.0154,
+   "regressivity_verdict": "roughly proportional",
+   "cushioning": "n/a",
+   "bottom_decile_pct_of_spend_per_gbp_bn": 0.084
+  },
+  {
+   "episode": "E5 CPTPP benchmark",
+   "gross_shock": 2.0,
+   "gross_shock_label": "GBP bn GDP, long-run central",
+   "sign": "gain",
+   "channel": "aggregate GDP (no household mapping)",
+   "bottom_decile_pct_of_spend": null,
+   "top_decile_pct_of_spend": null,
+   "regressivity_verdict": "n/a",
+   "cushioning": "n/a",
+   "bottom_decile_pct_of_spend_per_gbp_bn": null
+  }
+ ],
+ "derived": {
+  "tca_window_average": {
+   "share_of_end_state": 0.297,
+   "per_decile": [
+    {
+     "decile": 1,
+     "gbp_per_year": 57.7,
+     "pct_of_total_spend": 0.354
+    },
+    {
+     "decile": 2,
+     "gbp_per_year": 62.6,
+     "pct_of_total_spend": 0.348
+    },
+    {
+     "decile": 3,
+     "gbp_per_year": 69.7,
+     "pct_of_total_spend": 0.365
+    },
+    {
+     "decile": 4,
+     "gbp_per_year": 74.4,
+     "pct_of_total_spend": 0.329
+    },
+    {
+     "decile": 5,
+     "gbp_per_year": 71.9,
+     "pct_of_total_spend": 0.298
+    },
+    {
+     "decile": 6,
+     "gbp_per_year": 84.0,
+     "pct_of_total_spend": 0.298
+    },
+    {
+     "decile": 7,
+     "gbp_per_year": 80.3,
+     "pct_of_total_spend": 0.27
+    },
+    {
+     "decile": 8,
+     "gbp_per_year": 83.6,
+     "pct_of_total_spend": 0.256
+    },
+    {
+     "decile": 9,
+     "gbp_per_year": 90.3,
+     "pct_of_total_spend": 0.246
+    },
+    {
+     "decile": 10,
+     "gbp_per_year": 93.6,
+     "pct_of_total_spend": 0.197
+    }
+   ],
+   "aggregate_gbp_bn_per_year": 2.19
+  },
+  "energy_cash_outlay": {
+   "observed_demand_fall": 0.127,
+   "price_ratio": 2.2857,
+   "expenditure_ratio": 1.9954,
+   "burden_scale_vs_fixed_basket": 0.7742,
+   "note": "cash outlay, not welfare; fixed-basket remains the first-order welfare measure",
+   "aggregate_gbp_bn_per_year": 35.8,
+   "decile_one_gbp_per_year": 1128
+  },
+  "energy_realised_path": {
+   "fy2022_23_mean_cap": 2235.5,
+   "fy2021_22_mean_cap": 1207.5,
+   "realised_price_rise": 0.8513,
+   "gross_counterfactual_price_rise": 1.2857,
+   "note": "half-year caps 1,971 (Apr-Sep 22) and 2,500 (EPG, Oct 22-Mar 23) against 1,138 and 1,277; what households actually faced",
+   "per_decile": [
+    {
+     "decile": 1,
+     "gbp_per_year": 965.1,
+     "pct_of_total_spend": 5.928
+    },
+    {
+     "decile": 2,
+     "gbp_per_year": 996.1,
+     "pct_of_total_spend": 5.53
+    },
+    {
+     "decile": 3,
+     "gbp_per_year": 978.3,
+     "pct_of_total_spend": 5.125
+    },
+    {
+     "decile": 4,
+     "gbp_per_year": 1080.2,
+     "pct_of_total_spend": 4.776
+    },
+    {
+     "decile": 5,
+     "gbp_per_year": 1053.6,
+     "pct_of_total_spend": 4.376
+    },
+    {
+     "decile": 6,
+     "gbp_per_year": 1049.2,
+     "pct_of_total_spend": 3.723
+    },
+    {
+     "decile": 7,
+     "gbp_per_year": 1093.5,
+     "pct_of_total_spend": 3.681
+    },
+    {
+     "decile": 8,
+     "gbp_per_year": 1080.2,
+     "pct_of_total_spend": 3.306
+    },
+    {
+     "decile": 9,
+     "gbp_per_year": 1124.5,
+     "pct_of_total_spend": 3.059
+    },
+    {
+     "decile": 10,
+     "gbp_per_year": 1314.9,
+     "pct_of_total_spend": 2.761
+    }
+   ],
+   "aggregate_gbp_bn_per_year": 30.6
+  },
+  "energy_wholesale_decomposition": {
+   "wholesale_oct_2021": 550.0,
+   "wholesale_oct_2022": 2468.0,
+   "wholesale_share_of_cap_oct_2021": 0.4307,
+   "wholesale_share_of_cap_oct_2022": 0.6954,
+   "wholesale_share_of_cap_rise": 0.8442,
+   "non_wholesale_rise": 354.0,
+   "source": "Ofgem default tariff cap letters (6 Aug 2021; 26 Aug 2022), Figure 1; CfD-in-wholesale restatement (model v1.13)",
+   "trade_transmitted_aggregate_gbp_bn": 39.0
+  },
+  "energy_trade_transmitted": {
+   "imported_share_lower_bound": 0.7,
+   "aggregate_gbp_bn_lower_bound": 32.3,
+   "direction": "lower bound (source reports 'more than' this share)"
+  },
+  "budget_shares_pct_of_spend": {
+   "food": [
+    {
+     "decile": 1,
+     "pct": 14.91
+    },
+    {
+     "decile": 2,
+     "pct": 14.64
+    },
+    {
+     "decile": 3,
+     "pct": 15.36
+    },
+    {
+     "decile": 4,
+     "pct": 13.84
+    },
+    {
+     "decile": 5,
+     "pct": 12.56
+    },
+    {
+     "decile": 6,
+     "pct": 12.55
+    },
+    {
+     "decile": 7,
+     "pct": 11.38
+    },
+    {
+     "decile": 8,
+     "pct": 10.78
+    },
+    {
+     "decile": 9,
+     "pct": 10.34
+    },
+    {
+     "decile": 10,
+     "pct": 8.28
+    }
+   ],
+   "domestic_energy": [
+    {
+     "decile": 1,
+     "pct": 6.96
+    },
+    {
+     "decile": 2,
+     "pct": 6.5
+    },
+    {
+     "decile": 3,
+     "pct": 6.02
+    },
+    {
+     "decile": 4,
+     "pct": 5.61
+    },
+    {
+     "decile": 5,
+     "pct": 5.14
+    },
+    {
+     "decile": 6,
+     "pct": 4.37
+    },
+    {
+     "decile": 7,
+     "pct": 4.32
+    },
+    {
+     "decile": 8,
+     "pct": 3.88
+    },
+    {
+     "decile": 9,
+     "pct": 3.59
+    },
+    {
+     "decile": 10,
+     "pct": 3.24
+    }
+   ]
+  }
+ }
+}

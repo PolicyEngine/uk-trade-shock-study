@@ -520,7 +520,8 @@ def write_tables(d: Data):
     A("gain as a percentage of that decile's total expenditure. The EPG cushions")
     A("%.1f\\%% of the gross energy shock at every decile by construction."
       % (100 * d.cushion_share))
-    A("$^{\\dagger}$~CETA ratio is on the \\%-of-spending basis (\\pounds\\ gains are")
+    A("Ratios are computed on unrounded values, so they may differ from the")
+    A("displayed cells in the last digit. $^{\\dagger}$~CETA ratio is on the \\%-of-spending basis (\\pounds\\ gains are")
     A("not comparable across deciles). Spending bases: ONS Family Spending")
     A("workbook~1, sheet 3.1E, FYE2022 vintage (TCA, energy) and FYE2025 vintage (CETA).")
     A("\\end{minipage}")

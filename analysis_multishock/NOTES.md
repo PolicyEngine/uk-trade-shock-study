@@ -77,8 +77,10 @@ every run.
   cumulative is £420 (ratio 1.68). The published figure implies an average
   effect ≈ 30% of end-state (`implied_average_effect_share` = 0.297), i.e.
   the estimated price path was heavily back-loaded into 2022–23, and CEP's
-  spend base predates most of the 2022–23 food inflation. Reported as a
-  cross-check diagnostic, not used to calibrate anything.
+  spend base predates most of the 2022–23 food inflation.
+  SUPERSEDED: in the current version the published GBP 250 cumulative IS
+  the anchor -- the linear-ramp path overshoots it by 1.68x and the headline
+  window-average path is rescaled to it (see paper, method/results).
 
 ## 5. E2 — Energy 2022–23 (declared price vector)
 
@@ -193,7 +195,7 @@ pipeline root).
   deductions), caseload-weighted aggregate cost of the uprating lag.
 
 
-## 9. Second stage (added in the referee rounds)
+## 12. Second stage (added in the referee rounds)
 
 Scripts: `second_stage_energy.py` (energy episode through PolicyEngine UK
 2.89.2; emits `out/generated_secondstage.tex`), `grid_energy.py`

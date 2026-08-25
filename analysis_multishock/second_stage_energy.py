@@ -7,10 +7,12 @@ deciles.
 
 Design notes, in response to referee comments on the first version:
 
-* The automatic response is MEASURED, not asserted.  The tax-benefit
-  calculator is run twice -- once on baseline inputs and once with the
-  shocked energy inputs -- and the change in every entitlement is
-  recorded.  A zero, if it appears, is a computed zero.
+* The automatic response is a STRUCTURAL property of the rulebook, not
+  a measurement: no modelled entitlement takes energy consumption as an
+  input, so the calculator re-run (baseline vs shocked energy inputs,
+  every entitlement recorded) is guaranteed to return zero.  The re-run
+  verifies that the model encodes the statutory structure; the claim
+  itself rests on the rulebook, verifiable line by line.
 * Both price paths are on ONE basis: financial-year mean caps.  The
   counterfactual FY2022-23 mean is (1,971 + 3,549)/2 with no Energy
   Price Guarantee; the realised FY mean is (1,971 + 2,500)/2; the
@@ -60,6 +62,14 @@ P = {
     "sim_year": 2023,
     # ONS UK household count, for the weight reconciliation (DATA).
     "ons_uk_households_m": 28.4,
+    # Ofgem cap announced November 2022 for Jan-Mar 2023 (DATA); used by the
+    # grid's announced-path counterfactual variant.
+    "cap_jan_2023": 4279.0,
+    # ONS Family Spending FYE2022 mean total expenditure per household,
+    # GBP/yr (DATA: derived from the pinned first-pass artifact; 528.9/wk).
+    # The second stage rebases its expenditure denominator to this base so
+    # shares of spending are level-comparable with the first pass.
+    "ons_total_spend_yr": 27503.0,
 }
 
 MEANS_TESTED = ["universal_credit", "pension_credit", "tax_credits",
@@ -69,33 +79,43 @@ UPRATED_CASH = MEANS_TESTED + ["state_pension", "child_benefit", "pip", "dla",
                                "winter_fuel_allowance"]
 
 
+# Weighted primitives, delegated to microdf (the survey-weighting library
+# PolicyEngine itself returns results in), so no weight arithmetic is done
+# by hand anywhere in the pipeline.  Signatures unchanged; verified to
+# reproduce the previous hand-rolled results exactly.
+from microdf import MicroSeries
+
+
 def weighted(x, w):
-    return float(np.sum(np.asarray(x) * w))
+    """Weighted total of x."""
+    return float(MicroSeries(np.asarray(x, dtype=float), weights=w).sum())
 
 
 def wmean(x, w):
-    return weighted(x, w) / float(np.sum(w))
+    """Weighted mean of x."""
+    return float(MicroSeries(np.asarray(x, dtype=float), weights=w).mean())
 
 
 def wquantile(x, w, q):
-    x = np.asarray(x, dtype=float)
-    idx = np.argsort(x)
-    cw = np.cumsum(w[idx]) / np.sum(w)
-    return float(x[idx][np.searchsorted(cw, q)])
+    """Weighted q-quantile of x."""
+    return float(MicroSeries(np.asarray(x, dtype=float),
+                             weights=w).quantile(q))
 
 
 def variance_split(burden, w, dec):
-    """Weighted between/within-decile variance shares of `burden`."""
-    burden = np.asarray(burden, dtype=float)
-    gm = wmean(burden, w)
-    total = weighted((burden - gm) ** 2, w) / np.sum(w)
+    """Between/within-decile shares of the weighted variance of `burden`."""
+    b = MicroSeries(np.asarray(burden, dtype=float), weights=w)
+    gm = float(b.mean())
+    total = float(MicroSeries((np.asarray(burden, dtype=float) - gm) ** 2,
+                              weights=w).mean())
     between = 0.0
+    wsum = float(np.sum(w))
     for d in np.unique(dec):
         m = dec == d
-        between += np.sum(w[m]) * (wmean(burden[m], w[m]) - gm) ** 2
-    between /= np.sum(w)
-    return (round(float(100 * between / total), 1),
-            round(float(100 * (1 - between / total)), 1))
+        between += float(np.sum(w[m])) * (wmean(burden[m], w[m]) - gm) ** 2
+    between /= wsum
+    return (round(100 * between / total, 1),
+            round(100 * (1 - between / total), 1))
 
 
 def main() -> None:
@@ -117,12 +137,15 @@ def main() -> None:
         return np.asarray(s.calculate(name, yr, map_to="household"))
 
     w = np.asarray(sim.calculate("household_weight", yr))
+    persons_m = float(sim.calculate("people", yr).sum()) / 1e6  # microdf-native
     energy_raw = np.asarray(sim.calculate("domestic_energy_consumption", yr))
     elec_raw = np.asarray(sim.calculate("electricity_consumption", yr))
     gas_raw = np.asarray(sim.calculate("gas_consumption", yr))
     equiv_income = np.asarray(sim.calculate("equiv_hbai_household_net_income", yr))
     net_income = np.asarray(sim.calculate("household_net_income", yr))
-    total_spend = np.asarray(sim.calculate("consumption", yr))
+    total_spend_raw = np.asarray(sim.calculate("consumption", yr))
+    spend_rebase = P["ons_total_spend_yr"] / wmean(total_spend_raw, w)
+    total_spend = total_spend_raw * spend_rebase   # FYE2022 price/level base
     benefit_income = sum(hh(v) for v in UPRATED_CASH)
 
     # --- Rebase energy to pre-crisis price levels (ASSUMPTION, disclosed) ---
@@ -178,11 +201,13 @@ def main() -> None:
             "policyengine_uk_version": _pkg_version("policyengine-uk"),
             "sim_year": yr,
             "records": int(len(w)),
+            "weighted_persons_m": round(persons_m, 1),
             "weighted_households_m": round(float(np.sum(w)) / 1e6, 2),
             "ons_uk_households_m": P["ons_uk_households_m"],
             "weight_excess_pct": round(
                 100 * (float(np.sum(w)) / 1e6 / P["ons_uk_households_m"] - 1), 1),
             "energy_rebase_factor": round(rebase, 4),
+            "spend_rebase_factor": round(spend_rebase, 4),
             "energy_mean_before_rebase": round(wmean(energy_raw, w), 1),
             "energy_mean_after_rebase": round(wmean(energy, w), 1),
         },
@@ -348,6 +373,8 @@ def emit_macros(res, path="out/generated_secondstage.tex"):
     add("OnsHouseholdsM", f"{mt['ons_uk_households_m']:.1f}")
     add("WeightExcessPct", f"{mt['weight_excess_pct']:.1f}")
     add("RebaseFactor", f"{mt['energy_rebase_factor']:.3f}")
+    add("SpendRebase", f"{mt['spend_rebase_factor']:.3f}")
+    add("PersonsM", f"{res['meta']['weighted_persons_m']:.1f}")
     add("PolicyEngineVersion", mt["policyengine_uk_version"])
     words = ("One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten")
     for row, wd in zip(res["by_decile"], words):

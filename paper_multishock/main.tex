@@ -13,7 +13,7 @@
 \PassOptionsToPackage{hyphens}{url}
 \usepackage[colorlinks=true, citecolor=paperblue, linkcolor=paperblue, urlcolor=paperblue]{hyperref}
 \hypersetup{
-  pdftitle={Who Bears the Trade Shocks? Household Incidence Through the UK Tax-Benefit System},
+  pdftitle={Who Bears the Trade Shocks? Distributional Incidence and Fiscal Cushioning in the UK},
   pdfauthor={Vahid Ahmadi},
   pdfsubject={Comparative household incidence of UK trade shocks 2021-2026 through the tax-benefit system},
   pdfkeywords={trade shocks, tariffs, Brexit, terms of trade, microsimulation, automatic stabilisers, public finances}
@@ -21,7 +21,7 @@
 \usepackage{natbib}
 \bibliographystyle{apalike}
 
-\title{\bfseries Who Bears the Trade Shocks?\\[0.15cm] Household Incidence Through the UK Tax--Benefit System\thanks{\textbf{Acknowledgements:} I thank Max Ghenis and Seyed Mahdi Hosseini for valuable comments and helpful discussions.}\\[0.7cm]}
+\title{\Large\bfseries Who Bears the Trade Shocks?\\[0.15cm] Distributional Incidence and Fiscal Cushioning in the UK\thanks{\textbf{Acknowledgements:} I thank Max Ghenis and Seyed Mahdi Hosseini for valuable comments and helpful discussions.}\\[0.7cm]}
 \author{Vahid Ahmadi\thanks{Research Associate at PolicyEngine. Email: \href{mailto:vahid@policyengine.org}{vahid@policyengine.org}.}}
 \date{\small August 2026}
 
@@ -30,6 +30,7 @@
 \input{generated_grid}
 \input{generated_extra}
 \input{generated_vintage}
+\input{generated_mpc}
 
 \providecommand{\doi}[1]{\textsc{doi}:~\url{https://doi.org/#1}}
 
@@ -37,41 +38,21 @@
 \maketitle
 
 \begin{abstract}
-\noindent Between 2021 and 2026 Britain experienced five trade-related
-shocks: the new customs border with the EU (2021), an energy price
-surge transmitted through world markets (2022), US tariffs on British
-exports (2025), and two new trade agreements (India, 2026; CPTPP,
-2024). This paper asks the same question of all five: once each shock
-reached households, who bore it, and how much did the tax--benefit
-system give back? The size of each shock is taken from published
-estimates or official projections; the contribution is to trace them
-to households---with decile-level spending data for the three price
-episodes (the tariff episode has no UK consumer-price channel, and
-CPTPP no distributional structure), and a full tax--benefit
-simulation (PolicyEngine UK, on
-\SsHouseholdsRecords\ survey households weighted to represent the
-population) for the two largest. Three findings. First, the two
-harmful price shocks---dearer food after Brexit, dearer energy in
-2022---hit poorer households hardest, because food and energy take a
-larger share of their budgets; the projected gains from the new
-agreements are small and spread evenly. Second, the benefit system
-offers no automatic protection against price shocks by the design of
-its rules: British benefits respond when incomes fall, not when
-prices rise, and the annual inflation uprating lagged a year
-behind---a delay worth roughly \pounds 12--15 billion to benefit
-recipients in the crisis year (the paper's rulebook-run figure is
-\pounds\SsVinLagCostBn\ billion; the OBR's, on a different basis,
-about \pounds 12 billion). What protected households from the energy shock was emergency
-policy: across the paper's sensitivity grid the energy-specific
-instruments returned roughly half to three-fifths of the shock
-(three-fifths to just over three-quarters counting the general
-cost-of-living support), more of it to poorer households than to richer ones. The
-Brexit food shock, just as regressive, had no instrument aimed at
-it. Third, on the imputed spending data, income is a poor guide to
-exposure: around nine-tenths of the variation in how hard households
-were hit lies \emph{within} income deciles, not between them, which
-is why income-targeted support struggles to reach the
-worst-affected.
+\noindent This paper examines how far the UK tax and benefit system
+cushioned the two major price-led trade shocks of 2021 to 2026,
+dearer food after Brexit and the 2022 energy surge, within a comparative
+dossier of five trade events (adding US tariffs and the India and
+CPTPP agreements). The analysis is a policy simulation:
+event magnitudes are imported from published estimates, and the two
+price shocks run through the statutory system in PolicyEngine UK. Both shocks were regressive,
+hitting lower-income deciles hardest. The system provided no automatic offset to
+price rises; uprating lagged inflation by a year, costing benefit
+recipients roughly \pounds 15 billion against all inflation; the energy-specific
+instruments returned roughly 50 to 60 per cent of the counterfactual
+shock (60 to 77 with cost-of-living support); the
+post-Brexit food price rise attracted no dedicated instrument. On imputed data, an upper
+bound puts over ninety per cent of exposure variance within income
+deciles.
 \end{abstract}
 
 \medskip
@@ -89,7 +70,6 @@ worst-affected.
 \input{sections/results}
 \input{sections/roadmap}
 \input{sections/discussion}
-\input{sections/declarations}
 
 \clearpage
 \input{sections/references}

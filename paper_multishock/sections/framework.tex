@@ -1,4 +1,4 @@
-\section{Framework: one estimand, five episodes, two channels, one moving rulebook}\label{sec:framework}
+\section{Framework: one estimand, two channels, a moving rulebook}\label{sec:framework}
 
 \subsection{The estimand}
 
@@ -9,20 +9,34 @@ category, and/or (ii) a labour-income loss or gain with a sectoral
 location and an adjustment margin. The second stage maps that first stage
 onto households and computes the change in disposable income, its
 distribution, and the Exchequer's share, under the tax--benefit rules in
-force at the episode date. The headline metric is the \emph{cushioning
-rate}---one minus the household disposable-income change per pound of
-gross shock, the income-stabilisation coefficient of \citet{dolls2012}
-generalised to price shocks by measuring the gross shock as the
-expenditure-weighted cost imposed at fixed consumption---because ratios,
-unlike levels, are comparable across episodes whose gross sizes span two
-orders of magnitude.
+force at the episode date. The headline metric is the \emph{cushioning rate}. For an earnings
+shock it is the income-stabilisation coefficient of \citet{dolls2012},
+\begin{equation*}
+c \;=\; 1 - \frac{\Delta Y^{\text{disp}}}{\Delta Y^{\text{mkt}}},
+\end{equation*}
+one minus the disposable-income change per pound of market-income
+shock. For a price shock, disposable income does not move (the
+structural-zero result of
+Section~\ref{sec:results-secondstage}), so the generalisation must be
+stated rather than gestured at:
+\begin{equation*}
+c \;=\; \frac{T}{\Delta E}, \qquad
+\Delta E \;=\; \sum_{k} p_{k} q_{k}\,\hat{p}_{k},
+\end{equation*}
+where $\Delta E$ is the expenditure-weighted cost of the price vector
+$\hat{p}$ at fixed consumption and $T$ is the sum of the statutory
+transfers the episode triggered (automatic plus discretionary). The
+two coefficients answer the same question, what share of the gross
+shock the state returned, on the margin the shock arrived on. Ratios,
+unlike levels, are comparable across episodes whose gross sizes span
+two orders of magnitude.
 
 Nothing in the design estimates the first stages. Each is imported from
 published estimates and labelled with its source and its attribution
 caveats (Section~\ref{sec:episodes}); the paper's contribution begins
 where those estimates stop, at the household and the Exchequer. This is
 the conditional-estimand convention of the companion tariff study
-\citep{ahmadi2026}, applied retrospectively---with the advantage that
+\citep{ahmadi2026}, applied retrospectively, with the advantage that
 retrospective first stages can be anchored to realised outturns rather
 than ex-ante bridges.
 
@@ -32,12 +46,12 @@ Trade shocks reach households through prices and through earnings, and
 the post-Covid episodes split cleanly on that line. The consumption
 channel prices a category-level price vector against household
 expenditure shares: implemented at the household level on imputed
-consumption---done for the energy episode in
-Section~\ref{sec:results-secondstage}---and, for the other episodes, on
+consumption, done for the energy episode in
+Section~\ref{sec:results-secondstage}, and, for the other episodes, on
 published expenditure-by-decile tables. The earnings channel
 imposes sectoral labour-income changes on employees by industry and runs
 them through the statutory system, with the adjustment margin (wage cuts
-versus displacement) as a declared scenario dimension---the machinery,
+versus displacement) as a declared scenario dimension; the machinery,
 conventions and caveats of the companion study carry over unchanged. The
 channels are reported separately and never summed without an explicit
 interaction note: a price shock erodes real income that the benefit
@@ -61,8 +75,8 @@ uprating-lag cost), and the discretionary layer on top. Price-shock incidence ha
 standard in that literature; what has not been done is to hold a
 \emph{trade} shock fixed and vary the rulebook vintage that receives
 it, or to separate the statutory timing lag from the discretionary
-layer within a single episode. The post-Covid sequence---four shocks
-landing on four different vintages of the same welfare state---is a
+layer within a single episode. The post-Covid sequence, four non-benchmark episodes
+landing on four different vintages of the same welfare state, is a
 natural laboratory for exactly that comparison.
 
 \subsection{Identification: where the burden sits, and where it does not}\label{sec:framework-ident}
@@ -78,7 +92,7 @@ system pays that household is a computation on statutory rules, not an
 estimate of a causal parameter. That the means-tested system returns
 nothing when nominal incomes do not move, that the Energy Price
 Guarantee returns the difference between two capped prices, that a flat
-payment is worth more relative to a small bill---these are properties of
+payment is worth more relative to a small bill, these are properties of
 the rulebook, verifiable line by line, with no counterfactual inference
 involved. The same is true of the variance decomposition: it describes
 the dispersion of a computed quantity across observed households. This
@@ -87,7 +101,7 @@ estimator, and it is why the second stage can be run at all.
 
 \emph{The first stages carry all the identification, and it is
 borrowed.} Whether the Trade and Cooperation Agreement \emph{caused}
-the food-price rise is identified---or not---by \citet{bakker2026},
+the food-price rise is identified, or not, by \citet{bakker2026},
 whose cross-product design and its limits the paper inherits wholesale.
 Whether the 2025 tariffs will cause the earnings loss the companion
 study imposes is not identified by anyone; it is declared. The
@@ -100,7 +114,7 @@ than the first stage it conditions on.
 \emph{One attribution is accounting, not inference.} The claim that
 part of the 2022 energy shock is trade-transmitted rests on Ofgem's
 published decomposition of the price cap into wholesale and non-wholesale
-components---a statement about the composition of a regulated price, not
+components, a statement about the composition of a regulated price, not
 a causal estimate of what world gas markets did to British households.
 
 What follows is that the paper's results should be read as
@@ -123,8 +137,8 @@ overwhelming share of the variance of household welfare changes lies
 exposure is driven by product-level consumption patterns that income
 predicts weakly; \citet{levell2025} reach the same conclusion for
 energy on UK transaction data. The implication is not that decile
-gradients are wrong---they are real, and they are what
-Section~\ref{sec:results} measures---but that they are a small part of
+gradients are wrong (they are real, and they are what
+Section~\ref{sec:results} measures) but that they are a small part of
 the dispersion in who was hurt. Decile means answer ``was this shock
 regressive?''; they do not answer ``who was hurt?'', and the two
 questions have different answers. This is the strongest single
@@ -156,5 +170,5 @@ and labelling single-point stages as such. The comparison across
 episodes is a comparison of conditional scenarios that share a second
 stage, not a causal decomposition of realised household outcomes over
 2021--2026, which would require separating the trade shocks from
-everything else that happened---a task this design deliberately
+everything else that happened, a task this design deliberately
 declines.

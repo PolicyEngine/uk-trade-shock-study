@@ -17,12 +17,12 @@ expenditure and income portfolios for 54 countries
 concordance machinery for mapping CGE trade-model output onto
 household-budget-survey categories \citep{luu2020}. The structural
 anchor for the consumption side is \citet{fajgelbaumkhandelwal2016}:
-trade's gains flow disproportionately to poorer households through
+trade's gains flow disproportionately to lower-income households through
 traded-goods budget shares. The 2025 tariff war produced a fast-moving
-US applied literature---the Budget Lab's rolling distributional scoring
+US applied literature, the Budget Lab's rolling distributional scoring
 of the enacted schedules and the Tax Policy Center's implementation of
 tariffs inside a working tax microsimulation model
-\citep{budgetlab2025, tpc2025}---and a first academic treatment of
+\citep{budgetlab2025, tpc2025}, and a first academic treatment of
 two-sided incidence on household expenditure microdata
 \citep{fleckpradhan2026}. The CGE--microsimulation linkage tradition
 supplies the architecture for putting a trade model upstairs and
@@ -34,13 +34,12 @@ What none of this work contains is a tax--benefit system responding to
 the shock. The World Bank and OECD frameworks stop at market incomes
 and expenditure; the US 2025 work is consumption-side; the
 CGE-linkage papers (Peichl's flat-tax application aside) use
-reduced-form income equations. As far as we can establish, no shock arriving under a \emph{trade}
-label has been run through a statutory tax--benefit calculator---
-EUROMOD, UKMOD, TAXBEN, PolicyEngine or any counterpart---other than
+reduced-form income equations. As far as can be established, no shock arriving under a \emph{trade}
+label has been run through a statutory tax--benefit calculator, EUROMOD, UKMOD, TAXBEN, PolicyEngine or any counterpart, other than
 the companion study discussed below and
 Section~\ref{sec:results-secondstage} of this paper, which carries
-both the energy episode and the TCA food-price episode---a
-trade-policy act---through the statutory stage. The claim is
+both the energy episode and the TCA food-price episode, a
+trade-policy act, through the statutory stage. The claim is
 deliberately narrow: price and energy shocks as such have been run
 through these models (the close antecedents are discussed in the next
 subsection), and what is new is the trade first stage and the
@@ -58,9 +57,9 @@ nowcasting tradition supplies the labour-transition machinery
 \citep{navicke2014}. Two studies come close enough to this paper's rulebook axis that the
 claim must be stated narrowly. \citet{amores2025} run the 2022
 inflation shock and its offsetting fiscal measures through EUROMOD for
-the EU, separating income-support from price-containing instruments---
-in effect a price-shock stabilisation coefficient, and the direct
-antecedent of what this paper computes; they find fiscal measures
+the EU, separating income-support from price-containing instruments
+(in effect a price-shock stabilisation coefficient, and the direct
+antecedent of what this paper computes); they find fiscal measures
 recovered roughly a third of welfare losses while targeting them
 poorly. \citet{popova2026} are closer still on the UK: UKMOD with LCFS
 consumption imputed onto the FRS, disposable and consumable income, and
@@ -68,31 +67,32 @@ an explicit CPI-versus-earnings indexation counterfactual over
 2019--2023. Neither models the September-CPI \emph{timing} lag, the
 Energy Price Guarantee, or any trade shock, and neither treats
 automatic stabilisation in anything but the classic income-shock
-sense. That quartet---timing lag, discretionary energy layer, trade
-first stages, and the comparison across episodes---is what this paper
+sense. That quartet, timing lag, discretionary energy layer, trade
+first stages, and the comparison across episodes, is what this paper
 adds, and it is a narrower claim than ``nobody has measured price-shock
 stabilisation.''
 
 The conceptual gap it rests on is old and explicit: simulating an
 oil-price supply shock in FRB/US, \citet{cohenfollette2000} found that
 automatic stabilisers do very little against a supply shock, unlike
-their demand-shock performance---a result never taken to microdata. \citet{paulus2020} supply the canonical treatment of
+their demand-shock performance, a result never taken to microdata. \citet{paulus2020} supply the canonical treatment of
 non-indexation as a distributional phenomenon, and
 \citet{leventi2024} the nearest existing treatment of indexation
 itself as a stabiliser. The companion study
-\citep{ahmadi2026} is, to our knowledge, the first tax--benefit
-microsimulation of a trade shock anywhere---a single episode (the 2025
-US tariffs), earnings channel only. This paper generalises it: five
-episodes, both channels, and the rulebook vintage as an explicit
-dimension.
+\citep{ahmadi2026} is, as far as can be established, the first
+tax--benefit microsimulation of a trade shock, covering a single
+episode (the 2025 US tariffs) through the earnings channel only. This paper deepens it on the price
+margin: two price-led episodes through the statutory stage, a
+five-episode comparative dossier, and the rulebook vintage as an
+explicit dimension.
 
 \subsection{Price shocks, indexation and the rulebook}
 
 The paper's rulebook axis has more precedent than its trade axis, and
 the debts should be stated plainly. \citet{cribb2023} quantified the
-2022--23 uprating shortfall directly---benefits rose 3.1 per cent
-against roughly ten per cent inflation, recipients were not made whole
-until April 2025---and scored the flat cost-of-living payments against
+2022--23 uprating shortfall directly (benefits rose 3.1 per cent
+against roughly ten per cent inflation; recipients were not made whole
+until April 2025) and scored the flat cost-of-living payments against
 a timely-indexation counterfactual, finding the discretionary route
 cost more while leaving hundreds of thousands of means-tested
 households worse off than indexation would have. \citet{obrwelfare2022}
@@ -104,7 +104,7 @@ outturn inflation in ten fiscal years, so the asymmetry is empirical,
 not assumed. Internationally, \citet{eckerstorfer2025} microsimulate
 Austria's inflation episode with lagged wage and pension adjustment,
 the closest non-UK analogue. This paper adds neither the discovery of
-the lag nor a better estimate of it; what it adds is the join---the
+the lag nor a better estimate of it; what it adds is the join, the
 same lag priced against \emph{trade-shock} incidence, so that the
 timing of indexation and the import content of a household's basket
 are evaluated in one place, across episodes rather than one.
@@ -117,16 +117,16 @@ inflation inequality. The episodes here are consistent with that as a
 statement about trade \emph{in general} and inconsistent with it as a
 statement about these shocks in particular: what makes the UK's
 negative episodes regressive is not trade exposure as such but the
-categories they landed on---food and domestic energy, whose budget
+categories they landed on, food and domestic energy, whose budget
 shares fall steeply with income (Figure~\ref{fig:budget-shares}).
 Where a trade shock lands on clothing, as the India agreement does,
 this paper finds exactly the flat incidence Jaravel describes.
 
 The method template for the consumption channel predates all of this:
 \citet{cravinolevchenko2017} showed after Mexico's 1994 devaluation
-that poorer households' cost of living rose about half again as much
-as richer households', because they spend more on tradeables and buy
-cheaper varieties within categories---the second mechanism being one
+that lower-income households' cost of living rose about half again as much
+as higher-income households', because they spend more on tradeables and buy
+cheaper varieties within categories, the second mechanism being one
 that category-level data cannot see. The
 decomposition machinery for price shocks is also established:
 \citet{sologon2025} decompose inflation's welfare and distributional
@@ -153,15 +153,15 @@ income and past usage. That is a principled defence of a
 price-capping instrument, and it disciplines what this paper's
 proportional-cushioning arithmetic can be taken to mean.
 \citet{bonnet2025} reach the opposite conclusion for transport fuel in
-France, and the disagreement is commodity-driven---fuel budget shares
-rise with income where domestic-energy shares fall---which is
+France, and the disagreement is commodity-driven, fuel budget shares
+rise with income where domestic-energy shares fall, which is
 precisely the kind of composition effect the present framework is
 built to make visible. \citet{auclert2023} add the externality a
 domestic incidence exercise cannot see: national price subsidies
 insulate one importer at the cost of world energy demand. Cross-country,
 \citet{ari2022} and \citet{amaglobeli2026} document that most European
 crisis support was untargeted and price-distorting, while
-\citet{nao2024} records the fiscal counterpart in the UK---an
+\citet{nao2024} records the fiscal counterpart in the UK, an
 initial \pounds 139 billion estimate against a \pounds 44 billion
 outturn, the option value of a cap that binds only in bad states.
 
@@ -184,7 +184,7 @@ episodes, a statutory second stage, and comparison across shocks.
 \citet{davenportlevell2021} supply the earnings-side counterpart
 (barrier exposure by occupation, sector and region), and
 \citet{alabrese2026} and \citet{dhingra2026} the 2026 regional
-accounting---the latter with new TCA tariff and non-tariff-measure
+accounting, the latter with new TCA tariff and non-tariff-measure
 estimates in a spatial general-equilibrium model, finding the damage
 runs through real wages and productivity rather than structural
 change.
@@ -192,7 +192,7 @@ change.
 A near-namesake deserves flagging: \citet{pallotti2023} ask who bore
 the costs of the euro-area inflation shock and find consumption losses
 roughly flat across the income distribution, with the incidence
-falling instead along an age gradient as rigid rents hedged poorer
+falling instead along an age gradient as rigid rents hedged lower-income
 households. That the same question yields a vertical answer in Britain
 and an age-based one in the euro area is itself a reason to hold the
 lens fixed and vary the shock.
@@ -202,7 +202,7 @@ The record also contains a puzzle this paper is built to address.
 roughly \emph{flat} across the income distribution; \citet{bakker2026}
 find the non-tariff-barrier episode sharply \emph{regressive}, the
 bottom decile's cost-of-living increase around half again larger than
-the top's. Same country, adjacent years, opposite incidence---because
+the top's. Same country, adjacent years, opposite incidence, because
 the two shocks landed on different baskets. A framework that holds the
 household lens fixed and varies the shock is the instrument that
 settles such disagreements, and Section~\ref{sec:results} shows the
@@ -211,8 +211,9 @@ everywhere is the tax--benefit response: the Brexit price literature
 never asks what the benefit system gave back; the energy-crisis literature scores the discretionary response
 but not the trade shock as such; the FTA impact assessments contain, in
 DBT's own regulator's words, household analysis ``developed further for
-future FTA IAs.'' The gap this paper is built to fill is the join: one statutory second
-stage run against every episode's first stage. This paper supplies the first stages, the taxonomy, a public-data first
-pass for all five episodes, and the statutory stage for the largest of
-them; extending that stage to the remaining four is what would complete
-the argument.
+future FTA IAs.'' The gap this paper fills, for the two price-led episodes, is the
+join: one statutory second stage run against the episode's first
+stage. The paper supplies the first stages, the taxonomy, a
+public-data first pass for all five episodes, and the statutory stage
+for the two largest; extending that stage to the remaining three is
+what would complete the comparative argument.

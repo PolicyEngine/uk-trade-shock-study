@@ -77,15 +77,20 @@ every run.
   cumulative is £420 (ratio 1.68). The published figure implies an average
   effect ≈ 30% of end-state (`implied_average_effect_share` = 0.297), i.e.
   the estimated price path was heavily back-loaded into 2022–23, and CEP's
-  spend base predates most of the 2022–23 food inflation. Reported as a
-  cross-check diagnostic, not used to calibrate anything.
+  spend base predates most of the 2022–23 food inflation.
+  SUPERSEDED: in the current version the published GBP 250 cumulative IS
+  the anchor -- the linear-ramp path overshoots it by 1.68x and the headline
+  window-average path is rescaled to it (see paper, method/results).
 
 ## 5. E2 — Energy 2022–23 (declared price vector)
 
 - Declared cap levels (Ofgem, typical dual-fuel annual bill): winter 2021-22
   cap **£1,277**; Oct 2022 cap **£3,549**; Energy Price Guarantee **£2,500**.
-- Price factors applied to spending: gross = 3549/1277 − 1 = **+177.9%**;
-  net-of-EPG = 2500/1277 − 1 = **+95.8%**.
+- Price factors applied to spending, on FINANCIAL-YEAR mean caps (the
+  point-to-point convention below is superseded, kept only as a labelled
+  variant): base (1,138+1,277)/2 = 1,208; counterfactual
+  (1,971+3,549)/2 = 2,760; realised (1,971+2,500)/2 = 2,236. Gross =
+  **+128.6%**; net-of-EPG = **+85.1%**.
 - Spend base: FYE2022 COICOP 4.4.1 electricity + 4.4.2 gas (other fuels
   4.4.3 excluded — not covered by the cap). FYE2022 (Apr 2021–Mar 2022) is
   the pre-shock vintage the task prescribes; no deflation needed. ASSUMPTION:
@@ -95,12 +100,12 @@ every run.
   understated, symmetrically in gross and net.
 - ASSUMPTION: fixed quantities (no demand response), 100% pass-through of cap
   ratios to bills — an upper-bound price-incidence convention.
-- EPG **discretionary cushioning share** = (3549−2500)/(3549−1277) =
-  **46.2%**, constant across deciles by construction (both shocks scale the
-  same base); the £ cushion per decile varies (≈£931/yr bottom decile to
-  £1,268/yr top decile).
+- EPG **discretionary cushioning share** on the FY basis =
+  (2,760−2,236)/(2,760−1,208) = **33.8%**, constant across deciles by
+  construction; the point-to-point cap ratio (3,549−2,500)/(3,549−1,277)
+  = 46.2% is retained as a labelled variant and not used further.
 - Cross-check (context anchor, not calibration): our 6-month aggregate
-  cushion ≈ £14.8bn vs OBR's £27bn EPG costing. Lower because OBR priced the
+  cushion ≈ £7.8bn (FY-mean basis) vs OBR's £27bn EPG costing. Lower because OBR priced the
   EPG against the higher caps then expected for Jan–Jun 2023 (~£4,300+) over
   a longer window; same order of magnitude. £47bn = OBR total energy price
   subsidies anchor, also recorded.
@@ -134,7 +139,7 @@ every run.
 ## 8. E5 — CPTPP near-zero benchmark
 
 - Declared: DBT central +£2.0bn GDP long-run (≈ +0.08%). Naive mean =
-  £2.0bn / 28.4m households = **£70.4/household/yr**. Stated as a near-zero benchmark, not a near-zero benchmark test:
+  £2.0bn / 28.4m households = **£70.4/household/yr**. Stated as a near-zero benchmark, not a placebo test:
   a long-run GDP estimate is not a household price shock; no distributional
   structure is claimed.
 
@@ -188,3 +193,28 @@ pipeline root).
   textiles in COICOP 5.2.
 - Module 2: full benefit-unit modelling (housing element, LHA freeze,
   deductions), caseload-weighted aggregate cost of the uprating lag.
+
+
+## 12. Second stage (added in the referee rounds)
+
+Scripts: `second_stage_energy.py` (energy episode through PolicyEngine UK
+2.89.2; emits `out/generated_secondstage.tex`), `grid_energy.py`
+(rebase x stack sensitivity grid, fine sweep, announced-path variant),
+`fig_extra.py` (decomposition/paths figures, 999-rep household
+bootstrap), `vintage_and_tca.py` (two-vintage rulebook run with all
+input columns copied to 2022; TCA food second stage), `mpc_welfare.py`
+(MPC-weighted demand, Atkinson welfare). All write generated `.tex` to
+`out/` and copy to `../paper_multishock/`; paper/pipeline sync is
+verifiable by diff.
+
+Input dataset: `enhanced_frs_2023_24.h5` (policyengine-uk-data release,
+2023 vintage; 53,508 household records; person weights 69.8m).
+SHA256 prefix: `584ae33d80ca0431`. The QRF consumption imputation is upstream in
+policyengine-uk-data; its provenance is outside this project and its
+error is a declared limitation of the within-decile results.
+
+Conventions shared with the paper: FY-mean cap basis; energy numerator
+rebased to the FY2021-22 cap mean (0.606); expenditure denominator
+rebased to the ONS FYE2022 mean total spend (GBP 27,503/yr); food
+rebased to the ONS FYE2022 food base. Rates computed on unrounded
+arrays.

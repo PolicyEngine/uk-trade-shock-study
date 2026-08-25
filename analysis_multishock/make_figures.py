@@ -53,60 +53,27 @@ from matplotlib.patches import Patch
 HERE = Path(__file__).resolve().parent
 RESULTS = HERE / "out" / "results.json"  # pipeline output (layout fixed Aug 2026)
 
-# --- PolicyEngine brand palette (canonical hexes, as in the sibling paper) ---
-BLUE = "#2C6496"          # series slot 1
-GREEN = "#558B2F"         # series slot 2
-TEAL = "#39C6C0"          # series slot 3
-BLUE_LIGHT = "#D8E6F3"
-DARKEST_BLUE = "#0C1A27"  # ink only, never a series colour
-DARK_GRAY = "#616161"
-GRAY = "#808080"
-MEDIUM_DARK_GRAY = "#D2D2D2"
-LIGHT_GRAY = "#F2F2F2"
+# --- Style: imported VERBATIM from the sibling AI-study paper's figstyle
+# (figstyle.py, copied from uk-ai-study/analysis/figstyle.py), so palette,
+# typography, rcParams and axis conventions are the PolicyEngine schema by
+# construction.  The only local overrides are manuscript layout: a fixed
+# 6.3in text-width canvas (no tight bbox) and 300 dpi for print.
+from figstyle import (  # noqa: F401
+    BLUE, GREEN, TEAL, BLUE_LIGHT, BLUE_PRESSED, DARKEST_BLUE, DARK_GRAY,
+    GRAY, MEDIUM_DARK_GRAY, LIGHT_GRAY, INK, INK2, MUTED, GRID, BASELINE,
+    NEUTRAL, LIGHT_BLUE, SERIES, SEQUENTIAL, DIVERGING, DECILE_AXIS,
+)
+from figstyle import apply_style as _figstyle_apply
 
-INK = DARKEST_BLUE
-INK2 = DARK_GRAY
-MUTED = GRAY
-GRID = LIGHT_GRAY
-BASELINE = MEDIUM_DARK_GRAY
-
-DECILE_AXIS = "Equivalised disposable income decile (1 = lowest)"
-DPI = 300
-WIDTH = 6.3  # manuscript text width, inches -- no figure is ever wider
+DPI = 200  # matches figstyle (AI-study convention)
+WIDTH = 8.0  # AI-paper canvas width (figstyle SINGLE); LaTeX scales to text width
 
 _SERIF = ["Roboto Serif", "Roboto Slab", "Source Serif Pro", "DejaVu Serif"]
 
 
 def apply_style() -> None:
-    plt.rcParams.update(
-        {
-            "font.family": "serif",
-            "font.serif": _SERIF,
-            "font.size": 9,
-            "axes.titlesize": 9.5,
-            "axes.labelsize": 8.5,
-            "xtick.labelsize": 8,
-            "ytick.labelsize": 8,
-            "legend.fontsize": 8,
-            "text.color": INK,
-            "axes.labelcolor": INK2,
-            "axes.edgecolor": BASELINE,
-            "axes.linewidth": 0.8,
-            "xtick.color": MUTED,
-            "ytick.color": MUTED,
-            "axes.grid": True,
-            "grid.color": GRID,
-            "grid.linewidth": 0.6,
-            "axes.axisbelow": True,
-            "axes.spines.top": False,
-            "axes.spines.right": False,
-            "legend.frameon": False,
-            "figure.facecolor": "white",
-            "axes.facecolor": "white",
-            "savefig.facecolor": "white",
-            "hatch.linewidth": 0.6,
-        }
-    )
+    _figstyle_apply()
+    plt.rcParams["hatch.linewidth"] = 0.6
 
 
 def decile_ax(ax, ylabel, xlabel=DECILE_AXIS):
@@ -118,13 +85,19 @@ def decile_ax(ax, ylabel, xlabel=DECILE_AXIS):
 
 def note(fig, text, y=0.015):
     """Source/method note, bottom-left, inside the fixed canvas."""
+    fig._has_note = True
     fig.text(0.012, y, text, fontsize=6.8, color=MUTED, ha="left", va="bottom",
              linespacing=1.45)
 
 
 def save(fig, name):
-    """Save at exactly WIDTH inches -- no tight bbox (see module docstring)."""
+    """Save at exactly WIDTH inches, AI-schema layout (tight_layout with a
+    reserved bottom strip for the source note)."""
     path = HERE / name
+    if getattr(fig, "_has_note", False):
+        fig.tight_layout(rect=(0.005, 0.14, 0.995, 0.995))
+    else:
+        fig.tight_layout()
     fig.savefig(path, dpi=DPI)
     plt.close(fig)
     w, h = fig.get_size_inches()
@@ -261,18 +234,9 @@ def fig_incidence_profile(d: Data):
     ax.set_yticks([0.01, 0.1, 1, 10])
     ax.set_yticklabels(["0.01", "0.1", "1", "10"])
     ax.grid(axis="y", which="minor", color=GRID, lw=0.4, alpha=0.7)
-    decile_ax(ax, "Burden (cost) or gain, % of total household spending\n"
-                  "magnitude, log scale")
-    ax.set_title("Household incidence of the four quantified episodes, by income decile",
-                 color=INK)
+    decile_ax(ax, "Burden or gain, % of spending (log scale)")
     ax.legend(ncol=2, loc="upper center", bbox_to_anchor=(0.5, -0.175),
               fontsize=7.6, columnspacing=1.2, handlelength=2.6)
-    note(
-        fig,
-        "Costs are drawn with solid or dashed lines and filled markers; the CETA gain is dotted with open markers and\n"
-        "labelled GAIN. All four series are plotted as magnitudes, so the log axis compares sizes, not signs. Energy is the\n"
-        "October 2022 cap shock; TCA is the window-average path (%.2f of the end-state +8%% effect)." % d.tca_share,
-    )
     save(fig, "fig_incidence_profile.png")
 
 
@@ -318,16 +282,8 @@ def fig_energy_epg(d: Data):
     decile_ax(ax, "Annual cost of the 2022-23 energy shock\n(\u00a3 per household per year)")
     ax.set_ylim(0, 3600)
     ax.set_xlim(0.4, 10.6)
-    ax.set_title("The 2022-23 energy shock and the share of it the EPG absorbed",
-                 color=INK)
     ax.legend(ncol=2, loc="upper center", bbox_to_anchor=(0.5, -0.165),
               fontsize=7.6, columnspacing=1.2)
-    note(
-        fig,
-        "Bar height = the gross shock (financial-year mean cap \u00a31,208 \u2192 \u00a32,760, i.e. +128.6% applied to electricity and\n"
-        "gas spending); the EPG truncates the FY mean to \u00a32,236 (+85.1%). Segments are separated by a hairline gap and the cushion\n"
-        "segment is hatched, so the split survives greyscale printing. Spend base: ONS Family Spending 3.1E, FYE2022.",
-    )
     save(fig, "fig_energy_epg.png")
 
 
@@ -359,15 +315,7 @@ def fig_budget_shares(d: Data):
     decile_ax(ax, "Share of total household spending (%)")
     ax.set_ylim(0, 17.5)
     ax.set_xlim(0.25, 10.4)
-    ax.set_title("Why the incidence looks the way it does: affected-category budget shares",
-                 color=INK)
-    ax.legend(ncol=1, loc="upper right", bbox_to_anchor=(1.0, 0.99), fontsize=7.6)
-    note(
-        fig,
-        "Food and energy shares fall steeply with income, which is what makes those two episodes regressive; the clothing &\n"
-        "footwear share is flat, which is what makes the CETA gain roughly proportional. Each share is computed on its own\n"
-        "episode's spending vintage (ONS Family Spending 3.1E), so levels are not strictly comparable across the two vintages.",
-    )
+    ax.legend(ncol=3, loc="upper center", bbox_to_anchor=(0.5, -0.175), fontsize=7.6)
     save(fig, "fig_budget_shares.png")
 
 
@@ -397,8 +345,6 @@ def fig_uprating_lag(d: Data):
     ax.set_ylim(0, 400)
     ax.set_xlim(-0.4, len(x) - 0.6)
     ax.grid(axis="x", visible=False)
-    ax.set_title("The uprating lag: statutory path against a CPI-indexed counterfactual",
-                 color=INK)
 
     ax.annotate(
         f"Cumulative shortfall, FY2022-23:\n\u00a3{d.lag_cost:,.0f} "
@@ -417,12 +363,6 @@ def fig_uprating_lag(d: Data):
                               alpha=0.85))
 
     ax.legend(ncol=1, loc="upper center", bbox_to_anchor=(0.5, -0.155), fontsize=7.6)
-    note(
-        fig,
-        f"Shaded area = the monthly shortfall, summed to the annual figure. The counterfactual holds the April 2021 allowance\n"
-        f"(\u00a3{d.apr21:,.2f}) at constant real value month by month; the actual April 2022 uprating of +3.1% was the September 2021\n"
-        "CPI rate. Separate from, and additional to, the October 2021 removal of the \u00a320/week uplift (\u00a31,040 per year).",
-    )
     save(fig, "fig_uprating_lag.png")
 
 
@@ -493,20 +433,6 @@ def fig_episode_map(d: Data):
     ax.text(-0.06, -2.26, "COST  (\u2212)", fontsize=7.6, color=INK2, ha="right",
             va="bottom")
 
-    # Size key, in the otherwise empty gain-via-earnings quadrant.
-    kx, ky = 0.62, 1.52
-    ax.text(kx - 0.14, ky + 0.36, "Gross shock (log-scaled bubble area)", fontsize=6.8,
-            color=MUTED, ha="left", va="bottom")
-    for i, (val, lab) in enumerate([(0.18, "\u00a30.18bn"), (2.0, "\u00a32bn"),
-                                    (63.9, "\u00a364bn")]):
-        xx = kx + i * 0.38
-        s = bubble(val)
-        ax.scatter(xx, ky, s=s, facecolor="none", edgecolor=MUTED, lw=0.8)
-        ax.annotate(lab, xy=(xx, ky), xytext=(0, -(np.sqrt(s / np.pi) + 4)),
-                    textcoords="offset points", ha="center", va="top",
-                    fontsize=6.8, color=MUTED)
-
-    ax.set_title("The episode set: sign, transmission channel and gross size", color=INK)
 
     legend = [
         Line2D([], [], marker="o", ls="none", ms=7, markerfacecolor=BLUE,
@@ -519,14 +445,18 @@ def fig_episode_map(d: Data):
                markeredgecolor=TEAL, markeredgewidth=1.4,
                label="Near-zero benchmark (no household structure)"),
     ]
-    ax.legend(handles=legend, ncol=2, loc="upper center", bbox_to_anchor=(0.5, -0.005),
-              fontsize=7.4, handletextpad=0.7, columnspacing=1.4)
-    note(
-        fig,
-        "Position is conceptual, not measured: the quadrants classify each episode by sign and by the channel through which it\n"
-        "reaches households. E2 is the only episode whose first stage is a market price rather than a policy instrument. E5 sits\n"
-        "on the channel axis because a long-run GDP estimate has no household channel; E3's consumer-price row is exactly zero.",
-    )
+    # Size key lives in the legend box, outside the plot: open circles with
+    # strong edges, diameters on the same log-area scale as the bubbles.
+    for val, lab in [(0.18, "\u00a30.18bn gross"), (2.0, "\u00a32bn gross"),
+                     (63.9, "\u00a364bn gross")]:
+        ms = 2.0 * np.sqrt(bubble(val) / np.pi) * 0.42
+        legend.append(Line2D([], [], marker="o", ls="none", ms=ms,
+                             markerfacecolor="none", markeredgecolor=INK2,
+                             markeredgewidth=1.4, label=lab))
+    ax.legend(handles=legend, ncol=2, loc="upper center",
+              bbox_to_anchor=(0.5, -0.005), fontsize=7.4,
+              handletextpad=0.9, columnspacing=1.6, labelspacing=1.25,
+              frameon=False)
     save(fig, "fig_episode_map.png")
 
 
@@ -590,7 +520,8 @@ def write_tables(d: Data):
     A("gain as a percentage of that decile's total expenditure. The EPG cushions")
     A("%.1f\\%% of the gross energy shock at every decile by construction."
       % (100 * d.cushion_share))
-    A("$^{\\dagger}$~CETA ratio is on the \\%-of-spending basis (\\pounds\\ gains are")
+    A("Ratios are computed on unrounded values, so they may differ from the")
+    A("displayed cells in the last digit. $^{\\dagger}$~CETA ratio is on the \\%-of-spending basis (\\pounds\\ gains are")
     A("not comparable across deciles). Spending bases: ONS Family Spending")
     A("workbook~1, sheet 3.1E, FYE2022 vintage (TCA, energy) and FYE2025 vintage (CETA).")
     A("\\end{minipage}")
@@ -603,7 +534,7 @@ def write_tables(d: Data):
         ("E1 TCA food NTBs", "Dec 2019--\\newline Mar 2023$^{w}$", "Policy",
          "Consumer prices (food)", "\\citet{bakker2026}",
          "$+8\\%$ on food prices (6\\% low variant)", "Estimate\\newline (ex post)"),
-        ("E2 Energy 2022--23", "Oct 2022--\\newline Mar 2023", "Market",
+        ("E2 Energy 2022--23", "Apr 2022--\\newline Mar 2023", "Market",
          "Consumer prices (energy)", "\\citet{ofgem2022}; \\citet{obrenergy2022}",
          "Cap \\pounds1{,}277 $\\to$ \\pounds3{,}549; EPG \\pounds2{,}500",
          "Observed\\newline (statutory)"),

@@ -344,7 +344,8 @@ contemporaneous CPI. The shaded area is the shortfall, summing to
 The largest episode is run through the statutory system on
 \SsHouseholdsRecords\ enhanced-FRS household records in PolicyEngine UK
 \SsPolicyEngineVersion\ (dataset \texttt{enhanced\_frs\_2023\_24.h5},
-2023 vintage). Four conventions govern the numbers that follow
+2023 vintage), in the tax--benefit microsimulation tradition surveyed
+by \citet{figari2015}. Four conventions govern the numbers that follow
 and each is a choice a reader could make differently.
 
 \emph{One basis for both paths.} The counterfactual and realised energy
@@ -468,7 +469,9 @@ than never.
 \subsection{Indexation arrives late}
 
 Benefits rose 3.1 per cent in April 2022, indexed to the previous
-September, against inflation over the year of about 10 per cent. The
+September, against inflation over the year of about 10 per cent---the
+benefit-erosion mechanism whose cross-national treatment is
+\citet{paulus2020}. The
 cost of that gap is here computed with a genuine rulebook-vintage
 run rather than a flat base-times-gap multiplication: the enhanced
 FRS is a single-period dataset, so every input column is copied to
@@ -537,7 +540,8 @@ instruments the cap sat alongside reverses it, and the correction runs
 in the government's favour. Figure~\ref{fig:decomp} shows the anatomy in
 pounds: the counterfactual shock by decile, split into the part the
 household bore and what each instrument returned. A household bootstrap
-(\SsBootReps\ resamples of the record base) puts a 95 per cent
+(\SsBootReps\ resamples of the record base, following the practice
+urged for microsimulation results by \citet{goedeme2013}) puts a 95 per cent
 sampling interval of \SsRateLo--\SsRateHi\ per cent around the
 \SsDiscretionaryRatePct\ per cent aggregate rate, and
 \SsCushionDecOneLo--\SsCushionDecOneHi\ per cent around the bottom
@@ -788,7 +792,9 @@ highest-MPC households in the economy, so the demand drag per pound
 withheld was at its maximum.
 
 \emph{Welfare.} Weighting the counterfactual burden by
-\citet{atkinson1970} social-welfare weights on equivalised income
+\citet{atkinson1970} social-welfare weights on equivalised income---%
+the simplest member of the generalised welfare-weight framework of
+\citet{saezstantcheva2016}---
 (proportional to $y^{-\gamma}$, normalised to mean one) gives a
 regressivity premium of \SsWelfPremiumGammaOne\ at $\gamma=1$ and
 \SsWelfPremiumGammaTwo\ at $\gamma=2$. The $\gamma=1$ figure is

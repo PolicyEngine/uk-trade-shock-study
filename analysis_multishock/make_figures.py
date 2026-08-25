@@ -311,7 +311,7 @@ def fig_budget_shares(d: Data):
     decile_ax(ax, "Share of total household spending (%)")
     ax.set_ylim(0, 17.5)
     ax.set_xlim(0.25, 10.4)
-    ax.legend(ncol=1, loc="upper right", bbox_to_anchor=(1.0, 0.99), fontsize=7.6)
+    ax.legend(ncol=3, loc="upper center", bbox_to_anchor=(0.5, -0.175), fontsize=7.6)
     save(fig, "fig_budget_shares.png")
 
 

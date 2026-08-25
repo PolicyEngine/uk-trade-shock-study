@@ -99,7 +99,8 @@ the figure generator from the pinned artifact, on the same FY basis).
 \begin{figure}[tbp]\centering
 \includegraphics[width=\textwidth]{figures/fig_incidence_profile.png}
 \caption{Household incidence by equivalised disposable income decile,
-as a share of each decile's total spending. Costs are plotted as
+as a share of each decile's total spending. All series are plotted as
+magnitudes on a log axis, so the chart compares sizes, not signs. Costs are plotted as
 positive; the India CETA series is a gain (dotted, open markers). The
 energy episode is shown on its realised 2022--23 path (solid) and as
 the gross counterfactual the Energy Price Guarantee displaced
@@ -341,9 +342,9 @@ contemporaneous CPI. The shaded area is the shortfall, summing to
 
 The largest episode is run through the statutory system on
 \SsHouseholdsRecords\ enhanced-FRS household records in PolicyEngine UK
-\SsPolicyEngineVersion\ (dataset \texttt{enhanced\_frs\_2023\_24.h5},
-2023 vintage), in the tax--benefit microsimulation tradition surveyed
-by \citet{figari2015}. Four conventions govern the numbers that follow
+\SsPolicyEngineVersion\ (the 2023--24 enhanced Family Resources
+Survey, 2023 vintage), in the tax--benefit microsimulation tradition
+surveyed by \citet{figari2015}. Four conventions govern the numbers that follow
 and each is a choice a reader could make differently.
 
 \emph{One basis for both paths.} The counterfactual and realised energy
@@ -397,8 +398,8 @@ vintages (\SsVinColHouseholdsRuleTwentyTwoM\ against
 \SsVinColHouseholdsRuleTwentyThreeM\ million flagged households).
 
 \emph{Weights.} All weighted arithmetic is delegated to the
-\texttt{microdf} survey-weighting library that PolicyEngine itself
-returns results in; no weight calculation is hand-rolled. The person
+survey-weighting library that PolicyEngine itself returns results in;
+no weight calculation is hand-rolled. The person
 weights gross to \SsPersonsM\ million people, in line with the UK
 population. PolicyEngine's household grossing weights total
 \SsWeightedHouseholdsM\ million households against an ONS count of

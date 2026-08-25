@@ -139,7 +139,7 @@ every run.
 ## 8. E5 — CPTPP near-zero benchmark
 
 - Declared: DBT central +£2.0bn GDP long-run (≈ +0.08%). Naive mean =
-  £2.0bn / 28.4m households = **£70.4/household/yr**. Stated as a near-zero benchmark, not a near-zero benchmark test:
+  £2.0bn / 28.4m households = **£70.4/household/yr**. Stated as a near-zero benchmark, not a placebo test:
   a long-run GDP estimate is not a household price shock; no distributional
   structure is claimed.
 

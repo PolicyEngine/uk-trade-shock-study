@@ -55,7 +55,8 @@ def main() -> None:
     w = np.asarray(sim.calculate("household_weight", yr))
     energy_raw = np.asarray(sim.calculate("domestic_energy_consumption", yr))
     equiv_income = np.asarray(sim.calculate("equiv_hbai_household_net_income", yr))
-    total_spend = np.asarray(sim.calculate("consumption", yr))
+    total_spend = np.asarray(sim.calculate("consumption", yr)) * (
+        P["ons_total_spend_yr"] / wmean(np.asarray(sim.calculate("consumption", yr)), w))
     dec = deciles_of(equiv_income, w)
 
     base_cap_fy = (P["cap_apr_2021"] + P["cap_oct_2021"]) / 2.0

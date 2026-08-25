@@ -118,7 +118,8 @@ def main() -> None:
     food = np.asarray(sim.calculate(
         "food_and_non_alcoholic_beverages_consumption", 2023,
         map_to="household"))
-    total_spend = np.asarray(sim.calculate("consumption", 2023))
+    total_spend = np.asarray(sim.calculate("consumption", 2023)) * (
+        P["ons_total_spend_yr"] / wmean(np.asarray(sim.calculate("consumption", 2023)), w))
     equiv_income = np.asarray(
         sim.calculate("equiv_hbai_household_net_income", 2023))
     dec = deciles_of(equiv_income, w)

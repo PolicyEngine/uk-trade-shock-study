@@ -76,8 +76,7 @@ matters for the D1 comparison: energy is an annualised crisis-year
 rate, while TCA is the published cumulative averaged over a window
 padded with pre-entry zeros, at the end-state (crisis-period) rate
 the TCA row reads \MsTcaPctSpendDecOne\ against
-\MsTcaPctSpendDecTen\ per cent. TCA is on the window-average path
-implied by the published cumulative, energy on the caps households
+\MsTcaPctSpendDecTen\ per cent. Energy is on the caps households
 actually faced in 2022--23 (\pounds\MsEnergyRealisedMeanCapFyTwentyTwo\ against
 \pounds\MsEnergyRealisedMeanCapFyTwentyOne, $+$\MsEnergyRealisedRisePct\
 per cent). The end-state and gross-counterfactual variants are reported
@@ -374,8 +373,9 @@ between the two capped paths, the Energy Bills Support Scheme as its
 flat \pounds 400 to every weighted household (so the modelled
 \pounds\SsEbssBn\ billion exceeds the roughly \pounds 11 billion
 scheme outturn by about 14 per cent: the \SsWeightExcessPct\ per cent
-weight excess plus a small residual from non-domestic-supply
-households in the weighted base), and the 2022--23
+weight excess plus a residual of roughly four points from
+non-domestic-supply households in the weighted base and outturn
+rounding), and the 2022--23
 cost-of-living payments on simulated entitlement in the simulation
 year, an approximation in both directions: simulated entitlement is
 not receipt in the actual 2022 qualifying windows, the \pounds 150
@@ -408,17 +408,13 @@ population. PolicyEngine's household grossing weights total
 equivalised on the HBAI before-housing-costs concept, and burdens are
 expressed as shares of household expenditure rather than income,
 because a ratio with income in the denominator is dominated by
-very low incomes. One consequence must be flagged: the burden
-\emph{numerator} is rebased to FY2021--22 cap levels while the
-expenditure \emph{denominator} stays at the enhanced FRS's
-current-vintage price level, and that base is larger than the ONS
-FYE2022 tables the first pass divides by; second-stage shares of
-spending are therefore roughly half their first-pass counterparts by
-construction, and the two stages' shares are comparable in shape but
-not in level. The variance decomposition and the within-decile
-quantile ratios are unaffected: putting the denominator on the same
-price base rescales every household's share by a common factor, which
-changes neither the between/within split nor any ratio of quantiles. Aggregate pounds, which share a basis, reconcile to
+very low incomes. Both sides of every share sit on one base: the burden numerator is
+rebased to FY2021--22 cap levels, and the expenditure denominator to
+the ONS FYE2022 mean total-spending base the first pass divides by
+(factor \SsSpendRebase), so second-stage shares are level-comparable
+with the first pass. The rebase factors are common scalars, so the variance decomposition
+and all quantile ratios are invariant to them (the within-share is
+93.4 per cent on either base, verified by regeneration). Aggregate pounds, which share a basis, reconcile to
 within about five per cent.
 
 \emph{Reconciliation with the first pass.} On the same
@@ -539,7 +535,9 @@ household bore and what each instrument returned. A household bootstrap
 (\SsBootReps\ resamples of the record base, following the practice
 urged for microsimulation results by \citet{goedeme2013}) puts a 95 per cent
 sampling interval of \SsRateLo--\SsRateHi\ per cent around the
-\SsDiscretionaryRatePct\ per cent aggregate rate, and
+\SsDiscretionaryRatePct\ per cent aggregate rate (an interval
+narrower than the disclosed modelling approximations, notably the
+EBSS overshoot; it bounds sampling noise, not specification error), and
 \SsCushionDecOneLo--\SsCushionDecOneHi\ per cent around the bottom
 decile's \SsCushionPctDecOne: the over-compensation of the bottom
 decile is therefore not statistically distinguishable from exact
@@ -605,13 +603,16 @@ volumes, but it cautions against reading the rebased cell as the
 truth and the unrebased one as a variant. The paper's headline
 statements are therefore confined to what holds across the grid, and
 the basis-dependent over-compensation is reported as exactly that.
-One dial the grid does not vary is the counterfactual \emph{path}
-itself: holding the October 2022 cap through a full financial year is
-a convention, not a forecast, the Guarantee pre-empted that cap
-before it ever bound, and an ex-ante articulated path would give a
-different denominator. The choice is declared
-(Section~\ref{sec:secondstage-method}) and varying it is extension
-work.
+The counterfactual \emph{path} is also varied: holding the October
+2022 cap through the financial year is a convention, not a forecast,
+so the grid is complemented by an \emph{announced-path} variant using
+Ofgem's November 2022 announcement of the January 2023 cap
+(\pounds 4{,}279), giving an FY mean of \pounds\SsAnnCounterFyCap\
+and a counterfactual shock of \pounds\SsAnnCounterAggBn\ billion. On
+that path the Guarantee absorbs \SsAnnEpgRatePct\ per cent and the
+full stack \SsAnnFullRatePct\ per cent: the paper's headline
+convention is the \emph{conservative} end of the path axis as well as
+of the attribution axis.
 
 \begin{table}[tbp]
 \centering
@@ -659,12 +660,10 @@ household expenditure in the bottom decile to
 \SsBurdenPctSpendDecTen\ per cent in the top. The gradient is
 regressive and not monotone, the third decile
 (\SsBurdenPctSpendDecThree\ per cent) sits marginally above the
-first. The share \emph{levels} are about half their first-pass
-counterparts by the denominator convention declared in
-Section~\ref{sec:secondstage-method}, so only the shape, not the
-level, is comparable across the two stages; within that comparison,
-energy exposure separates households far less cleanly by income than
-decile tables imply.
+first. On the unified base the levels sit close to their first-pass
+counterparts (\SsBurdenPctSpendDecOne\ against 5.93 per cent at the
+bottom decile), and energy exposure separates households far less
+cleanly by income than decile tables imply.
 Decomposing the variance of that burden puts
 \SsBetweenPct\ per cent of it between deciles and
 \SsWithinPct\ per cent within them on the paper's preferred basis
@@ -733,7 +732,10 @@ pass up to the grossing-weight excess; the new content of this stage
 is the distribution, not the level.
 The burden is regressive (\SsTcaSsPctSpendDecOne\ per cent of
 bottom-decile spending against \SsTcaSsPctSpendDecTen\ at the top,
-on the second stage's share basis) and larger in pounds at the top
+matching the first pass's 0.35 and 0.20 almost exactly at the bottom;
+the top-decile pound figure sits about a third above the first pass,
+a distributional divergence of the consumption imputation worth
+noting beside Section~\ref{sec:results-withindec}'s caveats) and larger in pounds at the top
 (\pounds\SsTcaSsGbpDecOne\ at the bottom against
 \pounds\SsTcaSsGbpDecTen\ at the top), and \SsTcaSsWithinPct\ per cent of the variance in exposure
 lies within deciles (trimmed basis; within the bottom decile the
@@ -776,9 +778,11 @@ cash-on-hand and liquidity gradients of \citet{jappelli2014} and
 switches the heterogeneity channel off; and an asymmetric UK variant
 after \citet{bunn2018}, who find MPCs out of income \emph{losses}
 (about 0.5) far larger than out of gains (about 0.14).
-Table~\ref{tab:mpc} reports the results. Three facts follow. First,
+Table~\ref{tab:mpc} reports the results, with the flat scenario as
+the anchor and the gradient as the deliberately steep variant. First,
 the counterfactual shock would have destroyed
-\pounds\SsMpcBurdenGradientBn\ billion of first-round consumption;
+\pounds\SsMpcBurdenGradientBn\ billion of first-round consumption on
+the gradient (\pounds\SsMpcBurdenFlatBn\ billion on the flat anchor);
 with the modelled stack in place the net effect is
 \pounds\SsMpcNetGradientBn\ billion, the support protected most of
 the demand the shock threatened. Second, the instruments rank by
@@ -827,6 +831,7 @@ linear; MPC flat: 0.5 everywhere. The asymmetric variant
 (\citealp{bunn2018}: 0.5 out of losses, 0.14 out of gains) gives a
 net effect of \pounds\SsMpcNetAsymBn\ billion (not shown by row).
 First-round, no general-equilibrium feedback; parameters imported,
-not estimated.
+not estimated. Rates and sums are computed on unrounded arrays, so
+displayed rows may differ from column sums in the last digit.
 \end{minipage}
 \end{table}

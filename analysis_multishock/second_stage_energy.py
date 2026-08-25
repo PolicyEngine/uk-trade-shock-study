@@ -62,6 +62,14 @@ P = {
     "sim_year": 2023,
     # ONS UK household count, for the weight reconciliation (DATA).
     "ons_uk_households_m": 28.4,
+    # Ofgem cap announced November 2022 for Jan-Mar 2023 (DATA); used by the
+    # grid's announced-path counterfactual variant.
+    "cap_jan_2023": 4279.0,
+    # ONS Family Spending FYE2022 mean total expenditure per household,
+    # GBP/yr (DATA: derived from the pinned first-pass artifact; 528.9/wk).
+    # The second stage rebases its expenditure denominator to this base so
+    # shares of spending are level-comparable with the first pass.
+    "ons_total_spend_yr": 27503.0,
 }
 
 MEANS_TESTED = ["universal_credit", "pension_credit", "tax_credits",
@@ -135,7 +143,9 @@ def main() -> None:
     gas_raw = np.asarray(sim.calculate("gas_consumption", yr))
     equiv_income = np.asarray(sim.calculate("equiv_hbai_household_net_income", yr))
     net_income = np.asarray(sim.calculate("household_net_income", yr))
-    total_spend = np.asarray(sim.calculate("consumption", yr))
+    total_spend_raw = np.asarray(sim.calculate("consumption", yr))
+    spend_rebase = P["ons_total_spend_yr"] / wmean(total_spend_raw, w)
+    total_spend = total_spend_raw * spend_rebase   # FYE2022 price/level base
     benefit_income = sum(hh(v) for v in UPRATED_CASH)
 
     # --- Rebase energy to pre-crisis price levels (ASSUMPTION, disclosed) ---
@@ -197,6 +207,7 @@ def main() -> None:
             "weight_excess_pct": round(
                 100 * (float(np.sum(w)) / 1e6 / P["ons_uk_households_m"] - 1), 1),
             "energy_rebase_factor": round(rebase, 4),
+            "spend_rebase_factor": round(spend_rebase, 4),
             "energy_mean_before_rebase": round(wmean(energy_raw, w), 1),
             "energy_mean_after_rebase": round(wmean(energy, w), 1),
         },
@@ -362,6 +373,7 @@ def emit_macros(res, path="out/generated_secondstage.tex"):
     add("OnsHouseholdsM", f"{mt['ons_uk_households_m']:.1f}")
     add("WeightExcessPct", f"{mt['weight_excess_pct']:.1f}")
     add("RebaseFactor", f"{mt['energy_rebase_factor']:.3f}")
+    add("SpendRebase", f"{mt['spend_rebase_factor']:.3f}")
     add("PersonsM", f"{res['meta']['weighted_persons_m']:.1f}")
     add("PolicyEngineVersion", mt["policyengine_uk_version"])
     words = ("One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten")

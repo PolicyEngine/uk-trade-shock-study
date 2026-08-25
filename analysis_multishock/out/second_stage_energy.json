@@ -9,6 +9,7 @@
   "ons_uk_households_m": 28.4,
   "weight_excess_pct": 10.5,
   "energy_rebase_factor": 0.6063,
+  "spend_rebase_factor": 0.5269,
   "energy_mean_before_rebase": 1991.6,
   "energy_mean_after_rebase": 1207.5
  },
@@ -27,7 +28,9 @@
   "uprating_applied_apr_2022": 0.031,
   "cpi_fy2022_23_mean": 0.101,
   "sim_year": 2023,
-  "ons_uk_households_m": 28.4
+  "ons_uk_households_m": 28.4,
+  "cap_jan_2023": 4279.0,
+  "ons_total_spend_yr": 27503.0
  },
  "shock": {
   "basis": "financial-year mean caps throughout",
@@ -137,7 +140,7 @@
    "counterfactual_gbp_per_year": 1233.4,
    "discretionary_gbp_per_year": 1258.5,
    "cushioning_rate_pct": 102.0,
-   "burden_pct_of_spending": 2.77
+   "burden_pct_of_spending": 5.26
   },
   {
    "decile": 2,
@@ -145,7 +148,7 @@
    "counterfactual_gbp_per_year": 1304.5,
    "discretionary_gbp_per_year": 1237.2,
    "cushioning_rate_pct": 94.8,
-   "burden_pct_of_spending": 2.34
+   "burden_pct_of_spending": 4.45
   },
   {
    "decile": 3,
@@ -153,7 +156,7 @@
    "counterfactual_gbp_per_year": 1240.7,
    "discretionary_gbp_per_year": 1247.0,
    "cushioning_rate_pct": 100.5,
-   "burden_pct_of_spending": 2.78
+   "burden_pct_of_spending": 5.28
   },
   {
    "decile": 4,
@@ -161,7 +164,7 @@
    "counterfactual_gbp_per_year": 1368.2,
    "discretionary_gbp_per_year": 1242.1,
    "cushioning_rate_pct": 90.8,
-   "burden_pct_of_spending": 1.95
+   "burden_pct_of_spending": 3.7
   },
   {
    "decile": 5,
@@ -169,7 +172,7 @@
    "counterfactual_gbp_per_year": 1293.4,
    "discretionary_gbp_per_year": 1180.5,
    "cushioning_rate_pct": 91.3,
-   "burden_pct_of_spending": 2.15
+   "burden_pct_of_spending": 4.08
   },
   {
    "decile": 6,
@@ -177,7 +180,7 @@
    "counterfactual_gbp_per_year": 1625.9,
    "discretionary_gbp_per_year": 1206.1,
    "cushioning_rate_pct": 74.2,
-   "burden_pct_of_spending": 2.37
+   "burden_pct_of_spending": 4.49
   },
   {
    "decile": 7,
@@ -185,7 +188,7 @@
    "counterfactual_gbp_per_year": 1383.2,
    "discretionary_gbp_per_year": 1053.1,
    "cushioning_rate_pct": 76.1,
-   "burden_pct_of_spending": 2.16
+   "burden_pct_of_spending": 4.1
   },
   {
    "decile": 8,
@@ -193,7 +196,7 @@
    "counterfactual_gbp_per_year": 1613.5,
    "discretionary_gbp_per_year": 1131.9,
    "cushioning_rate_pct": 70.2,
-   "burden_pct_of_spending": 1.94
+   "burden_pct_of_spending": 3.68
   },
   {
    "decile": 9,
@@ -201,7 +204,7 @@
    "counterfactual_gbp_per_year": 2148.1,
    "discretionary_gbp_per_year": 1207.6,
    "cushioning_rate_pct": 56.2,
-   "burden_pct_of_spending": 1.7
+   "burden_pct_of_spending": 3.23
   },
   {
    "decile": 10,
@@ -209,78 +212,78 @@
    "counterfactual_gbp_per_year": 2312.7,
    "discretionary_gbp_per_year": 1249.5,
    "cushioning_rate_pct": 54.0,
-   "burden_pct_of_spending": 1.35
+   "burden_pct_of_spending": 2.56
   }
  ],
  "within_decile_dispersion": [
   {
    "decile": 1,
-   "p10_burden_pct_spending": 1.86,
-   "p50_burden_pct_spending": 4.84,
-   "p90_burden_pct_spending": 13.4,
+   "p10_burden_pct_spending": 3.52,
+   "p50_burden_pct_spending": 9.19,
+   "p90_burden_pct_spending": 25.43,
    "p90_p10_ratio": 7.2
   },
   {
    "decile": 2,
-   "p10_burden_pct_spending": 1.5,
-   "p50_burden_pct_spending": 3.55,
-   "p90_burden_pct_spending": 9.81,
+   "p10_burden_pct_spending": 2.85,
+   "p50_burden_pct_spending": 6.73,
+   "p90_burden_pct_spending": 18.63,
    "p90_p10_ratio": 6.5
   },
   {
    "decile": 3,
-   "p10_burden_pct_spending": 1.88,
-   "p50_burden_pct_spending": 3.69,
-   "p90_burden_pct_spending": 8.32,
+   "p10_burden_pct_spending": 3.57,
+   "p50_burden_pct_spending": 6.99,
+   "p90_burden_pct_spending": 15.79,
    "p90_p10_ratio": 4.4
   },
   {
    "decile": 4,
-   "p10_burden_pct_spending": 1.17,
-   "p50_burden_pct_spending": 3.4,
-   "p90_burden_pct_spending": 8.91,
+   "p10_burden_pct_spending": 2.23,
+   "p50_burden_pct_spending": 6.45,
+   "p90_burden_pct_spending": 16.91,
    "p90_p10_ratio": 7.6
   },
   {
    "decile": 5,
-   "p10_burden_pct_spending": 1.22,
-   "p50_burden_pct_spending": 3.1,
-   "p90_burden_pct_spending": 8.35,
+   "p10_burden_pct_spending": 2.32,
+   "p50_burden_pct_spending": 5.88,
+   "p90_burden_pct_spending": 15.85,
    "p90_p10_ratio": 6.8
   },
   {
    "decile": 6,
-   "p10_burden_pct_spending": 1.5,
-   "p50_burden_pct_spending": 3.18,
-   "p90_burden_pct_spending": 7.33,
+   "p10_burden_pct_spending": 2.85,
+   "p50_burden_pct_spending": 6.03,
+   "p90_burden_pct_spending": 13.91,
    "p90_p10_ratio": 4.9
   },
   {
    "decile": 7,
-   "p10_burden_pct_spending": 1.18,
-   "p50_burden_pct_spending": 2.97,
-   "p90_burden_pct_spending": 8.44,
+   "p10_burden_pct_spending": 2.23,
+   "p50_burden_pct_spending": 5.64,
+   "p90_burden_pct_spending": 16.01,
    "p90_p10_ratio": 7.2
   },
   {
    "decile": 8,
-   "p10_burden_pct_spending": 1.39,
-   "p50_burden_pct_spending": 2.89,
-   "p90_burden_pct_spending": 7.31,
+   "p10_burden_pct_spending": 2.64,
+   "p50_burden_pct_spending": 5.48,
+   "p90_burden_pct_spending": 13.88,
    "p90_p10_ratio": 5.3
   },
   {
    "decile": 9,
-   "p10_burden_pct_spending": 1.13,
-   "p50_burden_pct_spending": 2.56,
-   "p90_burden_pct_spending": 6.23,
+   "p10_burden_pct_spending": 2.15,
+   "p50_burden_pct_spending": 4.86,
+   "p90_burden_pct_spending": 11.83,
    "p90_p10_ratio": 5.5
   },
   {
    "decile": 10,
-   "p10_burden_pct_spending": 0.84,
-   "p50_burden_pct_spending": 2.48,
-   "p90_burden_pct_spending": 6.91,
+   "p10_burden_pct_spending": 1.59,
+   "p50_burden_pct_spending": 4.71,
+   "p90_burden_pct_spending": 13.11,
    "p90_p10_ratio": 8.3
   }
  ],
@@ -295,8 +298,8 @@
    "within_pct": 93.4
   },
   "expenditure_share_log": {
-   "between_pct": 1.4,
-   "within_pct": 98.6
+   "between_pct": 1.3,
+   "within_pct": 98.7
   },
   "income_share_untrimmed": {
    "between_pct": 0.9,

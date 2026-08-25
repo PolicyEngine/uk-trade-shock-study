@@ -14,7 +14,7 @@ electricity and gas separately; bus fares), imputed by quantile
 regression forest from the LCFS 2023--24 and calibrated to
 administrative energy and fuel totals. Each episode's price vector
 therefore prices each household's own basket, jointly with that
-household's benefit entitlements---the covariance between exposure and
+household's benefit entitlements, the covariance between exposure and
 cushioning that decile tables cannot see. Tariff-line and
 category-level first stages must be pre-aggregated to those roughly
 sixteen categories, and the imputation freezes budget-share
@@ -28,12 +28,12 @@ history carries dated, legislatively cited values through the whole
 window (the Covid-era Universal Credit uplift and its October 2021
 removal, the March 2022 fuel-duty cut, the 2022 and 2023 upratings),
 its own test suite exercises the 2020--2023 rule years, and
-counterfactual-rulebook runs---an earlier year's parameters applied to
-a later survey vintage---are native to the architecture. Each episode
+counterfactual-rulebook runs, an earlier year's parameters applied to
+a later survey vintage, are native to the architecture. Each episode
 is therefore scored under the rules in force at its date, under the
 preceding year's rules (isolating uprating lag), and with the
 discretionary interventions switched off (isolating the automatic
-component)---the three-way decomposition of
+component), the three-way decomposition of
 Section~\ref{sec:framework} computed rather than approximated. Two
 verified limits shape the earlier years: no 2021-vintage enhanced-FRS
 data year exists (the earliest survey base is 2022--23), so 2021
@@ -48,7 +48,7 @@ statutory coverage.
 The build order follows the data dependencies. The consumption-channel
 implementation extends PolicyEngine's existing consumption variables
 (used today for carbon and VAT analysis) with the episode price
-vectors---a parameter reform per episode, no new imputation. The
+vectors, a parameter reform per episode, no new imputation. The
 earnings channels are re-runs of existing machinery with episode
 calibrations. The rulebook runs require only parameter-year switches
 plus explicit flags for the discretionary layers (the Energy Price
@@ -59,8 +59,8 @@ Two methodological upgrades are available at the same time and are
 specified here. First, the fixed-weight decile indices of the first
 pass can be replaced by non-homothetic distributional cost-of-living
 indices, which \citet{hochmuth2025} construct from exactly the inputs
-this project already has---aggregate prices, expenditure shares and a
-single cross-sectional expenditure distribution---answering the
+this project already has, aggregate prices, expenditure shares and a
+single cross-sectional expenditure distribution, answering the
 standard objection that fixed baskets misprice large relative-price
 movements. Second, and more consequentially, the household-record
 stage is the level at which the within-decile dispersion documented by
@@ -76,5 +76,5 @@ the exposure-cushioning covariance; the stage will report the
 imputation diagnostics alongside the results. And the rulebook
 decomposition attributes to ``discretion'' whatever the parameter
 history records as legislated change, which bundles genuine shock
-response with policy that would have happened anyway---a labelling
+response with policy that would have happened anyway, a labelling
 choice, stated as such, not an identification claim.

@@ -117,11 +117,9 @@ paper-values:
 	$(PYTHON) analysis/referee_fixes.py --only monthly schedule jsa
 	$(PYTHON) analysis/write_referee_macros.py
 
-paper: paper-values
-	cd paper && latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
-	cd paper && latexmk -pdf -interaction=nonstopmode -halt-on-error supplement.tex
+# The companion paper's directory was removed; its history remains in git.
 
-reproduce: check inputs results submission-results figures paper
+reproduce: check inputs results submission-results figures
 
 # --- Multishock paper: referee-round grid, decomposition and bootstrap ------
 # Requires the enhanced FRS dataset; pass DATASET=<path to enhanced_frs.h5>.

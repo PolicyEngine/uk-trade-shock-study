@@ -1,10 +1,11 @@
 \section{Extending the household stage}\label{sec:roadmap}
 
-Section~\ref{sec:results-secondstage} runs the energy episode through
-PolicyEngine UK on the enhanced Family Resources Survey. Extending the
-same stage to the remaining four episodes is a parameter reform per
-episode rather than new machinery, and four things change when it is
-done.
+Section~\ref{sec:results-secondstage} runs the energy and TCA food
+episodes through PolicyEngine UK on the enhanced Family Resources
+Survey. Extending the full statutory stage to the remaining three
+episodes, and deepening the TCA run beyond its price vector, is a
+parameter reform per episode rather than new machinery, and four
+things change when it is done.
 
 First, the consumption channel moves from decile tables to household
 records: the enhanced FRS carries imputed household consumption across
@@ -22,8 +23,7 @@ sixteen categories, and the imputation freezes budget-share
 limitation the stage will state. Second, the earnings channels run through the companion study's
 displacement machinery on the same households, so the two channels of a
 given episode land on a common population and their incidence can be
-compared household-by-household rather than distribution-by-
-distribution. Third, the rulebook axis becomes exact: PolicyEngine's parameter
+compared household-by-household rather than distribution-by-distribution. Third, the rulebook axis becomes exact: PolicyEngine's parameter
 history carries dated, legislatively cited values through the whole
 window (the Covid-era Universal Credit uplift and its October 2021
 removal, the March 2022 fuel-duty cut, the 2022 and 2023 upratings),
@@ -41,35 +41,17 @@ rulebooks are applied to later households with incomes re-deflated;
 and the survey's Universal Credit/legacy-benefit split follows
 reported receipt rather than the historical rollout, so 2021--22
 rule-year results understate legacy-benefit interactions and are
-restricted to the tax and UC-parameter channels. Fourth, the poverty and inequality outputs gain their
-correct household equivalisation and the Exchequer effects their full
-statutory coverage.
+restricted to the tax and UC-parameter channels.
 
-The build order follows the data dependencies. The consumption-channel
-implementation extends PolicyEngine's existing consumption variables
-(used today for carbon and VAT analysis) with the episode price
-vectors, a parameter reform per episode, no new imputation. The
-earnings channels are re-runs of existing machinery with episode
-calibrations. The rulebook runs require only parameter-year switches
-plus explicit flags for the discretionary layers (the Energy Price
-Guarantee being the largest). The licensed inputs are the same FRS/EFRS
-files the companion study uses; nothing else is gated.
+One methodological upgrade is specified here: the fixed-weight decile
+indices of the first pass can be replaced by non-homothetic
+distributional cost-of-living indices, which \citet{hochmuth2025}
+construct from exactly the inputs this project already has (aggregate
+prices, expenditure shares and a single cross-sectional expenditure
+distribution), answering the standard objection that fixed baskets
+misprice large relative-price movements.
 
-Two methodological upgrades are available at the same time and are
-specified here. First, the fixed-weight decile indices of the first
-pass can be replaced by non-homothetic distributional cost-of-living
-indices, which \citet{hochmuth2025} construct from exactly the inputs
-this project already has, aggregate prices, expenditure shares and a
-single cross-sectional expenditure distribution, answering the
-standard objection that fixed baskets misprice large relative-price
-movements. Second, and more consequentially, the household-record
-stage is the level at which the within-decile dispersion documented by
-\citet{borusyakjaravel2024} and \citet{levell2025} becomes visible: the
-same machinery that computes a decile gradient computes the full
-distribution of exposure within it, which is where most of the welfare
-variance lives.
-
-Two honest limits will survive the full stage. The consumption
+Two limits will survive the full stage. The consumption
 imputation carries its own error, inherited from the LCFS donor
 models, and imputation error correlated with benefit status would bias
 the exposure-cushioning covariance; the stage will report the

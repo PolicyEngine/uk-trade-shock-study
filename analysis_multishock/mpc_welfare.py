@@ -130,6 +130,7 @@ def main() -> None:
         "MpcNetFlatBn": f"{out['net_flat']:,.1f}",
         "MpcNetAsymBn": f"{out['net_asym']:,.1f}",
         "MpcBurdenGradientBn": f"{-out['burden_gradient']:,.1f}",
+        "MpcBurdenFlatBn": f"{-out['burden_flat']:,.1f}",
         "MpcEpgPerPound": f"{out['epg_per_pound']:.2f}",
         "MpcEbssPerPound": f"{out['ebss_per_pound']:.2f}",
         "MpcColPerPound": f"{out['col_per_pound']:.2f}",

@@ -103,7 +103,7 @@ every run.
   construction; the point-to-point cap ratio (3,549−2,500)/(3,549−1,277)
   = 46.2% is retained as a labelled variant and not used further.
 - Cross-check (context anchor, not calibration): our 6-month aggregate
-  cushion ≈ £14.8bn vs OBR's £27bn EPG costing. Lower because OBR priced the
+  cushion ≈ £7.8bn (FY-mean basis) vs OBR's £27bn EPG costing. Lower because OBR priced the
   EPG against the higher caps then expected for Jan–Jun 2023 (~£4,300+) over
   a longer window; same order of magnitude. £47bn = OBR total energy price
   subsidies anchor, also recorded.
@@ -191,3 +191,28 @@ pipeline root).
   textiles in COICOP 5.2.
 - Module 2: full benefit-unit modelling (housing element, LHA freeze,
   deductions), caseload-weighted aggregate cost of the uprating lag.
+
+
+## 9. Second stage (added in the referee rounds)
+
+Scripts: `second_stage_energy.py` (energy episode through PolicyEngine UK
+2.89.2; emits `out/generated_secondstage.tex`), `grid_energy.py`
+(rebase x stack sensitivity grid, fine sweep, announced-path variant),
+`fig_extra.py` (decomposition/paths figures, 999-rep household
+bootstrap), `vintage_and_tca.py` (two-vintage rulebook run with all
+input columns copied to 2022; TCA food second stage), `mpc_welfare.py`
+(MPC-weighted demand, Atkinson welfare). All write generated `.tex` to
+`out/` and copy to `../paper_multishock/`; paper/pipeline sync is
+verifiable by diff.
+
+Input dataset: `enhanced_frs_2023_24.h5` (policyengine-uk-data release,
+2023 vintage; 53,508 household records; person weights 69.8m).
+SHA256 prefix: `584ae33d80ca0431`. The QRF consumption imputation is upstream in
+policyengine-uk-data; its provenance is outside this project and its
+error is a declared limitation of the within-decile results.
+
+Conventions shared with the paper: FY-mean cap basis; energy numerator
+rebased to the FY2021-22 cap mean (0.606); expenditure denominator
+rebased to the ONS FYE2022 mean total spend (GBP 27,503/yr); food
+rebased to the ONS FYE2022 food base. Rates computed on unrounded
+arrays.

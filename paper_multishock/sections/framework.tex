@@ -9,11 +9,25 @@ category, and/or (ii) a labour-income loss or gain with a sectoral
 location and an adjustment margin. The second stage maps that first stage
 onto households and computes the change in disposable income, its
 distribution, and the Exchequer's share, under the tax--benefit rules in
-force at the episode date. The headline metric is the \emph{cushioning rate}: one minus the
-household disposable-income change per pound of gross shock. This is
-the income-stabilisation coefficient of \citet{dolls2012},
-generalised to price shocks by measuring the gross shock as the
-expenditure-weighted cost imposed at fixed consumption. Ratios,
+force at the episode date. The headline metric is the \emph{cushioning rate}. For an earnings
+shock it is the income-stabilisation coefficient of \citet{dolls2012},
+\begin{equation*}
+c \;=\; 1 - \frac{\Delta Y^{\text{disp}}}{\Delta Y^{\text{mkt}}},
+\end{equation*}
+one minus the disposable-income change per pound of market-income
+shock. For a price shock, disposable income does not move (the
+structural-zero result of
+Section~\ref{sec:results-secondstage}), so the generalisation must be
+stated rather than gestured at:
+\begin{equation*}
+c \;=\; \frac{T}{\Delta E}, \qquad
+\Delta E \;=\; \sum_{k} p_{k} q_{k}\,\hat{p}_{k},
+\end{equation*}
+where $\Delta E$ is the expenditure-weighted cost of the price vector
+$\hat{p}$ at fixed consumption and $T$ is the sum of the statutory
+transfers the episode triggered (automatic plus discretionary). The
+two coefficients answer the same question, what share of the gross
+shock the state returned, on the margin the shock arrived on. Ratios,
 unlike levels, are comparable across episodes whose gross sizes span
 two orders of magnitude.
 
@@ -61,7 +75,7 @@ uprating-lag cost), and the discretionary layer on top. Price-shock incidence ha
 standard in that literature; what has not been done is to hold a
 \emph{trade} shock fixed and vary the rulebook vintage that receives
 it, or to separate the statutory timing lag from the discretionary
-layer within a single episode. The post-Covid sequence, four episodes
+layer within a single episode. The post-Covid sequence, four non-benchmark episodes
 landing on four different vintages of the same welfare state, is a
 natural laboratory for exactly that comparison.
 

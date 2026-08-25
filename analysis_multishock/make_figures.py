@@ -461,19 +461,6 @@ def fig_episode_map(d: Data):
     ax.text(-0.06, -2.26, "COST  (\u2212)", fontsize=7.6, color=INK2, ha="right",
             va="bottom")
 
-    # Size key, in the otherwise empty gain-via-earnings quadrant.
-    kx, ky = 0.62, 1.52
-    ax.text(kx - 0.14, ky + 0.36, "Gross shock (log-scaled bubble area)", fontsize=6.8,
-            color=MUTED, ha="left", va="bottom")
-    for i, (val, lab) in enumerate([(0.18, "\u00a30.18bn"), (2.0, "\u00a32bn"),
-                                    (63.9, "\u00a364bn")]):
-        xx = kx + i * 0.38
-        s = bubble(val)
-        ax.scatter(xx, ky, s=s, facecolor="none", edgecolor=MUTED, lw=0.8)
-        ax.annotate(lab, xy=(xx, ky), xytext=(0, -(np.sqrt(s / np.pi) + 4)),
-                    textcoords="offset points", ha="center", va="top",
-                    fontsize=6.8, color=MUTED)
-
     ax.set_title("The episode set: sign, transmission channel and gross size", color=INK)
 
     legend = [
@@ -487,8 +474,19 @@ def fig_episode_map(d: Data):
                markeredgecolor=TEAL, markeredgewidth=1.4,
                label="Near-zero benchmark (no household structure)"),
     ]
-    ax.legend(handles=legend, ncol=2, loc="upper center", bbox_to_anchor=(0.5, -0.005),
-              fontsize=7.4, handletextpad=0.7, columnspacing=1.4)
+    # Size key lives in the legend box, outside the plot: open circles with
+    # strong edges, diameters on the same log-area scale as the bubbles.
+    for val, lab in [(0.18, "\u00a30.18bn gross"), (2.0, "\u00a32bn gross"),
+                     (63.9, "\u00a364bn gross")]:
+        ms = 2.0 * np.sqrt(bubble(val) / np.pi) * 0.42
+        legend.append(Line2D([], [], marker="o", ls="none", ms=ms,
+                             markerfacecolor="none", markeredgecolor=INK2,
+                             markeredgewidth=1.4, label=lab))
+    leg = ax.legend(handles=legend, ncol=2, loc="upper center",
+                    bbox_to_anchor=(0.5, -0.005), fontsize=7.4,
+                    handletextpad=0.9, columnspacing=1.6, labelspacing=1.25,
+                    frameon=True, edgecolor=BASELINE, framealpha=1.0)
+    leg.get_frame().set_linewidth(0.8)
     note(
         fig,
         "Position is conceptual, not measured: the quadrants classify each episode by sign and by the channel through which it\n"

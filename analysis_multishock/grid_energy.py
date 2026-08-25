@@ -102,20 +102,25 @@ def main() -> None:
             cells.append(cell)
 
     # Fine sweep (figure only; the table keeps the three canonical columns).
+    # The cost-of-living payments are decomposed into their three statutory
+    # components, added cumulatively, so the stack axis shows each
+    # instrument's marginal contribution.
+    col_mt = (means_tested_amt > 0) * P["col_means_tested"]
+    col_pen = (hh("state_pension") > 0) * P["col_pensioner"]
+    col_dis = (((hh("pip") + hh("dla") + hh("attendance_allowance")) > 0)
+               * P["col_disability"])
+    STACKS_FINE = ["epg", "epg_ebss", "col_mt", "col_pen", "col_dis"]
     cells_fine = []
     for rb in REBASES_FINE:
         energy = energy_raw * rb
         dE_counter = energy * counter_rise
         epg_cushion = energy * (counter_rise - realised_rise)
         G = weighted(dE_counter, w)
-        for stack in STACKS:
-            disc = np.zeros_like(energy)
-            if stack in ("epg", "epg_ebss", "full"):
-                disc = disc + epg_cushion
-            if stack in ("epg_ebss", "full"):
-                disc = disc + ebss
-            if stack == "full":
-                disc = disc + col
+        disc = np.zeros_like(energy)
+        adds = {"epg": epg_cushion, "epg_ebss": ebss, "col_mt": col_mt,
+                "col_pen": col_pen, "col_dis": col_dis}
+        for stack in STACKS_FINE:
+            disc = disc + adds[stack]
             cells_fine.append({"rebase": rb, "stack": stack,
                                "rate_pct": round(100 * weighted(disc, w) / G, 1)})
 

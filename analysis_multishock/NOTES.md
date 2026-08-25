@@ -84,8 +84,11 @@ every run.
 
 - Declared cap levels (Ofgem, typical dual-fuel annual bill): winter 2021-22
   cap **£1,277**; Oct 2022 cap **£3,549**; Energy Price Guarantee **£2,500**.
-- Price factors applied to spending: gross = 3549/1277 − 1 = **+177.9%**;
-  net-of-EPG = 2500/1277 − 1 = **+95.8%**.
+- Price factors applied to spending, on FINANCIAL-YEAR mean caps (the
+  point-to-point convention below is superseded, kept only as a labelled
+  variant): base (1,138+1,277)/2 = 1,208; counterfactual
+  (1,971+3,549)/2 = 2,760; realised (1,971+2,500)/2 = 2,236. Gross =
+  **+128.6%**; net-of-EPG = **+85.1%**.
 - Spend base: FYE2022 COICOP 4.4.1 electricity + 4.4.2 gas (other fuels
   4.4.3 excluded — not covered by the cap). FYE2022 (Apr 2021–Mar 2022) is
   the pre-shock vintage the task prescribes; no deflation needed. ASSUMPTION:
@@ -95,10 +98,10 @@ every run.
   understated, symmetrically in gross and net.
 - ASSUMPTION: fixed quantities (no demand response), 100% pass-through of cap
   ratios to bills — an upper-bound price-incidence convention.
-- EPG **discretionary cushioning share** = (3549−2500)/(3549−1277) =
-  **46.2%**, constant across deciles by construction (both shocks scale the
-  same base); the £ cushion per decile varies (≈£931/yr bottom decile to
-  £1,268/yr top decile).
+- EPG **discretionary cushioning share** on the FY basis =
+  (2,760−2,236)/(2,760−1,208) = **33.8%**, constant across deciles by
+  construction; the point-to-point cap ratio (3,549−2,500)/(3,549−1,277)
+  = 46.2% is retained as a labelled variant and not used further.
 - Cross-check (context anchor, not calibration): our 6-month aggregate
   cushion ≈ £14.8bn vs OBR's £27bn EPG costing. Lower because OBR priced the
   EPG against the higher caps then expected for Jan–Jun 2023 (~£4,300+) over

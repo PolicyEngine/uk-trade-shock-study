@@ -7,10 +7,12 @@ deciles.
 
 Design notes, in response to referee comments on the first version:
 
-* The automatic response is MEASURED, not asserted.  The tax-benefit
-  calculator is run twice -- once on baseline inputs and once with the
-  shocked energy inputs -- and the change in every entitlement is
-  recorded.  A zero, if it appears, is a computed zero.
+* The automatic response is a STRUCTURAL property of the rulebook, not
+  a measurement: no modelled entitlement takes energy consumption as an
+  input, so the calculator re-run (baseline vs shocked energy inputs,
+  every entitlement recorded) is guaranteed to return zero.  The re-run
+  verifies that the model encodes the statutory structure; the claim
+  itself rests on the rulebook, verifiable line by line.
 * Both price paths are on ONE basis: financial-year mean caps.  The
   counterfactual FY2022-23 mean is (1,971 + 3,549)/2 with no Energy
   Price Guarantee; the realised FY mean is (1,971 + 2,500)/2; the

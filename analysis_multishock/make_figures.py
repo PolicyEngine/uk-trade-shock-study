@@ -65,7 +65,7 @@ from figstyle import (  # noqa: F401
 )
 from figstyle import apply_style as _figstyle_apply
 
-DPI = 300
+DPI = 200  # matches figstyle (AI-study convention)
 WIDTH = 8.0  # AI-paper canvas width (figstyle SINGLE); LaTeX scales to text width
 
 _SERIF = ["Roboto Serif", "Roboto Slab", "Source Serif Pro", "DejaVu Serif"]

@@ -18,7 +18,7 @@ plt.rcParams.update({
     "axes.labelcolor": INK, "figure.facecolor": "white", "axes.facecolor": "white",
 })
 
-r = json.loads((HERE.parent / "out" / "second_stage_energy.json").read_text())
+r = json.loads((HERE.parent / "results" / "second_stage_energy.json").read_text())
 dec = [x["decile"] for x in r["by_decile"]]
 mean = [x["burden_pct_of_spending"] for x in r["by_decile"]]
 p10 = [x["p10_burden_pct_spending"] for x in r["within_decile_dispersion"]]

@@ -12,16 +12,17 @@ from make_figures import apply_style, save, WIDTH, BLUE, INK  # noqa: E402
 data = json.load(open("out/grid_energy.json"))
 cells = data["cells_fine"]
 paper_rb = data["meta"]["paper_rebase"]
-stacks = ["none", "epg", "epg_ebss", "full"]
-stack_lab = ["None", "EPG only", "EPG + EBSS", "Full stack"]
+stacks = ["epg", "epg_ebss", "full"]
+stack_lab = ["EPG only", "EPG + EBSS", "Full stack"]
 rebases = sorted({c["rebase"] for c in cells})
 
 M = np.zeros((len(stacks), len(rebases)))
 for c in cells:
-    M[stacks.index(c["stack"]), rebases.index(c["rebase"])] = c["rate_pct"]
+    if c["stack"] in stacks:
+        M[stacks.index(c["stack"]), rebases.index(c["rebase"])] = c["rate_pct"]
 
 apply_style()
-fig, ax = plt.subplots(figsize=(WIDTH, 4.4))
+fig, ax = plt.subplots(figsize=(WIDTH, 3.8))
 ax.grid(False)
 im = ax.imshow(M, cmap=plt.matplotlib.colors.LinearSegmentedColormap.from_list(
     "pe", ["white", BLUE]), vmin=0, vmax=100, aspect="auto")
@@ -39,9 +40,8 @@ ax.annotate(f"paper ({paper_rb:.3f})", xy=(jp, -0.5), xytext=(jp, -0.62),
 ax.set_xticks(range(len(rebases)), [f"{r:.2f}" for r in rebases])
 ax.set_yticks(range(len(stacks)), stack_lab)
 ax.set_xlabel("Rebase factor")
+ax.set_title("")
 ax.set_ylabel("Discretionary stack")
-cb = fig.colorbar(im, ax=ax, fraction=0.04, pad=0.02)
-cb.set_label("Rate, % of counterfactual shock")
 for spine in ax.spines.values():
     spine.set_visible(False)
 save(fig, "fig_grid.png")

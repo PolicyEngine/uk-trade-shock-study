@@ -146,6 +146,7 @@ def main() -> None:
         "VinUpratingEffectBn": f"{uprating_effect:,.1f}",
         "VinPerPointBn": f"{per_point:,.2f}",
         "VinLagCostBn": f"{lag_cost:,.1f}",
+        "VinLagPctOfBase": f"{100*lag_cost/b22:.1f}",
         "VinColHouseholdsRuleTwentyTwoM": f"{col_hh_22:,.1f}",
         "VinColHouseholdsRuleTwentyThreeM": f"{col_hh_23:,.1f}",
         "TcaSsAggBn": f"{G:,.1f}",

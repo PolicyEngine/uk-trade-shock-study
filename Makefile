@@ -6,7 +6,7 @@ PYTHON := .venv/bin/python
 PKG := uk_trade_shock_study
 DATASET ?= $(error set DATASET=<path to enhanced_frs .h5>)
 
-.PHONY: bootstrap first-pass second-stage grid figures paper reproduce
+.PHONY: bootstrap first-pass second-stage grid figures paper test reproduce
 
 bootstrap:
 	uv sync
@@ -29,7 +29,12 @@ grid:
 	cd $(PKG) && ../$(PYTHON) fig_extra.py --dataset $(DATASET)
 
 paper:
-	cd paper && tectonic -X compile main.tex || \
-	(cd paper && latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex)
+	cd paper && (tectonic -X compile main.tex || \
+	latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex)
+
+# Tests: pinned-input hashes, macro definitions, paper/results sync, and a
+# first-pass reproduction check (public data only; no licensed microdata).
+test:
+	uv run pytest -q
 
 reproduce: first-pass second-stage grid paper

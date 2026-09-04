@@ -1,12 +1,12 @@
 # Notes and assumptions — multi-shock household-incidence pipeline
 
-Date run: 19 August 2026. One end-to-end script (`incidence.py`); all inputs
+Date run: 19 August 2026. One end-to-end script (`uk_trade_shock_study/incidence.py`); all inputs
 public, every raw file pinned by SHA256 (verified at each run), every reported
-number generated into `out/results.json` and `out/generated_multishock.tex`
+number generated into `results/results.json` and `results/generated_multishock.tex`
 (`\newcommand` macros prefixed `Ms`, no digits in macro names). Declared first
 stages are cited published estimates and are **not** re-estimated here.
 
-## 1. Pinned raw inputs (`raw/`)
+## 1. Pinned raw inputs (`data/raw/`)
 
 | File | Source | SHA256 (first/last 8) |
 |---|---|---|
@@ -104,8 +104,11 @@ every run.
   (2,760−2,236)/(2,760−1,208) = **33.8%**, constant across deciles by
   construction; the point-to-point cap ratio (3,549−2,500)/(3,549−1,277)
   = 46.2% is retained as a labelled variant and not used further.
-- Cross-check (context anchor, not calibration): our 6-month aggregate
-  cushion ≈ £7.8bn (FY-mean basis) vs OBR's £27bn EPG costing. Lower because OBR priced the
+- Cross-check (context anchor, not calibration): our six-month aggregate
+  cushion ≈ £15.6bn (FY-mean basis; the FY-mean caps already average the
+  Guarantee's six months over the year, so the FY aggregate is the six-month
+  effect at annual spending; an earlier version halved it again and reported
+  £7.8bn) vs the OBR's £27bn lifetime EPG costing (March 2023 EFO). Lower because OBR priced the
   EPG against the higher caps then expected for Jan–Jun 2023 (~£4,300+) over
   a longer window; same order of magnitude. £47bn = OBR total energy price
   subsidies anchor, also recorded.
@@ -177,8 +180,8 @@ every run.
 
 ## 11. Determinism
 
-Two consecutive runs produce byte-identical `out/results.json` and
-`out/generated_multishock.tex` (`run1.sha` = `run2.sha`, recorded in the
+Two consecutive runs produce byte-identical `results/results.json` and
+`results/generated_multishock.tex` (`run1.sha` = `run2.sha`, recorded in the
 pipeline root).
 
 ## Known gaps for a licensed-data / second-pass version
@@ -198,18 +201,24 @@ pipeline root).
 ## 12. Second stage (added in the referee rounds)
 
 Scripts: `second_stage_energy.py` (energy episode through PolicyEngine UK
-2.89.2; emits `out/generated_secondstage.tex`), `grid_energy.py`
+2.89.2; emits `results/generated_secondstage.tex`), `grid_energy.py`
 (rebase x stack sensitivity grid, fine sweep, announced-path variant),
 `fig_extra.py` (decomposition/paths figures, 999-rep household
 bootstrap), `vintage_and_tca.py` (two-vintage rulebook run with all
 input columns copied to 2022; TCA food second stage), `mpc_welfare.py`
 (MPC-weighted demand, Atkinson welfare). All write generated `.tex` to
-`out/` and copy to `../paper_multishock/`; paper/pipeline sync is
-verifiable by diff.
+`results/` and copy to `paper/`; paper/pipeline sync is verifiable by diff
+(`make test` checks it).
 
-Input dataset: `enhanced_frs_2023_24.h5` (policyengine-uk-data release,
-2023 vintage; 53,508 household records; person weights 69.8m).
-SHA256 prefix: `584ae33d80ca0431`. The QRF consumption imputation is upstream in
+Input dataset: `enhanced_frs_2023_24.h5` from policyengine-uk-data release
+1.55.12 (Hugging Face `policyengine/policyengine-uk-data-private`, revision
+`4e25f9d6b67244340161098e76bb5e67148eb1e7`; 2023 vintage; 53,508 household
+records; person weights 69.8m; household weights 31.4m against an ONS count
+of 28.4m).
+SHA256: `584ae33d80ca0431254610a3f8254d132da73477d31966d6446282861ecae50d`.
+The consumption block is imputed by quantile regression forest from the
+LCFS 2023-24 with electricity and gas calibrated to NEED 2023 kWh targets by
+income band (policyengine-uk-data `datasets/imputations/consumption.py`). The QRF consumption imputation is upstream in
 policyengine-uk-data; its provenance is outside this project and its
 error is a declared limitation of the within-decile results.
 

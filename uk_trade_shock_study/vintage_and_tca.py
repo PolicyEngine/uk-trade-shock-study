@@ -102,7 +102,7 @@ def main() -> None:
     b23 = sum(agg(v, 2023) for v in UPRATED_CASH)
     uprating_effect = b23 - b22                      # GBP bn from +10.1%
     per_point = uprating_effect / (100 * APRIL_2023_UPRATING)
-    gap_pp = 100 * (P["cpi_fy2022_23_mean"] - P["uprating_applied_apr_2022"])
+    gap_pp = 100 * (P["cpi_sep_2022_yoy"] - P["uprating_applied_apr_2022"])
     lag_cost = per_point * gap_pp                    # linear-in-rate step
 
     # CoL eligibility composition under both vintages.
@@ -139,9 +139,16 @@ def main() -> None:
     p10 = 100 * wquantile(ss[dec == 0], w[dec == 0], 0.10)
     p90 = 100 * wquantile(ss[dec == 0], w[dec == 0], 0.90)
 
+    # Energy-to-food size ratio on one basis: the household-stage realised
+    # energy aggregate over the household-stage TCA aggregate.
+    import json as _json
+    _ss = _json.loads((RESULTS_DIR / "second_stage_energy.json").read_text())
+    energy_to_tca = _ss["shock"]["realised_aggregate_gbp_bn"] / G
+
     # --- Macros -------------------------------------------------------------
     m = {
         "VinInputsCopied": f"{n}",
+        "EnergyToTcaRatio": f"{energy_to_tca:.0f}",
         "VinBenefitBaseRuleTwentyTwo": f"{b22:,.1f}",
         "VinBenefitBaseRuleTwentyThree": f"{b23:,.1f}",
         "VinUpratingEffectBn": f"{uprating_effect:,.1f}",

@@ -26,7 +26,8 @@
   "col_pensioner": 300.0,
   "col_disability": 150.0,
   "uprating_applied_apr_2022": 0.031,
-  "cpi_fy2022_23_mean": 0.101,
+  "cpi_sep_2022_yoy": 0.101,
+  "ebss_outturn_gbp_bn": 11.69,
   "sim_year": 2023,
   "ons_uk_households_m": 28.4,
   "cap_jan_2023": 4279.0,
@@ -117,7 +118,34 @@
     "change_gbp_bn": 0.0
    }
   },
-  "note": "calculator re-run with shocked energy inputs; entitlements condition on nominal income, which a price shock does not move, so no means-tested award responds"
+  "native_instruments": {
+   "epg_subsidy": {
+    "baseline_gbp_bn": 14.868,
+    "shocked_gbp_bn": 16.689,
+    "change_gbp_bn": 1.821
+   },
+   "cost_of_living_support_payment": {
+    "baseline_gbp_bn": 10.439,
+    "shocked_gbp_bn": 10.439,
+    "change_gbp_bn": 0.0
+   },
+   "energy_bills_rebate": {
+    "baseline_gbp_bn": 3.769,
+    "shocked_gbp_bn": 3.769,
+    "change_gbp_bn": 0.0
+   },
+   "household_benefits": {
+    "baseline_gbp_bn": 539.436,
+    "shocked_gbp_bn": 541.257,
+    "change_gbp_bn": 1.821
+   },
+   "household_net_income": {
+    "baseline_gbp_bn": 1588.098,
+    "shocked_gbp_bn": 1589.919,
+    "change_gbp_bn": 1.821
+   }
+  },
+  "note": "calculator re-run with shocked energy inputs. The fourteen cash benefits condition on nominal income, which the price shock does not move, so none responds. The model's own Energy Price Guarantee variable (epg_subsidy) reads energy consumption and does respond; its change is reported under native_instruments and classified as discretionary in the paper's taxonomy."
  },
  "uprating_shortfall": {
   "benefit_income_base_gbp_bn": 256.8,

@@ -7,12 +7,12 @@ deciles.
 
 Design notes, in response to referee comments on the first version:
 
-* The automatic response is a STRUCTURAL property of the rulebook, not
-  a measurement: no modelled entitlement takes energy consumption as an
-  input, so the calculator re-run (baseline vs shocked energy inputs,
-  every entitlement recorded) is guaranteed to return zero.  The re-run
-  verifies that the model encodes the statutory structure; the claim
-  itself rests on the rulebook, verifiable line by line.
+* The fourteen cash benefits condition on nominal income, which the
+  price shock does not move, so the calculator re-run (baseline vs
+  shocked energy inputs) returns zero for them.  The model's own Energy
+  Price Guarantee variable (epg_subsidy) does read energy consumption
+  and does respond; the re-run records that response separately
+  (NATIVE_INSTRUMENTS) and the paper classifies it as discretionary.
 * Both price paths are on ONE basis: financial-year mean caps.  The
   counterfactual FY2022-23 mean is (1,971 + 3,549)/2 with no Energy
   Price Guarantee; the realised FY mean is (1,971 + 2,500)/2; the
@@ -93,7 +93,7 @@ MEANS_TESTED = ["universal_credit", "pension_credit", "tax_credits",
 UPRATED_CASH = MEANS_TESTED + ["state_pension", "child_benefit", "pip", "dla",
                                "attendance_allowance", "carers_allowance",
                                "winter_fuel_allowance"]
-# The model's own 2022-23 instruments.  PolicyEngine UK 2.89.2 encodes the
+# The model's own 2022-23 instruments.  PolicyEngine UK 2.95.0 encodes the
 # Energy Price Guarantee (epg_subsidy, which reads domestic energy
 # consumption), the Energy Bills Rebate and the cost-of-living payments as
 # variables inside household_benefits.  The re-run below measures their

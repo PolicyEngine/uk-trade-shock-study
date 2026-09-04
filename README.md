@@ -52,7 +52,7 @@ release 1.55.12 (Hugging Face repository
 derived from the Family Resources Survey, licensed through the UK Data
 Service, so it cannot be redistributed here; access is through PolicyEngine's
 data repository under the same licence. The model version is pinned to
-policyengine-uk 2.89.2 in `uv.lock`.
+policyengine-uk 2.95.0 in `uv.lock`.
 
 ## Licence
 

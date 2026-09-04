@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Who Bears the Trade Shocks? Distributional incidence and fiscal cushioning of UK trade events, 2021-2026, through PolicyEngine UK"
 requires-python = ">=3.13"
 dependencies = [
-    "policyengine-uk==2.89.2",
+    "policyengine-uk==2.95.0",
     "huggingface_hub",
     "pandas==2.3.3",
     "numpy==2.1.3",

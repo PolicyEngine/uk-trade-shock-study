@@ -13,7 +13,7 @@
 \PassOptionsToPackage{hyphens}{url}
 \usepackage[colorlinks=true, citecolor=paperblue, linkcolor=paperblue, urlcolor=paperblue]{hyperref}
 \hypersetup{
-  pdftitle={Who Bears the Trade Shocks? Distributional Incidence and Fiscal Cushioning in the UK},
+  pdftitle={Who bears the trade shocks? Distributional incidence and fiscal cushioning in the UK},
   pdfauthor={Vahid Ahmadi},
   pdfsubject={Comparative household incidence of UK trade shocks 2021-2026 through the tax-benefit system},
   pdfkeywords={trade shocks, tariffs, Brexit, terms of trade, microsimulation, automatic stabilisers, public finances}
@@ -21,7 +21,7 @@
 \usepackage{natbib}
 \bibliographystyle{apalike}
 
-\title{\Large\bfseries Who Bears the Trade Shocks?\\[0.15cm] Distributional Incidence and Fiscal Cushioning in the UK\thanks{\textbf{Acknowledgements:} I thank Max Ghenis and Seyed Mahdi Hosseini for valuable comments and helpful discussions.}\\[0.7cm]}
+\title{\Large\bfseries Who bears the trade shocks?\\[0.15cm] Distributional incidence and fiscal cushioning in the UK\thanks{\textbf{Acknowledgements:} I thank Max Ghenis and Seyed Mahdi Hosseini for valuable comments and helpful discussions.}\\[0.7cm]}
 \author{Vahid Ahmadi\thanks{Research Associate at PolicyEngine. Email: \href{mailto:vahid@policyengine.org}{vahid@policyengine.org}.}}
 \date{\small August 2026}
 
@@ -38,21 +38,29 @@
 \maketitle
 
 \begin{abstract}
-\noindent This paper examines how far the UK tax and benefit system
-cushioned the two major price-led trade shocks of 2021 to 2026,
-dearer food after Brexit and the 2022 energy surge, within a comparative
-dossier of five trade events (adding US tariffs and the India and
-CPTPP agreements). The analysis is a policy simulation:
-event magnitudes are imported from published estimates, and the two
-price shocks run through the statutory system in PolicyEngine UK. Both shocks were regressive,
-hitting lower-income deciles hardest. The system provided no automatic offset to
-price rises; uprating lagged inflation by a year, costing benefit
-recipients roughly \pounds 15 billion against all inflation; the energy-specific
-instruments returned roughly 50 to 60 per cent of the counterfactual
-shock (60 to 77 with cost-of-living support); the
-post-Brexit food price rise attracted no dedicated instrument. On imputed data, an upper
-bound puts over ninety per cent of exposure variance within income
-deciles.
+\noindent This paper simulates two price-led shocks of 2021 to 2026, the
+post-Brexit food price rise and the 2022 energy surge, through the UK
+tax and benefit system in PolicyEngine UK, within a comparative dossier
+of five trade events (adding US tariffs and the India and CPTPP
+agreements). Event magnitudes are imported from published estimates and
+never re-estimated; the results are conditional statutory incidence,
+not causal effects of the events. Both shocks took a larger share of
+spending in lower-income deciles than in higher ones. Holding nominal
+incomes fixed, the fourteen modelled cash benefits did not change; the
+model's own Energy Price Guarantee variable responded by
+\pounds\SsNativeEpgDeltaBn\ billion, which the paper classifies as
+discretionary. Benefit uprating followed the previous September's
+inflation, and a rulebook-vintage run puts the crisis-year difference
+against contemporaneous indexation at roughly \pounds 15 billion, a
+figure that also carries other parameter changes between the two rule
+years. Modelled energy-specific payments equalled
+\SsGridUnityEbssRatePct\ to \SsAnnEbssRatePct\ per cent of the
+counterfactual energy shock across the rebase and price-path variants
+(\SsGridUnityFullRatePct\ to \SsAnnFullRatePct\ per cent including the
+general cost-of-living payments); no instrument was legislated against
+the food price rise. On imputed exposure, \SsWithinPct\ per cent of
+the variance in the energy burden lies within income deciles, a
+statistic that inherits the imputation's own dispersion.
 \end{abstract}
 
 \medskip
@@ -70,6 +78,22 @@ deciles.
 \input{sections/results}
 \input{sections/roadmap}
 \input{sections/discussion}
+
+\section*{Data and code availability}
+
+The pipeline, the pinned public inputs, the generated results and this
+manuscript are at \url{https://github.com/PolicyEngine/uk-trade-shock-study}
+(AGPL-3.0). The first pass uses only public inputs, each pinned by SHA256
+and verified on every run. The second stage uses
+\texttt{enhanced\_frs\_2023\_24.h5} from policyengine-uk-data release
+1.55.12 (SHA256 584ae33d80ca0431254610a3f8254d132da73477d31966d6446282861ecae50d),
+derived from the Family Resources Survey under the UK Data Service
+licence and available through PolicyEngine's data repository under the
+same licence; the model is policyengine-uk 2.89.2. The US-tariff
+episode's three constants are taken from an unpublished companion
+manuscript whose pipeline is not part of this repository, and they
+should be read as scenario inputs until that manuscript and its code are
+public.
 
 \clearpage
 \input{sections/references}

@@ -353,21 +353,30 @@ def episode_e2(fs22, inc22):
             "share_of_gross_shock": round(cushion_share, 4),
             "cap_ratio_point_to_point": round(cushion_share_p2p, 4),
             "aggregate_gbp_bn_per_year": round(gross_bn - net_bn, 1),
-            "aggregate_gbp_bn_six_months": round((gross_bn - net_bn) / 2, 1),
+            # The financial-year mean caps already average the Guarantee's
+            # six months (Oct 2022 - Mar 2023) over the year: the FY cushion
+            # 2,760 - 2,235.5 = 524.5 = (3,549 - 2,500) / 2.  So the FY-basis
+            # aggregate IS the six-month Guarantee effect at annual spending.
+            # An earlier version divided it by two again and reported a
+            # quarter-year amount as "six months".
+            "aggregate_gbp_bn_six_months": round(gross_bn - net_bn, 1),
             "note": ("Cushioning share is constant across deciles by "
                      "construction (both shocks proportional to the same "
-                     "spend base); the GBP cushion differs by decile."),
+                     "spend base); the GBP cushion differs by decile. The "
+                     "six-month figure equals the FY-basis aggregate because "
+                     "the FY-mean caps already average the Guarantee's "
+                     "half-year over the year."),
         },
         "cross_check": {
             "obr_epg_cost_bn": D["obr_epg_cost_bn"],
             "obr_energy_price_subsidies_bn": D["obr_energy_subsidy_bn"],
             "note": ("Order-of-magnitude context anchor only. Our six-month "
-                     "cushion (GBP ~15bn) sits below OBR's GBP 27bn EPG "
-                     "costing because OBR priced the EPG against the higher "
-                     "caps then expected for Jan-Jun 2023 (GBP ~4,300+), over "
-                     "a longer window, on wholesale-price-dependent volumes; "
-                     "our counterfactual holds the Oct 2022 cap (GBP 3,549) "
-                     "fixed. Same order of magnitude, as required."),
+                     "cushion (GBP ~15.6bn) sits below the OBR's GBP 27bn "
+                     "lifetime EPG costing (March 2023 EFO) because the OBR "
+                     "priced the EPG against the higher caps then expected "
+                     "for 2023, over a longer window, on wholesale-price-"
+                     "dependent volumes; our counterfactual holds the Oct "
+                     "2022 cap (GBP 3,549) fixed. Same order of magnitude."),
         },
     }
 

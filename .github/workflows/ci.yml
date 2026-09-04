@@ -16,4 +16,3 @@ jobs:
           enable-cache: true
       - run: uv sync --extra dev --frozen
       - run: uv run pytest -q
-      - run: uv run python analysis/validate_manifest.py

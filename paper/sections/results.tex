@@ -5,8 +5,7 @@
 Table~\ref{tab:ms-anatomy} is the comparative dossier's summary
 object, the five episodes side by side under the common lens; the
 paper's core results are the second-stage sections that follow
-(Sections~\ref{sec:results-secondstage}--\ref{sec:results-mpc}). Three regularities
-organise everything that follows. First, \emph{the negative shocks were regressive and the positive episodes
+(Sections~\ref{sec:results-secondstage}--\ref{sec:results-mpc}). First, \emph{the negative shocks were regressive and the positive episodes
 were not progressive}: on the realised 2022--23 path the energy shock
 cost the bottom decile \MsEnergyRealisedPctSpendDecOne\ per cent of its
 spending against \MsEnergyRealisedPctSpendDecTen\ per cent at the top
@@ -16,19 +15,21 @@ spending against \MsEnergyRealisedPctSpendDecTen\ per cent at the top
 window-average path (\MsTcaPctSpendDecOne\ against
 \MsTcaPctSpendDecTen\ at end-state), while the India agreement's consumer
 gains are spread almost exactly proportionally (under 0.02 per cent
-of spending in every decile) and are two orders of magnitude smaller. Second,
+of spending in every decile) and are two orders of magnitude smaller
+than the energy shock and one order smaller than the food shock. Second,
 \emph{regressivity follows the affected category's budget-share
 gradient}: food takes \MsTcaBudgetSharePctDecOne\ per cent of
 bottom-decile spending against \MsTcaBudgetSharePctDecTen\ at the
 top, energy \MsEnergyBudgetSharePctDecOne\ against
 \MsEnergyBudgetSharePctDecTen, while clothing and footwear, where
 the CETA gains land, are flat across the distribution: the
-composition of a shock, not just its size, determines who bears it. Third, \emph{the cushioning came
-from different parts of the state}: the one earnings-led episode was
-cushioned automatically (\MsUSTariffDisplacementCushionPct--%
-\MsUSTariffWageCutCushionPct\ per cent through the tax--benefit
-system, from the companion study), while the price-led energy episode
-was cushioned by discretion: the Energy Price Guarantee absorbed
+composition of a shock, not just its size, determines who bears it. Third, \emph{the modelled responses run
+through different mechanisms}: the one earnings-led episode, a
+scenario imported from the unpublished companion study, is cushioned
+through the automatic tax--benefit system
+(\MsUSTariffDisplacementCushionPct--%
+\MsUSTariffWageCutCushionPct\ per cent), while the price-led energy
+episode was cushioned by discretionary instruments: the Energy Price Guarantee absorbed
 \MsEnergyCushionShareFyPct\ per cent of the gross shock on the
 financial-year basis (the point-to-point cap ratio is
 \MsEnergyCushionSharePct\ per cent), and the
@@ -58,13 +59,16 @@ CPTPP, 2024-- & benchmark & \pounds\MsCptppGdpBn\,bn$^{g}$ & \multicolumn{2}{c}{
 estimand, computed at the household stage
 (Section~\ref{sec:results-tca-ss}): no discretionary instrument was
 legislated against this episode and the automatic response to a price
-shock is structurally zero. $^{i}$~an accounting identity:
-because the Guarantee capped a price, the share is constant across
-deciles by construction; it is on the financial-year basis used
-throughout (the point-to-point cap ratio is
-\MsEnergyCushionSharePct\ per cent). $^{m}$~this column carries only the common cushioning estimand of
-Section~\ref{sec:framework}, computed at the household stage for the
-two price episodes; the tariff episode's earnings-channel
+shock is structurally zero. $^{i}$~the Guarantee alone, as a share of the \emph{gross}
+counterfactual shock (\pounds\MsEnergyGrossAggBn\,bn on the
+financial-year basis); the realised shock in the size column is net of
+it. Because the Guarantee capped a price, the share is constant across
+deciles by construction (the point-to-point cap ratio is
+\MsEnergyCushionSharePct\ per cent); with the Bills Support Scheme the
+energy-specific stack returns \SsGridPaperEbssRatePct\ per cent at the
+household stage (Section~\ref{sec:results-secondstage}).
+$^{m}$~this column reports the cushioning estimand of
+Section~\ref{sec:framework} for the two price episodes; the tariff episode's earnings-channel
 stabilisation coefficient
 (\MsUSTariffDisplacementCushionPct--\MsUSTariffWageCutCushionPct\ per
 cent, imported from the companion study \citep{ahmadi2026}) answers a
@@ -86,9 +90,7 @@ policy/market: the energy episode is trade-\emph{transmitted}, not a
 policy act. ``Zero'' records that the UK did not retaliate, so no
 consumer price vector exists. Cushioning entries measure different
 mechanisms (a pass-through convention, a price subsidy, a tax--benefit
-stabilisation coefficient) and are not summable; the common cushioning
-estimand of Section~\ref{sec:framework} is computed at the
-microsimulation stage, not here. Category budget-share gradients, which
+stabilisation coefficient) and are not summable. Category budget-share gradients, which
 generate these incidence patterns, are in
 Figure~\ref{fig:budget-shares}; full per-decile detail in
 Table~\ref{tab:decile-full} (whose derived columns are computed by
@@ -134,15 +136,14 @@ year, \pounds\MsTcaWindowAvgAggBn\ billion a year in aggregate, regressive as a 
 against \MsTcaBudgetSharePctDecTen\ at the top. (The estimation window opens in December 2019, thirteen months before
 the TCA took effect; the linear-ramp and window-average conventions
 both absorb the pre-entry months as zeros.) This is an anchoring
-choice, not a cross-check that happened to pass: the pipeline's own linear-ramp
-cumulative overshoots the published figure by a factor of
+choice: the pipeline's own linear-ramp cumulative overshoots the published figure by a factor of
 \MsTcaCrossCheckRatio, and the window-average path is obtained by
 rescaling to the published cumulative. The TCA row therefore carries no
 information from the pipeline beyond the ONS food-share gradient, and
 the level is the published estimate's. The end-state figures
 (\pounds\MsTcaAnnGbpDecOne--\MsTcaAnnGbpDecTen\ a year;
 \pounds\MsTcaAggBnPerYear\ billion) are the unrescaled variant; the
-1.68 overshoot shows the price effect was back-loaded, so end-state
+\MsTcaCrossCheckRatio\ overshoot shows the price effect was back-loaded, so end-state
 overstates the lived burden. The
 household stage would carry the published path if this episode were
 extended to it (Section~\ref{sec:roadmap}).
@@ -203,11 +204,13 @@ read in that narrower sense. The comparison with
 is offered only as an order-of-magnitude check, since their statistic
 concerns the aggregate price index rather than the wholesale component
 of one regulated tariff. Third,
-\emph{timing}: the annualised run-rate holds the October 2022 cap for
-a full year, which no household experienced; the six-month window
-figure is \pounds\MsEnergyCushionAggSixMonthsBn\ billion of EPG
-absorption against the OBR's \pounds\MsEnergyObrEpgBn\ billion
-costing, a context anchor, not a validation. Within those bounds the shape is
+\emph{timing}: the counterfactual holds the October 2022 cap for a
+full year, which no household experienced. Because both paths are
+financial-year means, the \pounds\MsEnergyCushionAggSixMonthsBn\
+billion of Guarantee absorption already represents the instrument's
+six months at annual spending; the OBR's \pounds\MsEnergyObrEpgBn\
+billion lifetime costing (March 2023) is a context anchor on different
+prices and a longer window. Within those bounds the shape is
 robust: the Energy Price Guarantee truncated the rise to
 +\MsEnergyNetFactorPct\ per cent, absorbing
 \pounds\MsEnergyCushionGbpDecOne\ a year for a bottom-decile
@@ -225,18 +228,17 @@ spending, so exposure within a decile is far more dispersed than the
 gradient between deciles, an argument for the household-record stage,
 where that dispersion is observable, and against reading any
 decile-mean cushioning share as a statement about individual
-households. Second, a proportional instrument is not thereby a
-mistaken one: \citet{levell2025} find that an optimal package retains
-a strictly positive price subsidy even when transfers can condition on
-income and past usage, precisely because income targets energy
-exposure so poorly. The finding here is descriptive, the cap
-cushioned proportionally, not a welfare verdict. Whether the overall
+households. Second, \citet{levell2025} find that an optimal package in their
+welfare model retains a strictly positive price subsidy even when
+transfers can condition on income and past usage, because income
+targets energy exposure poorly. The finding here is descriptive: the
+cap cushioned proportionally. Whether the overall
 discretionary response was progressive cannot be judged from the EPG
 alone: the Energy Bills Support Scheme's flat \pounds 400, the
 means-tested cost-of-living payments and the council-tax rebate, jointly of the same order as the EPG and deliberately targeted, are
 not modelled in this first pass. Section~\ref{sec:results-secondstage}
-settles the question on household records: with the whole stack
-modelled, the discretionary response was progressive, not proportional.
+reports the household-record result: with the whole modelled stack,
+the cushioning rate falls with income.
 
 \begin{figure}[tbp]\centering
 \includegraphics[width=\textwidth]{figures/fig_energy_epg.png}
@@ -297,7 +299,7 @@ indexation (an upper-bound counterfactual under which no actual
 benefit system operates), a single adult's standard allowance fell
 \pounds\MsUcLagCostGbp\ short over 2022--23
 (\MsUcLagCostPctAllowance\ per cent of the annual allowance); against
-the policy-feasible alternative of a single April 2022 uprating at
+the alternative of a single April 2022 uprating at
 contemporaneous annual CPI, \pounds\MsUcLagCostFlatAltGbp. Both
 figures are for the single-adult standard allowance only, before
 elements and caseload weighting; the range, not either point, is the
@@ -309,23 +311,23 @@ at roughly \pounds 12 billion, a figure the second stage's
 \pounds\SsUpratingShortfallBn\ billion (Section~\ref{sec:results-secondstage})
 does not reproduce: the bases and price counterfactuals differ, the two
 are stated side by side rather than reconciled, and the reconciliation
-is an explicit task of the extension (Section~\ref{sec:roadmap}). What is new here is the
+is an explicit task of the extension (Section~\ref{sec:roadmap}). This paper's addition is the
 join: the lag priced against trade-shock incidence, on the same
 households, across episodes. The lag also does not wash out over the
 cycle: \citet{judgemurphy2023} count ten of fifteen years in which
 working-age benefits rose by less than outturn inflation. The shortfall
-is lost to timing alone, at exactly the moment the terms-of-trade shock
-peaked. Figure~\ref{fig:uprating-lag} shows the gap month by month. Second,
+arises from timing, and it coincides with the period in which the
+terms-of-trade shock peaked. Figure~\ref{fig:uprating-lag} shows the gap month by month. Second,
 sequencing: the \pounds\MsUcUpliftRemovalGbp-a-year
 Covid uplift was removed in October 2021, months before the energy
-shock landed, so the lowest-income households entered the largest
-price-led trade shock of the period from a rulebook trough. Together
+shock landed, so the uplift's end preceded the largest price-led trade
+shock of the period. Together
 with the EPG's absorption of \MsEnergyCushionShareFyPct\ per cent of the
-gross price shock, the seed picture of the British response is:
-\emph{automatic on the earnings margin, discretionary on the price
-margin, and lagged precisely where the price shocks bit hardest}, with
-the progressivity of the full discretionary stack an open question for
-the microsimulation stage. The microsimulation
+gross price shock, the seed picture is: an automatic response on the
+earnings margin (in the companion study's scenario), a discretionary
+response on the price margin, and indexation that followed prices with
+a year's lag, with the incidence of the full discretionary stack an
+open question for the microsimulation stage. The microsimulation
 stage turns these representative-household facts into
 population-weighted decompositions.
 
@@ -375,11 +377,10 @@ quantified in the two-axis grid of Table~\ref{tab:grid}.
 \emph{Coverage.} The Energy Price Guarantee enters as the difference
 between the two capped paths, the Energy Bills Support Scheme as its
 flat \pounds 400 to every weighted household (so the modelled
-\pounds\SsEbssBn\ billion exceeds the roughly \pounds 11 billion
-scheme outturn by about 14 per cent: the \SsWeightExcessPct\ per cent
-weight excess plus a residual of roughly four points from
-non-domestic-supply households in the weighted base and outturn
-rounding), and the 2022--23
+\pounds\SsEbssBn\ billion exceeds the \pounds\SsEbssOutturnBn\ billion
+NAO outturn by about \SsEbssExcessPct\ per cent, less than the
+\SsWeightExcessPct\ per cent weight excess because some weighted
+households have no domestic supply), and the 2022--23
 cost-of-living payments on simulated entitlement in the simulation
 year, an approximation in both directions: simulated entitlement is
 not receipt in the actual 2022 qualifying windows, the \pounds 150
@@ -426,7 +427,7 @@ the ONS FYE2022 mean total-spending base the first pass divides by
 (factor \SsSpendRebase), so second-stage shares are level-comparable
 with the first pass. The rebase factors are common scalars, so the variance decomposition
 and all quantile ratios are invariant to them (the within-share is
-93.4 per cent on either base, verified by regeneration). Aggregate pounds, which share a basis, reconcile to
+\SsWithinPct\ per cent on either base, verified by regeneration). Aggregate pounds, which share a basis, reconcile to
 within about five per cent.
 
 \emph{Reconciliation with the first pass.} On the same
@@ -445,24 +446,32 @@ with the unreconciled gap in mind.
 \subsection{The automatic response is structural}
 
 Every means-tested award in the UK conditions on nominal income, and a
-price shock leaves nominal income untouched: the automatic response is
-therefore zero by the structure of the statutory rules, not as an
-empirical finding. The tax--benefit calculator is run twice, once on
-baseline inputs and once with energy inputs shocked to the realised
-path, and the change in every entitlement is
-\pounds\SsAutomaticBn\ billion (\SsAutomaticRatePct\ per cent of the
-shock); but because no modelled entitlement takes energy consumption as
-an input, this re-run confirms that the model encodes the statutory
-structure rather than measuring an independent quantity, and the claim
-rests on the rulebook, which is verifiable line by line. It is also a
+price shock leaves nominal income untouched, so the fourteen cash
+benefits cannot respond within the year: the zero is a property of
+the statutory rules and of the fixed nominal inputs, not an empirical
+finding. The tax--benefit calculator is run twice, once on baseline
+inputs and once with energy inputs shocked to the realised path, and
+the change across the fourteen benefits is \pounds\SsAutomaticBn\
+billion (\SsAutomaticRatePct\ per cent of the shock). The model does
+contain one entitlement that reads energy consumption: PolicyEngine
+UK's own Energy Price Guarantee variable, which pays
+\pounds\SsNativeEpgBn\ billion in the 2023 baseline and rises by
+\pounds\SsNativeEpgDeltaBn\ billion under the shocked inputs, moving
+household benefits by the same amount. The paper classifies the
+Guarantee as discretionary and models it on the financial-year basis
+of Section~\ref{sec:secondstage-method} rather than through the
+model's calendar-year variable; the model's cost-of-living payment
+variable (\pounds\SsNativeColBn\ billion at 2023--24 amounts) sits
+inside the HBAI income that ranks the deciles, so the decile ranking
+already reflects that instrument. It is also a
 first-order claim: a shock of this size moved nominal incomes in
 general equilibrium, wage bargaining, self-employment margins, and
 those excluded channels (Section~\ref{sec:framework}) would trigger
 means-tested responses the first-order calculation cannot. This is
 \citet{cohenfollette2000}'s macro finding, that automatic stabilisers
-do little against a supply shock, at the household level, and sharper
-than their version, because for a pure price shock the mechanical
-response is not merely small but absent.
+do little against a supply shock, at the household level: for a pure
+price shock with nominal incomes fixed, the means-tested response is
+zero.
 
 Two qualifications bound the claim. It is a statement about the
 \emph{modelled} statutory system, so channels outside it, the Warm
@@ -483,16 +492,23 @@ cost of that gap is here computed with a genuine rulebook-vintage
 run rather than a flat base-times-gap multiplication: the enhanced
 FRS is a single-period dataset, so every input column is copied to
 the 2022 period and the \emph{same} households are scored under the
-2022 and 2023 parameter systems. The legislated April 2023 uprating
-(10.1 per cent) moves the fourteen uprated cash benefits from
-\pounds\SsVinBenefitBaseRuleTwentyTwo\ to
-\pounds\SsVinBenefitBaseRuleTwentyThree\ billion: an effect of
+2022 and 2023 parameter systems. Scoring the same households under the 2023
+parameter system instead of the 2022 system moves the fourteen cash
+benefits from \pounds\SsVinBenefitBaseRuleTwentyTwo\ to
+\pounds\SsVinBenefitBaseRuleTwentyThree\ billion:
 \pounds\SsVinUpratingEffectBn\ billion through the full statutory
-structure, tapers included, or \pounds\SsVinPerPointBn\ billion per
-uprating point. At that measured rate, the \SsUpratingGapPp\ points
-withheld in the crisis year cost
-\pounds\SsVinLagCostBn\ billion (the final step is linear in the
-rate, an approximation declared as such), against the roughly
+structure, tapers included. The April 2023 uprating (10.1 per cent,
+applied to thirteen of the fourteen; the winter fuel payment is a
+fixed cash amount) is the largest change between the two systems but
+not the only one: the benefit cap and Universal Credit work allowances
+rose under the same order, the Universal Credit childcare caps rose in
+June 2023, and the National Insurance primary threshold rose in July
+2022, so \pounds\SsVinPerPointBn\ billion per uprating point is a
+calibration that a parameters-only reform would refine. At that rate,
+the \SsUpratingGapPp\ points by which the April 2022 uprating fell
+short of the September 2022 inflation rate correspond to
+\pounds\SsVinLagCostBn\ billion over the crisis year (the final step
+is linear in the rate, an approximation declared as such), against the roughly
 \pounds 12 billion aggregate real fall of \citet{obrwelfare2022} on a
 different base and counterfactual, and below the
 \pounds\SsUpratingShortfallBn\ billion a flat multiplication of the
@@ -502,11 +518,11 @@ It is deliberately \emph{not} expressed as a share of the energy
 shock: the numerator is the erosion of benefit income by all inflation,
 and dividing it by one commodity's counterfactual would attribute to
 energy what food, services and rents also did. What the number
-establishes is narrower and still worth having, that the one automatic
-channel available to a price shock was running backwards while the
-shock landed.
+establishes is narrower: the one automatic price-side channel,
+indexation, delivered its April 2022 step below the inflation of the
+year in which the shock landed.
 
-\subsection{The discretionary response was large and progressive}
+\subsection{The discretionary response by income decile}
 
 Against a counterfactual shock of \pounds\SsCounterAggBn\ billion
 (\SsCounterRisePct\ per cent on the FY basis), the
@@ -517,31 +533,29 @@ cent (\SsGridPaperEbssDOne\ per cent at the bottom decile,
 \SsGridPaperEbssDTen\ at the top). Adding the cost-of-living payments
 (\pounds\SsColBn\ billion) takes the full stack to
 \pounds\SsDiscretionaryBn\ billion, or \SsDiscretionaryRatePct\ per
-cent. The attribution choice must be stated: the cost-of-living
+cent. Two attributions are reported: the cost-of-living
 payments were legislated against the general inflation episode, not
 energy specifically, so dividing them by the energy-only
 counterfactual over-attributes to this shock by the same logic on
-which the preceding subsection refuses to divide the indexation
-shortfall by the energy shock; both rates are therefore carried, the
-energy-specific one as the conservative reading. On either attribution it was progressive: on the full stack,
+which the preceding subsection does not divide the indexation
+shortfall by the energy shock. On either attribution the rate falls
+with income: on the full stack,
 \SsCushionPctDecOne\ per cent of the bottom decile's counterfactual
 loss was returned against \SsCushionPctDecTen\ per cent of the top
 decile's, because flat payments are worth more relative to a small
-bill and the targeted payments went where they were aimed. Two
-features of the profile deserve stating rather than smoothing. First,
-the bottom decile's \emph{over}-compensation (\SsCushionPctDecOne\
+bill and the means-tested payments concentrate in the lower deciles. Two
+features of the profile deserve stating rather than smoothing. First, the
+bottom decile's rate above 100 per cent (\SsCushionPctDecOne\
 per cent, and \SsCushionPctDecThree\ for the third decile) exists
 only on the full-stack attribution, the bootstrap below puts it
-within sampling error of exact compensation, and it says only that
+within sampling error of 100 per cent, and it says only that
 the instruments returned about as much as the counterfactual energy
 cost, not that those households were made whole against inflation
 generally, which the preceding subsection shows they were not.
 Second, the gradient is not monotone: the sixth decile
-(\SsCushionPctDecSix\ per cent) sits below the fifth. The
-first-pass inference that discretion cushioned \emph{proportionally}
-was an artefact of modelling the price cap alone; adding the
-instruments the cap sat alongside reverses it, and the correction runs
-in the government's favour. Figure~\ref{fig:decomp} shows the anatomy in
+(\SsCushionPctDecSix\ per cent) sits below the fifth. Adding the Bills Support Scheme and the cost-of-living payments
+changes the pattern from the Guarantee's constant rate to rates that
+fall with income. Figure~\ref{fig:decomp} shows the anatomy in
 pounds: the counterfactual shock by decile, split into the part the
 household bore and what each instrument returned. A household bootstrap
 (\SsBootReps\ resamples of the record base, following the practice
@@ -550,13 +564,11 @@ sampling interval of \SsRateLo--\SsRateHi\ per cent around the
 \SsDiscretionaryRatePct\ per cent aggregate rate (an interval
 narrower than the disclosed modelling approximations; it bounds
 sampling noise, not specification error. Recalibrating the EBSS to
-its roughly \pounds 11 billion scheme outturn, the largest known
-bias, moves the full-stack rate from \SsDiscretionaryRatePct\ to
-\SsCalFullRatePct\ per cent, so the headline is robust to it), and
+its \pounds\SsEbssOutturnBn\ billion NAO outturn moves the full-stack
+rate from \SsDiscretionaryRatePct\ to \SsCalFullRatePct\ per cent), and
 \SsCushionDecOneLo--\SsCushionDecOneHi\ per cent around the bottom
-decile's \SsCushionPctDecOne: the over-compensation of the bottom
-decile is therefore not statistically distinguishable from exact
-compensation, and the net borne amount spans zero in each of the
+decile's \SsCushionPctDecOne: the bottom decile's rate is therefore not statistically
+distinguishable from 100 per cent, and the net borne amount spans zero in each of the
 bottom five deciles (95 per cent intervals
 \pounds\SsNetLoDecOne--\SsNetHiDecOne,
 \pounds\SsNetLoDecTwo--\SsNetHiDecTwo,
@@ -587,27 +599,25 @@ Sampling uncertainty only; imputation uncertainty is not captured.}
 Table~\ref{tab:grid} varies the two conventions the headline rates
 depend on: the rebase factor (the paper's computed \SsRebaseFactor,
 an intermediate 0.8, and 1.0, no rebase) and the discretionary stack,
-built up one instrument at a time. Two facts organise the twelve
-cells. First, the Guarantee's cushioning rate
+built up one instrument at a time. First, the Guarantee's cushioning rate
 (\SsGridPaperEpgRatePct\ per cent) is invariant to \emph{both}
 axes, to the rebase because a price cap scales with the bill it
 truncates, and across deciles by the accounting identity already
 noted, so every pound of progressivity and every point of
 rebase-sensitivity in the headline comes from the flat-cash
-instruments. Second, the headline is bounded, not fragile: the full
+instruments. Second, across the grid the full
 stack cushions \SsGridPaperFullRatePct\ per cent of the
 counterfactual shock at the paper's rebase and
 \SsGridUnityFullRatePct\ per cent with no rebase at all, and the
 progressive gradient survives every cell: without rebasing, the full
 modelled stack returns \SsGridUnityFullDOne\ per cent of the bottom
 decile's loss against \SsGridUnityFullDTen\ per cent of the top
-decile's. The qualitative
-findings, discretionary, large, progressive, hold across the grid;
-the bottom decile's over-compensation is the one result that is
+decile's. The direction of the results holds across the grid;
+the bottom decile's rate above 100 per cent is the one result that is
 basis-dependent, present at the paper's rebase
 (\SsGridPaperFullDOne\ per cent) and absent without rebasing
 (\SsGridUnityFullDOne\ per cent). One external anchor bears on the
-choice of cell and must be confronted rather than footnoted: at a
+choice of cell: at a
 rebase of one the EPG absorption is \pounds\SsEpgBn\ billion divided
 by the rebase factor \SsRebaseFactor, about \pounds 27 billion,
 close to the OBR's \pounds 27 billion EPG costing, while the paper's
@@ -616,8 +626,7 @@ coincidental, the OBR priced the Guarantee against the higher caps
 then expected for 2023, over a longer window, on price-dependent
 volumes, but it cautions against reading the rebased cell as the
 truth and the unrebased one as a variant. The paper's headline
-statements are therefore confined to what holds across the grid, and
-the basis-dependent over-compensation is reported as exactly that.
+statements are therefore confined to what holds across the grid, and the basis-dependent rate above 100 per cent is reported as exactly that.
 The counterfactual \emph{path} is also varied: holding the October
 2022 cap through the financial year is a convention, not a forecast,
 so the grid is complemented by an \emph{announced-path} variant using
@@ -625,9 +634,11 @@ Ofgem's November 2022 announcement of the January 2023 cap
 (\pounds 4{,}279), giving an FY mean of \pounds\SsAnnCounterFyCap\
 and a counterfactual shock of \pounds\SsAnnCounterAggBn\ billion. On
 that path the Guarantee absorbs \SsAnnEpgRatePct\ per cent and the
-full stack \SsAnnFullRatePct\ per cent: the paper's headline
-convention is the \emph{conservative} end of the path axis as well as
-of the attribution axis.
+full stack \SsAnnFullRatePct\ per cent: the paper's held-cap convention
+gives the lower rate on the path axis and the energy-specific
+attribution the lower rate on the attribution axis; neither is a
+bound, because the rebase axis is a convention rather than an
+estimate.
 
 \begin{table}[tbp]
 \centering
@@ -676,9 +687,9 @@ household expenditure in the bottom decile to
 regressive and not monotone, the third decile
 (\SsBurdenPctSpendDecThree\ per cent) sits marginally above the
 first. On the unified base the levels sit close to their first-pass
-counterparts (\SsBurdenPctSpendDecOne\ against 5.93 per cent at the
-bottom decile), and energy exposure separates households far less
-cleanly by income than decile tables imply.
+counterparts (\SsBurdenPctSpendDecOne\ against
+\MsEnergyRealisedPctSpendDecOne\ per cent at the bottom decile), and
+energy exposure varies within income deciles as well as between them.
 Decomposing the variance of that burden puts
 \SsBetweenPct\ per cent of it between deciles and
 \SsWithinPct\ per cent within them on the paper's preferred basis
@@ -697,13 +708,13 @@ the dispersion in who was exposed. Within the bottom decile alone the burden run
 
 Two limits bound what this establishes. The exposure is
 \emph{imputed}, enhanced-FRS energy spending is a quantile-regression
-forest fitted to LCFS donors, so part of the within-decile dispersion
-is donor-model variation, and the decomposition is a bound rather than
-a measurement of true dispersion, the bootstrap interval above is
+forest fitted to LCFS donors, so part of the within-decile dispersion is donor-model variation, and
+the decomposition describes the imputed exposure without establishing
+that it bounds the true dispersion, the bootstrap interval above is
 sampling uncertainty only, blind to the donor-model error, and a
 direct validation of the imputed within-decile spread against the
-LCFS donor sample, which observes it, is left to the extension; \citet{levell2025} use transaction
-data precisely for this reason. And the estimand is the variance of one
+LCFS donor sample, which observes it, is left to the extension; \citet{levell2025} use panel
+data on household energy spending for this reason. And the estimand is the variance of one
 commodity's expenditure share, not the variance of welfare changes from
 product-level trade exposure, which is what
 \citet{borusyakjaravel2024} decompose: the results point the same way,
@@ -747,7 +758,8 @@ pass up to the grossing-weight excess; the new content of this stage
 is the distribution, not the level.
 The burden is regressive (\SsTcaSsPctSpendDecOne\ per cent of
 bottom-decile spending against \SsTcaSsPctSpendDecTen\ at the top,
-matching the first pass's 0.35 and 0.20 almost exactly at the bottom;
+against the first pass's \MsTcaWindowAvgPctSpendDecOne\ and
+\MsTcaWindowAvgPctSpendDecTen, matching at the bottom;
 the top-decile pound figure sits about a third above the first pass,
 a distributional divergence of the consumption imputation worth
 noting beside Section~\ref{sec:results-withindec}'s caveats) and larger in pounds at the top
@@ -765,14 +777,14 @@ same attribution logic as the discretionary subsection above: the
 general cost-of-living payments that are the non-conservative part of
 the energy stack also cushioned food-price inflation in 2022--23, so
 they cannot count toward energy and as zero for food. Episode-specific,
-the contrast stands and is the paper's sharpest comparative fact:
-against one price-led trade shock the state legislated instruments
-returning \SsGridPaperEbssRatePct\ per cent of the counterfactual
-loss; against the other, of the same sign and the same regressivity,
-it legislated none. Which price shock received its own instruments was not decided by
-regressivity alone: size, speed and salience all separated the two
-episodes, and the food shock, fifteen times smaller and slower-moving,
-received none.
+the contrast is the paper's central comparative fact: against the
+energy shock the state legislated instruments returning
+\SsGridPaperEbssRatePct\ per cent of the counterfactual loss; against
+the food shock, of the same sign and a similar spending-share
+gradient, it legislated none. The two episodes differed in size (the
+household-stage energy aggregate is \SsEnergyToTcaRatio\ times the
+food aggregate) and in speed; the paper does not estimate why
+policymakers responded to one and not the other.
 
 \subsection{From incidence to demand and welfare}\label{sec:results-mpc}
 
@@ -795,26 +807,21 @@ after \citet{bunn2018}, who find MPCs out of income \emph{losses}
 (about 0.5) far larger than out of gains (about 0.14).
 Table~\ref{tab:mpc} reports the results, with the flat scenario as
 the anchor and the gradient as the deliberately steep variant. First,
-the counterfactual shock would have destroyed
-\pounds\SsMpcBurdenGradientBn\ billion of first-round consumption on
-the gradient (\pounds\SsMpcBurdenFlatBn\ billion on the flat anchor);
-with the modelled stack in place the net effect is
-\pounds\SsMpcNetGradientBn\ billion, the support protected most of
-the demand the shock threatened. Second, the instruments rank by
-targeting: the cost-of-living payments protected
-\SsMpcColPerPound\ of consumption per pound of fiscal cost, the flat
-Bills Support Scheme \SsMpcEbssPerPound, the proportional Guarantee
-\SsMpcEpgPerPound, the demand-efficiency ordering that MPC
-heterogeneity predicts. Third, the asymmetric scenario is an outer bound rather than a
-co-equal case: \citet{bunn2018}'s low gain-MPC concerns windfalls,
-while the Guarantee truncates a loss, so valuing every instrument at
-0.14 overstates the gap; taken at face value the net first-round
-demand effect is \pounds\SsMpcNetAsymBn\ billion, the least
-favourable reading of how much demand the stack protected. The same logic gives the uprating lag its
-demand-side reading: the \pounds\SsVinLagCostBn\ billion withheld
-by late indexation was withheld from benefit recipients, the
-highest-MPC households in the economy, so the demand drag per pound
-withheld was at its maximum.
+under the gradient the counterfactual shock corresponds to a
+first-round consumption fall of \pounds\SsMpcBurdenGradientBn\
+billion (\pounds\SsMpcBurdenFlatBn\ billion on the flat anchor); with
+the modelled stack the net first-round effect is
+\pounds\SsMpcNetGradientBn\ billion. Second, under the gradient
+scenario only, first-round consumption per pound of modelled outlay is
+\SsMpcColPerPound\ for the cost-of-living payments,
+\SsMpcEbssPerPound\ for the Bills Support Scheme and
+\SsMpcEpgPerPound\ for the Guarantee; under the flat and asymmetric
+scenarios the three coincide, so the ordering is a property of the
+assumed gradient rather than an estimated one. Third, the asymmetric
+scenario applies \citet{bunn2018}'s windfall gain-MPC of 0.14 to every
+instrument, although the Guarantee truncates a loss rather than paying
+a windfall; taken at face value the net first-round demand effect is
+\pounds\SsMpcNetAsymBn\ billion.
 
 \emph{Welfare.} Weighting the counterfactual burden by
 \citet{atkinson1970} social-welfare weights on equivalised income
@@ -823,8 +830,7 @@ a declared dial to which the $\gamma=2$ premium is sensitive),%
 the simplest member of the generalised welfare-weight framework of
 \citet{saezstantcheva2016}, (proportional to $y^{-\gamma}$, normalised to mean one) gives a
 regressivity premium of \SsWelfPremiumGammaOne\ at $\gamma=1$ and
-\SsWelfPremiumGammaTwo\ at $\gamma=2$. The $\gamma=1$ figure is
-deliberately reported although it is unflattering: the shock is
+\SsWelfPremiumGammaTwo\ at $\gamma=2$. At $\gamma=1$ the premium is below one: the shock is
 regressive in \emph{shares} but larger in \emph{pounds} at the top, so at log
 utility the pound-concentration at the top roughly offsets the
 share-concentration at the bottom, and only at higher inequality

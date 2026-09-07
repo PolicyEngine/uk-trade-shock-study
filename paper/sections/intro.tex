@@ -25,8 +25,7 @@ positive ones, never re-estimated here) and is mapped onto households
 through two channels: consumer prices against expenditure patterns,
 and labour income through the statutory tax--benefit system. Because
 gross sizes span two orders of magnitude, comparisons run in ratios:
-burden as a share of spending by income decile, cushioning shares, and
-per-pound-of-shock intensities. And because the rulebook itself moved
+burden as a share of spending by income decile and cushioning shares. And because the rulebook itself moved
 across the window (the Covid uplift removed in 2021; upratings lagging
 a year behind prices; the Energy Price Guarantee legislated
 mid-shock), the design treats the tax--benefit vintage as an explicit
@@ -51,22 +50,19 @@ at the top, energy \MsEnergyBudgetSharePctDecOne\ against
 \MsEnergyBudgetSharePctDecTen, clothing and footwear roughly equal
 shares everywhere: composition, not size, decides who bears a trade
 shock. Third, the finding the rulebook axis exists for: the modelled
-responses to the trade shocks run through different instruments on
-different margins (a comparison of
-cousin estimands, an earnings-stabilisation coefficient against a
-price-episode cushioning rate, as the anatomy table's notes make
-explicit). The earnings-led tariff
-shock was absorbed automatically (\MsUSTariffDisplacementCushionPct\
-to \MsUSTariffWageCutCushionPct\ per cent, from the companion study),
-the price-led energy shock was absorbed by discretion (the Energy
-Price Guarantee took \MsEnergyCushionShareFyPct\ per cent of the
-counterfactual shock on the financial-year basis of
-Section~\ref{sec:results-secondstage}), and the automatic price-side mechanism, indexation, followed the
-previous September's inflation, leaving a single adult's Universal
-Credit standard allowance \pounds\MsUcLagCostGbp\
-(\MsUcLagCostPctAllowance\ per cent of the allowance) below
-contemporaneous indexation in the crisis year, after the
-\pounds\MsUcUpliftRemovalGbp\ uplift had ended in October 2021.
+responses run through different instruments on different margins. The
+earnings-led tariff scenario was cushioned automatically
+(\MsUSTariffDisplacementCushionPct\ to
+\MsUSTariffWageCutCushionPct\ per cent, from the companion study); the
+price-led energy shock was cushioned by discretion, the Guarantee
+alone taking \MsEnergyCushionShareFyPct\ per cent of the
+counterfactual shock; and indexation, the price side's one automatic
+channel, followed the previous September's inflation, leaving a
+single adult's Universal Credit allowance
+\pounds\MsUcLagCostGbp\ below contemporaneous indexation in the
+crisis year, months after the \pounds\MsUcUpliftRemovalGbp\ uplift
+ended. The two margins carry different estimands, as the anatomy
+table's notes make explicit.
 
 The contribution is threefold: a statutory study of Britain's two
 major price-led trade shocks, embedded in a five-episode comparative
@@ -82,7 +78,10 @@ that the discretionary response to one shock was large and cushioned
 lower deciles at higher rates while the other received no instrument,
 and that, on imputed exposure, most of the variance in the energy
 burden lies within income deciles rather than between them
-(Section~\ref{sec:results-secondstage}). Second, the rulebook axis: holding a shock fixed and
+(Section~\ref{sec:results-secondstage}); a closing exercise
+aggregates the measured incidence into MPC-weighted first-round
+demand and Atkinson-weighted welfare under declared parameters
+(Section~\ref{sec:results-mpc}). Second, the rulebook axis: holding a shock fixed and
 varying the vintage of the welfare state that receives it. It is executed here for the
 largest episode, the same households scored under the 2022 and 2023
 parameter systems, which prices the crisis-year uprating lag through
@@ -100,16 +99,17 @@ on welfare and its cross-episode ratios are descriptive; it records
 that, on an episode-specific attribution, the energy shock was met
 with energy-specific instruments and the food price rise with none.
 
-The first pass runs the declared first stages against published
-expenditure-by-decile tables and statutory arithmetic
-(Sections~\ref{sec:method}--\ref{sec:results}); the two largest episodes, the energy shock and the TCA food
-shock, are then run through the statutory system on enhanced-FRS
-household records in PolicyEngine UK
-(Section~\ref{sec:results-secondstage}), which is where the
-automatic-versus-discretionary decomposition, the rulebook-vintage
-run and the within-decile dispersion are computed. Section~\ref{sec:framework}
+The paper proceeds in reading order. Section~\ref{sec:framework}
 defines the estimand and states what does and does not require
-identification, Section~\ref{sec:episodes} the five episodes and their
-declared first stages, Section~\ref{sec:roadmap} what extending the
-household stage to the remaining episodes requires, and
+identification; Section~\ref{sec:episodes} sets out the five episodes
+and their declared first stages; Section~\ref{sec:method} describes
+the public-data first pass. Section~\ref{sec:results} reports the
+first pass, then runs the two largest episodes, the energy shock and
+the TCA food price rise, through the statutory system on enhanced-FRS
+household records in PolicyEngine UK
+(Section~\ref{sec:results-secondstage}), where the
+automatic-versus-discretionary decomposition, the rulebook-vintage
+run, the within-decile dispersion and the demand and welfare
+aggregation are computed. Section~\ref{sec:roadmap} specifies the
+extension to the remaining episodes, and
 Section~\ref{sec:discussion} concludes.

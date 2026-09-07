@@ -201,7 +201,7 @@ pipeline root).
 ## 12. Second stage (added in the referee rounds)
 
 Scripts: `second_stage_energy.py` (energy episode through PolicyEngine UK
-2.89.2; emits `results/generated_secondstage.tex`), `grid_energy.py`
+2.95.0; emits `results/generated_secondstage.tex`), `grid_energy.py`
 (rebase x stack sensitivity grid, fine sweep, announced-path variant),
 `fig_extra.py` (decomposition/paths figures, 999-rep household
 bootstrap), `vintage_and_tca.py` (two-vintage rulebook run with all

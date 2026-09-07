@@ -334,18 +334,10 @@ def fig_uprating_lag(d: Data):
     ax.set_xticklabels([m.split("-")[1].capitalize() for m in d.months])
     ax.set_xlabel("Month, financial year 2022-23")
     ax.set_ylabel("Universal Credit standard allowance,\nsingle adult 25+ (\u00a3 per month)")
-    ax.set_ylim(0, 400)
+    ax.set_ylim(320, 395)
     ax.set_xlim(-0.4, len(x) - 0.6)
     ax.grid(axis="x", visible=False)
 
-    ax.annotate(
-        f"Cumulative shortfall, FY2022-23:\n\u00a3{d.lag_cost:,.0f} "
-        f"({d.lag_pct:.1f}% of the annual allowance)",
-        xy=(4.0, (d.actual[4] + d.counter[4]) / 2), xytext=(0.15, 250),
-        fontsize=7.4, color=INK2, ha="left", va="top", linespacing=1.4,
-        arrowprops=dict(arrowstyle="-", lw=0.8, color=MUTED,
-                        connectionstyle="angle3,angleA=90,angleB=0"),
-    )
     for i, ha, dx in ((0, "left", 4), (11, "right", -4)):
         ax.annotate(f"\u00a3{d.shortfall[i]:.0f}/mth",
                     xy=(i, (d.actual[i] + d.counter[i]) / 2),

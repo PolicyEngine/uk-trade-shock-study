@@ -267,20 +267,12 @@ def fig_energy_epg(d: Data):
                     xy=(d.deciles[i], d.en_net_gbp[i] / 2), ha="center", va="center",
                     rotation=90, fontsize=7.0, color="white", zorder=5)
 
-    ax.annotate(
-        f"The EPG cushions {100 * d.cushion_share:.1f}% of the gross shock at every\n"
-        "decile (constant by construction: both price vectors scale the\n"
-        f"same spend base). The \u00a3 cushion runs \u00a3{d.en_cushion_gbp[0]:,.0f} (D1) to "
-        f"\u00a3{d.en_cushion_gbp[9]:,.0f} (D10).",
-        xy=(3.62, d.en_net_gbp[2] + d.en_cushion_gbp[2] * 0.6),
-        xytext=(1.55, 3320), fontsize=7.2, color=INK2, ha="left", va="top",
-        linespacing=1.4,
-        arrowprops=dict(arrowstyle="-", lw=0.8, color=MUTED,
-                        connectionstyle="angle3,angleA=0,angleB=75"),
-    )
+    # The constant-share explanation lives in the caption; no in-plot
+    # annotation or connector (academic convention: the chart shows, the
+    # caption tells).
 
     decile_ax(ax, "Annual cost of the 2022-23 energy shock\n(\u00a3 per household per year)")
-    ax.set_ylim(0, 3600)
+    ax.set_ylim(0, 2300)
     ax.set_xlim(0.4, 10.6)
     ax.legend(ncol=2, loc="upper center", bbox_to_anchor=(0.5, -0.165),
               fontsize=7.6, columnspacing=1.2)

@@ -4,8 +4,8 @@
 
 Table~\ref{tab:ms-anatomy} places the four episodes side by side
 under the common lens, and Figure~\ref{fig:incidence-profile} plots
-the three price profiles it summarises. First, \emph{the negative shocks were regressive and the positive episode
-were not progressive}: on the realised 2022--23 path the energy shock
+the three price profiles it summarises. First, \emph{the negative shocks were regressive and the positive
+episode was not progressive}: on the realised 2022--23 path the energy shock
 cost the bottom decile \MsEnergyRealisedPctSpendDecOne\ per cent of its
 spending against \MsEnergyRealisedPctSpendDecTen\ per cent at the top
 (the never-realised gross counterfactual would have been
@@ -117,9 +117,7 @@ year, \pounds\MsTcaWindowAvgAggBn\ billion a year in aggregate, regressive as a 
 (\MsTcaWindowAvgPctSpendDecOne\ versus
 \MsTcaWindowAvgPctSpendDecTen\ per cent) because food takes
 \MsTcaBudgetSharePctDecOne\ per cent of bottom-decile spending
-against \MsTcaBudgetSharePctDecTen\ at the top. (The estimation window opens in December 2019, thirteen months before
-the TCA took effect; the linear-ramp and window-average conventions
-both absorb the pre-entry months as zeros.) This is an anchoring
+against \MsTcaBudgetSharePctDecTen\ at the top. This is an anchoring
 choice: the pipeline's own linear-ramp cumulative overshoots the published figure by a factor of
 \MsTcaCrossCheckRatio, and the window-average path is obtained by
 rescaling to the published cumulative. The TCA row therefore carries no
@@ -130,7 +128,9 @@ the level is the published estimate's. The end-state figures
 \MsTcaCrossCheckRatio\ overshoot shows the price effect was back-loaded, so end-state
 overstates the lived burden. The
 household stage would carry the published path if this episode were
-extended to it (Section~\ref{sec:roadmap}).
+extended to it (Section~\ref{sec:roadmap}). (The estimation window opens
+in December 2019, thirteen months before the TCA took effect; the
+conventions absorb the pre-entry months as zeros.)
 
 \paragraph{The energy shock and the EPG.} What households actually
 faced in 2022--23 was a mean capped bill of
@@ -191,8 +191,10 @@ of one regulated tariff. Third,
 \emph{timing}: the counterfactual holds the October 2022 cap for a
 full year, which no household experienced. Because both paths are
 financial-year means, the \pounds\MsEnergyCushionAggSixMonthsBn\
-billion of Guarantee absorption already represents the instrument's
-six months at annual spending; the OBR's \pounds\MsEnergyObrEpgBn\
+billion of Guarantee absorption on the first pass's base (the second
+stage's household base puts it at \pounds\SsEpgBn\ billion,
+reconciled in Section~\ref{sec:secondstage-method}) already
+represents the instrument's six months at annual spending; the OBR's \pounds\MsEnergyObrEpgBn\
 billion lifetime costing (March 2023) is a context anchor on different
 prices and a longer window. Within those bounds the shape is
 robust: the Energy Price Guarantee truncated the rise to
@@ -204,19 +206,11 @@ billion, Section~\ref{sec:results-secondstage}); the point-to-point
 cap ratio, (3{,}549-2{,}500)/(3{,}549-1{,}277), is
 \MsEnergyCushionSharePct\ per cent and is not used further.
 Because the EPG capped the \emph{price}, its cushioning share is
-constant across deciles by construction. Two qualifications follow
-from the frontier evidence. First, decile means understate the
-problem the instrument faced: \citet{levell2025} show that income
-explains only a small share of the variation in household energy
-spending, so exposure within a decile is far more dispersed than the
-gradient between deciles, an argument for the household-record stage,
-where that dispersion is observable, and against reading any
-decile-mean cushioning share as a statement about individual
-households. Second, \citet{levell2025} find that an optimal package in their
-welfare model retains a strictly positive price subsidy even when
-transfers can condition on income and past usage, because income
-targets energy exposure poorly. The finding here is descriptive: the
-cap cushioned proportionally. Whether the overall
+constant across deciles by construction. Decile means understate the dispersion the instrument faced, and a
+proportional price subsidy is not thereby a mistaken one, because
+income predicts energy exposure poorly
+(\citealp{levell2025}; Section~\ref{sec:framework-decile}). The
+finding here is descriptive: the cap cushioned proportionally. Whether the overall
 discretionary response was progressive cannot be judged from the EPG
 alone: the Energy Bills Support Scheme's flat \pounds 400, the
 means-tested cost-of-living payments and the council-tax rebate, jointly of the same order as the EPG and deliberately targeted, are
@@ -255,8 +249,10 @@ supersedes this pass.
 retaliation occurred, so this episode's incidence is entirely
 earnings-led: a gross loss of \pounds\MsUSTariffGrossShockMillions\
 million a year cushioned by the automatic tax--benefit system at
-\MsUSTariffDisplacementCushionPct\ per cent (displacement) to
-\MsUSTariffWageCutCushionPct\ per cent (wage cuts), computed with
+\MsUSTariffDisplacementCushionPct\ per cent (displacement, standard
+deviation \MsUSTariffDisplacementCushionSDPct\ points across
+assignment draws) to \MsUSTariffWageCutCushionPct\ per cent (wage
+cuts), computed with
 the in-repository tariff pipeline (100 assignment draws on the 2024--25
 Family Resources Survey, the earnings-margin machinery of the
 companion manuscript with its referee corrections applied).
@@ -265,7 +261,7 @@ companion manuscript with its referee corrections applied).
 reductions, \pounds\MsCetaAllocatedMillions\ million falls in the
 three categories with published spending detail (clothing, footwear,
 food and beverages) and is allocated across deciles; the remainder is
-unmodelled. At full pass-through the CETA duty cuts are worth \pounds\MsCetaGainGbpPtHundredDecOne\ a year
+unmodelled. At full pass-through the India CETA duty cuts are worth \pounds\MsCetaGainGbpPtHundredDecOne\ a year
 to a bottom-decile household and \pounds\MsCetaGainGbpPtHundredDecTen\
 to a top-decile one, \MsCetaVerdict\ as a share of spending, though
 larger in pounds at the top (the top decile gains about three times as much in
@@ -311,7 +307,7 @@ gross price shock, the seed picture is: an automatic response on the
 earnings margin (in the tariff scenario), a discretionary
 response on the price margin, and indexation that followed prices with
 a year's lag, with the incidence of the full discretionary stack an
-open question for the microsimulation stage. The microsimulation
+open question for the second stage. The microsimulation
 stage turns these representative-household facts into
 population-weighted decompositions.
 
@@ -413,7 +409,8 @@ population. PolicyEngine's household grossing weights total
 \SsWeightedHouseholdsM\ million households against an ONS count of
 \SsOnsHouseholdsM\ million, so aggregates carry an upward bias of about
 \SsWeightExcessPct\ per cent; ratios are unaffected. Deciles are
-equivalised on the HBAI before-housing-costs concept, and burdens are
+equivalised on the Households Below Average Income (HBAI)
+before-housing-costs concept, and burdens are
 expressed as shares of household expenditure rather than income,
 because a ratio with income in the denominator is dominated by
 very low incomes. Both sides of every share sit on one base: the burden numerator is
@@ -452,12 +449,11 @@ contain one entitlement that reads energy consumption: PolicyEngine
 UK's own Energy Price Guarantee variable, which pays
 \pounds\SsNativeEpgBn\ billion in the 2023 baseline and rises by
 \pounds\SsNativeEpgDeltaBn\ billion under the shocked inputs, moving
-household benefits by the same amount. That delta is measured around
-the dataset's current-vintage energy levels (the shocked inputs sit
-about twelve per cent above the unrebased baseline), so it verifies
-that the variable responds; it is not comparable to the
-\pounds\SsEpgBn\ billion cushion, which is defined against the
-FY2021--22 base. The paper classifies the
+household benefits by the same amount. That delta verifies that the variable responds. It is measured around
+the dataset's current-vintage energy levels, with shocked inputs
+about twelve per cent above the unrebased baseline, so it is not
+comparable to the \pounds\SsEpgBn\ billion cushion, which is defined
+against the FY2021--22 base. The paper classifies the
 Guarantee as discretionary and models it on the financial-year basis
 of Section~\ref{sec:secondstage-method} rather than through the
 model's calendar-year variable; the model's cost-of-living payment
@@ -466,8 +462,13 @@ inside the HBAI income that ranks the deciles, as do the native
 Guarantee (\pounds\SsNativeEpgBn\ billion) and the
 \pounds\SsNativeEbrBn\ billion energy-bills rebate, so the deciles
 are ranked on income inclusive of roughly \pounds 29 billion of 2023
-support instruments; the cushioning arithmetic itself counts each
-hand-rolled instrument once. It is also a
+support instruments. The cushioning arithmetic itself counts each
+hand-rolled instrument once, and the ranking is not driving the
+gradient: re-ranking deciles on income net of the three native
+instruments moves the bottom decile's full-stack rate from
+\SsRankBaseDOne\ to \SsRankNetDOne\ per cent and the top decile's
+from \SsRankBaseDTen\ to \SsRankNetDTen, so the rates-fall-with-income
+result survives. It is also a
 first-order claim: a shock of this size moved nominal incomes in
 general equilibrium, wage bargaining, self-employment margins, and
 those excluded channels (Section~\ref{sec:framework}) would trigger
@@ -553,8 +554,9 @@ loss was returned against \SsCushionPctDecTen\ per cent of the top
 decile's, because flat payments are worth more relative to a small
 bill and the means-tested payments concentrate in the lower deciles. Two
 features of the profile deserve stating rather than smoothing. First, the
-bottom decile's rate above 100 per cent (\SsCushionPctDecOne\
-per cent, and \SsCushionPctDecThree\ for the third decile) exists
+bottom decile's rate above 100 per cent (\SsCushionPctDecOne\ per cent in the bottom decile;
+\SsCushionPctDecThree\ per cent, i.e.\ exact compensation, in the
+third) exists
 only on the full-stack attribution, the bootstrap below puts it
 within sampling error of 100 per cent, and it says only that
 the instruments returned about as much as the counterfactual energy
@@ -718,7 +720,7 @@ the dispersion in who was exposed. Within the bottom decile alone the burden run
 
 Two limits bound what this establishes. The exposure is
 \emph{imputed}, enhanced-FRS energy spending is a quantile-regression
-forest fitted to LCFS donors, so part of the within-decile dispersion is donor-model variation, and
+forest fitted to Living Costs and Food Survey (LCFS) donors, so part of the within-decile dispersion is donor-model variation, and
 the decomposition describes the imputed exposure without establishing
 that it bounds the true dispersion, the bootstrap interval above is
 sampling uncertainty only, blind to the donor-model error, and a

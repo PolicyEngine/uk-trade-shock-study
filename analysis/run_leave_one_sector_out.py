@@ -9,12 +9,12 @@ from pathlib import Path
 
 import numpy as np
 
-from uk_trade_shock_study.runner import (
+from tariff_pipeline.runner import (
     _baseline_and_persons,
     json_value as clean,
     run_monte_carlo_prepared,
 )
-from uk_trade_shock_study.shocks import TradeShockScenario, _person_shock
+from tariff_pipeline.shocks import TradeShockScenario, _person_shock
 
 
 def main() -> None:

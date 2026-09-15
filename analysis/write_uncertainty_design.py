@@ -6,7 +6,7 @@ design that an expensive licensed-data run can consume later.
 
 from pathlib import Path
 
-from uk_trade_shock_study.uncertainty import latin_hypercube
+from tariff_pipeline.uncertainty import latin_hypercube
 
 
 def main() -> None:

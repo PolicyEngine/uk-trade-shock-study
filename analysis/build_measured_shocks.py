@@ -50,7 +50,7 @@ microsimulation because displacement cannot model gains. The raw signed falls
 and an unclipped net aggregate are preserved in the validation output.
 
 Outputs:
-- uk_trade_shock_study/data/measured_export_falls_by_sic.csv (packaged;
+- tariff_pipeline/data/measured_export_falls_by_sic.csv (packaged;
   consumed by exposure.sector_earnings_shocks("measured")).
 - results/validation_sectors.json: predicted (epsilon-model, full and EPD)
   vs realised export falls for the top-10 exposed divisions + Spearman rank
@@ -68,7 +68,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import requests
-from uk_trade_shock_study.exposure import DEFAULT_ELASTICITY, tariff_rates
+from tariff_pipeline.exposure import DEFAULT_ELASTICITY, tariff_rates
 
 from build_trade_by_sic import (
     DIVISION_NAMES,
@@ -80,7 +80,7 @@ from build_trade_by_sic import (
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
-OUT_CSV = ROOT / "uk_trade_shock_study" / "data" / "measured_export_falls_by_sic.csv"
+OUT_CSV = ROOT / "tariff_pipeline" / "data" / "measured_export_falls_by_sic.csv"
 OUT_VALIDATION = ROOT / "results" / "validation_sectors.json"
 
 API = "https://api.uktradeinfo.com"
@@ -241,7 +241,7 @@ def main() -> None:
     print(f"Aggregate May25-Feb26 fall: {agg_fall:.1%} (2yr-avg baseline), {agg_yoy:.1%} (1yr YoY)")
 
     intensity = pd.read_csv(
-        ROOT / "uk_trade_shock_study" / "data" / "us_export_intensity_by_sic.csv", comment="#"
+        ROOT / "tariff_pipeline" / "data" / "us_export_intensity_by_sic.csv", comment="#"
     ).set_index("sic_division")
 
     lines = [

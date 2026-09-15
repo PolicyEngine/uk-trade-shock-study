@@ -97,7 +97,7 @@ WAGE_CUT_DISPLACEMENT_SHARE = 0.0
 
 
 #: Where a scenario artifact may record the record-selection design. The first
-#: is the shape ``uk_trade_shock_study.runner.write_result`` produces —
+#: is the shape ``tariff_pipeline.runner.write_result`` produces —
 #: ``MonteCarloResult`` carries ``selection_method`` and
 #: ``run_monte_carlo_prepared`` sets it from ``scenario.selection_method`` — and
 #: the second is the shape the hand-written design blocks use
@@ -121,7 +121,7 @@ SCENARIO_DEFAULT_SELECTION_METHOD = "bernoulli"
 #: puts the field on disk — the file must not be hand-edited, because a
 #: hand-written design string would assert a provenance nobody verified.
 SELECTION_METHOD_PROVENANCE_FIX = (
-    "This is not a code gap: `uk_trade_shock_study.runner.MonteCarloResult` "
+    "This is not a code gap: `tariff_pipeline.runner.MonteCarloResult` "
     "already declares `selection_method`, `run_monte_carlo_prepared` sets it "
     "from `scenario.selection_method`, and `runner.write_result` serialises it "
     "into every artifact it writes. The artifacts named above simply predate "

@@ -16,9 +16,9 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from uk_trade_shock_study.exposure import ELASTICITY_SCENARIOS
-from uk_trade_shock_study.runner import run_monte_carlo, write_result
-from uk_trade_shock_study.shocks import TradeShockScenario
+from tariff_pipeline.exposure import ELASTICITY_SCENARIOS
+from tariff_pipeline.runner import run_monte_carlo, write_result
+from tariff_pipeline.shocks import TradeShockScenario
 
 
 ANCHORS = {

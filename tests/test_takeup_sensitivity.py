@@ -12,7 +12,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from uk_trade_shock_study.shocks import (
+from tariff_pipeline.shocks import (
     DEFAULT_UC_TAKEUP_SCOPE,
     UC_TAKEUP_SCOPES,
     TradeShockScenario,
@@ -572,7 +572,7 @@ def test_stale_flag_convention_matches_the_shocks_read_back_contract():
     import inspect
 
     from analysis.referee_fixes import _apply_stale_baseline_flag
-    from uk_trade_shock_study import shocks
+    from tariff_pipeline import shocks
 
     grid = inspect.getsource(shocks.redraw_uc_takeup)
     assert "np.array_equal(applied, new_flag)" in grid  # the sibling's read-back

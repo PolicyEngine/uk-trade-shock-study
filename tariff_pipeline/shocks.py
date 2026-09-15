@@ -54,7 +54,7 @@ from dataclasses import dataclass
 import numpy as np
 import pandas as pd
 
-from uk_trade_shock_study.exposure import (
+from tariff_pipeline.exposure import (
     DEFAULT_ELASTICITY,
     DEFAULT_PASSTHROUGH,
     person_earnings_shock,
@@ -527,7 +527,7 @@ def risk_weighted_displacement_probabilities(
     risk_column: str,
 ) -> np.ndarray:
     """Vary risk within SIC while preserving each division's wage-bill loss."""
-    from uk_trade_shock_study.lfs_imputation import calibrate_probabilities
+    from tariff_pipeline.lfs_imputation import calibrate_probabilities
 
     if risk_column not in persons:
         raise KeyError(f"selection risk column not found: {risk_column}")

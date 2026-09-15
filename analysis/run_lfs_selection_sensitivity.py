@@ -9,12 +9,12 @@ from pathlib import Path
 
 import pandas as pd
 
-from uk_trade_shock_study.runner import (
+from tariff_pipeline.runner import (
     _baseline_and_persons,
     json_value,
     run_monte_carlo_prepared,
 )
-from uk_trade_shock_study.shocks import PRESETS
+from tariff_pipeline.shocks import PRESETS
 
 
 ROOT = Path(__file__).resolve().parents[1]

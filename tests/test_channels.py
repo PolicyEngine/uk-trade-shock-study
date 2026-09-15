@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from uk_trade_shock_study.channels import calibrated_worker_probabilities, real_income_after_price_shock
+from tariff_pipeline.channels import calibrated_worker_probabilities, real_income_after_price_shock
 
 
 def test_heterogeneity_preserves_weighted_sector_total():

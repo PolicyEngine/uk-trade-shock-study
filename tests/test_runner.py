@@ -3,7 +3,7 @@ import json
 import numpy as np
 import pytest
 
-from uk_trade_shock_study.runner import (
+from tariff_pipeline.runner import (
     MonteCarloResult,
     _finite_mean_sd,
     _household_income_per_person,
@@ -80,7 +80,7 @@ def test_every_artifact_writer_shares_one_nonfinite_sanitiser():
     import ast
     from pathlib import Path
 
-    from uk_trade_shock_study.runner import json_value
+    from tariff_pipeline.runner import json_value
 
     for script in (
         "analysis/run_lfs_selection_sensitivity.py",
@@ -93,7 +93,7 @@ def test_every_artifact_writer_shares_one_nonfinite_sanitiser():
             alias.name
             for node in ast.walk(tree)
             if isinstance(node, ast.ImportFrom)
-            and node.module == "uk_trade_shock_study.runner"
+            and node.module == "tariff_pipeline.runner"
             for alias in node.names
         }
         assert "json_value" in imported, (

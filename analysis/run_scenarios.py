@@ -7,15 +7,15 @@ Usage: python analysis/run_scenarios.py [--data-dir DATA] [--period 2026]
 import argparse
 from pathlib import Path
 
-from uk_trade_shock_study.runner import run_monte_carlo, write_result
-from uk_trade_shock_study.shocks import (
+from tariff_pipeline.runner import run_monte_carlo, write_result
+from tariff_pipeline.shocks import (
     MIXED_CENTRAL_PRESETS,
     TRANSITION_PRESETS,
     PRESETS,
     RENT_SHARING_PRESETS,
     TradeShockScenario,
 )
-from uk_trade_shock_study.exposure import ELASTICITY_SCENARIOS
+from tariff_pipeline.exposure import ELASTICITY_SCENARIOS
 
 #: The MEASURED family: per-division shocks from the realised HMRC OTS
 #: outturn (exposure.MEASURED_SCENARIO; built by build_measured_shocks.py)
@@ -69,7 +69,7 @@ def main() -> None:
 
     import pandas as pd
 
-    from uk_trade_shock_study.exposure import (
+    from tariff_pipeline.exposure import (
         sector_earnings_shocks,
         simulation_sic_division,
     )

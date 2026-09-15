@@ -64,13 +64,13 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from uk_trade_shock_study.exposure import (
+from tariff_pipeline.exposure import (
     DEFAULT_ELASTICITY,
     DEFAULT_PASSTHROUGH,
     sector_earnings_shocks,
     tariff_rates,
 )
-from uk_trade_shock_study.shocks import DEFAULT_UC_TAKEUP
+from tariff_pipeline.shocks import DEFAULT_UC_TAKEUP
 
 ROOT = Path(__file__).resolve().parent.parent
 IOT_XLSX = ROOT / "data" / "iot2022revisedproduct.xlsx"

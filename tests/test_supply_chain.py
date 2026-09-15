@@ -5,7 +5,7 @@ import pandas as pd
 import pytest
 from pathlib import Path
 
-from uk_trade_shock_study import supply_chain as sc
+from tariff_pipeline import supply_chain as sc
 
 # Toy economy: sector 0 buys from 1, sector 1 buys from 2, sector 2 buys
 # nothing. Gross outputs 100 each; CoE 50/40/30.

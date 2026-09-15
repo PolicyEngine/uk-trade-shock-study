@@ -4,8 +4,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from uk_trade_shock_study.exposure import DEFAULT_ELASTICITY, person_earnings_shock
-from uk_trade_shock_study.shocks import (
+from tariff_pipeline.exposure import DEFAULT_ELASTICITY, person_earnings_shock
+from tariff_pipeline.shocks import (
     MARGINS,
     PRESETS,
     RENT_SHARING_ELASTICITY,
@@ -340,7 +340,7 @@ def test_rent_sharing_presets_are_calibrated_mixed_scenarios():
 
 def test_mixed_central_presets_are_explicit_aliases():
     """The paper-facing central labels retain the documented 85/15 split."""
-    from uk_trade_shock_study.shocks import MIXED_CENTRAL_PRESETS
+    from tariff_pipeline.shocks import MIXED_CENTRAL_PRESETS
 
     assert set(MIXED_CENTRAL_PRESETS) == {
         "full_tariff_mixed_central",
@@ -459,7 +459,7 @@ def test_build_shocked_simulation_requires_policyengine():
 
 def test_lcwra_addon_one_element_per_benunit():
     """A benunit with TWO flagged persons receives exactly ONE health element."""
-    from uk_trade_shock_study.shocks import lcwra_benunit_addon
+    from tariff_pipeline.shocks import lcwra_benunit_addon
 
     class StubSim:
         """persons 0,1 -> benunit 0; person 2 -> benunit 1; person 3 -> benunit 2."""
@@ -498,7 +498,7 @@ def test_reallocation_quota_identical_to_displacement_under_same_seed():
 
 
 def test_reallocation_destinations_are_services_with_expected_mix():
-    from uk_trade_shock_study.shocks import DESTINATION_SHARES, REALLOCATION_DESTINATIONS
+    from tariff_pipeline.shocks import DESTINATION_SHARES, REALLOCATION_DESTINATIONS
 
     persons = make_persons()
     dest = []
@@ -517,7 +517,7 @@ def test_reallocation_destinations_are_services_with_expected_mix():
 
 
 def test_reallocation_applies_the_wage_penalty():
-    from uk_trade_shock_study.shocks import DEFAULT_REALLOCATION_PENALTY
+    from tariff_pipeline.shocks import DEFAULT_REALLOCATION_PENALTY
 
     persons = make_persons()
     shocked = apply_shocks(persons, PRESETS["epd_reallocation"], seed=3)
@@ -534,7 +534,7 @@ def test_reallocation_applies_the_wage_penalty():
 
 
 def test_reallocation_lag_scales_earnings_and_hours():
-    from uk_trade_shock_study.shocks import DEFAULT_REALLOCATION_PENALTY
+    from tariff_pipeline.shocks import DEFAULT_REALLOCATION_PENALTY
 
     persons = make_persons()
     lagged = TradeShockScenario(
@@ -570,7 +570,7 @@ def test_reallocation_loss_is_the_penalty_share_of_displacement_loss():
     gross loss is SMALLER under reallocation than under the wage cut. The
     two are not orderable by construction — only displacement dominates.
     """
-    from uk_trade_shock_study.shocks import DEFAULT_REALLOCATION_PENALTY
+    from tariff_pipeline.shocks import DEFAULT_REALLOCATION_PENALTY
 
     persons = make_persons()
     w = persons["weight"].to_numpy()
@@ -598,7 +598,7 @@ def test_reallocation_hard_error_when_sector_switch_is_dropped():
     manufacturing and the margin would collapse into a plain wage cut."""
     from unittest import mock
 
-    from uk_trade_shock_study import shocks as shocks_module
+    from tariff_pipeline import shocks as shocks_module
 
     persons = make_persons(n=400)
     table = apply_shocks(persons, PRESETS["full_tariff_reallocation"], seed=0)
@@ -695,7 +695,7 @@ def _takeup_table(n, affected_idx, uc_takeup=0.8, seed=0):
 
 def test_uc_takeup_redrawn_only_for_affected_benunits():
     """Affected benunits get a fresh draw; every other benunit is untouched."""
-    from uk_trade_shock_study.shocks import redraw_uc_takeup
+    from tariff_pipeline.shocks import redraw_uc_takeup
 
     n = 200
     rng = np.random.default_rng(3)
@@ -715,7 +715,7 @@ def test_uc_takeup_redrawn_only_for_affected_benunits():
 
 
 def test_uc_takeup_rate_approximately_honoured_among_affected():
-    from uk_trade_shock_study.shocks import redraw_uc_takeup
+    from tariff_pipeline.shocks import redraw_uc_takeup
 
     n = 4000
     baseline = np.zeros(n // 2, dtype=bool)  # baseline all False
@@ -739,7 +739,7 @@ def test_uc_takeup_rate_approximately_honoured_among_affected():
 
 def test_uc_takeup_no_redraw_when_nothing_changed():
     """Wage-cut margin: no new claimants, baseline flags survive untouched."""
-    from uk_trade_shock_study.shocks import redraw_uc_takeup
+    from tariff_pipeline.shocks import redraw_uc_takeup
 
     n = 100
     baseline = np.random.default_rng(1).random(n // 2) < 0.5
@@ -760,7 +760,7 @@ def test_wage_cut_earnings_changes_are_considered_for_takeup():
 
 
 def test_uc_takeup_redraw_requires_positive_postshock_entitlement():
-    from uk_trade_shock_study.shocks import redraw_uc_takeup
+    from tariff_pipeline.shocks import redraw_uc_takeup
 
     n = 8
     baseline = np.array([False, False, True, True])
@@ -773,7 +773,7 @@ def test_uc_takeup_redraw_requires_positive_postshock_entitlement():
 
 
 def test_uc_takeup_redraw_only_newly_entitled_units():
-    from uk_trade_shock_study.shocks import redraw_uc_takeup
+    from tariff_pipeline.shocks import redraw_uc_takeup
 
     n = 6
     baseline = np.array([False, False, False])
@@ -791,7 +791,7 @@ def test_uc_takeup_redraw_only_newly_entitled_units():
 
 
 def test_existing_lcwra_element_is_not_double_paid():
-    from uk_trade_shock_study.shocks import merge_lcwra_element
+    from tariff_pipeline.shocks import merge_lcwra_element
 
     annual = 5_000.0
     base = np.array([0.0, annual, annual * 1.1])
@@ -831,7 +831,7 @@ def test_uc_takeup_scenario_validation_and_attrs():
 
 
 def test_uc_takeup_hard_error_when_flag_is_dropped():
-    from uk_trade_shock_study.shocks import redraw_uc_takeup
+    from tariff_pipeline.shocks import redraw_uc_takeup
 
     class SilentSim(_TakeupSim):
         def set_input(self, var, period, values):
@@ -899,7 +899,7 @@ def test_uc_award_cache_flush_is_verified_after_redraw():
     contract is exercised directly in
     ``test_uc_award_cache_flush_guard_rejects_a_contaminated_award``.
     """
-    from uk_trade_shock_study.shocks import redraw_uc_takeup
+    from tariff_pipeline.shocks import redraw_uc_takeup
 
     n = 40
     baseline = np.zeros(n // 2, dtype=bool)
@@ -939,7 +939,7 @@ def test_uc_award_cache_flush_guard_rejects_a_contaminated_award():
     """
     import types
 
-    from uk_trade_shock_study.shocks import _verify_uc_award_cache_flushed
+    from tariff_pipeline.shocks import _verify_uc_award_cache_flushed
 
     class _AwardSim:
         """Serves one fixed universal_credit vector, whatever is asked."""
@@ -1029,7 +1029,7 @@ def test_entitlement_pass_ignores_a_prepopulated_award_cache():
     then looks unentitled, the re-draw set is empty and the take-up experiment
     is silently inert — no exception, just a no-op.
     """
-    from uk_trade_shock_study.shocks import (
+    from tariff_pipeline.shocks import (
         redraw_uc_takeup,
         uc_takeup_redraw_diagnostic,
     )
@@ -1062,7 +1062,7 @@ def test_entitlement_pass_ignores_a_prepopulated_award_cache():
 
 def test_entitlement_pass_hard_errors_on_an_unflushable_warm_cache():
     """A warm cache the engine refuses to drop must raise, not be measured."""
-    from uk_trade_shock_study.shocks import redraw_uc_takeup
+    from tariff_pipeline.shocks import redraw_uc_takeup
 
     n = 40
     baseline = np.zeros(n // 2, dtype=bool)
@@ -1085,7 +1085,7 @@ def test_baseline_potential_award_is_measured_under_all_claim():
     entitled but does not claim, so those units are misclassified as NEWLY
     entitled post-shock and the re-draw set is inflated instead of emptied.
     """
-    from uk_trade_shock_study.shocks import (
+    from tariff_pipeline.shocks import (
         build_shocked_simulation,
         uc_takeup_redraw_diagnostic,
     )
@@ -1113,7 +1113,7 @@ def test_baseline_potential_award_is_measured_under_all_claim():
 
 
 def test_baseline_potential_award_hard_errors_on_an_unflushable_cache():
-    from uk_trade_shock_study.shocks import build_shocked_simulation
+    from tariff_pipeline.shocks import build_shocked_simulation
 
     n = 40
     n_bu = n // 2
@@ -1136,7 +1136,7 @@ def test_uc_takeup_stream_uses_tuple_seeding():
     """The take-up stream must never collide with the displacement stream:
     seed = UC_TAKEUP_SEED_OFFSET for the displacement RNG must not reproduce
     the take-up draw of seed 0 (the failure mode of additive offsets)."""
-    from uk_trade_shock_study.shocks import UC_TAKEUP_SEED_OFFSET
+    from tariff_pipeline.shocks import UC_TAKEUP_SEED_OFFSET
 
     a = np.random.default_rng((0, UC_TAKEUP_SEED_OFFSET)).random(1000)
     b = np.random.default_rng(UC_TAKEUP_SEED_OFFSET).random(1000)
@@ -1190,7 +1190,7 @@ def test_survivor_pension_contributions_scale_with_earnings_factor():
     displaced workers keep the zeroing behaviour."""
     from unittest import mock
 
-    from uk_trade_shock_study import shocks as shocks_module
+    from tariff_pipeline import shocks as shocks_module
 
     persons = make_persons(n=500)
     table = apply_shocks(persons, PRESETS["full_tariff_wage_cut"], seed=0)
@@ -1216,7 +1216,7 @@ def test_survivor_pension_contributions_scale_with_earnings_factor():
 def test_displaced_pension_contributions_still_zeroed():
     from unittest import mock
 
-    from uk_trade_shock_study import shocks as shocks_module
+    from tariff_pipeline import shocks as shocks_module
 
     persons = make_persons(n=500)
     table = apply_shocks(persons, PRESETS["full_tariff_displacement"], seed=0)
@@ -1260,7 +1260,7 @@ def test_concentrated_wage_cut_pairs_with_displacement_draw():
 
 
 def test_concentrated_wage_cut_requires_matching_margin():
-    from uk_trade_shock_study.shocks import apply_concentrated_wage_cut
+    from tariff_pipeline.shocks import apply_concentrated_wage_cut
 
     persons = make_persons()
     with pytest.raises(ValueError):
@@ -1275,7 +1275,7 @@ def test_concentrated_wage_cut_scales_pensions_to_zero_without_status_change():
     their employment status stays at baseline."""
     from unittest import mock
 
-    from uk_trade_shock_study import shocks as shocks_module
+    from tariff_pipeline import shocks as shocks_module
 
     persons = make_persons(n=500)
     scenario = TradeShockScenario(

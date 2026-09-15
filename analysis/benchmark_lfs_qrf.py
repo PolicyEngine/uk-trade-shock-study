@@ -15,7 +15,7 @@ import pandas as pd
 from microimpute.comparisons import autoimpute
 from microimpute.models import QRF
 
-from uk_trade_shock_study.lfs_imputation import (
+from tariff_pipeline.lfs_imputation import (
     WEEKS_IN_YEAR,
     align_lfs_to_bres,
     bres_sector_targets,

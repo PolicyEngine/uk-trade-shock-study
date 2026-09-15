@@ -26,15 +26,15 @@ from pathlib import Path
 
 import numpy as np
 
-from uk_trade_shock_study import supply_chain as sc
-from uk_trade_shock_study.runner import (
+from tariff_pipeline import supply_chain as sc
+from tariff_pipeline.runner import (
     MonteCarloResult,
     ScenarioResult,
     _baseline_and_persons,
     _metrics,
     write_result,
 )
-from uk_trade_shock_study.shocks import build_shocked_simulation
+from tariff_pipeline.shocks import build_shocked_simulation
 
 TARIFF = "full_tariff"
 

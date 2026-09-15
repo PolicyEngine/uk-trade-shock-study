@@ -1,4 +1,4 @@
-"""Build uk_trade_shock_study/data/us_export_intensity_by_sic.csv from real data.
+"""Build tariff_pipeline/data/us_export_intensity_by_sic.csv from real data.
 
 PROVENANCE (all public, fetched programmatically; raw pulls cached in data/):
 
@@ -67,7 +67,7 @@ import requests
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
-OUT = ROOT / "uk_trade_shock_study" / "data" / "us_export_intensity_by_sic.csv"
+OUT = ROOT / "tariff_pipeline" / "data" / "us_export_intensity_by_sic.csv"
 OUT_TOTALS = ROOT / "results" / "trade_build_totals.json"
 ABS_XLSX = DATA / "abssectionsas.xlsx"
 ABS_URL = (

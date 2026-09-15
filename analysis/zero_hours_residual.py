@@ -28,8 +28,8 @@ from pathlib import Path
 
 import numpy as np
 
-from uk_trade_shock_study.runner import _baseline_and_persons, json_value
-from uk_trade_shock_study.shocks import (
+from tariff_pipeline.runner import _baseline_and_persons, json_value
+from tariff_pipeline.shocks import (
     TradeShockScenario,
     apply_concentrated_wage_cut,
     apply_shocks,

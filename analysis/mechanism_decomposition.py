@@ -39,8 +39,8 @@ from policyengine_uk.variables.household.income.hbai_household_net_income import
     HBAI_HOUSEHOLD_NET_INCOME_ADDS,
     HBAI_HOUSEHOLD_NET_INCOME_SUBTRACTS,
 )
-from uk_trade_shock_study.runner import _baseline_and_persons
-from uk_trade_shock_study.shocks import (
+from tariff_pipeline.runner import _baseline_and_persons
+from tariff_pipeline.shocks import (
     PRESETS,
     TRANSITION_ZEROED_VARIABLES,
     apply_shocks,

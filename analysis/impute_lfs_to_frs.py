@@ -19,8 +19,8 @@ from pathlib import Path
 import pandas as pd
 from policyengine_uk import Microsimulation
 
-from uk_trade_shock_study.exposure import simulation_sic_division
-from uk_trade_shock_study.lfs_imputation import (
+from tariff_pipeline.exposure import simulation_sic_division
+from tariff_pipeline.lfs_imputation import (
     align_lfs_to_bres,
     bres_sector_targets,
     calibrate_receiver_transitions,

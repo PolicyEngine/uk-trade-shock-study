@@ -27,7 +27,7 @@ from pathlib import Path
 from huggingface_hub import hf_hub_download
 
 ROOT = Path(__file__).resolve().parents[1]
-MANIFEST = ROOT / "uk_trade_shock_study" / "data" / "input_manifest.json"
+MANIFEST = ROOT / "tariff_pipeline" / "data" / "input_manifest.json"
 REPO = "policyengine/policyengine-uk-data"
 FILES = ("frs_2024_25.h5", "frs_2024_25.zip")
 

@@ -529,8 +529,9 @@ def write_tables(d: Data):
     A("\\footnotesize")
     A("\\setlength{\\tabcolsep}{3pt}")
     A("\\renewcommand{\\arraystretch}{1.15}")
-    A("\\caption{Declared first stages. Every price or earnings vector is an")
-    A("imported published estimate; none is re-estimated in this paper.}")
+    A("\\caption{Declared first stages. Each price vector is an imported")
+    A("published estimate or projection; the earnings vector is calibrated")
+    A("by the in-repository tariff pipeline. None is re-estimated.}")
     A("\\label{tab:first-stages}")
     A("\\begin{tabular}{@{}p{1.75cm} p{1.70cm} p{1.45cm} p{2.30cm} p{2.10cm}"
       " p{2.75cm} p{1.85cm}@{}}")

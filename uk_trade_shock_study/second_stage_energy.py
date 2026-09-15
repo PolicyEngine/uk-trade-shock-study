@@ -7,12 +7,12 @@ deciles.
 
 Design notes, in response to referee comments on the first version:
 
-* The automatic response is a STRUCTURAL property of the rulebook, not
-  a measurement: no modelled entitlement takes energy consumption as an
-  input, so the calculator re-run (baseline vs shocked energy inputs,
-  every entitlement recorded) is guaranteed to return zero.  The re-run
-  verifies that the model encodes the statutory structure; the claim
-  itself rests on the rulebook, verifiable line by line.
+* The fourteen cash benefits condition on nominal income, which the
+  price shock does not move, so the calculator re-run (baseline vs
+  shocked energy inputs) returns zero for them.  The model's own Energy
+  Price Guarantee variable (epg_subsidy) does read energy consumption
+  and does respond; the re-run records that response separately
+  (NATIVE_INSTRUMENTS) and the paper classifies it as discretionary.
 * Both price paths are on ONE basis: financial-year mean caps.  The
   counterfactual FY2022-23 mean is (1,971 + 3,549)/2 with no Energy
   Price Guarantee; the realised FY mean is (1,971 + 2,500)/2; the
@@ -60,9 +60,16 @@ P = {
     "col_means_tested": 650.0,
     "col_pensioner": 300.0,
     "col_disability": 150.0,
-    # Uprating (DATA: DWP April 2022 order; ONS D7BT).
+    # Uprating (DATA: DWP April 2022 order; ONS D7BT).  The 10.1 per cent is
+    # the September 2022 twelve-month CPI rate, the figure the April 2023
+    # uprating applied; the FY2022-23 mean of monthly twelve-month rates is
+    # about 10.0 per cent (ONS D7BT), so the September convention is used
+    # and named as such.
     "uprating_applied_apr_2022": 0.031,
-    "cpi_fy2022_23_mean": 0.101,
+    "cpi_sep_2022_yoy": 0.101,
+    # Energy Bills Support Scheme outturn, all UK (DATA: NAO, Energy bills
+    # support: an update, November 2024, GBP 11,692m; GB alone 11,364m).
+    "ebss_outturn_gbp_bn": 11.69,
     # ASSUMPTION: simulated year.
     "sim_year": 2023,
     # ONS UK household count, for the weight reconciliation (DATA).
@@ -79,9 +86,21 @@ P = {
 
 MEANS_TESTED = ["universal_credit", "pension_credit", "tax_credits",
                 "income_support", "housing_benefit", "jsa_income", "esa_income"]
+# Fourteen cash benefits.  Thirteen were uprated by 10.1 per cent in April
+# 2023; the winter fuel payment is a fixed cash amount (GBP 200/300, no
+# uprating step in the model's parameters), so the list is "cash benefits",
+# not "uprated cash benefits".
 UPRATED_CASH = MEANS_TESTED + ["state_pension", "child_benefit", "pip", "dla",
                                "attendance_allowance", "carers_allowance",
                                "winter_fuel_allowance"]
+# The model's own 2022-23 instruments.  PolicyEngine UK 2.95.0 encodes the
+# Energy Price Guarantee (epg_subsidy, which reads domestic energy
+# consumption), the Energy Bills Rebate and the cost-of-living payments as
+# variables inside household_benefits.  The re-run below measures their
+# response to the shocked energy inputs alongside the fourteen benefits.
+NATIVE_INSTRUMENTS = ["epg_subsidy", "cost_of_living_support_payment",
+                      "energy_bills_rebate", "household_benefits",
+                      "household_net_income"]
 
 
 # Weighted primitives, delegated to microdf (the survey-weighting library
@@ -187,6 +206,19 @@ def main() -> None:
         }
         auto_change += (shock_v - base_v) / 1e9
 
+    # --- The model's own instruments respond to the shocked input ----------
+    native = {}
+    for v in NATIVE_INSTRUMENTS:
+        if v not in sim.tax_benefit_system.variables:
+            continue
+        base_v = weighted(hh(v), w)
+        shock_v = weighted(hh(v, shocked), w)
+        native[v] = {
+            "baseline_gbp_bn": round(base_v / 1e9, 3),
+            "shocked_gbp_bn": round(shock_v / 1e9, 3),
+            "change_gbp_bn": round((shock_v - base_v) / 1e9, 3),
+        }
+
     # --- Discretionary instruments -----------------------------------------
     ebss = np.full_like(energy, P["ebss_per_household"])
     means_tested_amt = sum(hh(v) for v in MEANS_TESTED)
@@ -196,7 +228,7 @@ def main() -> None:
            * P["col_disability"])
     discretionary = epg_cushion + ebss + col
 
-    gap = P["cpi_fy2022_23_mean"] - P["uprating_applied_apr_2022"]
+    gap = P["cpi_sep_2022_yoy"] - P["uprating_applied_apr_2022"]
     shortfall = benefit_income * gap
 
     G = weighted(dE_counter, w)
@@ -231,9 +263,14 @@ def main() -> None:
             "measured_change_gbp_bn": round(auto_change, 3),
             "measured_rate_pct": round(100 * auto_change * 1e9 / G, 2),
             "by_instrument": automatic,
-            "note": "calculator re-run with shocked energy inputs; entitlements "
-                    "condition on nominal income, which a price shock does not "
-                    "move, so no means-tested award responds",
+            "native_instruments": native,
+            "note": "calculator re-run with shocked energy inputs. The fourteen "
+                    "cash benefits condition on nominal income, which the price "
+                    "shock does not move, so none responds. The model's own "
+                    "Energy Price Guarantee variable (epg_subsidy) reads energy "
+                    "consumption and does respond; its change is reported "
+                    "under native_instruments and classified as discretionary "
+                    "in the paper's taxonomy.",
         },
         "uprating_shortfall": {
             "benefit_income_base_gbp_bn": round(weighted(benefit_income, w) / 1e9, 1),
@@ -359,6 +396,21 @@ def emit_macros(res, path=None):
     add("BaseFyCap", f"{s['base_fy_mean_cap']:,.0f}")
     add("AutomaticBn", f"{a['measured_change_gbp_bn']:,.2f}")
     add("AutomaticRatePct", f"{a['measured_rate_pct']:.1f}")
+    nat = a.get("native_instruments", {})
+    if "epg_subsidy" in nat:
+        add("NativeEpgBn", f"{nat['epg_subsidy']['baseline_gbp_bn']:,.1f}")
+        add("NativeEpgDeltaBn", f"{nat['epg_subsidy']['change_gbp_bn']:,.1f}")
+    if "cost_of_living_support_payment" in nat:
+        add("NativeColBn",
+            f"{nat['cost_of_living_support_payment']['baseline_gbp_bn']:,.1f}")
+    if "energy_bills_rebate" in nat:
+        add("NativeEbrBn", f"{nat['energy_bills_rebate']['baseline_gbp_bn']:,.1f}")
+    if "household_benefits" in nat:
+        add("HouseholdBenefitsDeltaBn",
+            f"{nat['household_benefits']['change_gbp_bn']:,.1f}")
+    add("EbssOutturnBn", f"{P['ebss_outturn_gbp_bn']:,.1f}")
+    add("EbssExcessPct",
+        f"{100 * (d['ebss_gbp_bn'] / P['ebss_outturn_gbp_bn'] - 1):.0f}")
     add("BenefitIncomeBn", f"{u['benefit_income_base_gbp_bn']:,.0f}")
     add("UpratingGapPp", f"{u['uprating_gap_pp']:.1f}")
     add("UpratingShortfallBn", f"{u['shortfall_gbp_bn']:,.1f}")

@@ -3,9 +3,10 @@
 Section~\ref{sec:results-secondstage} runs the energy and TCA food
 episodes through PolicyEngine UK on the enhanced Family Resources
 Survey. Extending the full statutory stage to the remaining three
-episodes, and deepening the TCA run beyond its price vector, is a
-parameter reform per episode rather than new machinery, and four
-things change when it is done.
+episodes, and deepening the TCA run beyond its price vector, would add
+episode-specific parameters to the same second stage; this study has
+not implemented those runs, and four things would change when it is
+done.
 
 First, the consumption channel moves from decile tables to household
 records: the enhanced FRS carries imputed household consumption across
@@ -23,13 +24,15 @@ sixteen categories, and the imputation freezes budget-share
 limitation the stage will state. Second, the earnings channels run through the companion study's
 displacement machinery on the same households, so the two channels of a
 given episode land on a common population and their incidence can be
-compared household-by-household rather than distribution-by-distribution. Third, the rulebook axis becomes exact: PolicyEngine's parameter
-history carries dated, legislatively cited values through the whole
-window (the Covid-era Universal Credit uplift and its October 2021
-removal, the March 2022 fuel-duty cut, the 2022 and 2023 upratings),
-its own test suite exercises the 2020--2023 rule years, and
-counterfactual-rulebook runs, an earlier year's parameters applied to
-a later survey vintage, are native to the architecture. Each episode
+compared household-by-household rather than distribution-by-distribution. Third, the rulebook axis would be scored directly: PolicyEngine's
+parameter history carries dated values through the whole window, most
+with a legislative or Commons Library reference (the Covid-era
+Universal Credit uplift and its October 2021 removal, the March 2022
+fuel-duty cut, the 2022 and 2023 upratings), its test suite exercises
+the 2020--2023 rule years, and a counterfactual-rulebook run applies
+an earlier year's parameters to a later survey vintage by copying the
+survey inputs to that year, as Section~\ref{sec:results-rulebook}
+does. Each episode
 is therefore scored under the rules in force at its date, under the
 preceding year's rules (isolating uprating lag), and with the
 discretionary interventions switched off (isolating the automatic

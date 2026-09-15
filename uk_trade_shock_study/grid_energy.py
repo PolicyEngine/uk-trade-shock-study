@@ -153,9 +153,12 @@ def main() -> None:
         "AnnEpgRatePct": f"{100*weighted(epg_ann,w)/G_ann:.1f}",
         "AnnFullRatePct": f"{100*weighted(disc_full_ann,w)/G_ann:.1f}",
     }
-    # Outturn-calibrated stack (referee variant): EBSS scaled to its ~GBP 11bn
-    # scheme outturn, removing the weight-excess overshoot from the numerator.
-    ebss_cal = ebss * (11.0e9 / weighted(ebss, w))
+    # Energy-specific stack (EPG + EBSS) on the announced path.
+    ann["AnnEbssRatePct"] = f"{100*(weighted(epg_ann,w)+weighted(ebss,w))/G_ann:.1f}"
+    # Outturn-calibrated stack (referee variant): EBSS scaled to its NAO
+    # scheme outturn (GBP 11.69bn, all UK), removing the weight-excess
+    # overshoot from the numerator.
+    ebss_cal = ebss * (P["ebss_outturn_gbp_bn"] * 1e9 / weighted(ebss, w))
     dE_paper = energy_raw * paper_rebase * counter_rise
     epg_paper = energy_raw * paper_rebase * (counter_rise - realised_rise)
     G_paper = weighted(dE_paper, w)

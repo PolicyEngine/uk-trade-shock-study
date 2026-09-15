@@ -1,0 +1,31 @@
+# US export intensity by SIC 2007 division — REAL DATA build.
+# Numerator: HMRC uktradeinfo RTS/OTS API, UK goods exports to the
+# United States, calendar 2024, £, SITC->SIC crosswalk documented in
+# analysis/build_trade_by_sic.py (which wrote this file; rerun to rebuild).
+# Denominator: ONS Annual Business Survey division total turnover, 2024
+# (per-division latest non-suppressed year; beverages fall back to 2022).
+# us_export_share = US exports of the division / division turnover.
+sic_division,description,us_export_share
+10,Food products,0.0099
+11,Beverages,0.0627
+12,Tobacco,0.0472
+13,Textiles,0.0478
+14,Wearing apparel,0.1465
+15,Leather,0.0785
+16,Wood products,0.0017
+17,Paper,0.0159
+18,Printing,0.0470
+19,Coke and refined petroleum,0.0255
+20,Chemicals,0.1252
+21,Pharmaceuticals,0.1301
+22,Rubber and plastic products,0.0196
+23,Other non-metallic mineral products,0.0250
+24,Basic metals (incl. steel),0.0505
+25,Fabricated metal products,0.0308
+26,Computer electronic and optical products,0.1786
+27,Electrical equipment,0.1263
+28,Machinery and equipment n.e.c.,0.1801
+29,Motor vehicles trailers and semi-trailers,0.1097
+30,Other transport equipment (incl. aerospace),0.1569
+31,Furniture,0.0635
+32,Other manufacturing,0.1391

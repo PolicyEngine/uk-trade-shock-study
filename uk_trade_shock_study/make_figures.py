@@ -267,20 +267,12 @@ def fig_energy_epg(d: Data):
                     xy=(d.deciles[i], d.en_net_gbp[i] / 2), ha="center", va="center",
                     rotation=90, fontsize=7.0, color="white", zorder=5)
 
-    ax.annotate(
-        f"The EPG cushions {100 * d.cushion_share:.1f}% of the gross shock at every\n"
-        "decile (constant by construction: both price vectors scale the\n"
-        f"same spend base). The \u00a3 cushion runs \u00a3{d.en_cushion_gbp[0]:,.0f} (D1) to "
-        f"\u00a3{d.en_cushion_gbp[9]:,.0f} (D10).",
-        xy=(3.62, d.en_net_gbp[2] + d.en_cushion_gbp[2] * 0.6),
-        xytext=(1.55, 3320), fontsize=7.2, color=INK2, ha="left", va="top",
-        linespacing=1.4,
-        arrowprops=dict(arrowstyle="-", lw=0.8, color=MUTED,
-                        connectionstyle="angle3,angleA=0,angleB=75"),
-    )
+    # The constant-share explanation lives in the caption; no in-plot
+    # annotation or connector (academic convention: the chart shows, the
+    # caption tells).
 
     decile_ax(ax, "Annual cost of the 2022-23 energy shock\n(\u00a3 per household per year)")
-    ax.set_ylim(0, 3600)
+    ax.set_ylim(0, 2300)
     ax.set_xlim(0.4, 10.6)
     ax.legend(ncol=2, loc="upper center", bbox_to_anchor=(0.5, -0.165),
               fontsize=7.6, columnspacing=1.2)
@@ -342,18 +334,10 @@ def fig_uprating_lag(d: Data):
     ax.set_xticklabels([m.split("-")[1].capitalize() for m in d.months])
     ax.set_xlabel("Month, financial year 2022-23")
     ax.set_ylabel("Universal Credit standard allowance,\nsingle adult 25+ (\u00a3 per month)")
-    ax.set_ylim(0, 400)
+    ax.set_ylim(320, 395)
     ax.set_xlim(-0.4, len(x) - 0.6)
     ax.grid(axis="x", visible=False)
 
-    ax.annotate(
-        f"Cumulative shortfall, FY2022-23:\n\u00a3{d.lag_cost:,.0f} "
-        f"({d.lag_pct:.1f}% of the annual allowance)",
-        xy=(4.0, (d.actual[4] + d.counter[4]) / 2), xytext=(0.15, 250),
-        fontsize=7.4, color=INK2, ha="left", va="top", linespacing=1.4,
-        arrowprops=dict(arrowstyle="-", lw=0.8, color=MUTED,
-                        connectionstyle="angle3,angleA=90,angleB=0"),
-    )
     for i, ha, dx in ((0, "left", 4), (11, "right", -4)):
         ax.annotate(f"\u00a3{d.shortfall[i]:.0f}/mth",
                     xy=(i, (d.actual[i] + d.counter[i]) / 2),

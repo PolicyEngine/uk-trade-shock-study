@@ -23,7 +23,7 @@
 
 \title{\Large\bfseries Who bears the trade shocks?\\[0.15cm] Distributional incidence and fiscal cushioning in the UK\thanks{\textbf{Acknowledgements:} I thank Max Ghenis and Seyed Mahdi Hosseini for valuable comments and helpful discussions.}\\[0.7cm]}
 \author{Vahid Ahmadi\thanks{Research Associate at PolicyEngine. Email: \href{mailto:vahid@policyengine.org}{vahid@policyengine.org}.}}
-\date{\small August 2026}
+\date{\small September 2026}
 
 \input{generated_multishock}
 \input{generated_secondstage}
@@ -72,26 +72,9 @@ dispersion.
 \input{sections/episodes}
 \input{sections/method}
 \input{sections/results}
-\input{sections/roadmap}
 \input{sections/discussion}
+\input{sections/roadmap}
 
-\section*{Data and code availability}
-
-The pipeline, the pinned public inputs, the generated results and this
-manuscript are at \url{https://github.com/PolicyEngine/uk-trade-shock-study}
-(AGPL-3.0). The first pass uses only public inputs, each pinned by SHA256
-and verified on every run. The second stage uses
-\texttt{enhanced\_frs\_2023\_24.h5} from policyengine-uk-data release
-1.55.12 (SHA256 584ae33d80ca0431254610a3f8254d132da73477d31966d6446282861ecae50d),
-derived from the Family Resources Survey under the UK Data Service
-licence and available through PolicyEngine's data repository under the
-same licence; the model is policyengine-uk \SsPolicyEngineVersion. The US-tariff
-episode's three constants are taken from an unpublished companion
-manuscript whose pipeline is not part of this repository, and they
-should be read as scenario inputs until that manuscript and its code are
-public.
-
-\clearpage
 \input{sections/references}
 
 \end{document}

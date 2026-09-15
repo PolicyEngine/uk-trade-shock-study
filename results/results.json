@@ -653,12 +653,6 @@
     "bottom_to_top_ratio": 0.981,
     "verdict": "roughly proportional"
    }
-  },
-  "E5_cptpp_benchmark": {
-   "dbt_central_gdp_gbp_bn_long_run": 2.0,
-   "gdp_pct_long_run": 0.08,
-   "naive_mean_gbp_per_household_per_year": 70.4,
-   "note": "Near-zero benchmark row: a long-run GDP central estimate divided by the household count. No distributional structure is claimed or computable from this first stage."
   }
  },
  "module2_uc_uprating": {
@@ -820,18 +814,6 @@
    "regressivity_verdict": "roughly proportional",
    "cushioning": "n/a",
    "bottom_decile_pct_of_spend_per_gbp_bn": 0.084
-  },
-  {
-   "episode": "E5 CPTPP benchmark",
-   "gross_shock": 2.0,
-   "gross_shock_label": "GBP bn GDP, long-run central",
-   "sign": "gain",
-   "channel": "aggregate GDP (no household mapping)",
-   "bottom_decile_pct_of_spend": null,
-   "top_decile_pct_of_spend": null,
-   "regressivity_verdict": "n/a",
-   "cushioning": "n/a",
-   "bottom_decile_pct_of_spend_per_gbp_bn": null
   }
  ],
  "derived": {

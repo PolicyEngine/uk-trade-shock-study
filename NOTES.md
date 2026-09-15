@@ -139,12 +139,12 @@ every run.
   **roughly proportional** (ratio 0.98) — and economically negligible
   (£3–£10 per household per year at 100% pass-through).
 
-## 8. E5 — CPTPP near-zero benchmark
+## E5 — removed (15 Sep 2026)
 
-- Declared: DBT central +£2.0bn GDP long-run (≈ +0.08%). Naive mean =
-  £2.0bn / 28.4m households = **£70.4/household/yr**. Stated as a near-zero benchmark, not a placebo test:
-  a long-run GDP estimate is not a household price shock; no distributional
-  structure is claimed.
+The CPTPP near-zero benchmark was removed from the episode set, the
+pipeline and the paper: with the other four episodes all carried to the
+household stage (or, for E3, scheduled), a benchmark with no household
+structure no longer earned its row. History retains the implementation.
 
 ## 9. Module 2 — UC uprating-lag rulebook arithmetic
 

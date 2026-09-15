@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from uk_trade_shock_study.exposure import (
+from tariff_pipeline.exposure import (
     AUTO_SIC,
     BASELINE_TARIFF,
     EPD_AUTO_EFFECTIVE_RATE,

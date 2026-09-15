@@ -34,8 +34,8 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from uk_trade_shock_study.exposure import load_us_export_intensity, simulation_sic_division
-from uk_trade_shock_study.shocks import REALLOCATION_DESTINATIONS
+from tariff_pipeline.exposure import load_us_export_intensity, simulation_sic_division
+from tariff_pipeline.shocks import REALLOCATION_DESTINATIONS
 
 PERIOD = 2026
 DATASET = Path("data/frs_2024_25.h5")

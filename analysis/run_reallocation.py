@@ -22,8 +22,8 @@ from pathlib import Path
 
 import numpy as np
 
-from uk_trade_shock_study.runner import run_monte_carlo, write_result
-from uk_trade_shock_study.shocks import (
+from tariff_pipeline.runner import run_monte_carlo, write_result
+from tariff_pipeline.shocks import (
     DEFAULT_REALLOCATION_PENALTY,
     HOURLY_REALLOCATION_PENALTY,
     TradeShockScenario,

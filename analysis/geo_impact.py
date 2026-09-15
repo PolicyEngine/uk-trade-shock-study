@@ -37,8 +37,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "analysis"))
 
-from uk_trade_shock_study.exposure import simulation_sic_division  # noqa: E402
-from uk_trade_shock_study.shocks import (  # noqa: E402
+from tariff_pipeline.exposure import simulation_sic_division  # noqa: E402
+from tariff_pipeline.shocks import (  # noqa: E402
     PRESETS,
     apply_shocks,
     build_shocked_simulation,

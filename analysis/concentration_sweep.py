@@ -11,7 +11,7 @@ drawn records, those records lose 100 per cent of earnings BY CONSTRUCTION.
 There is no free variation left to trace the shape of the relationship.
 
 THE DESIGN HERE. Hold each division's aggregate expected wage-bill loss fixed
-at its declared earnings shock ``s_j`` (uk_trade_shock_study.exposure), and
+at its declared earnings shock ``s_j`` (tariff_pipeline.exposure), and
 deliver it as a proportional cut of fraction ``phi`` imposed on a randomly
 selected share ``s_j / phi`` of that division's exposed employees. Then
 
@@ -90,9 +90,9 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from uk_trade_shock_study.exposure import DEFAULT_ELASTICITY
-from uk_trade_shock_study.runner import _baseline_and_persons, _metrics
-from uk_trade_shock_study.shocks import (
+from tariff_pipeline.exposure import DEFAULT_ELASTICITY
+from tariff_pipeline.runner import _baseline_and_persons, _metrics
+from tariff_pipeline.shocks import (
     DEFAULT_UC_TAKEUP,
     DEFAULT_UC_TAKEUP_SCOPE,
     TradeShockScenario,

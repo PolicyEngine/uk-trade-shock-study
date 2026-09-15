@@ -69,8 +69,8 @@ from pathlib import Path
 
 import numpy as np
 
-from uk_trade_shock_study.runner import _baseline_and_persons
-from uk_trade_shock_study.shocks import (
+from tariff_pipeline.runner import _baseline_and_persons
+from tariff_pipeline.shocks import (
     DEFAULT_UC_TAKEUP_SCOPE,
     TradeShockScenario,
     _baseline_flag_values_and_rate,

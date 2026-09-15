@@ -37,8 +37,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from mechanism_decomposition import cushioning_components  # noqa: E402
 
-from uk_trade_shock_study.runner import _baseline_and_persons, gini  # noqa: E402
-from uk_trade_shock_study.shocks import (  # noqa: E402
+from tariff_pipeline.runner import _baseline_and_persons, gini  # noqa: E402
+from tariff_pipeline.shocks import (  # noqa: E402
     TradeShockScenario,
     _baseline_flag_values_and_rate,
     apply_shocks,

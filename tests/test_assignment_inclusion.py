@@ -21,7 +21,7 @@ from analysis.assignment_inclusion_diagnostic import (
     inclusion_frequencies,
     summarise,
 )
-from uk_trade_shock_study.shocks import TradeShockScenario, _person_shock
+from tariff_pipeline.shocks import TradeShockScenario, _person_shock
 
 
 def _weighted_deviation_reference(

@@ -24,7 +24,7 @@ from analysis.concentration_sweep import (
     select_records,
     sweep_scenario,
 )
-from uk_trade_shock_study.shocks import (
+from tariff_pipeline.shocks import (
     TradeShockScenario,
     _person_shock,
     apply_shocks,

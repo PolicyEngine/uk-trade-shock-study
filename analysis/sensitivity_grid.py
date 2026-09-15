@@ -23,8 +23,8 @@ from pathlib import Path
 
 import numpy as np
 
-from uk_trade_shock_study.runner import _baseline_and_persons
-from uk_trade_shock_study.shocks import (
+from tariff_pipeline.runner import _baseline_and_persons
+from tariff_pipeline.shocks import (
     TradeShockScenario,
     apply_shocks,
     build_shocked_simulation,

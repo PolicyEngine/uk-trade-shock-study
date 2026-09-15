@@ -118,6 +118,18 @@ D = {
     "uc_uplift_annual": 1040.0,       # 20 x 52
 }
 
+# Episode-3 constants from the in-repo tariff pipeline, when available
+# (analysis/run_scenarios.py + analysis/emit_e3_constants.py). When the
+# file exists it is the source of record; the D defaults above are the
+# companion manuscript's values, kept for provenance.
+_E3 = OUT / "e3_constants.json"
+if _E3.exists():
+    _e3 = json.loads(_E3.read_text())
+    D["ust_gross_shock_m"] = float(_e3["gross_shock_gbp_m_per_year"])
+    D["ust_displacement_cushion_pct"] = float(_e3["displacement_cushion_pct"])
+    D["ust_wage_cut_cushion_pct"] = float(_e3["wagecut_cushion_pct"])
+
+
 
 def verify_statutory_rates():
     """Check the hard-coded UC values against the pinned source documents."""

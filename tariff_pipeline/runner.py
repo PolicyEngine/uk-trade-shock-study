@@ -16,8 +16,8 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from uk_trade_shock_study.exposure import attach_sic_division, simulation_sic_division
-from uk_trade_shock_study.shocks import (
+from tariff_pipeline.exposure import attach_sic_division, simulation_sic_division
+from tariff_pipeline.shocks import (
     PRESETS,
     TradeShockScenario,
     apply_shocks,

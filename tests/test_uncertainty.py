@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from uk_trade_shock_study.uncertainty import latin_hypercube
+from tariff_pipeline.uncertainty import latin_hypercube
 
 
 def test_latin_hypercube_respects_bounds_and_seed():

@@ -31,12 +31,12 @@ import pandas as pd
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from figstyle import DPI, INK, SEQUENTIAL, apply_style
 
-from uk_trade_shock_study.runner import (
+from tariff_pipeline.runner import (
     _baseline_and_persons,
     _one_draw,
     json_value as _json_value,
 )
-from uk_trade_shock_study.shocks import TradeShockScenario
+from tariff_pipeline.shocks import TradeShockScenario
 
 PERIOD = 2026
 DATASET = Path("data/frs_2024_25.h5")

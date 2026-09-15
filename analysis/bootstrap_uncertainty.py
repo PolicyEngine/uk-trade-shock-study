@@ -68,8 +68,8 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from uk_trade_shock_study.runner import _baseline_and_persons  # noqa: E402
-from uk_trade_shock_study.shocks import (  # noqa: E402
+from tariff_pipeline.runner import _baseline_and_persons  # noqa: E402
+from tariff_pipeline.shocks import (  # noqa: E402
     TradeShockScenario,
     apply_shocks,
     build_shocked_simulation,

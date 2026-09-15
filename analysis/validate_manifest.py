@@ -51,7 +51,7 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-MANIFEST = ROOT / "uk_trade_shock_study" / "data" / "input_manifest.json"
+MANIFEST = ROOT / "tariff_pipeline" / "data" / "input_manifest.json"
 
 #: Manifest sections whose entries must exist and whose hashes must match.
 #: ``inputs`` is handled separately because missing raw inputs are expected.

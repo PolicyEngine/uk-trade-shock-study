@@ -519,7 +519,7 @@ def write_tables(d: Data):
          "Observed\\newline (statutory)"),
         ("E3 US tariffs 2025", "2025", "Policy\\newline (foreign)",
          "Earnings only; no UK retaliation", "\\citet{ahmadi2026}",
-         "\\pounds886m/yr gross earnings shock", "Scenario\\newline (unit stress; unpublished)"),
+         "tariff-calibrated earnings shock", "Scenario\\newline (computed in-repo)"),
         ("E4 India CETA", "2026+", "Policy",
          "Consumer prices (clothing, footwear, food)", "\\citet{dbtindia2026}",
          "\\pounds180m/yr duty cut on final goods", "Projection\\newline (ex ante)"),

@@ -402,9 +402,9 @@
     "note": "Zero row: the UK imposed no retaliatory tariffs, so there is no consumer-price first stage. The episode's household incidence runs through earnings only."
    },
    "earnings_side_declared": {
-    "gross_shock_gbp_m_per_year": 886.0,
-    "displacement_cushioning_pct": 36.6,
-    "wage_cut_cushioning_pct": 43.9,
+    "gross_shock_gbp_m_per_year": 1000.0,
+    "displacement_cushioning_pct": 35.4,
+    "wage_cut_cushioning_pct": 43.7,
     "source": "companion uk-trade-shock-study (declared constants)"
    }
   },
@@ -793,14 +793,14 @@
   },
   {
    "episode": "E3 US tariffs 2025",
-   "gross_shock": 0.886,
+   "gross_shock": 1.0,
    "gross_shock_label": "GBP bn/yr, gross earnings shock (companion study)",
    "sign": "cost",
    "channel": "earnings only (no UK retaliation)",
    "bottom_decile_pct_of_spend": 0.0,
    "top_decile_pct_of_spend": 0.0,
    "regressivity_verdict": "n/a (zero row)",
-   "cushioning": "automatic stabilisers: 36.6% (displacement) / 43.9% (wage cut)",
+   "cushioning": "automatic stabilisers: 35.4% (displacement) / 43.7% (wage cut)",
    "bottom_decile_pct_of_spend_per_gbp_bn": null
   },
   {

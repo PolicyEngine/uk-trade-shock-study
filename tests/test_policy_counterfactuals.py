@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from uk_trade_shock_study.policy_counterfactuals import targeted_transfer, wage_insurance_payment
+from tariff_pipeline.policy_counterfactuals import targeted_transfer, wage_insurance_payment
 
 
 def test_wage_insurance_scales_by_rate_and_duration():

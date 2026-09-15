@@ -38,8 +38,8 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-from uk_trade_shock_study.runner import _baseline_and_persons
-from uk_trade_shock_study.shocks import PRESETS, apply_shocks, build_shocked_simulation
+from tariff_pipeline.runner import _baseline_and_persons
+from tariff_pipeline.shocks import PRESETS, apply_shocks, build_shocked_simulation
 
 PERIOD = 2026
 DATASET = Path("data/frs_2024_25.h5")

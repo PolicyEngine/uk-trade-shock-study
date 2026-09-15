@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 
-from uk_trade_shock_study.lfs_imputation import (
+from tariff_pipeline.lfs_imputation import (
     align_lfs_to_bres,
     banded_job_exit_probabilities,
     calibrate_probabilities,

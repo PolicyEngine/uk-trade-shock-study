@@ -1163,7 +1163,7 @@ def test_the_selection_design_guard_names_a_rerun_not_a_code_change() -> None:
     """
     import dataclasses
 
-    from uk_trade_shock_study.runner import MonteCarloResult
+    from tariff_pipeline.runner import MonteCarloResult
     from analysis.write_paper_results import SELECTION_METHOD_PROVENANCE_FIX
 
     fields = {f.name for f in dataclasses.fields(MonteCarloResult)}

@@ -44,7 +44,7 @@ def main() -> None:
         "source": "in-repo tariff pipeline (analysis/run_scenarios.py)",
         "scenario": "full_tariff",
         "n_draws": disp["n_draws"],
-        "gross_shock_gbp_m_per_year": round(gross_m, 0),
+        "gross_shock_gbp_m_per_year": round(gross_m, 1),
         "displacement_cushion_pct": round(100 * disp["cushioning_rate_mean"], 1),
         "wagecut_cushion_pct": round(100 * wage["cushioning_rate_mean"], 1),
         "displacement_cushion_sd_pct": round(100 * disp["cushioning_rate_sd"], 1),

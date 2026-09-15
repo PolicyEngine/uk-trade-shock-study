@@ -128,6 +128,7 @@ if _E3.exists():
     D["ust_gross_shock_m"] = float(_e3["gross_shock_gbp_m_per_year"])
     D["ust_displacement_cushion_pct"] = float(_e3["displacement_cushion_pct"])
     D["ust_wage_cut_cushion_pct"] = float(_e3["wagecut_cushion_pct"])
+    D["ust_displacement_cushion_sd_pct"] = float(_e3.get("displacement_cushion_sd_pct", 0.0))
 
 
 
@@ -777,6 +778,8 @@ def latex_macros(res):
         100 * e2["epg_cushion"]["cap_ratio_point_to_point"], 1))
     add("EnergyCushionShareFyPct", fmt(
         100 * e2["epg_cushion"]["share_of_gross_shock"], 1))
+    add("USTariffDisplacementCushionSDPct", fmt(
+        D.get("ust_displacement_cushion_sd_pct", 0.0), 1))
     add("EnergyObrEpgBn", fmt(D["obr_epg_cost_bn"]))
     add("EnergyObrSubsidyBn", fmt(D["obr_energy_subsidy_bn"]))
 

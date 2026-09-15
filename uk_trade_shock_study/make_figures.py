@@ -367,8 +367,6 @@ def fig_episode_map(d: Data):
          "earnings only; zero consumer row"),
         ("E4", "E4  India CETA", -1.02, 1.15, 0.18, "gain", False,
          "duty cut on final goods"),
-        ("E5", "E5  CPTPP benchmark", 0.10, 0.62, 2.0, "gain", False,
-         "GDP only; no household mapping"),
     ]
     lo = np.log10(min(e[4] for e in eps))
     hi = np.log10(max(e[4] for e in eps))
@@ -425,9 +423,6 @@ def fig_episode_map(d: Data):
                markeredgecolor="white", label="Gain episode"),
         Patch(facecolor=BLUE, hatch="///", edgecolor=INK, ls=(0, (3, 1.5)), lw=1.1,
               label="Trade-transmitted market price (not a policy instrument)"),
-        Line2D([], [], marker="o", ls="none", ms=7, markerfacecolor="white",
-               markeredgecolor=TEAL, markeredgewidth=1.4,
-               label="Near-zero benchmark (no household structure)"),
     ]
     # Size key lives in the legend box, outside the plot: open circles with
     # strong edges, diameters on the same log-area scale as the bubbles.
@@ -528,9 +523,6 @@ def write_tables(d: Data):
         ("E4 India CETA", "2026+", "Policy",
          "Consumer prices (clothing, footwear, food)", "\\citet{dbtindia2026}",
          "\\pounds180m/yr duty cut on final goods", "Projection\\newline (ex ante)"),
-        ("E5 CPTPP benchmark", "Long run", "Policy",
-         "Aggregate GDP; no household mapping", "\\citet{dbtcptpp2023}",
-         "$+$\\pounds2.0bn GDP ($+0.08\\%$)", "Projection\\newline (long run)"),
     ]
     A("\\begin{table}[tbp]")
     A("\\centering")

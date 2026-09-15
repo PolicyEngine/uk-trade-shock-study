@@ -10,7 +10,6 @@ Runs five post-Covid UK trade-shock episodes through a common household lens:
       earnings side imported as declared constants from the companion study)
   E4  India CETA 2026+                         (DBT IA Annex 9 Table 18 duty
       savings on final goods, allocated by category spending)
-  E5  CPTPP near-zero benchmark                            (DBT central +GBP 2.0bn GDP)
 
 plus a rulebook-arithmetic module (UC uprating lag 2022-23) and a
 comparability table.
@@ -111,9 +110,6 @@ D = {
     "ceta_footwear_m": 13.2,
     "ceta_foodbev_m": 11.7,
     "ceta_passthrough": {"fifty": 0.50, "seventyfive": 0.75, "hundred": 1.00},
-    # E5 -- DBT CPTPP central scenario
-    "cptpp_gdp_bn": 2.0,
-    "cptpp_households_m": 28.4,
     # Module 2 -- UC standard allowance, single adult 25+, GBP / month
     "uc_apr_2021": 324.84,
     "uc_apr_2022": 334.91,   # +3.1% (Sep 2021 CPI)
@@ -449,21 +445,7 @@ def episode_e4(fs25):
                 "verdict": verdict(bot, top, "gain")}}
 
 
-def episode_e5():
-    per_hh = D["cptpp_gdp_bn"] * 1e9 / (D["cptpp_households_m"] * 1e6)
-    return {
-        "dbt_central_gdp_gbp_bn_long_run": D["cptpp_gdp_bn"],
-        "gdp_pct_long_run": 0.08,
-        "naive_mean_gbp_per_household_per_year": round(per_hh, 1),
-        "note": ("Near-zero benchmark row: a long-run GDP central estimate divided by "
-                 "the household count. No distributional structure is "
-                 "claimed or computable from this first stage."),
-    }
 
-
-# ---------------------------------------------------------------------------
-# 4. Module 2 -- UC uprating-lag rulebook arithmetic
-# ---------------------------------------------------------------------------
 def module_two(cpi):
     base = cpi[(2021, "APR")]
     monthly = []
@@ -536,7 +518,7 @@ def verdict(bot, top, sign):
     return "roughly proportional"
 
 
-def module_three(e1, e2, e3, e4, e5):
+def module_three(e1, e2, e3, e4):
     rows = []
 
     def add(episode, size, size_label, sign, channel, bot, top, sgn_kind,
@@ -584,10 +566,6 @@ def module_three(e1, e2, e3, e4, e5):
         f4["pct_of_total_spend"][0], f4["pct_of_total_spend"][9],
         "gain", "n/a", D["ceta_total_m"] / 1000)
 
-    add("E5 CPTPP benchmark", D["cptpp_gdp_bn"],
-        "GBP bn GDP, long-run central", "gain",
-        "aggregate GDP (no household mapping)", None, None, "gain",
-        "n/a", None)
     return rows
 
 
@@ -734,7 +712,7 @@ def latex_macros(res):
 
     e1, e2 = res["episodes"]["E1_tca_food"], res["episodes"]["E2_energy"]
     e3, e4 = res["episodes"]["E3_us_tariffs"], res["episodes"]["E4_india_ceta"]
-    e5, m2 = res["episodes"]["E5_cptpp_benchmark"], res["module2_uc_uprating"]
+    m2 = res["module2_uc_uprating"]
 
     # E1
     add("TcaFoodRisePct", fmt(100 * D["tca_food_rise_central"]))
@@ -814,12 +792,6 @@ def latex_macros(res):
     add("CetaBottomPctSpend", fmt(full["pct_of_total_spend"][0], 4))
     add("CetaTopPctSpend", fmt(full["pct_of_total_spend"][9], 4))
     add("CetaVerdict", e4["progressivity"]["verdict"])
-
-    # E5
-    add("CptppGdpBn", fmt(D["cptpp_gdp_bn"], 1))
-    add("CptppHouseholdsMillions", fmt(D["cptpp_households_m"], 1))
-    add("CptppNaiveGbpPerHousehold", fmt(
-        e5["naive_mean_gbp_per_household_per_year"]))
 
     # Module 2
     add("UcAllowanceAprTwentyOne", fmt(D["uc_apr_2021"], 2))
@@ -902,7 +874,6 @@ def main():
     e2 = episode_e2(fs22, inc22)
     e3 = episode_e3()
     e4 = episode_e4(fs25)
-    e5 = episode_e5()
     m2 = module_two(cpi)
 
     res = {
@@ -917,11 +888,11 @@ def main():
         },
         "episodes": {
             "E1_tca_food": e1, "E2_energy": e2, "E3_us_tariffs": e3,
-            "E4_india_ceta": e4, "E5_cptpp_benchmark": e5,
+            "E4_india_ceta": e4
         },
         "module2_uc_uprating": m2,
     }
-    res["module3_comparability"] = module_three(e1, e2, e3, e4, e5)
+    res["module3_comparability"] = module_three(e1, e2, e3, e4)
 
     # --- Derived variants, computed INTO the artifact (not only into the
     # LaTeX macros), so results.json contains every number the paper
@@ -968,7 +939,6 @@ def main():
     print(f"E4 CETA: bottom {e4['progressivity']['bottom_decile_gain_pct_of_spend']}% "
           f"vs top {e4['progressivity']['top_decile_gain_pct_of_spend']}% of spend -> "
           f"{e4['progressivity']['verdict']}")
-    print(f"E5 CPTPP benchmark: GBP {e5['naive_mean_gbp_per_household_per_year']}/hh/yr")
     print(f"M2 UC lag: GBP {m2['uprating_lag_cost_gbp_fy_2022_23']:.0f} "
           f"({m2['uprating_lag_cost_pct_of_allowance']}% of allowance); "
           f"flat alt GBP {m2['flat_alternative_gbp']:.0f}; uplift GBP 1,040")

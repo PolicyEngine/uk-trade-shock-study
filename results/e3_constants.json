@@ -2,7 +2,7 @@
  "source": "in-repo tariff pipeline (analysis/run_scenarios.py)",
  "scenario": "full_tariff",
  "n_draws": 100,
- "gross_shock_gbp_m_per_year": 1000.0,
+ "gross_shock_gbp_m_per_year": 999.8,
  "displacement_cushion_pct": 35.4,
  "wagecut_cushion_pct": 43.7,
  "displacement_cushion_sd_pct": 5.1,

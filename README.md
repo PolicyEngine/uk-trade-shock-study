@@ -1,4 +1,4 @@
-# Who bears the trade shocks?
+# Who pays for trade shocks?
 
 **Distributional incidence and fiscal cushioning of UK trade events,
 2021–2026, through PolicyEngine UK.**

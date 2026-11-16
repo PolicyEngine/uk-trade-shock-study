@@ -1,4 +1,4 @@
-# Who Bears the Trade Shocks? -- reproduction targets.
+# Who pays for trade shocks? -- reproduction targets.
 # The pipeline lives in the uk_trade_shock_study package; generated macros
 # land in results/ and are copied into paper/.
 

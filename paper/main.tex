@@ -7,6 +7,11 @@
 \usepackage{graphicx}
 \usepackage{xcolor}
 \definecolor{paperblue}{rgb}{0,0,0.7}
+% Run-in paragraph headings: bold blue, upright.
+\newcommand{\runin}[1]{\textbf{\textcolor{paperblue}{#1}}}
+\makeatletter
+\renewcommand{\paragraph}{\@startsection{paragraph}{4}{\z@}{1.5ex \@plus 0.5ex \@minus 0.2ex}{-1em}{\normalfont\normalsize\bfseries\color{paperblue}}}
+\makeatother
 \usepackage[hang,flushmargin]{footmisc}
 \PassOptionsToPackage{hyphens}{url}
 \usepackage[colorlinks=true, citecolor=paperblue, linkcolor=paperblue, urlcolor=paperblue]{hyperref}

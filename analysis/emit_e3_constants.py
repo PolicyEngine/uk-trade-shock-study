@@ -20,8 +20,7 @@ RESULTS = ROOT / "results"
 
 def main() -> None:
     import pandas as pd
-    from policyengine_uk import Microsimulation
-    from policyengine_uk.data import UKSingleYearDataset
+    from uk_trade_shock_study.microcosm import microsimulation
 
     from tariff_pipeline.exposure import (
         sector_earnings_shocks,
@@ -31,8 +30,7 @@ def main() -> None:
     disp = json.loads((RESULTS / "full_tariff_displacement.json").read_text())
     wage = json.loads((RESULTS / "full_tariff_wage_cut.json").read_text())
 
-    dataset = ROOT / "data" / "frs_2024_25.h5"
-    sim = Microsimulation(dataset=UKSingleYearDataset(file_path=str(dataset)))
+    sim = microsimulation()
     period = 2026
     sic = simulation_sic_division(sim, period)
     emp = sim.calculate("employment_income", period=period, map_to="person").values

@@ -1,6 +1,6 @@
 \section{Literature}\label{sec:literature}
 
-Four literatures meet here without previously having met each other:
+The paper draws on four literatures:
 the household incidence of trade policy, the microsimulation of shocks
 through statutory tax--benefit systems, the distributional analysis of
 price shocks and benefit indexation, and the UK's episode-specific
@@ -35,8 +35,7 @@ the shock. The World Bank and OECD frameworks stop at market incomes
 and expenditure; the US 2025 work is consumption-side; the
 CGE-linkage papers (Peichl's flat-tax application aside) use
 reduced-form income equations. Among the studies reviewed here, no shock arriving under a \emph{trade}
-label has been run through a statutory tax--benefit calculator, EUROMOD, UKMOD, TAXBEN, PolicyEngine or any counterpart, other than
-the companion study discussed below and
+label has been run through a statutory tax--benefit calculator, EUROMOD, UKMOD, TAXBEN, PolicyEngine or any counterpart, other than \citet{ahmadi2026} and
 Section~\ref{sec:results-secondstage} of this paper, which carries
 both the energy episode and the TCA food-price episode, a
 trade-policy act, through the statutory stage. The claim is
@@ -47,8 +46,7 @@ episode-comparative design, not the machinery.
 
 \subsection{Shocks through statutory rules}
 
-That machinery exists and has been applied to every kind of shock
-except trade. \citet{dolls2012} measure the stabilisation coefficients
+That machinery exists and has been applied to income, employment and inflation shocks, but rarely to trade shocks. \citet{dolls2012} measure the stabilisation coefficients
 of the US and European systems against stylised income and unemployment
 shocks; \citet{brewertasseva2021} impose the observed Covid
 labour-market shock on FRS microdata through UKMOD and decompose the
@@ -78,12 +76,11 @@ automatic stabilisers do very little against a supply shock, unlike
 their demand-shock performance, a result reported in a macro model rather than on microdata. \citet{paulus2020} supply the canonical treatment of
 non-indexation as a distributional phenomenon, and
 \citet{leventi2024} the nearest existing treatment of indexation
-itself as a stabiliser. The companion study
-\citep{ahmadi2026}, an unpublished manuscript, applies tax--benefit
-microsimulation to a trade shock, covering a single
-episode (the 2025 US tariffs) through the earnings channel only. This paper deepens it on the price
-margin: three price-led episodes through the statutory stage, the
-tariff episode's earnings channel rerun in this repository, a
+itself as a stabiliser. \citet{ahmadi2026}, an unpublished manuscript, applies tax--benefit
+microsimulation to a trade shock, covering a single episode (the 2025
+US tariffs) through the earnings channel only. This paper adds the
+price margin: three price-led episodes through the statutory stage,
+the tariff episode's earnings channel on the same microdata, a
 four-episode comparative design, and the rulebook vintage as an
 explicit dimension.
 
@@ -134,7 +131,7 @@ decomposition machinery for price shocks is also established:
 impact across expenditure patterns, and \citet{chenlevell2024} map an
 exchange-rate shock onto heterogeneous household price experiences
 using scanner data. Their finding is a direct bound on this paper's
-first pass: inflation inequality surged in 2021--23 partly because
+decile-table analysis: inflation inequality surged in 2021--23 partly because
 cheaper goods inflated fastest, a within-category quality margin that
 published expenditure-by-decile tables hold fixed and therefore
 understate. On the policy question the episodes raise, the most direct
@@ -150,8 +147,7 @@ data they find income explains only a small share of the variation in
 energy spending, so within-decile dispersion in exposure dwarfs the
 between-decile gradient, and they show that an optimal package retains
 a strictly positive price subsidy even when transfers can condition on
-income and past usage. That is a principled defence of a
-price-capping instrument, and it disciplines what this paper's
+income and past usage. That result supports retaining a price subsidy, and it disciplines what this paper's
 proportional-cushioning arithmetic can be taken to mean.
 \citet{bonnet2025} reach the opposite conclusion for transport fuel in
 France, and the disagreement is commodity-driven, fuel budget shares
@@ -165,8 +161,7 @@ crisis support was untargeted and price-distorting, while
 \citet{nao2024} records the fiscal counterpart in the UK: an
 initial \pounds 139 billion estimate for the eight energy support
 schemes against a \pounds 44 billion outturn, of which the Guarantee
-itself was \pounds 24.0 billion, the option value of support that
-binds only in bad states.
+itself was \pounds 24.0 billion.
 
 \subsection{The UK episode record}
 
@@ -207,15 +202,11 @@ find the non-tariff-barrier episode sharply \emph{regressive}, the
 bottom decile's cost-of-living increase around half again larger than
 the top's. Same country, adjacent years, opposite incidence, because
 the two shocks landed on different baskets. A framework that holds the
-household lens fixed and varies the shock is the instrument that
-settles such disagreements, and Section~\ref{sec:results} shows the
+household lens fixed and varies the shock can show why such results differ, and Section~\ref{sec:results} shows the
 same mechanism operating across four episodes. What remains absent
 everywhere is the tax--benefit response: the Brexit price studies reviewed here do not model the tax--benefit response; the energy-crisis literature scores the discretionary response
 but not the trade shock as such; the FTA impact assessments contain, in
 DBT's own regulator's words, household analysis ``developed further for
 future FTA IAs.'' The gap this paper fills is the
 join: one statutory second stage run against the episode's first
-stage. The paper supplies the first stages, the taxonomy, a
-public-data first pass for all four episodes, the statutory stage for
-the three price-led ones, and the earnings-channel stage for the
-tariff episode, computed in this repository.
+stage. The paper supplies the taxonomy, decile-table incidence for the price-led episodes, their household-level analysis, and the earnings-channel stage for the tariff episode.

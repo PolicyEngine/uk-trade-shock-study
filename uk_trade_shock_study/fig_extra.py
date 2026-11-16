@@ -13,7 +13,7 @@
    53,508-record base only: imputation (donor-model) uncertainty is not
    captured and is flagged in the manuscript.
 
-Run:  python fig_extra.py --dataset <enhanced_frs.h5>
+Run:  python fig_extra.py   (certified Microcosm UK via policyengine.py)
 """
 
 import argparse
@@ -21,7 +21,7 @@ import json
 
 import numpy as np
 
-from second_stage_energy import P, weighted, wmean, wquantile, variance_split
+from second_stage_energy import P, load_sim, col_components, weighted, wmean, wquantile, variance_split
 from second_stage_energy import RESULTS_DIR, PAPER_DIR
 
 CASH_OUTLAY_SCALE = 0.77   # observed demand response; matches the first pass's
@@ -42,13 +42,12 @@ def deciles_of(equiv_income, w):
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--dataset", required=True)
+    ap.add_argument("--dataset", default=None,
+                    help="ignored; data come from the certified Microcosm UK build")
     args = ap.parse_args()
 
-    from policyengine_uk import Microsimulation
-
     yr = P["sim_year"]
-    sim = Microsimulation(dataset=args.dataset)
+    sim = load_sim()
 
     def hh(name):
         return np.asarray(sim.calculate(name, yr, map_to="household"))
@@ -74,10 +73,7 @@ def main() -> None:
                            ["universal_credit", "pension_credit", "tax_credits",
                             "income_support", "housing_benefit", "jsa_income",
                             "esa_income"])
-    col = ((means_tested_amt > 0) * P["col_means_tested"]
-           + (hh("state_pension") > 0) * P["col_pensioner"]
-           + ((hh("pip") + hh("dla") + hh("attendance_allowance")) > 0)
-           * P["col_disability"])
+    col = sum(col_components(sim))
 
     # --- Per-decile means (point estimates) --------------------------------
     def dmeans(x):
@@ -99,11 +95,21 @@ def main() -> None:
     # --- Household bootstrap (sampling only) -------------------------------
     rng = np.random.default_rng(SEED)
     n = len(w)
+    # Resample SOURCE survey households (Microcosm clones each into several
+    # records), so intervals reflect the survey's sampling, not record count.
+    from microcosm import source_household_ids
+    src = source_household_ids()
+    if len(src) != n:
+        raise RuntimeError("source-household ids do not align with records")
+    _, inverse = np.unique(src, return_inverse=True)
+    members = np.split(np.argsort(inverse, kind="stable"),
+                       np.cumsum(np.bincount(inverse))[:-1])
+    n_src = len(members)
     boot_net, boot_within, boot_d1cushion, boot_rate = [], [], [], []
     disc = epg + ebss + col
     spend_share = dE_realised / np.maximum(total_spend, 1)
     for _ in range(N_BOOT):
-        idx = rng.integers(0, n, n)
+        idx = np.concatenate([members[j] for j in rng.integers(0, n_src, n_src)])
         wb = w[idx]
         db = deciles_of(equiv_income[idx], wb)
         boot_rate.append(100 * weighted(disc[idx], wb) / weighted(dE_counter[idx], wb))

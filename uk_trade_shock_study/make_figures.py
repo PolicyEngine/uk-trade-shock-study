@@ -358,12 +358,16 @@ def fig_episode_map(d: Data):
     fig.subplots_adjust(left=0.015, right=0.985, top=0.935, bottom=0.235)
 
     # (key, label, x, y, gross GBPbn, sign, market?, note)
+    ep = d.res["episodes"]
+    e1_bn = d.res["derived"]["tca_window_average"]["aggregate_gbp_bn_per_year"]
+    e2_bn = ep["E2_energy"]["gross"]["aggregate_gbp_bn_per_year"]
+    e3_bn = ep["E3_us_tariffs"]["earnings_side_declared"]["gross_shock_gbp_m_per_year"] / 1e3
     eps = [
-        ("E1", "E1  TCA food NTBs", -1.02, -0.72, 2.19, "cost", False,
+        ("E1", "E1  TCA food NTBs", -1.02, -0.72, e1_bn, "cost", False,
          "+8% on food prices"),
-        ("E2", "E2  Energy 2022-23", -0.98, -1.60, 63.9, "cost", True,
-         "cap \u00a31,277 \u2192 \u00a33,549"),
-        ("E3", "E3  US tariffs 2025", 0.42, -1.10, 0.886, "cost", False,
+        ("E2", "E2  Energy 2022-23", -0.98, -1.60, e2_bn, "cost", True,
+         "FY-mean cap \u00a31,208 \u2192 \u00a32,760"),
+        ("E3", "E3  US tariffs 2025", 0.42, -1.10, e3_bn, "cost", False,
          "earnings only; zero consumer row"),
         ("E4", "E4  India CETA", -1.02, 1.15, 0.18, "gain", False,
          "duty cut on final goods"),
@@ -427,7 +431,7 @@ def fig_episode_map(d: Data):
     # Size key lives in the legend box, outside the plot: open circles with
     # strong edges, diameters on the same log-area scale as the bubbles.
     for val, lab in [(0.18, "\u00a30.18bn gross"), (2.0, "\u00a32bn gross"),
-                     (63.9, "\u00a364bn gross")]:
+                     (e2_bn, f"\u00a3{e2_bn:.0f}bn gross")]:
         ms = 2.0 * np.sqrt(bubble(val) / np.pi) * 0.42
         legend.append(Line2D([], [], marker="o", ls="none", ms=ms,
                              markerfacecolor="none", markeredgecolor=INK2,
@@ -519,7 +523,7 @@ def write_tables(d: Data):
          "Observed\\newline (statutory)"),
         ("E3 US tariffs 2025", "2025", "Policy\\newline (foreign)",
          "Earnings only; no UK retaliation", "\\citet{ahmadi2026}",
-         "tariff-calibrated earnings shock", "Scenario\\newline (computed in-repo)"),
+         "tariff-calibrated earnings shock", "Scenario\\newline (simulated)"),
         ("E4 India CETA", "2026+", "Policy",
          "Consumer prices (clothing, footwear, food)", "\\citet{dbtindia2026}",
          "\\pounds180m/yr duty cut on final goods", "Projection\\newline (ex ante)"),
@@ -529,9 +533,9 @@ def write_tables(d: Data):
     A("\\footnotesize")
     A("\\setlength{\\tabcolsep}{3pt}")
     A("\\renewcommand{\\arraystretch}{1.15}")
-    A("\\caption{Declared first stages. Each price vector is an imported")
+    A("\\caption{Imported first stages. Each price vector is an imported")
     A("published estimate or projection; the earnings vector is calibrated")
-    A("by the in-repository tariff pipeline. None is re-estimated.}")
+    A("by the earnings-channel microsimulation. None is re-estimated.}")
     A("\\label{tab:first-stages}")
     A("\\begin{tabular}{@{}p{1.75cm} p{1.70cm} p{1.45cm} p{2.30cm} p{2.10cm}"
       " p{2.75cm} p{1.85cm}@{}}")

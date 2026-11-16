@@ -7,8 +7,6 @@
 \usepackage{graphicx}
 \usepackage{xcolor}
 \definecolor{paperblue}{rgb}{0,0,0.7}
-\usepackage{sectsty}
-\allsectionsfont{\color{paperblue}}
 \usepackage[hang,flushmargin]{footmisc}
 \PassOptionsToPackage{hyphens}{url}
 \usepackage[colorlinks=true, citecolor=paperblue, linkcolor=paperblue, urlcolor=paperblue]{hyperref}
@@ -23,7 +21,7 @@
 
 \title{\Large\bfseries Who bears the trade shocks?\\[0.15cm] Distributional incidence and fiscal cushioning in the UK\thanks{\textbf{Acknowledgements:} I thank Max Ghenis and Seyed Mahdi Hosseini for valuable comments and helpful discussions.}\\[0.7cm]}
 \author{Vahid Ahmadi\thanks{Research Associate at PolicyEngine. Email: \href{mailto:vahid@policyengine.org}{vahid@policyengine.org}.}}
-\date{\small September 2026}
+\date{\small November 2026}
 
 \input{generated_multishock}
 \input{generated_secondstage}
@@ -40,29 +38,30 @@
 \maketitle
 
 \begin{abstract}
-\noindent This paper simulates four UK trade events of 2021--26
-through the household sector in PolicyEngine UK: three through
-consumer prices (the post-Brexit food price rise, the 2022 energy
-surge, and the India agreement's projected duty reductions) and one
-through earnings (the 2025 US tariffs). First stages are imported from published estimates; results are
-conditional statutory incidence, not causal effects. Both negative price shocks fell hardest on lower-income
-deciles; the India gains are small and near-proportional. With nominal incomes fixed, the fourteen
-modelled cash benefits did not change. A rulebook-vintage run prices the
-crisis-year uprating lag at roughly \pounds 15 billion. Energy-specific payments
-equalled \SsGridPaperEbssRatePct\ per cent of the counterfactual
-shock (\SsGridUnityEbssRatePct--\SsAnnEbssRatePct\ across rebase and
-price-path variants; \SsGridUnityFullRatePct--\SsAnnFullRatePct\ with
-cost-of-living support); the food price rise
-attracted no instrument; the tariff earnings loss was cushioned
-automatically at \MsUSTariffDisplacementCushionPct--\MsUSTariffWageCutCushionPct\ per cent. On imputed exposure, \SsWithinPct\ per cent of
-energy-burden variance lies within income deciles.
+\noindent This paper compares who bore four UK trade-related shocks of
+2021--26 and how far the tax--benefit system offset them: the
+post-Brexit rise in food prices, the 2022 energy price surge, the 2025
+US tariffs and the projected price cuts from the UK--India agreement.
+Shock sizes are taken from published estimates and applied to
+household data in the PolicyEngine UK microsimulation model; the
+results are conditional incidence, not causal effects. Both negative
+price shocks took a larger share of spending from lower-income
+deciles; the India gains are small and proportional. Benefits have no
+within-year response to a price shock, and the April 2022 uprating
+lagged inflation by \SsUpratingGapPp\ points. Energy-specific support
+offset \SsGridPaperEbssRatePct\ per cent of the no-policy energy cost,
+and \SsDiscretionaryRatePct\ per cent with cost-of-living payments, at
+rates that fall with income. No instrument targeted the food price
+rise. Taxes and benefits absorbed
+\MsUSTariffDisplacementCushionPct--\MsUSTariffWageCutCushionPct\ per
+cent of the tariff earnings loss.
 \end{abstract}
 
 \medskip
 \noindent\textbf{Keywords:} trade shocks, tariffs, Brexit, terms of trade, microsimulation, automatic stabilisers, public finances
 
 \smallskip
-\noindent\textbf{JEL codes:} F13, F14, F16, D31, H23, I38
+\noindent\textbf{JEL codes:} F13, F14, D31, H22, H23, I38, Q41
 
 \newpage
 \input{sections/intro}
@@ -75,5 +74,8 @@ energy-burden variance lies within income deciles.
 \input{sections/roadmap}
 
 \input{sections/references}
+
+\clearpage
+\input{sections/appendix}
 
 \end{document}

@@ -39,3 +39,6 @@ paper/*.fdb_latexmk
 # `make lfs-benchmarks LFS_TAB=/path/to/panel.tab`.
 /results/lfs_imputed_frs_transition_parameters.csv.gz
 /results/lfs_qrf_benchmark.csv.gz
+
+# Licensed microdata (Microcosm UK and any FRS derivative) must never be committed.
+*.h5

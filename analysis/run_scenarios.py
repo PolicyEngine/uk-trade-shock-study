@@ -57,15 +57,14 @@ def main() -> None:
     args = parser.parse_args()
 
     data = Path(args.data_dir)
-    dataset = data / "frs_2024_25.h5"
+    dataset = None  # certified Microcosm UK via policyengine.py
     # SIC comes from the h5's sic_industry_division variable; pass
     # adult_tab_path=... to run_monte_carlo to use the legacy adult.tab join.
     results = Path("results")
     results.mkdir(exist_ok=True)
 
     # Print the imposed aggregate gross earnings stress per scenario.
-    from policyengine_uk import Microsimulation
-    from policyengine_uk.data import UKSingleYearDataset
+    from uk_trade_shock_study.microcosm import microsimulation
 
     import pandas as pd
 
@@ -74,7 +73,7 @@ def main() -> None:
         simulation_sic_division,
     )
 
-    sim = Microsimulation(dataset=UKSingleYearDataset(file_path=str(dataset)))
+    sim = microsimulation()
     sic = simulation_sic_division(sim, args.period)
     emp = sim.calculate("employment_income", period=args.period, map_to="person").values
     w = sim.calculate("person_weight", period=args.period, map_to="person").values

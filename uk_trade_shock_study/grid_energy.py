@@ -12,7 +12,7 @@ One PolicyEngine run; every cell is arithmetic on the same household
 arrays (the measured automatic response is structurally zero, verified
 by second_stage_energy.py, so no re-simulation per cell is needed).
 
-Run:  python grid_energy.py --dataset <path to enhanced_frs.h5>
+Run:  python grid_energy.py   (certified Microcosm UK via policyengine.py)
 Emits out/grid_energy.json, out/generated_grid.tex, out/table_grid.tex.
 """
 
@@ -22,7 +22,7 @@ from pathlib import Path
 
 import numpy as np
 
-from second_stage_energy import P, weighted, wmean
+from second_stage_energy import P, load_sim, col_components, weighted, wmean
 from second_stage_energy import RESULTS_DIR, PAPER_DIR
 
 REBASES = [None, 0.8, 1.0]          # None = paper's computed rebase (table)
@@ -35,14 +35,13 @@ STACK_LABEL = {"none": "None", "epg": "EPG only",
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--dataset", required=True)
+    ap.add_argument("--dataset", default=None,
+                    help="ignored; data come from the certified Microcosm UK build")
     ap.add_argument("--outdir", default=str(RESULTS_DIR))
     args = ap.parse_args()
 
-    from policyengine_uk import Microsimulation
-
     yr = P["sim_year"]
-    sim = Microsimulation(dataset=args.dataset)
+    sim = load_sim()
 
     def hh(name):
         return np.asarray(sim.calculate(name, yr, map_to="household"))
@@ -63,10 +62,7 @@ def main() -> None:
                            ["universal_credit", "pension_credit", "tax_credits",
                             "income_support", "housing_benefit", "jsa_income",
                             "esa_income"])
-    col = ((means_tested_amt > 0) * P["col_means_tested"]
-           + (hh("state_pension") > 0) * P["col_pensioner"]
-           + ((hh("pip") + hh("dla") + hh("attendance_allowance")) > 0)
-           * P["col_disability"])
+    col = sum(col_components(sim))
 
     base_cap_fy = (P["cap_apr_2021"] + P["cap_oct_2021"]) / 2.0
     paper_rebase = base_cap_fy / wmean(energy_raw, w)
@@ -106,10 +102,7 @@ def main() -> None:
     # The cost-of-living payments are decomposed into their three statutory
     # components, added cumulatively, so the stack axis shows each
     # instrument's marginal contribution.
-    col_mt = (means_tested_amt > 0) * P["col_means_tested"]
-    col_pen = (hh("state_pension") > 0) * P["col_pensioner"]
-    col_dis = (((hh("pip") + hh("dla") + hh("attendance_allowance")) > 0)
-               * P["col_disability"])
+    col_mt, col_pen, col_dis = col_components(sim)
     STACKS_FINE = ["epg", "epg_ebss", "col_mt", "col_pen", "col_dis"]
     cells_fine = []
     for rb in REBASES_FINE:
@@ -127,7 +120,7 @@ def main() -> None:
 
     out = Path(args.outdir)
     out.mkdir(exist_ok=True)
-    res = {"meta": {"dataset": Path(args.dataset).name,
+    res = {"meta": {"dataset": "microcosm_uk_2024_25",
                     "paper_rebase": round(paper_rebase, 4),
                     "records": int(len(w))},
            "cells": cells, "cells_fine": cells_fine}

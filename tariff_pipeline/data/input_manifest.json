@@ -118,7 +118,7 @@
     },
     {
       "path": "results/epd_displacement.json",
-      "sha256": "2ceb0ee282678dfc56c5ee5622a0b1ff3c9cc29873284be882eb682e100ebfd3",
+      "sha256": "747ce805c69e04f770c9d7a007ab9ea5c574327c40baba1709b32670df81eacc",
       "quoted_by": "analysis/write_paper_results.py",
       "produced_by": "make results"
     },
@@ -154,7 +154,7 @@
     },
     {
       "path": "results/full_tariff_displacement.json",
-      "sha256": "3756c6f734b1b06328684cad0edee60fa67a0c74b6973264e04e7c419f8f4cd4",
+      "sha256": "d8216e317e8f4baff099a5dccf7620043d195fd2787ce475f23ed692b4973fd7",
       "quoted_by": "analysis/write_paper_results.py",
       "produced_by": "make results"
     },
@@ -208,7 +208,7 @@
     },
     {
       "path": "results/full_tariff_wage_cut.json",
-      "sha256": "baf9bbf79393635967abec2796c563b591e4a8b7d2205221c998417cd89b37f1",
+      "sha256": "7fb0d1bdc88345113400799040179c60d5f58e3783e9a1577d7b869315ade026",
       "quoted_by": "analysis/write_paper_results.py",
       "produced_by": "make results"
     },

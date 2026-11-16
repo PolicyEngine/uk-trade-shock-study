@@ -6,7 +6,7 @@ approximate: household equivalised income is scaled by the ratio of
 net income excluding the three instruments to net income, a declared
 approximation.
 
-Run:  python rank_robustness.py --dataset <enhanced_frs.h5>
+Run:  python rank_robustness.py   (certified Microcosm UK via policyengine.py)
 Emits results/generated_rank.tex, copied to the paper.
 """
 
@@ -14,7 +14,7 @@ import argparse
 
 import numpy as np
 
-from second_stage_energy import P, weighted, wmean
+from second_stage_energy import P, load_sim, col_components, weighted, wmean
 from second_stage_energy import RESULTS_DIR, PAPER_DIR
 
 
@@ -28,13 +28,12 @@ def deciles_of(y, w):
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--dataset", required=True)
+    ap.add_argument("--dataset", default=None,
+                    help="ignored; data come from the certified Microcosm UK build")
     args = ap.parse_args()
 
-    from policyengine_uk import Microsimulation
-
     yr = P["sim_year"]
-    sim = Microsimulation(dataset=args.dataset)
+    sim = load_sim()
 
     def hh(name):
         return np.asarray(sim.calculate(name, yr, map_to="household"))
@@ -59,10 +58,7 @@ def main() -> None:
     mt = sum(hh(v) for v in ["universal_credit", "pension_credit", "tax_credits",
                              "income_support", "housing_benefit", "jsa_income",
                              "esa_income"])
-    col = ((mt > 0) * P["col_means_tested"]
-           + (hh("state_pension") > 0) * P["col_pensioner"]
-           + ((hh("pip") + hh("dla") + hh("attendance_allowance")) > 0)
-           * P["col_disability"])
+    col = sum(col_components(sim))
     disc = epg + ebss + col
 
     out = {}

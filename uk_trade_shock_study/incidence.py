@@ -123,12 +123,17 @@ D = {
 # file exists it is the source of record; the D defaults above are the
 # companion manuscript's values, kept for provenance.
 _E3 = OUT / "e3_constants.json"
-if _E3.exists():
+if not _E3.exists():
+    raise FileNotFoundError(
+        f"{_E3} missing: run analysis/run_scenarios.py and "
+        "analysis/emit_e3_constants.py first (the in-repository E3 constants "
+        "are the source of record; no silent fallback to stale values).")
+if True:
     _e3 = json.loads(_E3.read_text())
     D["ust_gross_shock_m"] = float(_e3["gross_shock_gbp_m_per_year"])
     D["ust_displacement_cushion_pct"] = float(_e3["displacement_cushion_pct"])
     D["ust_wage_cut_cushion_pct"] = float(_e3["wagecut_cushion_pct"])
-    D["ust_displacement_cushion_sd_pct"] = float(_e3.get("displacement_cushion_sd_pct", 0.0))
+    D["ust_displacement_cushion_sd_pct"] = float(_e3["displacement_cushion_sd_pct"])
 
 
 

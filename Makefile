@@ -4,12 +4,21 @@
 
 PYTHON := .venv/bin/python
 PKG := uk_trade_shock_study
-DATASET ?= $(error set DATASET=<path to enhanced_frs .h5>)
+# Microdata: the certified Microcosm UK build pinned by policyengine[uk] in
+# pyproject.toml, fetched on first use (needs HUGGING_FACE_TOKEN or a saved
+# huggingface-cli login).
 
-.PHONY: bootstrap first-pass second-stage grid figures paper test reproduce
+.PHONY: bootstrap e3 first-pass second-stage grid figures paper test reproduce
 
 bootstrap:
 	uv sync
+
+# Episode 3 (US tariffs): earnings-channel runs, then the constants the
+# first pass reads.
+e3:
+	PYTHONPATH=. $(PYTHON) analysis/run_scenarios.py --n-draws 20 --scenarios full_tariff_displacement
+	PYTHONPATH=. $(PYTHON) analysis/run_scenarios.py --n-draws 3 --scenarios full_tariff_wage_cut
+	PYTHONPATH=. $(PYTHON) analysis/emit_e3_constants.py
 
 # First pass: public-data incidence for all five episodes (no licensed data).
 first-pass:
@@ -18,15 +27,17 @@ first-pass:
 
 # Second stage: the energy and TCA episodes on the enhanced FRS.
 second-stage:
-	cd $(PKG) && ../$(PYTHON) second_stage_energy.py --dataset $(DATASET)
-	cd $(PKG) && ../$(PYTHON) vintage_and_tca.py --dataset $(DATASET)
-	cd $(PKG) && ../$(PYTHON) mpc_welfare.py --dataset $(DATASET)
+	cd $(PKG) && ../$(PYTHON) second_stage_energy.py
+	cd $(PKG) && ../$(PYTHON) vintage_and_tca.py
+	cd $(PKG) && ../$(PYTHON) mpc_welfare.py
+	cd $(PKG) && ../$(PYTHON) ceta_second_stage.py
+	cd $(PKG) && ../$(PYTHON) rank_robustness.py
 
 # Sensitivity grid, bootstrap and referee-round figures.
 grid:
-	cd $(PKG) && ../$(PYTHON) grid_energy.py --dataset $(DATASET)
+	cd $(PKG) && ../$(PYTHON) grid_energy.py
 	cd $(PKG) && ../$(PYTHON) fig_grid.py
-	cd $(PKG) && ../$(PYTHON) fig_extra.py --dataset $(DATASET)
+	cd $(PKG) && ../$(PYTHON) fig_extra.py
 
 paper:
 	cd paper && (tectonic -X compile main.tex || \
@@ -37,4 +48,4 @@ paper:
 test:
 	uv run pytest -q
 
-reproduce: first-pass second-stage grid paper
+reproduce: e3 first-pass second-stage grid paper

@@ -227,11 +227,18 @@ def _baseline_and_persons(dataset_path, adult_tab_path, period):
     """adult_tab_path=None (default path) reads SIC from the h5's
     sic_industry_division variable; passing a path uses the legacy
     adult.tab join as a fallback for h5 builds without the column."""
-    from policyengine_uk import Microsimulation
-    from policyengine_uk.data import UKSingleYearDataset
+    if dataset_path is None:
+        # Default: the certified Microcosm UK build pinned by policyengine.py.
+        from uk_trade_shock_study.microcosm import microsimulation
 
-    dataset = UKSingleYearDataset(file_path=str(dataset_path))
-    baseline = Microsimulation(dataset=dataset)
+        dataset = None
+        baseline = microsimulation()
+    else:  # an explicit local h5 (tests, legacy replication)
+        from policyengine_uk import Microsimulation
+        from policyengine_uk.data import UKSingleYearDataset
+
+        dataset = UKSingleYearDataset(file_path=str(dataset_path))
+        baseline = Microsimulation(dataset=dataset)
     persons = _person_table(baseline, period)
     if adult_tab_path is None:
         persons["sic_division"] = simulation_sic_division(baseline, period)
@@ -361,7 +368,7 @@ def _one_draw(
 
 
 def run_scenario(
-    dataset_path: str | Path,
+    dataset_path: str | Path | None,
     scenario: TradeShockScenario | str,
     period: int = 2026,
     seed: int = 0,
@@ -374,7 +381,7 @@ def run_scenario(
 
 
 def run_monte_carlo(
-    dataset_path: str | Path,
+    dataset_path: str | Path | None,
     scenario: TradeShockScenario | str,
     period: int = 2026,
     n_draws: int = 20,

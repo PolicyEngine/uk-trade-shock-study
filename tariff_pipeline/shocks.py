@@ -1155,10 +1155,23 @@ def measure_all_claim_uc_award(sim, period, stored_flag) -> np.ndarray:
         sim.calculate("universal_credit", period=period, map_to="benunit").values,
         dtype=float,
     )
-    if (withheld > 1e-8).any():
+    # policyengine-uk >= 2.15x pays UC to families moved off legacy benefits
+    # (claims_uc_at_legacy_closure) whatever would_claim_uc says, so those
+    # units legitimately keep an award with voluntary claiming switched off.
+    if "claims_uc_at_legacy_closure" in getattr(getattr(sim, "tax_benefit_system", None), "variables", {}):
+        migrated = np.asarray(
+            sim.calculate(
+                "claims_uc_at_legacy_closure", period=period, map_to="benunit"
+            ).values,
+            dtype=bool,
+        )
+    else:
+        migrated = np.zeros(n_benunits, dtype=bool)
+    stale = (withheld > 1e-8) & ~migrated
+    if stale.any():
         raise RuntimeError(
             "UC entitlement measurement pass is not responding to would_claim_uc: "
-            f"{int((withheld > 1e-8).sum())} benefit units still receive a "
+            f"{int(stale.sum())} benefit units still receive a "
             "positive award with claiming switched off for everyone, so the "
             "measured all-claim award is a stale cached value — the simulation "
             "cache was not flushed (_invalidate_all_caches no-op?)."
@@ -1381,6 +1394,15 @@ def _verify_uc_award_cache_flushed(sim, period, flag, potential_award) -> None:
         dtype=float,
     )
     stale = (~np.asarray(flag, dtype=bool)) & (np.asarray(potential_award) > 1e-8)
+    # Families moved off legacy benefits claim UC whatever their voluntary
+    # take-up flag says (policyengine-uk claims_uc_at_legacy_closure).
+    if "claims_uc_at_legacy_closure" in getattr(getattr(sim, "tax_benefit_system", None), "variables", {}):
+        stale &= ~np.asarray(
+            sim.calculate(
+                "claims_uc_at_legacy_closure", period=period, map_to="benunit"
+            ).values,
+            dtype=bool,
+        )
     if stale.any() and (award[stale] > 1e-8).any():
         raise RuntimeError(
             "post-shock UC take-up re-draw not applied: universal_credit still "

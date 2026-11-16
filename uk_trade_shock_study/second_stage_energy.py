@@ -26,7 +26,7 @@ Design notes, in response to referee comments on the first version:
   with income in the denominator is dominated by very low incomes.
 * Missing variables raise; the PolicyEngine version is recorded.
 
-Run:  python second_stage_energy.py --dataset <path to enhanced_frs.h5>
+Run:  python second_stage_energy.py   (certified Microcosm UK via policyengine.py)
 """
 
 import argparse
@@ -109,6 +109,39 @@ NATIVE_INSTRUMENTS = ["epg_subsidy", "cost_of_living_support_payment",
 # reproduce the previous hand-rolled results exactly.
 from microdf import MicroSeries
 
+from microcosm import BASE_YEAR, copy_inputs, microsimulation, provenance
+
+
+#: Rulebook year of the 2022-23 Cost of Living Payments (GBP 650 means-tested
+#: per qualifying benefit unit, GBP 300 pensioner per Winter Fuel household,
+#: GBP 150 per disabled person), taken from the model rather than rebuilt.
+COL_YEAR = 2022
+
+
+def col_components(sim):
+    """2022-23 Cost of Living Payments per household: (means-tested,
+    pensioner, disability), from PolicyEngine UK's own eligibility rules."""
+    def h(name):
+        return np.asarray(sim.calculate(name, COL_YEAR, map_to="household"))
+    total = h("cost_of_living_support_payment")
+    mt = h("cost_of_living_means_tested_payment")
+    dis = h("cost_of_living_disability_payment")
+    return mt, total - mt - dis, dis
+
+
+def load_sim(years=None):
+    """A managed Microcosm UK simulation with inputs present in ``years``.
+
+    Microcosm UK carries survey inputs only for its base year; any other
+    period a script calculates in (the episode's rulebook year, or the
+    vintage run's previous year) gets every input column copied in first.
+    """
+    sim = microsimulation()
+    target = sorted(set(years or [P["sim_year"], COL_YEAR]) - {BASE_YEAR})
+    if target:
+        copy_inputs(sim, target)
+    return sim
+
 
 def weighted(x, w):
     """Weighted total of x."""
@@ -144,14 +177,13 @@ def variance_split(burden, w, dec):
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--dataset", required=True)
+    ap.add_argument("--dataset", default=None,
+                    help="ignored; data come from the certified Microcosm UK build")
     ap.add_argument("--out", default=str(RESULTS_DIR / "second_stage_energy.json"))
     args = ap.parse_args()
 
-    from policyengine_uk import Microsimulation
-
     yr = P["sim_year"]
-    sim = Microsimulation(dataset=args.dataset)
+    sim = load_sim()
 
     def hh(name, s=None):
         """Household-level total of a variable.  Raises if unavailable."""
@@ -170,7 +202,12 @@ def main() -> None:
     total_spend_raw = np.asarray(sim.calculate("consumption", yr))
     spend_rebase = P["ons_total_spend_yr"] / wmean(total_spend_raw, w)
     total_spend = total_spend_raw * spend_rebase   # FYE2022 price/level base
-    benefit_income = sum(hh(v) for v in UPRATED_CASH)
+    # Uprating-shortfall base: benefit income under the 2022-23 rules the
+    # lagged uprating applied to, excluding the (non-uprated) winter fuel
+    # payment.
+    benefit_income = sum(
+        np.asarray(sim.calculate(v, COL_YEAR, map_to="household"))
+        for v in UPRATED_CASH if v != "winter_fuel_allowance")
 
     # --- Rebase energy to pre-crisis price levels (ASSUMPTION, disclosed) ---
     base_cap_fy = (P["cap_apr_2021"] + P["cap_oct_2021"]) / 2.0
@@ -188,7 +225,7 @@ def main() -> None:
     epg_cushion = dE_counter - dE_realised
 
     # --- MEASURED automatic response ---------------------------------------
-    shocked = Microsimulation(dataset=args.dataset)
+    shocked = load_sim()
     for var, raw in (("electricity_consumption", elec_raw),
                      ("gas_consumption", gas_raw),
                      ("domestic_energy_consumption", energy_raw)):
@@ -209,9 +246,7 @@ def main() -> None:
     # --- The model's own instruments respond to the shocked input ----------
     native = {}
     for v in NATIVE_INSTRUMENTS:
-        if v not in sim.tax_benefit_system.variables:
-            continue
-        base_v = weighted(hh(v), w)
+        base_v = weighted(hh(v), w)  # hh() raises if the variable is absent
         shock_v = weighted(hh(v, shocked), w)
         native[v] = {
             "baseline_gbp_bn": round(base_v / 1e9, 3),
@@ -222,10 +257,7 @@ def main() -> None:
     # --- Discretionary instruments -----------------------------------------
     ebss = np.full_like(energy, P["ebss_per_household"])
     means_tested_amt = sum(hh(v) for v in MEANS_TESTED)
-    col = ((means_tested_amt > 0) * P["col_means_tested"]
-           + (hh("state_pension") > 0) * P["col_pensioner"]
-           + ((hh("pip") + hh("dla") + hh("attendance_allowance")) > 0)
-           * P["col_disability"])
+    col = sum(col_components(sim))
     discretionary = epg_cushion + ebss + col
 
     gap = P["cpi_sep_2022_yoy"] - P["uprating_applied_apr_2022"]
@@ -234,8 +266,10 @@ def main() -> None:
     G = weighted(dE_counter, w)
     res = {
         "meta": {
-            "dataset": Path(args.dataset).name,
+            "dataset": provenance(sim)["default_dataset"],
+            "provenance": provenance(sim),
             "policyengine_uk_version": _pkg_version("policyengine-uk"),
+            "policyengine_version": _pkg_version("policyengine"),
             "sim_year": yr,
             "records": int(len(w)),
             "weighted_persons_m": round(persons_m, 1),

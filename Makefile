@@ -18,7 +18,10 @@ bootstrap:
 e3:
 	PYTHONPATH=. $(PYTHON) analysis/run_scenarios.py --n-draws 20 --scenarios full_tariff_displacement
 	PYTHONPATH=. $(PYTHON) analysis/run_scenarios.py --n-draws 3 --scenarios full_tariff_wage_cut
+	PYTHONPATH=. $(PYTHON) analysis/run_scenarios.py --n-draws 10 --scenarios full_tariff_obr_low_displacement
+	PYTHONPATH=. $(PYTHON) analysis/run_scenarios.py --n-draws 3 --scenarios full_tariff_obr_low_wage_cut
 	PYTHONPATH=. $(PYTHON) analysis/emit_e3_constants.py
+	PYTHONPATH=. $(PYTHON) analysis/emit_e3_macros.py
 
 # First pass: public-data incidence for all five episodes (no licensed data).
 first-pass:

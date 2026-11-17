@@ -518,7 +518,7 @@ def write_tables(d: Data):
          "Observed\\newline (statutory)"),
         ("E3 US tariffs 2025", "2025", "Policy\\newline (foreign)",
          "Earnings only; no UK retaliation", "Constructed here (Appendix~\\ref{app:e3})",
-         "tariff-calibrated earnings shock", "Scenario\\newline (simulated)"),
+         "\\pounds\\MsUSTariffGrossShockMillions m/yr earnings loss (unit elasticity)", "Scenario\\newline (assumed)"),
         ("E4 India CETA", "2026+", "Policy",
          "Consumer prices (clothing, footwear, food)", "\\citet{dbtindia2026}",
          "\\pounds180m/yr duty cut on final goods", "Projection\\newline (ex ante)"),
@@ -528,14 +528,14 @@ def write_tables(d: Data):
     A("\\footnotesize")
     A("\\setlength{\\tabcolsep}{3pt}")
     A("\\renewcommand{\\arraystretch}{1.15}")
-    A("\\caption{Imported shocks. None is re-estimated here.}")
+    A("\\caption{The four shocks: source and status.}")
     A("\\label{tab:first-stages}")
     A("\\begin{tabular}{@{}p{1.75cm} p{1.70cm} p{1.45cm} p{2.30cm} p{2.10cm}"
       " p{2.75cm} p{1.85cm}@{}}")
     A("\\toprule")
     A(" & ".join("\\rr " + c for c in
-                 ("Episode", "Date", "Type", "Channel", "First-stage source",
-                  "Key imported number", "Status")) + " \\\\")
+                 ("Episode", "Date", "Type", "Channel", "Source",
+                  "Key number", "Status")) + " \\\\")
     A("\\midrule")
     for r in rows:
         A(" & ".join("\\rr " + c for c in r) + " \\\\[3pt]")
@@ -545,8 +545,7 @@ def write_tables(d: Data):
     A("\\vspace{2pt}")
     A("\\begin{minipage}{\\linewidth}\\footnotesize")
     A("\\emph{Notes.} Type distinguishes a policy instrument from a")
-    A("trade-transmitted market price. Source entries are short cite keys; see the")
-    A("bibliography. E3's consumer-price row is exactly zero (the UK imposed no")
+    A("market price imported through the terms of trade. E3's consumer-price row is exactly zero (the UK imposed no")
     A("retaliatory tariffs), so its household incidence runs through earnings alone.")
     A("$^{w}$~the \\emph{estimation} window of the cited study; the TCA itself")
     A("entered into force in January 2021.")

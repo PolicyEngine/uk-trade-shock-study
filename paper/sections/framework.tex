@@ -6,8 +6,8 @@ For every episode the object is the same conditional quantity: the
 statutory household response to an imported trade shock. Let the shock specify (i) a vector of consumer-price changes by consumption
 category, and/or (ii) a labour-income loss or gain with a sectoral
 location and an adjustment margin. The household stage maps that shock onto households and computes the change in disposable income, its
-distribution, and the Exchequer's share, under the tax--benefit rules in
-force at the episode date.
+distribution, and the Exchequer's share, under a stated rule year close to
+the episode date (Section~\ref{sec:secondstage-method}).
 
 The headline metric is the \emph{cushioning rate}. For an earnings
 shock it is the income-stabilisation coefficient of \citet{dolls2012},
@@ -50,7 +50,7 @@ and the Exchequer.
 
 Trade shocks reach households through prices and through earnings, and
 the post-Covid episodes split cleanly on that line. The expenditure channel prices a category-level price vector against household
-expenditure shares, first on published expenditure-by-decile tables and then at the household level on imputed consumption (Section~\ref{sec:results-secondstage}). The earnings channel, the income channel of \citet{fajgelbaumkhandelwal2016}, imposes sectoral labour-income changes on employees by industry and runs
+expenditure shares, first on published expenditure-by-decile tables and then at the household level on imputed consumption (Section~\ref{sec:results-secondstage}). The earnings channel, the labour-income channel of \citet{porto2006}, imposes sectoral labour-income changes on employees by industry and runs
 them through the statutory system, with the adjustment margin (wage cuts
 versus displacement) as an assumed scenario dimension; the imposed-transition step follows
 \citet{brewertasseva2021} and \citet{navicke2014}, and
@@ -131,7 +131,7 @@ Two recent results bound what any distribution-by-decile exercise,
 including this paper's decile-table analysis, is entitled to claim. \citet{borusyakjaravel2024} show that for trade shocks the
 overwhelming share of the variance of household welfare changes lies
 \emph{within} income deciles rather than between them, because
-exposure is driven by product-level consumption patterns that income
+exposure, mostly on the earnings side, is something income
 predicts weakly; \citet{levell2025} reach the same conclusion for
 energy on UK transaction data.
 
@@ -157,9 +157,8 @@ enters only for the tariff episode. The estimates therefore cover one channel of
 
 The estimates are first-round statutory incidence, not general
 equilibrium: no behavioural response, no wage or employment feedback
-from the price shocks, no substitution in consumption (the expenditure-channel numbers are first-order approximations that overstate the welfare loss when households substitute). The imported shocks carry their own literatures' uncertainty, which the design brackets by
-importing low/central/high variants where the literature provides them
-and labelling single-point estimates as such. The comparison across
+from the price shocks, no substitution in consumption (the expenditure-channel numbers are first-order approximations that overstate the welfare loss when households substitute). The imported shocks carry their own literatures' uncertainty, which the design does not propagate: each shock is carried at its
+central value and labelled with its status. The comparison across
 episodes is a comparison of conditional scenarios that share a household stage, not a causal decomposition of realised household outcomes over
 2021--2026, which would require separating the trade shocks from
 everything else that happened, a task this design deliberately

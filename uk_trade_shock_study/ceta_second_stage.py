@@ -24,8 +24,8 @@ import numpy as np
 from second_stage_energy import P, load_sim, weighted, wmean, wquantile, variance_split
 from second_stage_energy import RESULTS_DIR, PAPER_DIR
 
-DUTY_CLOTHING_FOOTWEAR_M = 132.0 + 13.0   # GBP m/yr, DBT IA final goods
-DUTY_FOOD_M = 12.0
+DUTY_CLOTHING_FOOTWEAR_M = 132.3 + 13.2   # GBP m/yr, DBT IA Annex 9 Table 18, final goods
+DUTY_FOOD_M = 11.7
 
 
 def deciles_of(equiv_income, w):

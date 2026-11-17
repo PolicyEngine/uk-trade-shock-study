@@ -24,7 +24,6 @@ import numpy as np
 from second_stage_energy import P, load_sim, col_components, weighted, wmean, wquantile, variance_split
 from second_stage_energy import RESULTS_DIR, PAPER_DIR
 
-CASH_OUTLAY_SCALE = 0.77   # observed demand response; matches the first pass's
                            # MsEnergyCashOutlayScalePct (incidence.py computes
                            # 0.769) and is applied to the gross counterfactual,
                            # the same convention as the first pass
@@ -90,7 +89,10 @@ def main() -> None:
                                                        w[dec == d])
          for d in range(10)])
     p_gross, p_real = pct(dE_counter), pct(dE_realised)
-    p_cash = p_gross * CASH_OUTLAY_SCALE
+    # Cash-outlay path: the observed demand response applied to the realised
+    # path, scale read from the decile-table results (no copied constant).
+    _co = json.loads((RESULTS_DIR / "results.json").read_text())["derived"]["energy_cash_outlay"]
+    p_cash = p_real * _co["burden_scale_vs_fixed_basket"]
 
     # --- Household bootstrap (sampling only) -------------------------------
     rng = np.random.default_rng(SEED)
@@ -174,8 +176,9 @@ def main() -> None:
     ax.bar(x, m_col, bottom=borne + m_epg + m_ebss, color=TEAL, hatch="///",
            edgecolor="white", linewidth=0, label="Returned: cost-of-living payments",
            zorder=3)
-    ax.bar(x, over, color=TEAL, hatch="xxx", edgecolor="white", linewidth=0,
-           label="Over-compensation (net gain)", zorder=3)
+    if (over < 0).any():  # only label a net gain when one occurs
+        ax.bar(x, over, color=TEAL, hatch="xxx", edgecolor="white", linewidth=0,
+               label="Over-compensation (net gain)", zorder=3)
     ax.errorbar(x, net_borne, yerr=[net_borne - net_lo, net_hi - net_borne],
                 fmt="none", ecolor=INK, elinewidth=1.0, capsize=2.5, zorder=4,
                 label="95% sampling interval, net position")
@@ -185,11 +188,8 @@ def main() -> None:
     ax.set_xticks(x)
     ax.set_xlabel("Equivalised disposable income decile")
     ax.set_ylabel("£ per household per year")
-    ax.set_title("Who bore the energy shock, and what each instrument returned",
-                 color=INK)
     ax.legend(fontsize=8, ncol=2, loc="upper center",
               bbox_to_anchor=(0.5, -0.14), frameon=False)
-    note(fig, "Whiskers: household-bootstrap 95% sampling intervals on the net position; FY basis.")
     save(fig, "fig_decomp.png")
 
     # 2. Paths.

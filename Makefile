@@ -8,7 +8,7 @@ PKG := uk_trade_shock_study
 # pyproject.toml, fetched on first use (needs HUGGING_FACE_TOKEN or a saved
 # huggingface-cli login).
 
-.PHONY: bootstrap e3 first-pass second-stage grid figures paper test reproduce
+.PHONY: bootstrap e3 first-pass second-stage deflated lcfs-validation grid figures paper test reproduce
 
 bootstrap:
 	uv sync
@@ -17,9 +17,7 @@ bootstrap:
 # first pass reads.
 e3:
 	PYTHONPATH=. $(PYTHON) analysis/run_scenarios.py --n-draws 20 --scenarios full_tariff_displacement
-	PYTHONPATH=. $(PYTHON) analysis/run_scenarios.py --n-draws 3 --scenarios full_tariff_wage_cut
-	PYTHONPATH=. $(PYTHON) analysis/run_scenarios.py --n-draws 10 --scenarios full_tariff_obr_low_displacement
-	PYTHONPATH=. $(PYTHON) analysis/run_scenarios.py --n-draws 3 --scenarios full_tariff_obr_low_wage_cut
+	PYTHONPATH=. $(PYTHON) analysis/run_scenarios.py --e3
 	PYTHONPATH=. $(PYTHON) analysis/emit_e3_constants.py
 	PYTHONPATH=. $(PYTHON) analysis/emit_e3_macros.py
 
@@ -36,6 +34,28 @@ second-stage:
 	cd $(PKG) && ../$(PYTHON) mpc_welfare.py
 	cd $(PKG) && ../$(PYTHON) ceta_second_stage.py
 	cd $(PKG) && ../$(PYTHON) rank_robustness.py
+	cd $(PKG) && ../$(PYTHON) uprating_lag_reform.py
+	cd $(PKG) && ../$(PYTHON) uprating_lag_reform.py --deflate
+
+# Referee robustness: the energy stage with inputs deflated to the rulebook
+# year by PolicyEngine UK's own projection indices, under 2023-24 and
+# 2022-23 rules. Writes separate JSONs; the central run is untouched.
+deflated:
+	cd $(PKG) && ../$(PYTHON) second_stage_energy.py --deflate --out ../results/second_stage_energy_deflated.json
+	cd $(PKG) && ../$(PYTHON) second_stage_energy.py --sim-year 2022 --out ../results/second_stage_energy_rules2022.json
+	cd $(PKG) && ../$(PYTHON) second_stage_energy.py --sim-year 2022 --deflate --out ../results/second_stage_energy_rules2022_deflated.json
+	cd $(PKG) && ../$(PYTHON) deflated_inputs.py
+
+# LCFS validation of the within-decile spread. Needs the licensed LCFS
+# household files (UK Data Service) at local paths outside the repository:
+#   make lcfs-validation LCFS_2024=/path/to/dvhh_uk_anon_v3_2024.tab \
+#                        LCFS_DIR=/path/to/folder/with/earlier/dvhh/dta
+# Writes aggregates only; leaves the committed outputs alone when unset.
+LCFS_2024 ?=
+LCFS_DIR ?=
+lcfs-validation:
+	cd $(PKG) && ../$(PYTHON) lcfs_validation.py \
+		$(if $(LCFS_2024),--lcfs-2024 $(LCFS_2024)) $(if $(LCFS_DIR),--lcfs-dir $(LCFS_DIR))
 
 # Sensitivity grid, bootstrap and referee-round figures.
 grid:
@@ -52,4 +72,4 @@ paper:
 test:
 	uv run pytest -q
 
-reproduce: e3 first-pass second-stage grid paper
+reproduce: e3 first-pass second-stage deflated lcfs-validation grid paper

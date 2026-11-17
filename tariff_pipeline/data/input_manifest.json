@@ -111,32 +111,56 @@
   "build_products_note": "results/referee_fixes.json is rewritten by `analysis/referee_fixes.py --only ...` and stamped in place by `analysis/write_referee_macros.py`; results/submission_summary.json is written by `analysis/write_submission_results.py --diagnostics`. Both run inside `make paper-values`, so both are build products of the paper, not inputs to it.",
   "quoted_results": [
     {
+      "path": "results/deflated_inputs.json",
+      "produced_by": "see Makefile",
+      "quoted_by": "paper (generated macros)",
+      "sha256": "3b83e6151992efb95a849d82bc8143ccc0ace2385f4afc18fccff140f212433d"
+    },
+    {
       "path": "results/e3_constants.json",
-      "sha256": "6afd9f72d2450196c83c2a39bbc72dd7ffa46b1e0c41bb08f81859738a5086a6",
+      "sha256": "e53fb071ca2c50911a56c71113b32eebb49a101740b6a07f174cd84527ccde78",
       "quoted_by": "paper (generated macros)",
       "produced_by": "analysis/emit_e3_constants.py"
     },
     {
       "path": "results/full_tariff_displacement.json",
-      "sha256": "d8216e317e8f4baff099a5dccf7620043d195fd2787ce475f23ed692b4973fd7",
+      "sha256": "6931a8621ee14810292f0974bc14c33a3b0f120f7bc0a881af13def6aed368cf",
       "quoted_by": "analysis/write_paper_results.py",
       "produced_by": "make results"
+    },
+    {
+      "path": "results/full_tariff_displacement_bernoulli.json",
+      "produced_by": "see Makefile",
+      "quoted_by": "paper (generated macros)",
+      "sha256": "d925558fb29a2875657465fb8f261b401c00e406e949a368c2ecfcddf717befb"
+    },
+    {
+      "path": "results/full_tariff_displacement_no_jsa.json",
+      "produced_by": "see Makefile",
+      "quoted_by": "paper (generated macros)",
+      "sha256": "5643f9f4f0f755cd8a88daeb1ae2ec384b2212d55bd590b8f2217d4e736efe5d"
     },
     {
       "path": "results/full_tariff_obr_low_displacement.json",
-      "sha256": "2dd42b7dd40689edbedb212e84226b43eab70ca5406cbb73d3f620ec4053f7fd",
+      "sha256": "6a4c75113f5d934ee83c2cdfb06767654c450e66f300c6d1c07acb4e1ae035bd",
       "quoted_by": "analysis/write_paper_results.py",
       "produced_by": "make results"
     },
     {
+      "path": "results/full_tariff_obr_low_displacement_no_jsa.json",
+      "produced_by": "see Makefile",
+      "quoted_by": "paper (generated macros)",
+      "sha256": "3d6e0fa18143bff2772fbe241731ea66f8f24be211e0c082268d523337c7cf89"
+    },
+    {
       "path": "results/full_tariff_obr_low_wage_cut.json",
-      "sha256": "234d5c0957d3c2f6cf14a4b6f3bdf084c3ada6817a82ff02737a1a7d043d953c",
+      "sha256": "9998318ce80eee7f69280f051c721f04def43fba0c489867c0c04000f283e56e",
       "quoted_by": "analysis/write_paper_results.py",
       "produced_by": "make results"
     },
     {
       "path": "results/full_tariff_wage_cut.json",
-      "sha256": "7fb0d1bdc88345113400799040179c60d5f58e3783e9a1577d7b869315ade026",
+      "sha256": "5fc64ec528fde3ea47d61c9822390c292f35aaaee176e3c2aab3ff9626084bf7",
       "quoted_by": "analysis/write_paper_results.py",
       "produced_by": "make results"
     },
@@ -147,16 +171,34 @@
       "produced_by": "uk_trade_shock_study/grid_energy.py"
     },
     {
+      "path": "results/lcfs_validation.json",
+      "produced_by": "see Makefile",
+      "quoted_by": "paper (generated macros)",
+      "sha256": "381f3255c80567464132b5ef7a6cf78a352f186e1bf152f18cef78f5c29fbf87"
+    },
+    {
       "path": "results/results.json",
-      "sha256": "4fa2da504453ab5dfb209f2d7be5c5a03741b3189385cc04ccf767c196b5d2e5",
+      "sha256": "4bd6ec883d2f9d4ba4eff80fe12f52859d3517441d41510dec4e29039e054aba",
       "quoted_by": "paper (generated macros)",
       "produced_by": "uk_trade_shock_study/incidence.py"
+    },
+    {
+      "path": "results/seasonal_energy.json",
+      "produced_by": "see Makefile",
+      "quoted_by": "paper (generated macros)",
+      "sha256": "d28c7abb18da75067f57e66d2cbbdc9c2fe9c2686fdfeac5c6dd7a37dcb89bc6"
     },
     {
       "path": "results/second_stage_energy.json",
       "sha256": "2c5031a10655478154190c0e6eefa925e82832b4bebab70553e71f8b059a13c5",
       "quoted_by": "paper (generated macros)",
       "produced_by": "uk_trade_shock_study/second_stage_energy.py"
+    },
+    {
+      "path": "results/uprating_lag_reform.json",
+      "produced_by": "see Makefile",
+      "quoted_by": "paper (generated macros)",
+      "sha256": "8581963b85ecc7d394349fc88ae9a764561fca50ffc5e12432186e0790fcc3fc"
     }
   ]
 }

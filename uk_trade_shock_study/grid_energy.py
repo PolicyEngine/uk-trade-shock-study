@@ -13,7 +13,9 @@ arrays (the measured automatic response is structurally zero, verified
 by second_stage_energy.py, so no re-simulation per cell is needed).
 
 Run:  python grid_energy.py   (certified Microcosm UK via policyengine.py)
-Emits out/grid_energy.json, out/generated_grid.tex, out/table_grid.tex.
+Emits results/grid_energy.json, results/seasonal_energy.json (actual-cap
+path and seasonal weighting), results/generated_grid.tex and
+results/table_grid.tex.
 """
 
 import argparse
@@ -159,6 +161,104 @@ def main() -> None:
     ann["CalFullRatePct"] = f"{100*weighted(disc_cal,w)/G_paper:.1f}"
     ann["CalFullBn"] = f"{weighted(disc_cal,w)/1e9:,.1f}"
 
+    # --- Actual-cap path and seasonal weighting (referee round) -------------
+    # Month weights: PolicyEngine UK's own seasonal profile, read off the
+    # model at run time (monthly_domestic_energy_consumption, which the
+    # model's Energy Price Guarantee variable epg_subsidy uses; the model
+    # sources it to Resolution Foundation, "A chilling crisis", 2022, p.11).
+    # Nothing is hard-coded here: the share of each calendar month is the
+    # weighted monthly variable over the weighted annual variable.
+    annual = weighted(energy_raw, w)
+    month_share = [
+        weighted(np.asarray(sim.calculate(
+            "monthly_domestic_energy_consumption", f"{yr}-{m:02d}")), w) / annual
+        for m in range(1, 13)]
+    cw = {"apr_sep": sum(month_share[3:9]), "oct_dec": sum(month_share[9:12]),
+          "jan_mar": sum(month_share[0:3])}
+    eq = {"apr_sep": 0.5, "oct_dec": 0.25, "jan_mar": 0.25}
+
+    def fy_mean(wt, apr_sep, oct_dec, jan_mar):
+        tot = wt["apr_sep"] + wt["oct_dec"] + wt["jan_mar"]
+        return (wt["apr_sep"] * apr_sep + wt["oct_dec"] * oct_dec
+                + wt["jan_mar"] * jan_mar) / tot
+
+    def seasonal_variant(wt, actual_cap, rebase_target=None):
+        """Cushioning on one month-weighting and one counterfactual path.
+        The same weights price the base, counterfactual and realised years;
+        the energy rebase target is the base-year mean on those weights
+        (a household's FY2021-22 bill is its consumption-weighted cap)."""
+        base = fy_mean(wt, P["cap_apr_2021"], P["cap_oct_2021"], P["cap_oct_2021"])
+        counter = fy_mean(wt, P["cap_apr_2022"], P["cap_oct_2022"],
+                          P["cap_jan_2023"] if actual_cap else P["cap_oct_2022"])
+        realised = fy_mean(wt, P["cap_apr_2022"], P["epg_level"], P["epg_level"])
+        energy = energy_raw * ((rebase_target or base) / wmean(energy_raw, w))
+        dE = energy * (counter / base - 1.0)
+        epg = energy * (counter - realised) / base
+        G = weighted(dE, w)
+        stacks = {"epg": epg, "epg_ebss": epg + ebss, "full": epg + ebss + col}
+        out = {"base_fy_mean_cap": round(base, 1),
+               "counterfactual_fy_mean_cap": round(counter, 1),
+               "realised_fy_mean_cap": round(realised, 1),
+               "counterfactual_rise_pct": round(100 * (counter / base - 1), 1),
+               "realised_rise_pct": round(100 * (realised / base - 1), 1),
+               "counter_agg_gbp_bn": round(G / 1e9, 2),
+               "realised_agg_gbp_bn": round(
+                   weighted(energy * (realised / base - 1.0), w) / 1e9, 2),
+               "epg_gbp_bn": round(weighted(epg, w) / 1e9, 2)}
+        for key, disc in stacks.items():
+            out[f"{key}_rate_pct"] = round(100 * weighted(disc, w) / G, 1)
+            for d, dk in ((0, "d1"), (9, "d10")):
+                m = dec == d
+                out[f"{key}_cushion_pct_{dk}"] = round(
+                    100 * weighted(disc[m], w[m]) / weighted(dE[m], w[m]), 1)
+        return out
+
+    equal_base = fy_mean(eq, P["cap_apr_2021"], P["cap_oct_2021"], P["cap_oct_2021"])
+    seasonal = {
+        "month_share_source": "PolicyEngine UK monthly_domestic_energy_consumption "
+                              "(Resolution Foundation, A chilling crisis, 2022, p.11)",
+        "month_share_jan_to_dec": [round(x, 4) for x in month_share],
+        "fy_weights_consumption": {k: round(v, 4) for k, v in cw.items()},
+        "equal_held": seasonal_variant(eq, False),       # current headline
+        "equal_actual": seasonal_variant(eq, True),      # = announced path
+        "consumption_held": seasonal_variant(cw, False),
+        "consumption_actual": seasonal_variant(cw, True),
+        # Sensitivity: consumption-weighted prices, but the energy rebase
+        # target left at the equal-weight FY2021-22 mean.
+        "consumption_actual_rebase_held": seasonal_variant(cw, True, equal_base),
+    }
+    # Own file: grid_energy.json is a frozen, hash-pinned quoted result.
+    (out / "seasonal_energy.json").write_text(json.dumps(seasonal, indent=1))
+    seas_macros = {
+        "SeasShareAprSepPct": f"{100*cw['apr_sep']:.1f}",
+        "SeasShareOctDecPct": f"{100*cw['oct_dec']:.1f}",
+        "SeasShareJanMarPct": f"{100*cw['jan_mar']:.1f}",
+    }
+    for tag, key in (("EqHeld", "equal_held"), ("EqActual", "equal_actual"),
+                     ("CwHeld", "consumption_held"),
+                     ("CwActual", "consumption_actual")):
+        v = seasonal[key]
+        seas_macros.update({
+            f"Seas{tag}BaseCap": f"{v['base_fy_mean_cap']:,.0f}",
+            f"Seas{tag}CounterCap": f"{v['counterfactual_fy_mean_cap']:,.0f}",
+            f"Seas{tag}RealisedCap": f"{v['realised_fy_mean_cap']:,.0f}",
+            f"Seas{tag}CounterRisePct": f"{v['counterfactual_rise_pct']:.1f}",
+            f"Seas{tag}RealisedRisePct": f"{v['realised_rise_pct']:.1f}",
+            f"Seas{tag}CounterAggBn": f"{v['counter_agg_gbp_bn']:,.1f}",
+            f"Seas{tag}EpgBn": f"{v['epg_gbp_bn']:,.1f}",
+            f"Seas{tag}EpgRatePct": f"{v['epg_rate_pct']:.1f}",
+            f"Seas{tag}EbssRatePct": f"{v['epg_ebss_rate_pct']:.1f}",
+            f"Seas{tag}FullRatePct": f"{v['full_rate_pct']:.1f}",
+            f"Seas{tag}FullDOne": f"{v['full_cushion_pct_d1']:.1f}",
+            f"Seas{tag}FullDTen": f"{v['full_cushion_pct_d10']:.1f}",
+            f"Seas{tag}EbssDOne": f"{v['epg_ebss_cushion_pct_d1']:.1f}",
+            f"Seas{tag}EbssDTen": f"{v['epg_ebss_cushion_pct_d10']:.1f}",
+        })
+    seas_macros["SeasCwActualRebaseHeldFullRatePct"] = (
+        f"{seasonal['consumption_actual_rebase_held']['full_rate_pct']:.1f}")
+    seas_macros["SeasCwActualRebaseHeldEpgBn"] = (
+        f"{seasonal['consumption_actual_rebase_held']['epg_gbp_bn']:,.1f}")
+
     macros = {
         "GridPaperFullRatePct": cell("paper", "full")["rate_pct"],
         "GridUnityFullRatePct": cell("1.0", "full")["rate_pct"],
@@ -180,6 +280,8 @@ def main() -> None:
         for k, v in macros.items():
             f.write(f"\\newcommand{{\\Ss{k}}}{{{v:.1f}}}\n")
         for k, v in ann.items():
+            f.write(f"\\newcommand{{\\Ss{k}}}{{{v}}}\n")
+        for k, v in seas_macros.items():
             f.write(f"\\newcommand{{\\Ss{k}}}{{{v}}}\n")
 
     # The 12-cell table body.
@@ -207,6 +309,7 @@ def main() -> None:
     print(json.dumps(res["meta"]))
     for c in cells:
         print(c)
+    print(json.dumps(seasonal, indent=1))
 
 
 if __name__ == "__main__":

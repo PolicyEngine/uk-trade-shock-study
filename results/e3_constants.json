@@ -1,10 +1,17 @@
 {
- "source": "in-repo tariff pipeline (analysis/run_scenarios.py)",
+ "source": "in-repo tariff pipeline (analysis/run_scenarios.py --e3)",
  "scenario": "full_tariff",
- "n_draws": 20,
+ "displacement_design": "exact_expectation",
+ "displacement_new_style_jsa": true,
+ "n_draws": 0,
  "gross_shock_gbp_m_per_year": 1007.1,
- "displacement_cushion_pct": 32.1,
+ "displacement_cushion_pct": 37.0,
  "wagecut_cushion_pct": 41.8,
  "displacement_cushion_sd_pct": 3.3,
- "wagecut_cushion_sd_pct": 0.0
+ "displacement_cushion_sd_source": "SD across the 20 single Bernoulli draws of the superseded run (no New Style JSA); not the precision of the central estimate",
+ "wagecut_cushion_sd_pct": 0.0,
+ "displacement_cushion_mc_se_pct": 0.0,
+ "displacement_cushion_sampling_se_pct": 0.6,
+ "displacement_cushion_no_jsa_pct": 34.0,
+ "bernoulli_draws": 20
 }

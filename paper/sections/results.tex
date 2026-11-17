@@ -173,9 +173,12 @@ the same as imported). Third,
 \emph{timing}: the counterfactual averages the April and October 2022
 caps over the financial year; a variant uses the January 2023 cap that
 Ofgem actually set for the final quarter
-(Appendix~\ref{sec:results-grid}). Both weight the half-years equally,
-although most gas is consumed in the half-year the Guarantee covered,
-so both understate the Guarantee's share.
+(Appendix~\ref{sec:results-grid}). Both weight the half-years equally; with the actual caps and the
+model's monthly consumption weights the Guarantee absorbs
+\pounds\SsSeasCwActualEpgBn\ billion and the full-stack rate is
+\SsSeasCwActualFullRatePct\ per cent, against
+\SsSeasEqHeldFullRatePct\ on the headline convention, which is the
+conservative case.
 
 Because both paths are
 financial-year means, the \pounds\MsEnergyCushionAggSixMonthsBn\
@@ -214,27 +217,30 @@ earnings-led: a gross loss of \pounds\MsUSTariffGrossShockMillions\
 million a year (Appendix~\ref{app:e3}), of which the tax--benefit
 system absorbs \MsUSTariffWageCutCushionPct\ per cent when it arrives
 as broad wage cuts and \MsUSTariffDisplacementCushionPct\ per cent as
-displacement (standard deviation \MsUSTariffDisplacementCushionSDPct\
-points across \EThreeDispDraws\ assignment draws). The displacement
-draws remove that sum only in expectation, and the rate is the mean
-of per-draw rates. Displacement is cushioned less than wage cuts in
-\EThreeDispBelowWage\ one of the \EThreeDispDraws\ draws
-(\EThreeDispRateMin--\EThreeDispRateMax\ per cent), the reverse of the
+displacement (sampling standard error \EThreeDispSamplingSe\ points).
+The displacement rate is an exact expectation over independent job
+losses, computed from all \EThreeDispExposedRecords\ exposed records,
+and includes an approximation of contribution-based New Style
+Jobseeker's Allowance; without it the rate is
+\EThreeDispNoJsaRatePct\ per cent. Displacement is cushioned less than
+wage cuts, the reverse of the
 EU-average ordering in \citet{dolls2012}, where an unemployment
 shock is cushioned more than a proportional income shock (47 against
-38 per cent), largely through contributory unemployment insurance,
-which this scenario omits (New Style Jobseeker's Allowance is not
-modelled); it rests on about \EThreeDispRecords\
-sample records per draw and is indicative.
+38 per cent), largely through earnings-related unemployment insurance,
+which the flat-rate New Style allowance is not.
 
-The gap is statutory arithmetic. A wage cut is relieved at the
-worker's marginal rate of income tax and National Insurance, and at
-the Universal Credit taper for recipients. A whole-job loss is
-relieved at the lower average rate, because the personal allowance is
-forgone too. Means-tested support depends on partner earnings, other
-income and claiming rather than on the size of the loss, which
-narrows rather than drives the gap. The runs record no tax--benefit
-split, so this is an account of the rules, not a decomposition.
+The gap comes from income tax. It relieves \EThreeWageTaxOfGrossPct\
+per cent of the gross loss under the wage cut, at the worker's
+marginal rate, against \EThreeDispTaxOfGrossPct\ per cent under job
+loss, at the lower average rate, because the personal allowance is
+forgone too. National Insurance relieves about the same in both
+(\EThreeWageNiOfGrossPct\ and \EThreeDispNiOfGrossPct\ per cent), and
+Universal Credit (\EThreeDispUcOfGrossPct\ against
+\EThreeWageUcOfGrossPct) and the New Style allowance
+(\EThreeDispJsaContribOfGrossPct) narrow the gap. In both margins
+\EThreeWagePensionOfGrossPct\ points are employee pension
+contributions ceasing, which HBAI income deducts, not tax or benefit
+(Table~\ref{tab:e3-split}).
 
 \paragraph{The India gains.} Of the \pounds\MsCetaTotalMillions\ million of final-goods duty
 reductions, \pounds\MsCetaAllocatedMillions\ million falls in the
@@ -367,48 +373,40 @@ Benefits rose 3.1 per cent in April 2022, indexed to the previous
 September, against inflation over the year of about 10 per cent, the
 benefit-erosion mechanism whose cross-national treatment is
 \citet{paulus2020}. The
-cost of that gap is here computed with a genuine rulebook-vintage
-run rather than a flat base-times-gap multiplication: the dataset carries inputs for a single period, so every input column is copied to the 2022 and 2023 periods and the \emph{same} households are scored under the
-2022 and 2023 parameter systems.
+cost of that gap is computed as a parameters-only reform: on the
+same households under 2022--23 rules, the \SsLagReformParameters\
+uprated benefit parameters are raised by $1.101/1.031$, the uprating
+that September 2022 inflation would have delivered in place of the
+actual one. Benefit income rises by \pounds\SsLagReformBn\ billion
+(\SsLagReformPctOfBase\ per cent of the \pounds\SsLagReformBaseBn\
+billion base), tapers and caps included:
+\pounds\SsLagReformStatePensionBn\ billion on the state pension and
+\pounds\SsLagReformNonStatePensionBn\ billion on other benefits.
+Income-related Employment and Support Allowance and Jobseeker's
+Allowance enter the data as reported amounts and are not covered;
+scaling them would add \pounds\SsLagReformReportedAddOnBn\ billion. The
+counterfactual is an infeasible, perfect-foresight
+benchmark, since the September 2022 rate was not known in April 2022.
 
-Scoring the same households under the 2023
-parameter system instead of the 2022 system moves the fourteen cash
-benefits from \pounds\SsVinBenefitBaseRuleTwentyTwo\ to
-\pounds\SsVinBenefitBaseRuleTwentyThree\ billion:
-\pounds\SsVinUpratingEffectBn\ billion through the full statutory
-structure, tapers included. The fourteen include the state pension,
-the largest single item, so a large part of the figure is pensioner
-benefits rather than working-age awards.
+A cross-check scores the same households under the 2022 and 2023
+parameter systems (every input column copied to both periods). The
+fourteen cash benefits move from
+\pounds\SsVinBenefitBaseRuleTwentyTwo\ to
+\pounds\SsVinBenefitBaseRuleTwentyThree\ billion,
+\pounds\SsVinPerPointBn\ billion per point of the 10.1 per cent April
+2023 uprating, at which rate the \SsUpratingGapPp-point gap
+corresponds to \pounds\SsVinLagCostBn\ billion. That difference also
+contains non-uprating changes (the benefit cap, work allowances,
+childcare caps and the July 2022 National Insurance threshold), which
+is why the clean reform is the headline.
 
-The April 2023 uprating (10.1 per cent,
-applied to thirteen of the fourteen; the winter fuel payment is a
-fixed cash amount) is the largest change between the two systems but
-not the only one: the benefit cap and Universal Credit work allowances
-rose under the same order, the Universal Credit childcare caps rose in
-June 2023, and the National Insurance primary threshold rose in July
-2022, so \pounds\SsVinPerPointBn\ billion per uprating point is a
-calibration that a parameters-only reform would refine.
-
-At that rate,
-the \SsUpratingGapPp\ points by which the April 2022 uprating fell
-short of the September 2022 inflation rate correspond to
-\pounds\SsVinLagCostBn\ billion over the crisis year, an infeasible, perfect-foresight
-benchmark, since the September 2022 rate was not known in April 2022
-(the final step
-is linear in the rate; the non-uprating parameter changes in the
-two-vintage difference pull in both directions, the benefit cap, work
-allowances and childcare caps upward and the July 2022 National
-Insurance threshold downward, so the sign of the resulting bias is
-not determined).
-
-This compares with the roughly
+Both compare with the roughly
 \pounds 12 billion aggregate real fall of \citet{obrwelfare2022} on a
-different base and counterfactual, and it is below the
+different base and counterfactual, and sit below the
 \pounds\SsUpratingShortfallBn\ billion a flat multiplication of the
 2022--23-rules base excluding the winter fuel payment
 (\pounds\SsBenefitIncomeBn\ billion) would give; the difference
-reflects the interaction of the uprating with tapers and caps and the
-other parameter changes in the two-vintage comparison.
+reflects the interaction of the uprating with tapers and caps.
 
 The lag cost is deliberately \emph{not} expressed as a share of the energy
 shock: the numerator is the erosion of benefit income by all inflation,
@@ -546,12 +544,16 @@ the dispersion in who was exposed. Within the bottom decile alone the burden run
 \SsPNinetyDecOne\ per cent at the ninetieth.
 
 Two limits bound what this establishes. The exposure is
-\emph{imputed}, the dataset's energy spending is imputed from LCFS donors, so part of the within-decile dispersion is donor-model variation, and
-the decomposition describes the imputed exposure without establishing
-that it bounds the true dispersion, the bootstrap interval above is
-sampling uncertainty only, blind to the donor-model error, and a
-direct validation of the imputed within-decile spread against the
-LCFS donor sample, which observes it, is left to future work; \citet{levell2025} use panel
+\emph{imputed} from LCFS donors, so part of the within-decile
+dispersion could be donor-model variation. On the LCFS 2024--25 survey
+itself (\SsLcfsHouseholds\ households) the within-decile share is
+\SsLcfsWithinPct\ per cent, against \SsWithinPct\ on Microcosm, and
+\SsLcfsTwentyOneWithinPct\ per cent in two earlier survey years: the
+result holds on observed spending, and the imputation slightly
+overstates it. The LCFS is the imputation's donor survey, so this
+validates the imputation rather than adding independent evidence, and
+diary and last-payment timing inflate within-decile spread in the
+LCFS too; \citet{levell2025} use panel
 data on household energy spending for this reason.
 
 Second, the estimand is the variance of one

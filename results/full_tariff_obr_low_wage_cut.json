@@ -18,6 +18,53 @@
   "cushioning_rate_mc_se": 0.0,
   "cushioning_valid_draws": 3,
   "selection_method": "bernoulli",
+  "cushioning_rate_pooled": 0.41921836477469343,
+  "cushion_components_mean": {
+    "income_tax": 136423051.24816895,
+    "national_insurance": 17548816.692878723,
+    "universal_credit": 3318250.4717915854,
+    "other_means_tested": 0.0,
+    "jsa_contrib": 0.0,
+    "esa_contrib": 0.0,
+    "child_benefit": 0.0,
+    "pension_contributions": 11617719.976890564,
+    "student_loan_repayments": 0.0,
+    "statutory_pay": -241225.15651154518,
+    "other": 0.0,
+    "negative_income_floor": 43282.0234375,
+    "cushion": 168710020.4676107,
+    "gross_loss": 402842470.32592773
+  },
+  "cushion_component_shares": {
+    "share_of_gross_loss": {
+      "income_tax": 0.33865111376611595,
+      "national_insurance": 0.043562479096805516,
+      "universal_credit": 0.008237091955837945,
+      "other_means_tested": 0.0,
+      "jsa_contrib": 0.0,
+      "esa_contrib": 0.0,
+      "child_benefit": 0.0,
+      "pension_contributions": 0.028839362362888442,
+      "student_loan_repayments": 0.0,
+      "statutory_pay": -0.000598807658776338,
+      "other": 0.0,
+      "negative_income_floor": 0.00010744155997872274
+    },
+    "share_of_cushion": {
+      "income_tax": 0.8086244721567071,
+      "national_insurance": 0.10401763122450562,
+      "universal_credit": 0.019668366245196623,
+      "other_means_tested": 0.0,
+      "jsa_contrib": 0.0,
+      "esa_contrib": 0.0,
+      "child_benefit": 0.0,
+      "pension_contributions": 0.0688620625182187,
+      "student_loan_repayments": 0.0,
+      "statutory_pay": -0.0014298211561052836,
+      "other": 0.0,
+      "negative_income_floor": 0.0002565468448023179
+    }
+  },
   "draws": [
     {
       "scenario": "full_tariff_obr_low_wage_cut",
@@ -72,6 +119,22 @@
         "45-54": 0.0,
         "55-64": 0.0,
         "65-+": 0.0
+      },
+      "cushion_components": {
+        "income_tax": 136423051.24816895,
+        "national_insurance": 17548816.692878723,
+        "universal_credit": 3327903.4304504395,
+        "other_means_tested": 0.0,
+        "jsa_contrib": 0.0,
+        "esa_contrib": 0.0,
+        "child_benefit": 0.0,
+        "pension_contributions": 11617719.976890564,
+        "student_loan_repayments": 0.0,
+        "statutory_pay": -241225.15651154518,
+        "other": 0.0,
+        "negative_income_floor": 43282.0234375,
+        "cushion": 168719673.67919922,
+        "gross_loss": 402842470.32592773
       }
     },
     {
@@ -127,6 +190,22 @@
         "45-54": 0.0,
         "55-64": 0.0,
         "65-+": 0.0
+      },
+      "cushion_components": {
+        "income_tax": 136423051.24816895,
+        "national_insurance": 17548816.692878723,
+        "universal_credit": 3298957.8819732666,
+        "other_means_tested": 0.0,
+        "jsa_contrib": 0.0,
+        "esa_contrib": 0.0,
+        "child_benefit": 0.0,
+        "pension_contributions": 11617719.976890564,
+        "student_loan_repayments": 0.0,
+        "statutory_pay": -241225.15651154518,
+        "other": 0.0,
+        "negative_income_floor": 43282.0234375,
+        "cushion": 168690727.49365234,
+        "gross_loss": 402842470.32592773
       }
     },
     {
@@ -182,6 +261,22 @@
         "45-54": 0.0,
         "55-64": 0.0,
         "65-+": 0.0
+      },
+      "cushion_components": {
+        "income_tax": 136423051.24816895,
+        "national_insurance": 17548816.692878723,
+        "universal_credit": 3327890.10295105,
+        "other_means_tested": 0.0,
+        "jsa_contrib": 0.0,
+        "esa_contrib": 0.0,
+        "child_benefit": 0.0,
+        "pension_contributions": 11617719.976890564,
+        "student_loan_repayments": 0.0,
+        "statutory_pay": -241225.15651154518,
+        "other": 0.0,
+        "negative_income_floor": 43282.0234375,
+        "cushion": 168719660.22998047,
+        "gross_loss": 402842470.32592773
       }
     }
   ]

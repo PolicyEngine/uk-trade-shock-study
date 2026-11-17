@@ -403,7 +403,7 @@
    },
    "earnings_side_declared": {
     "gross_shock_gbp_m_per_year": 1007.1,
-    "displacement_cushioning_pct": 32.1,
+    "displacement_cushioning_pct": 37.0,
     "wage_cut_cushioning_pct": 41.8,
     "source": "tariff earnings scenario (results/e3_constants.json)"
    }
@@ -800,7 +800,7 @@
    "bottom_decile_pct_of_spend": 0.0,
    "top_decile_pct_of_spend": 0.0,
    "regressivity_verdict": "n/a (zero row)",
-   "cushioning": "automatic stabilisers: 32.1% (displacement) / 41.8% (wage cut)",
+   "cushioning": "automatic stabilisers: 37.0% (displacement) / 41.8% (wage cut)",
    "bottom_decile_pct_of_spend_per_gbp_bn": null
   },
   {

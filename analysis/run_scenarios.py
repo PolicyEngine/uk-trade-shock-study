@@ -2,6 +2,15 @@
 
 Usage: python analysis/run_scenarios.py [--data-dir DATA] [--period 2026]
        [--n-draws 100] [--scenarios full_tariff_displacement ...]
+       python analysis/run_scenarios.py --e3     (the paper's E3 results)
+
+The paper's E3 files are produced by two commands:
+    run_scenarios.py --n-draws 20 --scenarios full_tariff_displacement
+        -> results/full_tariff_displacement_bernoulli.json (comparator)
+    run_scenarios.py --e3
+        -> results/full_tariff_displacement{,_no_jsa}.json,
+           results/full_tariff_obr_low_displacement{,_no_jsa}.json,
+           results/full_tariff{,_obr_low}_wage_cut.json
 """
 
 import argparse
@@ -47,6 +56,97 @@ OBR_LOW_PRESETS = {
 }
 ALL_PRESETS.update(OBR_LOW_PRESETS)
 
+#: E3 (referee rerun). The displacement margin is evaluated by the
+#: exact-expectation design (tariff_pipeline/expectation.py) with the New
+#: Style JSA approximation ON in the central case and OFF as a variant; the
+#: wage-cut margin displaces nobody, is deterministic apart from the UC
+#: claiming draw, and keeps the Monte Carlo runner.
+E3_WAGE_DRAWS = 3
+E3_ELASTICITIES = {
+    "full_tariff": None,  # scenario default
+    "full_tariff_obr_low": ELASTICITY_SCENARIOS["obr_low"],
+}
+
+
+#: Result names owned by the exact-expectation run (see ``main``).
+E3_EXACT_OUTPUTS = ("full_tariff_displacement", "full_tariff_obr_low_displacement")
+
+
+def _e3_displacement(prefix: str, elasticity, new_style_jsa: bool) -> TradeShockScenario:
+    kwargs = {} if elasticity is None else {"elasticity": elasticity}
+    name = f"{prefix}_displacement" + ("" if new_style_jsa else "_no_jsa")
+    return TradeShockScenario(
+        name, "full_tariff", "displacement", new_style_jsa=new_style_jsa, **kwargs
+    )
+
+
+def run_e3(period: int, results: Path, pass_cache: Path | None = None) -> None:
+    """Exact-expectation displacement + Monte Carlo wage cut for E3."""
+    import json
+    import pickle
+
+    from tariff_pipeline.expectation import (
+        expectation_result,
+        run_passes,
+        validate_against_draw,
+    )
+    from tariff_pipeline.runner import (
+        _baseline_and_persons,
+        _metrics,
+        json_value,
+        run_monte_carlo_prepared,
+    )
+
+    dataset, baseline, persons = _baseline_and_persons(None, None, period)
+    base_metrics = _metrics(baseline, period)
+    equiv = baseline.calculate(
+        "equiv_hbai_household_net_income", period=period, map_to="person"
+    ).values
+    region = baseline.calculate("region", period=period, map_to="person").values.astype(str)
+
+    def write(payload, name):
+        (results / f"{name}.json").write_text(
+            json.dumps(json_value(payload), indent=2, allow_nan=False)
+        )
+
+    for new_style_jsa in (True, False):
+        central = _e3_displacement("full_tariff", None, new_style_jsa)
+        passes = run_passes(dataset, baseline, persons, central, period, base_metrics)
+        if pass_cache is not None:
+            pass_cache.mkdir(parents=True, exist_ok=True)
+            with open(pass_cache / f"passes_jsa_{int(new_style_jsa)}.pkl", "wb") as f:
+                pickle.dump(passes, f)
+        validation = validate_against_draw(
+            dataset, baseline, persons, central, passes, period, seed=0
+        )
+        print(f"[expectation] validation draw: {validation}")
+        for prefix, elasticity in E3_ELASTICITIES.items():
+            scenario = _e3_displacement(prefix, elasticity, new_style_jsa)
+            out = expectation_result(
+                passes, persons, scenario, base_metrics, equiv, region
+            )
+            out["validation_draw"] = validation
+            write(out, scenario.name)
+            print(
+                f"{scenario.name}: gross £{out['gross_earnings_loss'] / 1e6:,.1f}m, "
+                f"cushioning {100 * out['cushioning_rate']:.2f}% "
+                f"(sampling SE {100 * out['cushioning_rate_sampling_se']:.2f}), "
+                f"split of gross "
+                f"{ {k: round(100 * v, 2) for k, v in out['cushion_component_shares']['share_of_gross_loss'].items()} }"
+            )
+        del passes
+
+    for name in ("full_tariff_wage_cut", "full_tariff_obr_low_wage_cut"):
+        result = run_monte_carlo_prepared(
+            dataset, baseline, persons, ALL_PRESETS[name], period, E3_WAGE_DRAWS
+        )
+        write_result(result, results / f"{name}.json")
+        print(
+            f"{name}: cushioning {100 * result.cushioning_rate_pooled:.2f}% "
+            f"split of gross "
+            f"{ {k: round(100 * v, 2) for k, v in result.cushion_component_shares['share_of_gross_loss'].items()} }"
+        )
+
 
 def main() -> None:
     parser = argparse.ArgumentParser()
@@ -54,7 +154,20 @@ def main() -> None:
     parser.add_argument("--period", type=int, default=2026)
     parser.add_argument("--n-draws", type=int, default=100)
     parser.add_argument("--scenarios", nargs="*", default=list(ALL_PRESETS))
+    parser.add_argument(
+        "--e3",
+        action="store_true",
+        help="run the E3 set: exact-expectation displacement (with and "
+        "without New Style JSA, central and OBR-low elasticity) and the "
+        "Monte Carlo wage cut; ignores --scenarios and --n-draws",
+    )
+    parser.add_argument("--pass-cache", default=None, help="directory to pickle E3 passes")
     args = parser.parse_args()
+    if args.e3:
+        results = Path("results")
+        results.mkdir(exist_ok=True)
+        run_e3(args.period, results, Path(args.pass_cache) if args.pass_cache else None)
+        return
 
     data = Path(args.data_dir)
     dataset = None  # certified Microcosm UK via policyengine.py
@@ -86,7 +199,12 @@ def main() -> None:
         result = run_monte_carlo(
             dataset, ALL_PRESETS[name], period=args.period, n_draws=args.n_draws
         )
-        write_result(result, results / f"{name}.json")
+        # results/{name}.json for the E3 displacement scenarios is the
+        # exact-expectation estimate written by --e3; a Monte Carlo run of
+        # the same preset (Bernoulli draws, no New Style JSA) is the
+        # COMPARATOR and must not overwrite it.
+        suffix = "_bernoulli" if name in E3_EXACT_OUTPUTS else ""
+        write_result(result, results / f"{name}{suffix}.json")
         print(
             f"{name}: exchequer £{result.exchequer_cost_mean/1e9:.2f}bn "
             f"(SD {result.exchequer_cost_sd/1e9:.2f}), "

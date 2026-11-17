@@ -98,6 +98,51 @@ with the decile-table analysis. The rebase factors are common scalars, so the va
 and all quantile ratios are invariant to them (the within-share is
 \SsWithinPct\ per cent on either base). Aggregate pounds are reconciled in Appendix~\ref{app:recon}.
 
+\subsection{The tariff earnings scenario}\label{app:e3}
+
+The shock to division $j$ is $s_j=\tau_j x_j \varepsilon \pi$: the
+tariff rate $\tau_j$, the US-export share of turnover $x_j$ (HMRC
+trade by industry over ONS Annual Business Survey turnover, for 23 SIC
+divisions), an export-demand elasticity $\varepsilon$ and the
+wage-bill incidence $\pi$. Both $\varepsilon$ and $\pi$ are set to one
+as a unit stress. The scenario omits price changes, imported inputs,
+profits and general-equilibrium effects, and the sector weights are
+an accounting bridge, not measured tariff incidence.
+
+Two margins deliver the same expected gross loss. Under the wage cut,
+every employee in division $j$ loses the share $s_j$ of earnings, with
+pension contributions scaled. Under displacement, each employee loses
+the job for the full year with probability $s_j$, independently:
+status becomes unemployed, and earnings, hours, pension contributions
+and statutory pay are set to zero.
+
+Baseline and shocked systems are run under 2026--27 rules on the
+Microcosm UK records. The cushioning rate is one minus the fall in
+HBAI household net income over the fall in gross employee earnings,
+computed per draw and averaged. Benefit units newly entitled to
+Universal Credit have their claim flag redrawn at 80 per cent
+\citep{dwp2024takeup}; others keep their baseline flags, and baseline
+poverty lines are frozen. There are \EThreeDispDraws\ displacement and
+\EThreeWageDraws\ wage-cut draws. Standard deviations are dispersion
+across assignments, not sampling error; the Monte Carlo standard
+error of the displacement rate is \EThreeDispRateMcSe\ points.
+
+The displacement results have thin support. The realised gross loss
+averages \pounds\EThreeDispGrossMeanM\ million (range
+\pounds\EThreeDispGrossMinM--\EThreeDispGrossMaxM\ million), on about
+\EThreeDispRecords\ records per draw, \EThreeDispEffRecords\
+effective, with one record carrying \EThreeDispMaxShare\ per cent of
+a draw's loss on average; the pooled ratio is \EThreeDispRatePooled\
+per cent. Contribution-based (New Style) Jobseeker's Allowance,
+redundancy pay, partial-year spells, re-employment and behavioural
+responses are not modelled, and omitting New Style Jobseeker's
+Allowance biases displacement cushioning down. The Exchequer cost is
+\pounds\EThreeWageExchequerM\ million (wage cut) and
+\pounds\EThreeDispExchequerM\ million (displacement), above the
+household-side offset because the government balance includes
+employer contributions. Poverty before housing costs rises
+\EThreeDispPovertyPp\ points under displacement.
+
 \subsection{The model's native instruments and the decile ranking}\label{app:native}
 
 The model does

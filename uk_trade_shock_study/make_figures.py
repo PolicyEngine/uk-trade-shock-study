@@ -517,7 +517,7 @@ def write_tables(d: Data):
          "Cap \\pounds1{,}277 $\\to$ \\pounds3{,}549; EPG \\pounds2{,}500",
          "Observed\\newline (statutory)"),
         ("E3 US tariffs 2025", "2025", "Policy\\newline (foreign)",
-         "Earnings only; no UK retaliation", "\\citet{ahmadi2026}",
+         "Earnings only; no UK retaliation", "Constructed here (Appendix~\\ref{app:e3})",
          "tariff-calibrated earnings shock", "Scenario\\newline (simulated)"),
         ("E4 India CETA", "2026+", "Policy",
          "Consumer prices (clothing, footwear, food)", "\\citet{dbtindia2026}",

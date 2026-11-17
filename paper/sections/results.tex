@@ -81,8 +81,7 @@ the energy-specific stack returns \SsGridPaperEbssRatePct\ per cent
 (Section~\ref{sec:results-secondstage}).
 $^{m}$~the tariff episode's earnings-channel coefficient
 (\MsUSTariffDisplacementCushionPct--\MsUSTariffWageCutCushionPct\ per
-cent) answers a different question and is
-reported here rather than in the column.
+cent; Appendix~\ref{app:e3}) answers a different question and is reported here rather than in the column.
 \end{minipage}
 \end{table}
 
@@ -213,23 +212,27 @@ the cushioning rate falls with income.
 \paragraph{The US tariffs.} The UK consumer side is zero, no
 retaliation occurred, so this episode's incidence is entirely
 earnings-led: a gross loss of \pounds\MsUSTariffGrossShockMillions\
-million a year, of which the tax--benefit system absorbs
-\MsUSTariffDisplacementCushionPct\ per cent when the loss arrives as
-displacement (standard deviation
-\MsUSTariffDisplacementCushionSDPct\ points across 20 assignment
-draws) and \MsUSTariffWageCutCushionPct\ per cent when it arrives as
-broad wage cuts (three draws; that scenario is deterministic up to
-Universal Credit take-up).
+million a year (Appendix~\ref{app:e3}), of which the tax--benefit
+system absorbs \MsUSTariffWageCutCushionPct\ per cent when it arrives
+as broad wage cuts and \MsUSTariffDisplacementCushionPct\ per cent as
+displacement (standard deviation \MsUSTariffDisplacementCushionSDPct\
+points across \EThreeDispDraws\ assignment draws). The displacement
+draws remove that sum only in expectation, and the rate is the mean
+of per-draw rates. Displacement is cushioned less than wage cuts in
+\EThreeDispBelowWage\ one of the \EThreeDispDraws\ draws
+(\EThreeDispRateMin--\EThreeDispRateMax\ per cent), the reverse of the
+European-average ordering in \citet{dolls2012}, where an unemployment
+shock is cushioned more than a proportional income shock; it rests on about \EThreeDispRecords\
+sample records per draw and is indicative.
 
-The calculation uses the earnings-channel
-model of \citet{ahmadi2026} on the same Microcosm UK records and model
-version as the price episodes, under 2026--27 rules. The lower rate
-under displacement is consistent with how the two margins meet the
-system: a wage cut is shared with the Exchequer at the worker's
-marginal rate of income tax and National Insurance and, for Universal
-Credit recipients, at the taper, whereas a displaced worker loses the
-whole wage and receives flat-rate out-of-work support that replaces a
-small share of typical earnings.
+The gap is statutory arithmetic. A wage cut is relieved at the
+worker's marginal rate of income tax and National Insurance, and at
+the Universal Credit taper for recipients. A whole-job loss is
+relieved at the lower average rate, because the personal allowance is
+forgone too. Means-tested support depends on partner earnings, other
+income and claiming rather than on the size of the loss, which
+narrows rather than drives the gap. The runs record no tax--benefit
+split, so this is an account of the rules, not a decomposition.
 
 \paragraph{The India gains.} Of the \pounds\MsCetaTotalMillions\ million of final-goods duty
 reductions, \pounds\MsCetaAllocatedMillions\ million falls in the

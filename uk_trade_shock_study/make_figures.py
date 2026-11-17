@@ -76,7 +76,11 @@ def apply_style() -> None:
     plt.rcParams["hatch.linewidth"] = 0.6
 
 
-def decile_ax(ax, ylabel, xlabel=DECILE_AXIS):
+#: The decile-table figures use ONS Family Spending deciles, not HBAI ones.
+ONS_DECILE_AXIS = "Income decile (equivalised disposable income, ONS Family Spending)"
+
+
+def decile_ax(ax, ylabel, xlabel=ONS_DECILE_AXIS):
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)
     ax.set_xticks(range(1, 11))
@@ -225,8 +229,8 @@ def fig_incidence_profile(d: Data):
         (d.tca_win_pct[0], f"{d.tca_win_pct[0]:.2f}%"),
         (d.ceta_pct[0], f"{d.ceta_pct[0]:.3f}%"),
     ):
-        ax.annotate(txt, xy=(1, yv), xytext=(4, 7), textcoords="offset points",
-                    ha="left", va="bottom", fontsize=7.2, color=INK2)
+        ax.annotate(txt, xy=(1, yv), xytext=(6, -6), textcoords="offset points",
+                    ha="left", va="top", fontsize=7.2, color=INK2)
 
     ax.set_yscale("log")
     ax.set_ylim(0.008, 30)
@@ -464,12 +468,12 @@ def write_tables(d: Data):
     A("\\begin{table}[tbp]")
     A("\\centering")
     A("\\small")
-    A("\\caption{Incidence by income decile. Food is on the window-average path; energy is shown gross and net of the Energy Price Guarantee; India CETA is a gain at full pass-through.}")
+    A("\\caption{Incidence by income decile. Food is on the window-average path; energy is shown gross and net of the Energy Price Guarantee; the UK--India agreement is a gain at full pass-through.}")
     A("\\label{tab:decile-full}")
     A("\\begin{tabular}{@{}l rr rr rr r@{}}")
     A("\\toprule")
     A(" & \\multicolumn{2}{c}{TCA food NTBs} & \\multicolumn{2}{c}{Energy, gross}")
-    A(" & \\multicolumn{2}{c}{Energy, net of EPG} & CETA gain \\\\")
+    A(" & \\multicolumn{2}{c}{Energy, net of the Guarantee} & UK--India gain \\\\")
     A("\\cmidrule(lr){2-3}\\cmidrule(lr){4-5}\\cmidrule(lr){6-7}\\cmidrule(l){8-8}")
     A("Decile & \\pounds/yr & \\% spend & \\pounds/yr & \\% spend"
       " & \\pounds/yr & \\% spend & \\pounds/yr \\\\")
@@ -511,7 +515,7 @@ def write_tables(d: Data):
     rows = [
         ("E1 TCA food NTBs", "Dec 2019--\\newline Mar 2023$^{w}$", "Policy",
          "Consumer prices (food)", "\\citet{bakker2023}",
-         "$+8\\%$ on food prices (6\\% low variant)", "Estimate\\newline (ex post)"),
+         "$+8\\%$ on food prices", "Estimate\\newline (ex post)"),
         ("E2 Energy 2022--23", "Apr 2022--\\newline Mar 2023", "Market",
          "Consumer prices (energy)", "\\citet{ofgem2022}; \\citet{obrenergy2023}",
          "Cap \\pounds1{,}277 $\\to$ \\pounds3{,}549; EPG \\pounds2{,}500",
@@ -519,7 +523,7 @@ def write_tables(d: Data):
         ("E3 US tariffs 2025", "2025", "Policy\\newline (foreign)",
          "Earnings only; no UK retaliation", "Constructed here (Appendix~\\ref{app:e3})",
          "\\pounds\\MsUSTariffGrossShockMillions m/yr earnings loss (unit elasticity)", "Scenario\\newline (assumed)"),
-        ("E4 India CETA", "2026+", "Policy",
+        ("E4 UK--India agreement", "2026+", "Policy",
          "Consumer prices (clothing, footwear, food)", "\\citet{dbtindia2026}",
          "\\pounds180m/yr duty cut on final goods", "Projection\\newline (ex ante)"),
     ]

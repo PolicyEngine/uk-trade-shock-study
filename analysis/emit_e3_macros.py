@@ -145,6 +145,25 @@ def main() -> None:
         "EThreeDispMaxShare": f"{100 * np.mean([x['max_record_loss_share'] for x in d]):.0f}",
         "EThreeDispBelowWage": "every" if (rates < wage_rate).all() else "not every",
     }
+    # Tax-and-benefit-only rates: the cushion net of employee pension
+    # contributions ceasing (HBAI deducts them; they are neither tax nor benefit).
+    for res, key in ((disp, "Disp"), (wage, "Wage")):
+        g = res["cushion_component_shares"]["share_of_gross_loss"]
+        rate = res["cushioning_rate"] if key == "Disp" else wage_rate
+        m[f"EThree{key}TaxBenRatePct"] = f"{100 * (rate - g['pension_contributions']):.1f}"
+    # Decile incidence of the tariff scenario (change in household income per
+    # head, GBP a year, person-weighted deciles of equivalised income).
+    def _dec(res):
+        if "decile_income_change" in res:
+            return res["decile_income_change"]
+        draws = res["draws"]
+        return {k: float(np.mean([dr["decile_income_change"][k] for dr in draws]))
+                for k in draws[0]["decile_income_change"]}
+    names = ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"]
+    for res, key in ((disp, "Disp"), (wage, "Wage")):
+        dc = _dec(res)
+        for i, n in enumerate(names, start=1):
+            m[f"EThree{key}DecGbp{n}"] = f"{abs(dc[str(i)]):.1f}"
     m.update(_split(disp, "Disp"))
     m.update(_split(no_jsa, "DispNoJsa"))
     m.update(_split(wage, "Wage"))

@@ -28,7 +28,7 @@ the India CETA gains land, are flat across the distribution: the
 composition of a shock, not just its size, determines who bears it.
 
 Third, \emph{the modelled responses run
-through different mechanisms}: the one earnings-led episode, a declared scenario, is cushioned
+through different mechanisms}: the one earnings-led episode, an assumed scenario, is cushioned
 through the automatic tax--benefit system
 (\MsUSTariffDisplacementCushionPct--%
 \MsUSTariffWageCutCushionPct\ per cent), while the price-led energy
@@ -181,8 +181,7 @@ so both understate the Guarantee's share.
 
 Because both paths are
 financial-year means, the \pounds\MsEnergyCushionAggSixMonthsBn\
-billion of Guarantee absorption on the decile-table base (the second
-stage's household base puts it at \pounds\SsEpgBn\ billion,
+billion of Guarantee absorption on the decile-table base (the household-stage base puts it at \pounds\SsEpgBn\ billion,
 reconciled in Appendix~\ref{app:recon}) already
 represents the instrument's six months at annual spending; the OBR's \pounds\MsEnergyObrEpgBn\
 billion lifetime costing (March 2023) is a context anchor on different
@@ -244,7 +243,7 @@ cash), and economically negligible at any pass-through assumption
 (\pounds\MsCetaGainGbpPtFiftyDecOne--\MsCetaGainGbpPtFiftyDecTen\ at
 50 per cent).
 
-\section{The second stage: household-level results}\label{sec:results-secondstage}
+\section{The household stage}\label{sec:results-secondstage}
 
 \subsection{Method}\label{sec:secondstage-method}
 
@@ -257,7 +256,7 @@ tax--benefit microsimulation tradition surveyed by
 2024--25 dataset, \SsHouseholdsRecords\ household records derived from the Family
 Resources Survey, with imputations from the Wealth and Assets Survey,
 the Living Costs and Food Survey (LCFS) and the Survey of Personal
-Incomes, synthetic support records, and calibrated grossing weights.
+Incomes, synthetic support records, and calibrated grossing weights.\footnote{Code and public inputs are at \url{https://github.com/PolicyEngine/uk-trade-shock-study}. The Microcosm UK microdata are licensed and not redistributed.}
 
 The records descend from about 16,300 source survey households, the
 unit the bootstrap below resamples. Households, weights and nominal incomes come from the
@@ -295,8 +294,7 @@ households, weights and nominal incomes are those of 2024--25, copied
 unchanged into the simulated year. The rulebook-vintage run below
 scores the same households under the 2022--23 parameter system as the
 crisis-year counterfactual; the discretionary-stack results are
-insensitive to the rule year because the instruments enter as declared
-cash amounts, and the cost-of-living eligibility flags are nearly
+insensitive to the rule year because the instruments enter as statutory cash amounts, and the cost-of-living eligibility flags are nearly
 identical under the two vintages
 (\SsVinColHouseholdsRuleTwentyTwoM\ against
 \SsVinColHouseholdsRuleTwentyThreeM\ million flagged households).
@@ -564,11 +562,10 @@ but they are not the same quantity.
 \end{figure}
 
 
-\subsection{A second episode through the second stage: the TCA food shock}\label{sec:results-tca-ss}
+\subsection{A second episode through the household stage: the TCA food shock}\label{sec:results-tca-ss}
 
 The common cushioning estimand is computed for a second episode, and
-this one is a trade-\emph{policy} act. The TCA food-price first stage
-(the window-average path of Section~\ref{sec:results}) is priced
+this one is a trade-\emph{policy} act. The TCA food-price shock (the window-average path of Section~\ref{sec:results}) is priced
 against each household's imputed food consumption on the same
 \SsHouseholdsRecords\ records, rebased so the weighted mean matches
 the decile-table ONS FYE2022 food-spend base (factor
@@ -612,10 +609,9 @@ policymakers responded to one and not the other.
 
 \subsection{The India agreement on household records}\label{sec:results-ceta-ss}
 
-The projected gains are carried to the same records. The declared
-duty reductions (\pounds\MsCetaClothingMillions\ million on clothing, \pounds\MsCetaFootwearMillions\ million on footwear and \pounds\MsCetaFoodBevMillions\ million on food and non-alcoholic beverages) are spread
+The projected gains are carried to the same records. The projected duty reductions (\pounds\MsCetaClothingMillions\ million on clothing, \pounds\MsCetaFootwearMillions\ million on footwear and \pounds\MsCetaFoodBevMillions\ million on food and non-alcoholic beverages) are spread
 across households in proportion to their imputed category spending,
-at the declared 100 per cent pass-through and a 50 per cent variant.
+at the assumed 100 per cent pass-through and a 50 per cent variant.
 
 At full pass-through the mean gain runs from
 \pounds\SsCetaSsGbpDecOne\ a year in the bottom decile to

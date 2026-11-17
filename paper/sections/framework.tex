@@ -3,11 +3,9 @@
 \subsection{The estimand}
 
 For every episode the object is the same conditional quantity: the
-statutory household response to a declared trade-shock first stage. Let a
-first stage specify (i) a vector of consumer-price changes by consumption
+statutory household response to an imported trade shock. Let the shock specify (i) a vector of consumer-price changes by consumption
 category, and/or (ii) a labour-income loss or gain with a sectoral
-location and an adjustment margin. The second stage maps that first stage
-onto households and computes the change in disposable income, its
+location and an adjustment margin. The household stage maps that shock onto households and computes the change in disposable income, its
 distribution, and the Exchequer's share, under the tax--benefit rules in
 force at the episode date.
 
@@ -38,23 +36,21 @@ fixed-basket cost of the price change, and it can exceed one because
 lump-sum payments are not tied to the loss. Ratios,
 unlike levels, are comparable across episodes whose gross sizes span more than two orders of magnitude.
 
-Nothing in the design estimates the first stages. Each is imported from
+Nothing in the design estimates the shocks. Each is imported from
 published estimates and labelled with its source and its attribution
 caveats (Section~\ref{sec:episodes}); the paper's contribution begins
 where those estimates stop, at the household and the Exchequer. This is
 the conditional-estimand convention of \citet{ahmadi2026}, applied retrospectively, with the advantage that
-retrospective first stages can be anchored to realised outturns rather
+retrospective shocks can be anchored to realised outturns rather
 than ex-ante bridges.
 
 \subsection{Two channels}
 
 Trade shocks reach households through prices and through earnings, and
-the post-Covid episodes split cleanly on that line. The consumption
-channel prices a category-level price vector against household
-expenditure shares, first on published expenditure-by-decile tables and then at the household level on imputed consumption (Section~\ref{sec:results-secondstage}). The earnings channel
-imposes sectoral labour-income changes on employees by industry and runs
+the post-Covid episodes split cleanly on that line. The expenditure channel prices a category-level price vector against household
+expenditure shares, first on published expenditure-by-decile tables and then at the household level on imputed consumption (Section~\ref{sec:results-secondstage}). The earnings channel, the income channel of \citet{fajgelbaumkhandelwal2016}, imposes sectoral labour-income changes on employees by industry and runs
 them through the statutory system, with the adjustment margin (wage cuts
-versus displacement) as a declared scenario dimension; the machinery,
+versus displacement) as an assumed scenario dimension; the machinery,
 conventions and caveats of \citet{ahmadi2026} carry over.
 
 The
@@ -91,7 +87,7 @@ it is worth stating precisely which of its numbers require an
 identifying assumption and which do not. The design deliberately
 separates the two.
 
-\runin{The second stage requires no identification.} Given a price
+\runin{The household stage requires no identification.} Given a price
 vector and a household's observed characteristics, what the tax--benefit
 system pays that household is a computation on statutory rules, not an
 estimate of a causal parameter.
@@ -102,20 +98,20 @@ Guarantee returns the difference between two capped prices, that a flat
 payment is worth more relative to a small bill, these are properties of
 the rulebook, verifiable line by line, with no counterfactual inference
 involved. The same is true of the variance decomposition: it describes
-the dispersion of a computed quantity across observed households. The second stage is a calculation, not an estimate, though it inherits measurement error from imputed consumption and simulated entitlement.
+the dispersion of a computed quantity across observed households. The household stage is a calculation, not an estimate, though it inherits measurement error from imputed consumption and simulated entitlement.
 
-\runin{Identification rests entirely on the imported first stages.} Whether the Trade and Cooperation Agreement \emph{caused}
+\runin{Identification rests entirely on the imported shocks.} Whether the Trade and Cooperation Agreement \emph{caused}
 the food-price rise is identified, or not, by \citet{bakker2023},
 whose cross-product design and its limits the paper inherits wholesale.
-Whether the 2025 tariffs will cause the earnings loss the tariff scenario imposes is not identified by anyone; it is declared. The
+Whether the 2025 tariffs will cause the earnings loss the tariff scenario imposes is not identified by anyone; it is assumed. The
 government's projections for the India agreement are model output, not
 estimates. The design's purpose is to quarantine this problem: each
-first stage is labelled with its epistemic status
+imported shock is labelled with its epistemic status
 (Section~\ref{sec:episodes}), and no result in this paper is stronger
-than the first stage it conditions on.
+than the shock it conditions on.
 
 \runin{One attribution is accounting, not inference.} The claim that
-part of the 2022 energy shock is trade-transmitted rests on Ofgem's
+part of the 2022 energy shock is an imported terms-of-trade shock rests on Ofgem's
 published decomposition of the price cap into wholesale and non-wholesale
 components, a statement about the composition of a regulated price, not
 a causal estimate of what world gas markets did to British households.
@@ -158,13 +154,10 @@ enters only for the tariff episode. The estimates therefore cover one channel of
 
 The estimates are first-round statutory incidence, not general
 equilibrium: no behavioural response, no wage or employment feedback
-from the price shocks, no substitution in consumption (the price-channel
-numbers are first-order approximations that overstate the welfare loss when households substitute). Episode first stages carry
-their own literatures' uncertainty, which the design brackets by
+from the price shocks, no substitution in consumption (the expenditure-channel numbers are first-order approximations that overstate the welfare loss when households substitute). The imported shocks carry their own literatures' uncertainty, which the design brackets by
 importing low/central/high variants where the literature provides them
-and labelling single-point stages as such. The comparison across
-episodes is a comparison of conditional scenarios that share a second
-stage, not a causal decomposition of realised household outcomes over
+and labelling single-point estimates as such. The comparison across
+episodes is a comparison of conditional scenarios that share a household stage, not a causal decomposition of realised household outcomes over
 2021--2026, which would require separating the trade shocks from
 everything else that happened, a task this design deliberately
 declines.

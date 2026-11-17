@@ -528,7 +528,7 @@ def write_tables(d: Data):
     A("\\footnotesize")
     A("\\setlength{\\tabcolsep}{3pt}")
     A("\\renewcommand{\\arraystretch}{1.15}")
-    A("\\caption{Imported first stages. None is re-estimated here.}")
+    A("\\caption{Imported shocks. None is re-estimated here.}")
     A("\\label{tab:first-stages}")
     A("\\begin{tabular}{@{}p{1.75cm} p{1.70cm} p{1.45cm} p{2.30cm} p{2.10cm}"
       " p{2.75cm} p{1.85cm}@{}}")

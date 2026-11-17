@@ -12,8 +12,7 @@ breakdown settles the split \citep{ofgem2022}. Wholesale rose from
 typical bill, from \MsEnergyWholesaleShareCapBasePct\ to
 \MsEnergyWholesaleShareCapPeakPct\ per cent of the cap, so
 \MsEnergyWholesaleShareOfRisePct\ per cent of the cap's \emph{rise} is
-traded energy and the remainder domestic cost. The trade-transmitted
-component of the realised burden is therefore about
+traded energy and the remainder domestic cost. The imported component of the realised burden is therefore about
 \pounds\MsEnergyRealisedTradeTransmittedAggBn\ billion
 (\pounds\MsEnergyTradeTransmittedAggBn\ billion of the gross
 counterfactual).
@@ -24,7 +23,7 @@ market, so UK-produced gas repriced too, and the resulting transfer
 runs from British households to British producers and, through the
 Energy Profits Levy, the Exchequer, not abroad. The wholesale share
 therefore measures exposure to a world-market-linked price rather than
-a transfer overseas, and the trade-transmitted figures above should be
+a transfer overseas, and the imported-component figures above should be
 read in that narrower sense.
 
 The comparison with
@@ -54,7 +53,7 @@ Guarantee absorbed.
 
 \subsection{Household-level conventions in full}\label{app:conventions}
 
-\runin{Exposure variable (declared).} The household energy exposure is
+\runin{Exposure variable.} The household energy exposure is
 the model's domestic energy consumption, with a weighted mean of
 \pounds 1{,}632 at 2024--25 prices. In this dataset domestic energy is
 exactly electricity plus gas, so no off-grid fuel spending is treated
@@ -94,7 +93,7 @@ because a ratio with income in the denominator is dominated by
 very low incomes. Both sides of every share sit on one base: the burden numerator is
 rebased to FY2021--22 cap levels, and the expenditure denominator to
 the ONS FYE2022 mean total-spending base the decile-table analysis divides by
-(factor \SsSpendRebase), so second-stage shares are level-comparable
+(factor \SsSpendRebase), so household-stage shares are level-comparable
 with the decile-table analysis. The rebase factors are common scalars, so the variance decomposition
 and all quantile ratios are invariant to them (the within-share is
 \SsWithinPct\ per cent on either base). Aggregate pounds are reconciled in Appendix~\ref{app:recon}.
@@ -171,7 +170,7 @@ Neither the lag nor its cost is a discovery of this
 paper: \citet{cribb2023} quantified the 2022--23 shortfall and scored
 the discretionary cost-of-living payments against a timely-indexation
 counterfactual, and \citet{obrwelfare2022} put the aggregate real fall
-at roughly \pounds 12 billion, a figure the second stage's
+at roughly \pounds 12 billion, a figure the household stage's
 \pounds\SsUpratingShortfallBn\ billion (Section~\ref{sec:results-secondstage})
 does not reproduce: the bases and price counterfactuals differ, the two
 are stated side by side rather than reconciled, and the reconciliation
@@ -282,14 +281,14 @@ rebase and deciles by construction.
 The statutory incidence measured above is an accounting object. This
 subsection aggregates it into two economic ones, keeping the paper's
 conventions: every behavioural parameter is imported from the
-literature and declared, nothing is estimated, and the outputs are
+literature and stated, nothing is estimated, and the outputs are
 first-round policy-simulation quantities, no general-equilibrium
 feedback, no intertemporal response.
 
 \runin{Demand.} Each flow of the energy episode, the counterfactual
 burden and the three instruments, is weighted by a marginal
 propensity to consume assigned by equivalised-income decile, under
-three declared scenarios: a gradient falling from 0.8 in the bottom
+three assumed scenarios: a gradient falling from 0.8 in the bottom
 decile to 0.3 in the top, a deliberately steep stylisation of the
 cash-on-hand and liquidity gradients of \citet{jappelli2014} and
 \citet{fagereng2021}, whose mapping into income deciles is flatter; a flat 0.5, which
@@ -333,7 +332,7 @@ relative to an equal-pounds shock, at either value of $\gamma$.
 \begin{table}[tbp]
 \centering
 \caption{First-round demand effects of the energy episode under
-declared MPC scenarios}
+assumed MPC scenarios}
 \label{tab:mpc}
 \small
 \input{table_mpc}

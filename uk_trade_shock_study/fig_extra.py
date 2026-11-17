@@ -165,7 +165,7 @@ def main() -> None:
 
     # 1. Decomposition.
     fig, ax = plt.subplots(figsize=(WIDTH, 5.8))
-    fig.subplots_adjust(left=0.13, right=0.97, top=0.92, bottom=0.36)
+    fig.subplots_adjust(left=0.13, right=0.97, top=0.97, bottom=0.40)
     borne = np.maximum(net_borne, 0)
     over = np.minimum(net_borne, 0)
     ax.bar(x, borne, color=BLUE, label="Borne by the household", zorder=3)
@@ -200,7 +200,7 @@ def main() -> None:
     ax.plot(x, p_real, color=BLUE, ls="-", marker="o",
             label="Realised path (EPG in force)")
     ax.plot(x, p_cash, color=GREY, ls=":", marker="s", mfc="white",
-            label="Cash outlay (counterfactual × observed demand response)")
+            label="Cash outlay (realised × observed demand response)")
     ax.set_xticks(x)
     ax.set_xlabel("Equivalised disposable income decile")
     ax.set_ylabel("% of household expenditure")

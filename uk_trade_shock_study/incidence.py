@@ -850,7 +850,7 @@ def latex_macros(res):
     add("TcaWindowAvgAggBn", fmt(dv["tca_window_average"]["aggregate_gbp_bn_per_year"], 1))
 
     co = dv["energy_cash_outlay"]
-    add("EnergyObservedDemandFallPct", fmt(100 * co["observed_demand_fall"]))
+    add("EnergyObservedDemandFallPct", fmt(100 * co["observed_demand_fall"], 1))
     add("EnergyCashOutlayScalePct", fmt(100 * co["burden_scale_vs_fixed_basket"]))
     add("EnergyCashOutlayGbpDecOne", fmt(co["decile_one_gbp_per_year"]))
     add("EnergyCashOutlayAggBn", fmt(co["aggregate_gbp_bn_per_year"], 1))

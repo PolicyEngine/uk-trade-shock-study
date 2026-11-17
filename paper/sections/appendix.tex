@@ -1,4 +1,9 @@
 \appendix
+\setcounter{figure}{0}\setcounter{table}{0}
+\renewcommand{\thefigure}{A\arabic{figure}}
+\renewcommand{\thetable}{A\arabic{table}}
+\renewcommand{\theHfigure}{A\arabic{figure}}
+\renewcommand{\theHtable}{A\arabic{table}}
 
 \section{Supplementary material}\label{app:supp}
 
@@ -14,8 +19,8 @@ typical bill, from \MsEnergyWholesaleShareCapBasePct\ to
 \MsEnergyWholesaleShareOfRisePct\ per cent of the cap's \emph{rise} is
 traded energy and the remainder domestic cost. The world-market-linked component of the realised burden is therefore about
 \pounds\MsEnergyRealisedTradeTransmittedAggBn\ billion
-(\pounds\MsEnergyTradeTransmittedAggBn\ billion of the gross
-counterfactual).
+(\pounds\MsEnergyTradeTransmittedAggBn\ billion of the
+counterfactual shock).
 
 One clarification matters for what this number means. Wholesale is not
 the same as imported: the wholesale price is set on a world-linked
@@ -51,7 +56,7 @@ Guarantee absorbed.
 \label{fig:energy-epg}
 \end{figure}
 
-\subsection{Household-level conventions in full}\label{app:conventions}
+\subsection{Household-stage conventions in full}\label{app:conventions}
 
 \runin{Exposure variable.} The household energy exposure is
 the model's domestic energy consumption, with a weighted mean of
@@ -128,7 +133,8 @@ status becomes unemployed, and earnings, hours, pension contributions
 and statutory pay are set to zero.
 
 Baseline and shocked systems are run under 2026--27 rules on the
-Microcosm UK records. The cushioning rate is one minus the fall in
+Microcosm UK records, projected forward from 2024--25 to 2026--27 with
+the model's own uprating indices (incomes and weights). The cushioning rate is one minus the fall in
 HBAI household net income over the fall in gross employee earnings.
 The displacement rate is the exact expectation over the independent
 job-loss draws, computed from all \EThreeDispExposedRecords\ exposed
@@ -182,7 +188,10 @@ Cushioning rate & \EThreeWageRatePct & \EThreeDispRatePct & \EThreeDispNoJsaRate
 \end{tabular}
 \begin{minipage}{.85\textwidth}\footnotesize
 \emph{Notes:} Rows omit small items (other benefits, child benefit,
-statutory pay), so they do not sum exactly to the rate.
+statutory pay, the floor on negative incomes), so they do not sum
+exactly to the rate. Taxes and benefits alone, net of the pension row,
+offset \EThreeWageTaxBenRatePct\ (wage cut) and
+\EThreeDispTaxBenRatePct\ (displacement) per cent.
 \end{minipage}
 \end{table}
 
@@ -192,13 +201,23 @@ responses are not modelled. The Exchequer cost is
 \pounds\EThreeDispExchequerM\ million (displacement), above the
 household-side offset because the government balance includes
 employer contributions. Poverty before housing costs rises
-\EThreeDispPovertyPp\ points under displacement. At the OBR's
+\EThreeDispPovertyPp\ points under displacement. By decile of
+equivalised HBAI income (person-weighted, unlike the household deciles
+of the price episodes), the loss per person a year from bottom to top
+is \pounds\EThreeDispDecGbpOne, \EThreeDispDecGbpTwo,
+\EThreeDispDecGbpThree, \EThreeDispDecGbpFour, \EThreeDispDecGbpFive,
+\EThreeDispDecGbpSix, \EThreeDispDecGbpSeven, \EThreeDispDecGbpEight,
+\EThreeDispDecGbpNine\ and \EThreeDispDecGbpTen\ under displacement
+and \pounds\EThreeWageDecGbpOne, \EThreeWageDecGbpTwo,
+\EThreeWageDecGbpThree, \EThreeWageDecGbpFour, \EThreeWageDecGbpFive,
+\EThreeWageDecGbpSix, \EThreeWageDecGbpSeven, \EThreeWageDecGbpEight,
+\EThreeWageDecGbpNine\ and \EThreeWageDecGbpTen\ under wage cuts. At the OBR's
 elasticity of 0.4 the gross loss is \pounds\EThreeObrLowWageGrossM\
 million and the wage-cut rate \EThreeObrLowWageRatePct\ per cent; the
 displacement rate is unchanged by construction, because the
-expectation reweights the same job-loss passes. An earlier design
-with \EThreeBernDraws\ Bernoulli assignment draws and no New Style
-allowance gave a pooled rate of \EThreeBernRatePooled\ per cent
+expectation reweights the same job-loss passes. A Monte Carlo
+check with \EThreeBernDraws\ Bernoulli assignment draws and no New Style
+allowance gives a pooled rate of \EThreeBernRatePooled\ per cent
 (standard error \EThreeBernRatePooledSe; per-draw mean
 \EThreeBernRateMean, range
 \EThreeDispRateMin--\EThreeDispRateMax), close to the
@@ -244,9 +263,9 @@ share of \emph{total spending}, on equivalised-income deciles of the
 FYE2022 vintage, whereas the wider comparator includes other domestic
 fuels and is expressed against income. Because the episode's incidence
 is linear in this share, the difference scales the level of every
-energy number reported here, another reason to prefer the household-level analysis, which computes the share directly rather than importing it.
+energy number reported here, another reason to prefer the household stage, which computes the share directly rather than importing it.
 
-\paragraph{Household-level and decile-table aggregates.} On the same
+\paragraph{Household-stage and decile-table aggregates.} On the same
 financial-year basis the decile-table analysis puts the counterfactual
 shock at \pounds\MsEnergyGrossAggBn\ billion and the realised path at
 \pounds\MsEnergyRealisedAggBn\ billion, against
@@ -294,8 +313,8 @@ shock landed, so the uplift's end preceded the largest price-led trade
 shock of the period.
 
 Together
-with the EPG's absorption of \MsEnergyCushionShareFyPct\ per cent of the
-gross price shock, the picture is: an automatic response on the
+with the Guarantee's absorption of \MsEnergyCushionShareFyPct\ per cent of the
+counterfactual shock, the picture is: an automatic response on the
 earnings margin (in the tariff scenario), a discretionary
 response on the price margin, and indexation that followed prices with
 a year's lag, with the incidence of the full discretionary stack reported in Section~\ref{sec:results-secondstage}.
@@ -308,7 +327,7 @@ a year's lag, with the incidence of the full discretionary stack reported in Sec
 
 \subsection{The two-axis sensitivity grid}\label{sec:results-grid}
 
-Table~\ref{tab:grid} varies the two conventions the headline rates
+Table~\ref{tab:grid} and Figure~\ref{fig:grid} vary the two conventions the headline rates
 depend on: the rebase factor (the paper's computed \SsRebaseFactor,
 an intermediate 0.8, and 1.0, no rebase) and the discretionary stack,
 built up one instrument at a time. First, the Guarantee's cushioning rate
@@ -324,20 +343,20 @@ stack cushions \SsGridPaperFullRatePct\ per cent of the
 counterfactual shock at the paper's rebase and
 \SsGridUnityFullRatePct\ per cent with no rebase at all, and the
 progressive gradient survives every cell: without rebasing, the full
-modelled stack returns \SsGridUnityFullDOne\ per cent of the bottom
+stack returns \SsGridUnityFullDOne\ per cent of the bottom
 decile's loss against \SsGridUnityFullDTen\ per cent of the top
 decile's. The direction of the results holds across the grid, and
-no decile's point estimate exceeds 100 per cent in any cell of the table: the bottom
+no decile's point estimate exceeds 100 per cent at rebase factors of \SsRebaseFactor\ or above (the third decile's is highest, at \SsCushionPctDecThree; Figure~\ref{fig:grid} extends the aggregate rate to lower factors): the bottom
 decile's is \SsGridPaperFullDOne\ per cent at the paper's rebase and
 \SsGridUnityFullDOne\ per cent without rebasing.
 
 One external anchor bears on the
 choice of cell: at a
-rebase of one the EPG absorption is \pounds\SsEpgBn\ billion divided
-by the rebase factor \SsRebaseFactor, about \pounds 20 billion, closer to the OBR's \pounds\MsEnergyObrEpgBn\ billion EPG costing, while the paper's
+rebase of one the Guarantee's absorption is \pounds\SsEpgBn\ billion divided
+by the rebase factor \SsRebaseFactor, about \pounds 20 billion, closer to the NAO's \pounds 24.0 billion outturn \citep{nao2024}, while the paper's
 rebase gives \pounds\SsEpgBn\ billion. Any match is partly
-coincidental, the OBR priced the Guarantee against the higher caps
-then expected for 2023, over a longer window, on price-dependent
+coincidental, the outturn reflects the actual caps, a longer window
+and price-dependent
 volumes, but it cautions against reading the rebased cell as the
 truth and the unrebased one as a variant. The paper's headline
 statements are therefore confined to what holds across the grid.
@@ -419,20 +438,20 @@ the anchor and the gradient as the deliberately steep variant. First,
 under the gradient the counterfactual shock corresponds to a
 first-round consumption fall of \pounds\SsMpcBurdenGradientBn\
 billion (\pounds\SsMpcBurdenFlatBn\ billion on the flat anchor); with
-the modelled stack the net first-round effect is
-\pounds\SsMpcNetGradientBn\ billion.
+the full stack the net first-round effect is
+$\SsMpcNetGradientBn$ billion pounds.
 
 Second, under the gradient
 scenario only, first-round consumption per pound of modelled outlay is
 \SsMpcColPerPound\ for the cost-of-living payments,
-\SsMpcEbssPerPound\ for the Bills Support Scheme and
+\SsMpcEbssPerPound\ for the Energy Bills Support Scheme and
 \SsMpcEpgPerPound\ for the Guarantee; under the flat and asymmetric
 scenarios the three coincide, so the ordering is a property of the
 assumed gradient rather than an estimated one. Third, the asymmetric
 scenario applies the assumed gain-MPC of 0.14 to every
 instrument, although the Guarantee truncates a loss rather than paying
 a windfall; taken at face value the net first-round demand effect is
-\pounds\SsMpcNetAsymBn\ billion.
+$\SsMpcNetAsymBn$ billion pounds.
 
 \runin{Welfare.} Weighting the counterfactual burden by
 \citet{atkinson1970} welfare weights proportional to $y^{-\gamma}$ and
@@ -458,7 +477,7 @@ assumed MPC scenarios}
 \emph{Notes:} MPC gradient: 0.8 (bottom decile) to 0.3 (top),
 linear; MPC flat: 0.5 everywhere. The asymmetric variant
 (after \citealp{bunn2018}; assumed 0.5 out of losses, 0.14 out of gains) gives a
-net effect of \pounds\SsMpcNetAsymBn\ billion (not shown by row).
+net effect of $\SsMpcNetAsymBn$ billion pounds (not shown by row).
 First-round, no general-equilibrium feedback; parameters imported,
 not estimated. Rates and sums are computed on unrounded arrays, so
 displayed rows may differ from column sums in the last digit.

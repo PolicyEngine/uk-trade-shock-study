@@ -7,7 +7,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-from make_figures import apply_style, save, decile_ax, WIDTH, BLUE, GREEN
+from make_figures import apply_style, save, decile_ax, WIDTH, BLUE, GREEN, DECILE_AXIS
 
 HERE = Path(__file__).resolve().parent
 
@@ -30,7 +30,7 @@ for d, lo, hi in zip(dec, p10, p90):
 ax.plot([], [], color=GREEN, lw=2.0,
         label="p10\u2013p90 spread within the decile")
 
-decile_ax(ax, "Realised energy burden,\n% of household expenditure")
+decile_ax(ax, "Realised energy burden,\n% of household expenditure", xlabel=DECILE_AXIS)
 ax.legend(ncol=2, loc="upper center", bbox_to_anchor=(0.5, -0.18),
           frameon=False)
 save(fig, "fig_within_decile.png")

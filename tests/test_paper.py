@@ -40,12 +40,12 @@ def test_pinned_inputs_verify():
 def test_every_manuscript_macro_is_defined():
     defined = set()
     for f in GENERATED:
-        defined |= set(re.findall(r"\\newcommand\{\\((?:Ms|Ss)[A-Za-z]+)\}", f.read_text()))
+        defined |= set(re.findall(r"\\newcommand\{\\((?:Ms|Ss|EThree)[A-Za-z]+)\}", f.read_text()))
     used = set()
     for f in SECTIONS + [PAPER / "figures" / "generated_table_firststages.tex",
                          PAPER / "figures" / "generated_table_decile.tex"]:
         if f.exists():
-            used |= set(re.findall(r"\\((?:Ms|Ss)[A-Za-z]+)", f.read_text()))
+            used |= set(re.findall(r"\\((?:Ms|Ss|EThree)[A-Za-z]+)", f.read_text()))
     missing = sorted(used - defined)
     assert not missing, f"macros used but not defined: {missing}"
 

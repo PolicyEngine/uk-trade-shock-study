@@ -28,9 +28,10 @@ first-pass:
 	cd $(PKG) && ../$(PYTHON) incidence.py
 	cd $(PKG) && ../$(PYTHON) make_figures.py
 
-# Second stage: the energy and TCA episodes on the enhanced FRS.
+# Household stage: energy, food and India episodes on Microcosm UK.
 second-stage:
 	cd $(PKG) && ../$(PYTHON) second_stage_energy.py
+	cd $(PKG) && ../$(PYTHON) make_within_decile.py
 	cd $(PKG) && ../$(PYTHON) vintage_and_tca.py
 	cd $(PKG) && ../$(PYTHON) mpc_welfare.py
 	cd $(PKG) && ../$(PYTHON) ceta_second_stage.py

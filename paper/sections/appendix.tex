@@ -12,7 +12,7 @@ breakdown settles the split \citep{ofgem2022}. Wholesale rose from
 typical bill, from \MsEnergyWholesaleShareCapBasePct\ to
 \MsEnergyWholesaleShareCapPeakPct\ per cent of the cap, so
 \MsEnergyWholesaleShareOfRisePct\ per cent of the cap's \emph{rise} is
-traded energy and the remainder domestic cost. The imported component of the realised burden is therefore about
+traded energy and the remainder domestic cost. The world-market-linked component of the realised burden is therefore about
 \pounds\MsEnergyRealisedTradeTransmittedAggBn\ billion
 (\pounds\MsEnergyTradeTransmittedAggBn\ billion of the gross
 counterfactual).
@@ -23,7 +23,7 @@ market, so UK-produced gas repriced too, and the resulting transfer
 runs from British households to British producers and, through the
 Energy Profits Levy, the Exchequer, not abroad. The wholesale share
 therefore measures exposure to a world-market-linked price rather than
-a transfer overseas, and the imported-component figures above should be
+a transfer overseas, and the figures above should be
 read in that narrower sense.
 
 The comparison with
@@ -120,8 +120,8 @@ Baseline and shocked systems are run under 2026--27 rules on the
 Microcosm UK records. The cushioning rate is one minus the fall in
 HBAI household net income over the fall in gross employee earnings,
 computed per draw and averaged. Benefit units newly entitled to
-Universal Credit have their claim flag redrawn at 80 per cent
-\citep{dwp2024takeup}; others keep their baseline flags, and baseline
+Universal Credit have their claim flag redrawn at an assumed 80 per
+cent (no official Universal Credit take-up estimate exists); others keep their baseline flags, and baseline
 poverty lines are frozen. There are \EThreeDispDraws\ displacement and
 \EThreeWageDraws\ wage-cut draws. Standard deviations are dispersion
 across assignments, not sampling error; the Monte Carlo standard
@@ -198,7 +198,7 @@ are unaffected; levels should be read with the gap in mind.
 
 \subsection{Universal Credit uprating arithmetic for a single adult}\label{sec:results-rulebook}
 
-Two statutory facts illustrate the uprating lag. First, the
+Two statutory facts frame the crisis year. First, the
 uprating lag: Universal Credit's standard allowance rose 3.1 per cent
 in April 2022 (indexed to the previous September's inflation) while
 prices rose at double digits. Against month-by-month contemporaneous
@@ -216,10 +216,9 @@ paper: \citet{cribb2023} quantified the 2022--23 shortfall and scored
 the discretionary cost-of-living payments against a timely-indexation
 counterfactual, and \citet{obrwelfare2022} put the aggregate real fall
 at roughly \pounds 12 billion, a figure the household stage's
-\pounds\SsUpratingShortfallBn\ billion (Section~\ref{sec:results-secondstage})
-does not reproduce: the bases and price counterfactuals differ, the two
-are stated side by side rather than reconciled, and the reconciliation
-is left to future work (Section~\ref{sec:discussion}). This paper's addition is the
+\pounds\SsVinLagCostBn\ billion (Section~\ref{sec:results-indexation})
+does not reproduce: the bases and price counterfactuals differ, and the two
+are stated side by side rather than reconciled. This paper's addition is the
 join: the lag priced against trade-shock incidence, on the same
 households, across episodes.
 
@@ -267,7 +266,7 @@ progressive gradient survives every cell: without rebasing, the full
 modelled stack returns \SsGridUnityFullDOne\ per cent of the bottom
 decile's loss against \SsGridUnityFullDTen\ per cent of the top
 decile's. The direction of the results holds across the grid, and
-no decile's rate exceeds 100 per cent in any cell: the bottom
+no decile's point estimate exceeds 100 per cent in any cell of the table: the bottom
 decile's is \SsGridPaperFullDOne\ per cent at the paper's rebase and
 \SsGridUnityFullDOne\ per cent without rebasing.
 
@@ -317,7 +316,7 @@ rebase and deciles by construction.
 
 \begin{figure}[tbp]\centering
 \includegraphics[width=\textwidth]{figures/fig_paths.png}
-\caption{Energy burden as a share of spending by decile under three paths: no policy, Energy Price Guarantee in force, and with the observed demand response.}
+\caption{Energy burden as a share of spending by decile under three paths: no policy, Energy Price Guarantee in force (realised), and cash outlay, the realised path scaled by the observed demand response.}
 \label{fig:paths}
 \end{figure}
 
@@ -339,7 +338,7 @@ cash-on-hand and liquidity gradients of \citet{jappelli2014} and
 \citet{fagereng2021}, whose mapping into income deciles is flatter; a flat 0.5, which
 switches the heterogeneity channel off; and an asymmetric UK variant
 after \citet{bunn2018}, who find MPCs out of income \emph{losses}
-(about 0.5) far larger than out of gains (about 0.14).
+far larger than out of gains; the variant assumes 0.5 and 0.14.
 
 Table~\ref{tab:mpc} reports the results, with the flat scenario as
 the anchor and the gradient as the deliberately steep variant. First,
@@ -356,7 +355,7 @@ scenario only, first-round consumption per pound of modelled outlay is
 \SsMpcEpgPerPound\ for the Guarantee; under the flat and asymmetric
 scenarios the three coincide, so the ordering is a property of the
 assumed gradient rather than an estimated one. Third, the asymmetric
-scenario applies \citet{bunn2018}'s windfall gain-MPC of 0.14 to every
+scenario applies the assumed gain-MPC of 0.14 to every
 instrument, although the Guarantee truncates a loss rather than paying
 a windfall; taken at face value the net first-round demand effect is
 \pounds\SsMpcNetAsymBn\ billion.
@@ -384,7 +383,7 @@ assumed MPC scenarios}
 \begin{minipage}{.85\textwidth}\footnotesize
 \emph{Notes:} MPC gradient: 0.8 (bottom decile) to 0.3 (top),
 linear; MPC flat: 0.5 everywhere. The asymmetric variant
-(\citealp{bunn2018}: 0.5 out of losses, 0.14 out of gains) gives a
+(after \citealp{bunn2018}; assumed 0.5 out of losses, 0.14 out of gains) gives a
 net effect of \pounds\SsMpcNetAsymBn\ billion (not shown by row).
 First-round, no general-equilibrium feedback; parameters imported,
 not estimated. Rates and sums are computed on unrounded arrays, so

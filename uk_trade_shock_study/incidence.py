@@ -410,7 +410,7 @@ def episode_e3():
             "gross_shock_gbp_m_per_year": D["ust_gross_shock_m"],
             "displacement_cushioning_pct": D["ust_displacement_cushion_pct"],
             "wage_cut_cushioning_pct": D["ust_wage_cut_cushion_pct"],
-            "source": "companion uk-trade-shock-study (declared constants)",
+            "source": "tariff earnings scenario (results/e3_constants.json)",
         },
     }
 
@@ -634,28 +634,33 @@ def derived_variants(res):
     # foregone consumption as welfare loss, so the two answer different
     # questions and both are reported.  ASSUMPTION: observed weather-adjusted
     # domestic demand reduction, set in PARAMS and cited in NOTES.
-    p_ratio = 1.0 + en["price_factors"]["gross"]
+    # The demand fall was observed at the prices households actually faced
+    # (Energy Price Guarantee in force), so it is applied to the REALISED
+    # path, not to the never-realised counterfactual: applied there it would
+    # put "cash paid" above the realised fixed-basket burden.
+    gross_rise = en["price_factors"]["gross"]
+    realised_rise = ((D["cap_apr_2022"] + D["epg_level"]) / 2.0) / (
+        (D["cap_apr_2021"] + D["cap_winter_2021_22"]) / 2.0) - 1.0
+    p_ratio = 1.0 + realised_rise
     q = 1.0 - ENERGY_OBSERVED_DEMAND_FALL
+    scale = (p_ratio * q - 1.0) / (p_ratio - 1.0)
     d["energy_cash_outlay"] = {
+        "basis": "realised path (EPG in force)",
         "observed_demand_fall": ENERGY_OBSERVED_DEMAND_FALL,
         "price_ratio": round(p_ratio, 4),
         "expenditure_ratio": round(p_ratio * q, 4),
-        "burden_scale_vs_fixed_basket": round(
-            (p_ratio * q - 1.0) / (p_ratio - 1.0), 4),
+        "burden_scale_vs_fixed_basket": round(scale, 4),
         "note": "cash outlay, not welfare; fixed-basket remains the "
                 "first-order welfare measure",
     }
+    to_realised = realised_rise / gross_rise
     d["energy_cash_outlay"]["aggregate_gbp_bn_per_year"] = round(
-        en["gross"]["aggregate_gbp_bn_per_year"]
-        * d["energy_cash_outlay"]["burden_scale_vs_fixed_basket"], 1)
+        en["gross"]["aggregate_gbp_bn_per_year"] * to_realised * scale, 1)
     d["energy_cash_outlay"]["decile_one_gbp_per_year"] = round(
-        en["gross"]["per_decile"][0]["gbp_per_year"]
-        * d["energy_cash_outlay"]["burden_scale_vs_fixed_basket"])
+        en["gross"]["per_decile"][0]["gbp_per_year"] * to_realised * scale)
 
-    # REALISED FY2022-23 path.  The gross counterfactual holds the October
-    # 2022 cap for a full year, which no household experienced: the first
-    # half of FY2022-23 was capped at 1,971 and the second at the EPG's
-    # 2,500.  The realised comparison is against the preceding financial
+    # REALISED FY2022-23 path: the first half of FY2022-23 was capped at
+    # 1,971 and the second at the EPG's 2,500.  The realised comparison is against the preceding financial
     # year's two caps (1,138 and 1,277).
     realised = (D["cap_apr_2022"] + D["epg_level"]) / 2.0
     base_fy = (D["cap_apr_2021"] + D["cap_winter_2021_22"]) / 2.0

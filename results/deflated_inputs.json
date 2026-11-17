@@ -1,0 +1,202 @@
+{
+ "central": {
+  "full_rate_pct": 79.9,
+  "epg_gbp_bn": 15.2,
+  "col_gbp_bn": 9.17,
+  "discretionary_gbp_bn": 35.97,
+  "benefit_base_gbp_bn": 252.1,
+  "uprating_shortfall_gbp_bn": 17.65,
+  "native_epg_gbp_bn": 8.637,
+  "native_epg_shocked_gbp_bn": 11.814,
+  "native_col_gbp_bn": 11.247,
+  "automatic_change_gbp_bn": 0.0,
+  "cushioning_by_decile_pct": [
+   93.6,
+   94.0,
+   97.0,
+   91.8,
+   85.7,
+   81.7,
+   77.4,
+   70.0,
+   62.7,
+   58.7
+  ],
+  "burden_by_decile_pct": [
+   5.34,
+   5.28,
+   4.94,
+   4.95,
+   4.51,
+   3.82,
+   3.62,
+   3.31,
+   3.01,
+   2.37
+  ],
+  "within_pct_trimmed": 92.5,
+  "energy_rebase_factor": 0.7401,
+  "spend_rebase_factor": 0.7959
+ },
+ "deflated": {
+  "full_rate_pct": 80.0,
+  "epg_gbp_bn": 15.2,
+  "col_gbp_bn": 9.23,
+  "discretionary_gbp_bn": 36.02,
+  "benefit_base_gbp_bn": 250.4,
+  "uprating_shortfall_gbp_bn": 17.53,
+  "native_epg_gbp_bn": 10.129,
+  "native_epg_shocked_gbp_bn": 11.814,
+  "native_col_gbp_bn": 11.277,
+  "automatic_change_gbp_bn": 0.0,
+  "cushioning_by_decile_pct": [
+   93.5,
+   92.5,
+   96.2,
+   92.9,
+   85.1,
+   81.8,
+   79.0,
+   70.8,
+   63.2,
+   58.6
+  ],
+  "burden_by_decile_pct": [
+   5.3,
+   5.25,
+   5.01,
+   4.89,
+   4.52,
+   3.83,
+   3.64,
+   3.27,
+   3.01,
+   2.38
+  ],
+  "within_pct_trimmed": 92.7,
+  "energy_rebase_factor": 0.6304,
+  "spend_rebase_factor": 0.8158
+ },
+ "rules2022": {
+  "full_rate_pct": 79.9,
+  "epg_gbp_bn": 15.2,
+  "col_gbp_bn": 9.17,
+  "discretionary_gbp_bn": 35.97,
+  "benefit_base_gbp_bn": 252.1,
+  "uprating_shortfall_gbp_bn": 17.65,
+  "native_epg_gbp_bn": 4.042,
+  "native_epg_shocked_gbp_bn": 5.538,
+  "native_col_gbp_bn": 9.166,
+  "automatic_change_gbp_bn": 0.0,
+  "cushioning_by_decile_pct": [
+   94.9,
+   94.7,
+   98.5,
+   93.5,
+   86.0,
+   80.0,
+   76.6,
+   68.0,
+   62.5,
+   58.6
+  ],
+  "burden_by_decile_pct": [
+   5.39,
+   5.35,
+   5.02,
+   4.78,
+   4.48,
+   3.89,
+   3.68,
+   3.22,
+   3.0,
+   2.38
+  ],
+  "within_pct_trimmed": 92.4,
+  "energy_rebase_factor": 0.7401,
+  "spend_rebase_factor": 0.7959
+ },
+ "rules2022_deflated": {
+  "full_rate_pct": 80.0,
+  "epg_gbp_bn": 15.2,
+  "col_gbp_bn": 9.23,
+  "discretionary_gbp_bn": 36.02,
+  "benefit_base_gbp_bn": 250.4,
+  "uprating_shortfall_gbp_bn": 17.53,
+  "native_epg_gbp_bn": 4.202,
+  "native_epg_shocked_gbp_bn": 5.538,
+  "native_col_gbp_bn": 9.226,
+  "automatic_change_gbp_bn": 0.0,
+  "cushioning_by_decile_pct": [
+   93.4,
+   93.0,
+   97.8,
+   92.4,
+   86.5,
+   80.8,
+   78.3,
+   71.3,
+   62.9,
+   58.1
+  ],
+  "burden_by_decile_pct": [
+   5.37,
+   5.36,
+   4.92,
+   4.87,
+   4.46,
+   3.89,
+   3.66,
+   3.21,
+   3.08,
+   2.37
+  ],
+  "within_pct_trimmed": 92.5,
+  "energy_rebase_factor": 0.7119,
+  "spend_rebase_factor": 0.8754
+ },
+ "deflated_minus_central": {
+  "full_rate_pp": 0.1,
+  "col_gbp_bn": 0.06,
+  "benefit_base_gbp_bn": -1.7,
+  "cushioning_by_decile_pp": [
+   -0.1,
+   -1.5,
+   -0.8,
+   1.1,
+   -0.6,
+   0.1,
+   1.6,
+   0.8,
+   0.5,
+   -0.1
+  ],
+  "max_abs_decile_pp": 1.6
+ },
+ "deflation_factors_median": {
+  "2022": {
+   "employment_income_before_lsr": 1.1164,
+   "self_employment_income": 1.0216,
+   "private_pension_income": 1.1025,
+   "savings_interest_income": 3.0315,
+   "rent": 1.116,
+   "council_tax": 1.1094,
+   "food_and_non_alcoholic_beverages_consumption": 1.0998,
+   "domestic_energy_consumption": 0.9619
+  },
+  "2023": {
+   "employment_income_before_lsr": 1.051,
+   "self_employment_income": 1.028,
+   "private_pension_income": 1.05,
+   "savings_interest_income": 1.3366,
+   "rent": 1.072,
+   "council_tax": 1.0545,
+   "food_and_non_alcoholic_beverages_consumption": 1.025,
+   "domestic_energy_consumption": 0.8519
+  }
+ },
+ "inputs_scaled": {
+  "2022": 109,
+  "2023": 109
+ }
+}

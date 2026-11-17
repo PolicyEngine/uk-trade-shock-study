@@ -129,17 +129,25 @@ def col_components(sim):
     return mt, total - mt - dis, dis
 
 
-def load_sim(years=None):
+#: Referee robustness switch (set by ``--deflate``): scale the copied inputs
+#: from 2024-25 levels to each back-dated rulebook year with PolicyEngine
+#: UK's own projection indices, inverted (microcosm.copy_inputs).  Off in
+#: the central run.
+DEFLATE = False
+
+
+def load_sim(years=None, reform=None, deflate=None):
     """A managed Microcosm UK simulation with inputs present in ``years``.
 
     Microcosm UK carries survey inputs only for its base year; any other
     period a script calculates in (the episode's rulebook year, or the
     vintage run's previous year) gets every input column copied in first.
     """
-    sim = microsimulation()
+    sim = microsimulation(reform)
     target = sorted(set(years or [P["sim_year"], COL_YEAR]) - {BASE_YEAR})
     if target:
-        copy_inputs(sim, target)
+        copy_inputs(sim, target,
+                    deflate=DEFLATE if deflate is None else deflate)
     return sim
 
 
@@ -180,8 +188,18 @@ def main() -> None:
     ap.add_argument("--dataset", default=None,
                     help="ignored; data come from the certified Microcosm UK build")
     ap.add_argument("--out", default=str(RESULTS_DIR / "second_stage_energy.json"))
+    ap.add_argument("--deflate", action="store_true",
+                    help="robustness: deflate copied inputs to the rulebook "
+                         "years with the model's own projection indices")
+    ap.add_argument("--sim-year", type=int, default=None,
+                    help="robustness: rulebook year for the whole stage "
+                         "(default 2023, i.e. 2023-24 rules)")
     args = ap.parse_args()
 
+    global DEFLATE
+    DEFLATE = args.deflate
+    if args.sim_year is not None:
+        P["sim_year"] = args.sim_year
     yr = P["sim_year"]
     sim = load_sim()
 
@@ -323,6 +341,21 @@ def main() -> None:
             "rate_pct_of_counterfactual": round(100 * weighted(discretionary, w) / G, 1),
         },
     }
+
+    # Robustness variants only (the central JSON is unchanged): what was
+    # deflated, and the income-conditioned quantities the deflation moves.
+    if DEFLATE:
+        res["meta"]["inputs_deflated"] = True
+        res["meta"]["deflation"] = getattr(sim, "_deflation", None)
+    if DEFLATE or args.sim_year is not None:
+        res["checks"] = {
+            "equiv_income_mean": round(wmean(equiv_income, w), 0),
+            "net_income_mean": round(wmean(net_income, w), 0),
+            "means_tested_households_m": round(
+                weighted((means_tested_amt > 0).astype(float), w) / 1e6, 2),
+            "col_components_gbp_bn": [round(weighted(c, w) / 1e9, 2)
+                                      for c in col_components(sim)],
+        }
 
     # --- Equivalised deciles -----------------------------------------------
     order = np.argsort(equiv_income)

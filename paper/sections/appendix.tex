@@ -98,6 +98,16 @@ with the decile-table analysis. The rebase factors are common scalars, so the va
 and all quantile ratios are invariant to them (the within-share is
 \SsWithinPct\ per cent on either base). Aggregate pounds are reconciled in Appendix~\ref{app:recon}.
 
+\runin{Deflated inputs.} The households carry 2024--25 nominal
+incomes. Deflating \SsDeflInputsScaled\ monetary inputs to 2023--24 by
+the model's own uprating indices (earnings by
+\SsDeflEarningsFactorTwentyThreePct\ per cent) gives a full-stack rate
+of \SsDeflFullRatePct\ per cent (\SsDeflFullRateDiffPp\ points) and
+moves no decile by more than \SsDeflMaxDecileDiffPp\ points; deflating
+to 2022--23 (earnings by \SsDeflEarningsFactorTwentyTwoPct\ per cent)
+under 2022--23 rules gives \SsDeflRulesTwentyTwoFullRatePct\ per cent.
+Weights are not rescaled.
+
 \subsection{The tariff earnings scenario}\label{app:e3}
 
 The shock to division $j$ is $s_j=\tau_j x_j \varepsilon \pi$: the
@@ -109,7 +119,8 @@ as a unit stress. The scenario omits price changes, imported inputs,
 profits and general-equilibrium effects, and the sector weights are
 an accounting bridge, not measured tariff incidence.
 
-Two margins deliver the same expected gross loss. Under the wage cut,
+Two margins deliver the same gross loss,
+\pounds\EThreeDispGrossM\ million. Under the wage cut,
 every employee in division $j$ loses the share $s_j$ of earnings, with
 pension contributions scaled. Under displacement, each employee loses
 the job for the full year with probability $s_j$, independently:
@@ -118,30 +129,80 @@ and statutory pay are set to zero.
 
 Baseline and shocked systems are run under 2026--27 rules on the
 Microcosm UK records. The cushioning rate is one minus the fall in
-HBAI household net income over the fall in gross employee earnings,
-computed per draw and averaged. Benefit units newly entitled to
-Universal Credit have their claim flag redrawn at an assumed 80 per
-cent (no official Universal Credit take-up estimate exists); others keep their baseline flags, and baseline
-poverty lines are frozen. There are \EThreeDispDraws\ displacement and
-\EThreeWageDraws\ wage-cut draws. Standard deviations are dispersion
-across assignments, not sampling error; the Monte Carlo standard
-error of the displacement rate is \EThreeDispRateMcSe\ points.
+HBAI household net income over the fall in gross employee earnings.
+The displacement rate is the exact expectation over the independent
+job-loss draws, computed from all \EThreeDispExposedRecords\ exposed
+records in \EThreeDispExposedHouseholds\ households (about
+\EThreeDispExactEffRecords\ effective; the largest record carries
+\EThreeDispExactMaxShare\ per cent of the loss). It has no Monte Carlo
+error; its standard error of \EThreeDispSamplingSe\ points is survey
+sampling error, clustered on households. Benefit units newly entitled
+to Universal Credit claim with an assumed probability of 0.8 (no
+official Universal Credit take-up estimate exists), mixed exactly in
+the expectation; others keep their baseline flags, and baseline
+poverty lines are frozen. The wage-cut rate averages \EThreeWageDraws\
+take-up draws.
 
-The displacement results have thin support. The realised gross loss
-averages \pounds\EThreeDispGrossMeanM\ million (range
-\pounds\EThreeDispGrossMinM--\EThreeDispGrossMaxM\ million), on about
-\EThreeDispRecords\ records per draw, \EThreeDispEffRecords\
-effective, with one record carrying \EThreeDispMaxShare\ per cent of
-a draw's loss on average; the pooled ratio is \EThreeDispRatePooled\
-per cent. Contribution-based (New Style) Jobseeker's Allowance,
-redundancy pay, partial-year spells, re-employment and behavioural
-responses are not modelled, and omitting New Style Jobseeker's
-Allowance biases displacement cushioning down. The Exchequer cost is
+Displaced workers receive an approximation of contribution-based New
+Style Jobseeker's Allowance: \EThreeDispJsaWeeks\ weeks at the model's
+rates for those unemployed, aged 18 to state pension age, with
+baseline earnings of at least 50 times the weekly lower earnings
+limit, with no partner test and full take-up. It is an upper bound,
+since waiting days, pension abatement and sanctions are omitted. It
+pays \pounds\EThreeDispJsaPaidM\ million, lowers Universal Credit by
+\pounds\EThreeDispJsaUcOffsetM\ million and adds
+\EThreeDispJsaEffectPts\ points: without it the displacement rate is
+\EThreeDispNoJsaRatePct\ per cent.
+
+Table~\ref{tab:e3-split} splits the cushion. Income tax accounts for
+the gap between the margins; Universal Credit and the New Style
+allowance narrow it. The pension row is employee contributions
+ceasing, which HBAI income deducts, not tax or benefit. The model
+holds reported student-loan repayments fixed, so the cushion is
+slightly understated.
+
+\begin{table}[tbp]
+\centering
+\caption{Tariff scenario: cushioning by component, per cent of the gross earnings loss}
+\label{tab:e3-split}
+\small
+\begin{tabular}{lrrr}
+\toprule
+ & Wage cut & Displacement & Displacement, \\
+ & & & no New Style JSA \\
+\midrule
+Income tax & \EThreeWageTaxOfGrossPct & \EThreeDispTaxOfGrossPct & \EThreeDispNoJsaTaxOfGrossPct \\
+National Insurance & \EThreeWageNiOfGrossPct & \EThreeDispNiOfGrossPct & \EThreeDispNoJsaNiOfGrossPct \\
+Universal Credit & \EThreeWageUcOfGrossPct & \EThreeDispUcOfGrossPct & \EThreeDispNoJsaUcOfGrossPct \\
+New Style Jobseeker's Allowance & \EThreeWageJsaContribOfGrossPct & \EThreeDispJsaContribOfGrossPct & \EThreeDispNoJsaJsaContribOfGrossPct \\
+Pension contributions & \EThreeWagePensionOfGrossPct & \EThreeDispPensionOfGrossPct & \EThreeDispNoJsaPensionOfGrossPct \\
+\midrule
+Cushioning rate & \EThreeWageRatePct & \EThreeDispRatePct & \EThreeDispNoJsaRatePct \\
+\bottomrule
+\end{tabular}
+\begin{minipage}{.85\textwidth}\footnotesize
+\emph{Notes:} Rows omit small items (other benefits, child benefit,
+statutory pay), so they do not sum exactly to the rate.
+\end{minipage}
+\end{table}
+
+Redundancy pay, partial-year spells, re-employment and behavioural
+responses are not modelled. The Exchequer cost is
 \pounds\EThreeWageExchequerM\ million (wage cut) and
 \pounds\EThreeDispExchequerM\ million (displacement), above the
 household-side offset because the government balance includes
 employer contributions. Poverty before housing costs rises
-\EThreeDispPovertyPp\ points under displacement.
+\EThreeDispPovertyPp\ points under displacement. At the OBR's
+elasticity of 0.4 the gross loss is \pounds\EThreeObrLowWageGrossM\
+million and the wage-cut rate \EThreeObrLowWageRatePct\ per cent; the
+displacement rate is unchanged by construction, because the
+expectation reweights the same job-loss passes. An earlier design
+with \EThreeBernDraws\ Bernoulli assignment draws and no New Style
+allowance gave a pooled rate of \EThreeBernRatePooled\ per cent
+(standard error \EThreeBernRatePooledSe; per-draw mean
+\EThreeBernRateMean, range
+\EThreeDispRateMin--\EThreeDispRateMax), close to the
+exact rate without the allowance (\EThreeDispNoJsaRatePct\ per cent).
 
 \subsection{The model's native instruments and the decile ranking}\label{app:native}
 
@@ -216,7 +277,7 @@ paper: \citet{cribb2023} quantified the 2022--23 shortfall and scored
 the discretionary cost-of-living payments against a timely-indexation
 counterfactual, and \citet{obrwelfare2022} put the aggregate real fall
 at roughly \pounds 12 billion, a figure the household stage's
-\pounds\SsVinLagCostBn\ billion (Section~\ref{sec:results-indexation})
+\pounds\SsLagReformBn\ billion (Section~\ref{sec:results-indexation})
 does not reproduce: the bases and price counterfactuals differ, and the two
 are stated side by side rather than reconciled. This paper's addition is the
 join: the lag priced against trade-shock incidence, on the same
@@ -289,6 +350,19 @@ full stack \SsAnnFullRatePct\ per cent: the paper's two-cap convention gives the
 attribution the lower rate on the attribution axis; neither is a
 bound, because the rebase axis is a convention rather than an
 estimate.
+
+Seasonality is varied the same way. The model's monthly profile puts
+\SsSeasShareAprSepPct\ per cent of energy consumption in
+April--September, \SsSeasShareOctDecPct\ in October--December and
+\SsSeasShareJanMarPct\ in January--March. The Guarantee absorbs
+\pounds\SsSeasEqHeldEpgBn\ billion on the headline convention (equal
+half-year weights, October cap held), \pounds\SsSeasEqActualEpgBn\
+billion with the actual caps and \pounds\SsSeasCwActualEpgBn\ billion
+with the actual caps and consumption weights, against an outturn of
+\pounds 24.0 billion \citep{nao2024}: the last two bracket the
+outturn. The full-stack rate is \SsSeasEqHeldFullRatePct,
+\SsSeasEqActualFullRatePct\ and \SsSeasCwActualFullRatePct\ per cent,
+so the headline is the conservative case.
 
 \begin{table}[tbp]
 \centering

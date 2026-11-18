@@ -884,5 +884,140 @@
    "change_pct": 0.0
   }
  },
- "note": "pensioner = state pension + pension credit + attendance allowance; the remainder is working-age and child/disability benefits (housing benefit and disability benefits include some pensioner recipients).  The gross mechanical rise is 6.79% of each uprated amount; means-tested awards rise by more than that in proportion because income is unchanged, and unmodelled-as-rules reported amounts do not move."
+ "note": "pensioner = state pension + pension credit + attendance allowance; the remainder is working-age and child/disability benefits (housing benefit and disability benefits include some pensioner recipients).  The gross mechanical rise is 6.79% of each uprated amount; means-tested awards rise by more than that in proportion because income is unchanged, and unmodelled-as-rules reported amounts do not move.",
+ "by_decile": [
+  {
+   "decile": 1,
+   "lag_gbp_per_household": 459.9,
+   "lag_with_reported_add_on_gbp_per_household": 467.4,
+   "counterfactual_energy_shock_gbp_per_household": 1800.8,
+   "lag_pct_of_energy_shock": 25.5,
+   "lag_with_add_on_pct_of_energy_shock": 26.0,
+   "col_payments_gbp_per_household": 429.6,
+   "col_minus_lag_gbp_per_household": -30.4,
+   "col_minus_lag_with_add_on_gbp_per_household": -37.8,
+   "lag_gbp_bn": 1.331
+  },
+  {
+   "decile": 2,
+   "lag_gbp_per_household": 704.9,
+   "lag_with_reported_add_on_gbp_per_household": 715.2,
+   "counterfactual_energy_shock_gbp_per_household": 1879.5,
+   "lag_pct_of_energy_shock": 37.5,
+   "lag_with_add_on_pct_of_energy_shock": 38.1,
+   "col_payments_gbp_per_household": 452.0,
+   "col_minus_lag_gbp_per_household": -252.8,
+   "col_minus_lag_with_add_on_gbp_per_household": -263.2,
+   "lag_gbp_bn": 2.046
+  },
+  {
+   "decile": 3,
+   "lag_gbp_per_household": 742.3,
+   "lag_with_reported_add_on_gbp_per_household": 754.0,
+   "counterfactual_energy_shock_gbp_per_household": 1812.8,
+   "lag_pct_of_energy_shock": 40.9,
+   "lag_with_add_on_pct_of_energy_shock": 41.6,
+   "col_payments_gbp_per_household": 472.7,
+   "col_minus_lag_gbp_per_household": -269.6,
+   "col_minus_lag_with_add_on_gbp_per_household": -281.3,
+   "lag_gbp_bn": 2.151
+  },
+  {
+   "decile": 4,
+   "lag_gbp_per_household": 783.5,
+   "lag_with_reported_add_on_gbp_per_household": 797.1,
+   "counterfactual_energy_shock_gbp_per_household": 1883.3,
+   "lag_pct_of_energy_shock": 41.6,
+   "lag_with_add_on_pct_of_energy_shock": 42.3,
+   "col_payments_gbp_per_household": 458.4,
+   "col_minus_lag_gbp_per_household": -325.2,
+   "col_minus_lag_with_add_on_gbp_per_household": -338.7,
+   "lag_gbp_bn": 2.273
+  },
+  {
+   "decile": 5,
+   "lag_gbp_per_household": 664.6,
+   "lag_with_reported_add_on_gbp_per_household": 678.4,
+   "counterfactual_energy_shock_gbp_per_household": 1956.4,
+   "lag_pct_of_energy_shock": 34.0,
+   "lag_with_add_on_pct_of_energy_shock": 34.7,
+   "col_payments_gbp_per_household": 374.7,
+   "col_minus_lag_gbp_per_household": -289.9,
+   "col_minus_lag_with_add_on_gbp_per_household": -303.7,
+   "lag_gbp_bn": 1.925
+  },
+  {
+   "decile": 6,
+   "lag_gbp_per_household": 580.4,
+   "lag_with_reported_add_on_gbp_per_household": 594.6,
+   "counterfactual_energy_shock_gbp_per_household": 1943.2,
+   "lag_pct_of_energy_shock": 29.9,
+   "lag_with_add_on_pct_of_energy_shock": 30.6,
+   "col_payments_gbp_per_household": 319.4,
+   "col_minus_lag_gbp_per_household": -261.0,
+   "col_minus_lag_with_add_on_gbp_per_household": -275.2,
+   "lag_gbp_bn": 1.683
+  },
+  {
+   "decile": 7,
+   "lag_gbp_per_household": 545.8,
+   "lag_with_reported_add_on_gbp_per_household": 553.7,
+   "counterfactual_energy_shock_gbp_per_household": 1961.1,
+   "lag_pct_of_energy_shock": 27.8,
+   "lag_with_add_on_pct_of_energy_shock": 28.2,
+   "col_payments_gbp_per_household": 284.6,
+   "col_minus_lag_gbp_per_household": -261.2,
+   "col_minus_lag_with_add_on_gbp_per_household": -269.1,
+   "lag_gbp_bn": 1.577
+  },
+  {
+   "decile": 8,
+   "lag_gbp_per_household": 391.7,
+   "lag_with_reported_add_on_gbp_per_household": 395.5,
+   "counterfactual_energy_shock_gbp_per_household": 2072.0,
+   "lag_pct_of_energy_shock": 18.9,
+   "lag_with_add_on_pct_of_energy_shock": 19.1,
+   "col_payments_gbp_per_household": 191.6,
+   "col_minus_lag_gbp_per_household": -200.1,
+   "col_minus_lag_with_add_on_gbp_per_household": -203.9,
+   "lag_gbp_bn": 1.136
+  },
+  {
+   "decile": 9,
+   "lag_gbp_per_household": 278.3,
+   "lag_with_reported_add_on_gbp_per_household": 278.6,
+   "counterfactual_energy_shock_gbp_per_household": 2235.9,
+   "lag_pct_of_energy_shock": 12.4,
+   "lag_with_add_on_pct_of_energy_shock": 12.5,
+   "col_payments_gbp_per_household": 108.0,
+   "col_minus_lag_gbp_per_household": -170.3,
+   "col_minus_lag_with_add_on_gbp_per_household": -170.7,
+   "lag_gbp_bn": 0.809
+  },
+  {
+   "decile": 10,
+   "lag_gbp_per_household": 222.3,
+   "lag_with_reported_add_on_gbp_per_household": 222.4,
+   "counterfactual_energy_shock_gbp_per_household": 2574.2,
+   "lag_pct_of_energy_shock": 8.6,
+   "lag_with_add_on_pct_of_energy_shock": 8.6,
+   "col_payments_gbp_per_household": 92.3,
+   "col_minus_lag_gbp_per_household": -130.0,
+   "col_minus_lag_with_add_on_gbp_per_household": -130.2,
+   "lag_gbp_bn": 0.645
+  }
+ ],
+ "all_households": {
+  "decile": "all",
+  "lag_gbp_per_household": 537.3,
+  "lag_with_reported_add_on_gbp_per_household": 545.6,
+  "counterfactual_energy_shock_gbp_per_household": 2012.1,
+  "lag_pct_of_energy_shock": 26.7,
+  "lag_with_add_on_pct_of_energy_shock": 27.1,
+  "col_payments_gbp_per_household": 318.3,
+  "col_minus_lag_gbp_per_household": -219.0,
+  "col_minus_lag_with_add_on_gbp_per_household": -227.4,
+  "lag_gbp_bn": 15.575
+ },
+ "by_decile_note": "deciles of equivalised HBAI net income at the household stage's rulebook year (2023), as in second_stage_energy.py; lag = change in the cash benefits per household under the 10.1 per cent counterfactual (rules-priced; the reported-amount add-on is shown separately); energy shock = counterfactual loss on the consumption_actual convention; Cost of Living Payments from the model's 2022-23 rules"
 }

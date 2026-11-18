@@ -35,8 +35,14 @@ Definitions, matched to the household stage as closely as the LCFS allows:
   version and is not used.)
 * burden: the stage's construction -- energy rebased to the FY2021-22 cap
   mean, total spending rebased to the ONS FYE2022 mean, times the realised
-  rise -- so decile means and p10/p90 are level-comparable.  The variance
-  split is invariant to those scalings.
+  rise -- so decile means and p10/p90 are level-comparable.  The base and
+  realised FY mean caps are the household stage's central ones, read from
+  results/second_stage_energy.json (consumption-weighted, on the caps
+  Ofgem set), and recorded with each year as ``burden_basis``.  The burden
+  is linear in (realised cap - base cap), so a committed year computed on
+  another basis is realigned exactly by that ratio without re-reading the
+  microdata (``realign``).  The variance split is invariant to those
+  scalings.
 * weights: the annual household weight (weighta; cal_weight_annual from
   2024-25).
 
@@ -115,8 +121,9 @@ def analyse(df: pd.DataFrame) -> dict:
     dec[order] = np.minimum((cw / cw[-1] * 10).astype(int), 9)
 
     # The stage's burden construction, so levels are comparable.
-    base_cap = (P["cap_apr_2021"] + P["cap_oct_2021"]) / 2.0
-    realised_rise = (P["cap_apr_2022"] + P["epg_level"]) / 2.0 / base_cap - 1.0
+    basis = stage_basis()
+    base_cap = basis["base_cap"]
+    realised_rise = basis["realised_cap"] / base_cap - 1.0
     e = energy * (base_cap / wmean(energy, w))
     s = spend * (P["ons_total_spend_yr"] / wmean(spend, w))
     dE = e * realised_rise
@@ -171,7 +178,44 @@ def analyse(df: pd.DataFrame) -> dict:
             "positive_energy_only": {"between_pct": b_pz, "within_pct": w_pz},
         },
         "by_decile": rows,
+        "burden_basis": basis,
     }
+
+
+#: Basis of year results committed before the basis was recorded: equal
+#: half-year weights (the stage's earlier headline convention).
+LEGACY_BASIS = {"base_cap": (P["cap_apr_2021"] + P["cap_oct_2021"]) / 2.0,
+                "realised_cap": (P["cap_apr_2022"] + P["epg_level"]) / 2.0}
+BURDEN_KEYS = ("burden_pct_of_spending", "p10_burden_pct_spending",
+               "p50_burden_pct_spending", "p90_burden_pct_spending")
+
+
+def stage_basis() -> dict:
+    """Base and realised FY mean caps of the household stage's central run."""
+    sh = json.loads((RESULTS_DIR / "second_stage_energy.json").read_text())["shock"]
+    return {"base_cap": round(sh["base_fy_mean_cap"], 4),
+            "realised_cap": round(sh["realised_fy_mean_cap"], 4)}
+
+
+def realign(year: dict) -> dict:
+    """Put a committed year's burden on the stage's current basis.  The
+    burden is energy_h / mean(energy) * (realised - base) over rebased
+    spending, so it scales by the ratio of (realised - base); exact up to
+    the two-decimal rounding of the stored figures."""
+    old, new = year.get("burden_basis", LEGACY_BASIS), stage_basis()
+    k = ((new["realised_cap"] - new["base_cap"])
+         / (old["realised_cap"] - old["base_cap"]))
+    if abs(k - 1.0) < 1e-9:
+        return year
+    out = dict(year)
+    out["by_decile"] = [
+        {key: (round(v * k, 2) if key in BURDEN_KEYS else v)
+         for key, v in row.items()} for row in year["by_decile"]]
+    out["burden_basis"] = new
+    out["burden_realigned"] = (
+        "burden figures rescaled from the stored basis by "
+        f"{k:.4f} (ratio of realised-minus-base caps); microdata not re-read")
+    return out
 
 
 def main() -> None:
@@ -181,14 +225,20 @@ def main() -> None:
     ap.add_argument("--lcfs-dir", default=None,
                     help="folder holding the 2021-22 and 2022-23 dvhh .dta files")
     args = ap.parse_args()
-    if not args.lcfs_2024:
-        print("no --lcfs-2024 given; committed outputs left unchanged")
-        return
-
-    files = {"2024-25": Path(args.lcfs_2024)}
+    committed_path = RESULTS_DIR / "lcfs_validation.json"
+    committed = (json.loads(committed_path.read_text())["lcfs"]
+                 if committed_path.exists() else {})
+    files = {}
+    if args.lcfs_2024:
+        files["2024-25"] = Path(args.lcfs_2024)
     if args.lcfs_dir:
         files.update({k: Path(args.lcfs_dir) / v for k, v in OLDER.items()})
-    years, problems = {}, {}
+    if not files and not committed:
+        print("no LCFS file given and no committed output; nothing to do")
+        return
+    # Years not re-read keep their committed aggregates, realigned to the
+    # stage's current burden basis.
+    years, problems = {k: realign(v) for k, v in committed.items()}, {}
     for label, path in files.items():
         if not path.exists():
             problems[label] = "file not found"
@@ -197,6 +247,7 @@ def main() -> None:
             years[label] = analyse(read(path))
         except (KeyError, ValueError) as exc:
             problems[label] = str(exc)
+    years = {k: years[k] for k in ("2024-25", "2021-22", "2022-23") if k in years}
     if "2024-25" not in years:
         print("LCFS 2024-25 not available; committed outputs left unchanged:",
               problems)
@@ -215,9 +266,14 @@ def main() -> None:
                 "untrimmed": mc_var["expenditure_share"],
                 "trimmed_1_99": mc_var["expenditure_share_trimmed_1_99"],
                 "log": mc_var["expenditure_share_log"]},
+            "raw_energy_share_of_spending_pct":
+                ss["meta"]["raw_energy_share_of_spending_pct"],
+            "burden_basis": stage_basis(),
             "by_decile": [
                 {"decile": a["decile"],
                  "burden_pct_of_spending": a["burden_pct_of_spending"],
+                 "raw_energy_share_of_spending_pct":
+                     a["raw_energy_share_of_spending_pct"],
                  "p10_burden_pct_spending": b["p10_burden_pct_spending"],
                  "p90_burden_pct_spending": b["p90_burden_pct_spending"]}
                 for a, b in zip(ss["by_decile"], ss["within_decile_dispersion"])],
@@ -254,6 +310,41 @@ def main() -> None:
     path = RESULTS_DIR / "generated_lcfs.tex"
     path.write_text("\n".join(m) + "\n")
     shutil.copy(path, PAPER_DIR / "generated_lcfs.tex")
+
+    # Validation table: energy share of spending by decile, Microcosm UK
+    # against the LCFS (aggregates only).
+    mc = res["microcosm"]
+    cols = [("Microcosm UK", mc["by_decile"], mc["raw_energy_share_of_spending_pct"],
+             mc["variance"]["trimmed_1_99"]["within_pct"])]
+    for label in ("2024-25", "2022-23"):
+        if label in years:
+            y = years[label]
+            cols.append((f"LCFS {label.replace('-', '--')}", y["by_decile"],
+                         y["raw_energy_share_of_spending_pct"],
+                         y["variance"]["trimmed_1_99"]["within_pct"]))
+    n = len(cols)
+    t = ["% generated by lcfs_validation.py -- do not edit by hand.",
+         "\\begin{tabular}{l" + "r" * (2 * n) + "}", "\\toprule",
+         " & \\multicolumn{%d}{c}{Energy share of spending (\\%%)}"
+         " & \\multicolumn{%d}{c}{Realised burden (\\%% of spending)}\\\\" % (n, n),
+         "\\cmidrule(lr){2-%d}\\cmidrule(lr){%d-%d}" % (n + 1, n + 2, 2 * n + 1),
+         "Decile & " + " & ".join(c[0] for c in cols) + " & "
+         + " & ".join(c[0] for c in cols) + " \\\\", "\\midrule"]
+    for i in range(10):
+        t.append(f"{i + 1} & "
+                 + " & ".join(f"{c[1][i]['raw_energy_share_of_spending_pct']:.2f}"
+                              for c in cols) + " & "
+                 + " & ".join(f"{c[1][i]['burden_pct_of_spending']:.2f}"
+                              for c in cols) + " \\\\")
+    t += ["\\midrule",
+          "All households & " + " & ".join(f"{c[2]:.2f}" for c in cols)
+          + " & " * n + " \\\\",
+          "Within-decile variance share (\\%) & "
+          + " & ".join(f"{c[3]:.1f}" for c in cols) + " & " * n + " \\\\",
+          "\\bottomrule", "\\end{tabular}"]
+    tp = RESULTS_DIR / "table_lcfs.tex"
+    tp.write_text("\n".join(t) + "\n")
+    shutil.copy(tp, PAPER_DIR / "table_lcfs.tex")
 
     for label, r in years.items():
         print(label, json.dumps({k: v for k, v in r.items() if k != "by_decile"}))

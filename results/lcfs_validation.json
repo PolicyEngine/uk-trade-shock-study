@@ -1,6 +1,6 @@
 {
  "note": "aggregates only; computed on licensed LCFS household files read locally, none of which is stored in this repository",
- "definitions": "matched to the household stage as closely as the LCFS allows:\n\n* energy = electricity + gas, built from the labelled LCFS parts exactly as\n  the Microcosm UK build derives its donors' electricity and gas (LCF User\n  Guide Volume F; microcosm.build.uk_runtime.lcfs_consumption): each fuel's\n  account payment less rebate (b489, b490), prepayment-meter payments\n  (b1751, b1701), the fuel components of combined bills and key/meter\n  payments (b227/b226, b2332/b2331), the diary second-dwelling and\n  slot-meter lines (c45112/c45114, c45212/c45214), and whatever a combined\n  payment (b231 less its rebate b174; b233) leaves unsplit.  Negative\n  amounts (refunds) are read as zero, as the build does.  Oil, bottled gas,\n  solid fuel and heat are excluded.\n* total spending = the twelve COICOP divisions p601..p612, the sum\n  PolicyEngine UK's ``consumption`` variable adds.\n* deciles: household-weighted deciles of the LCFS's own equivalised\n  disposable income on the modified-OECD scale (eqincdop: normal weekly\n  disposable income p389p over a scale of 1.0 for a single adult and 1.5\n  for a couple, i.e. the HBAI before-housing-costs scale up to its\n  normalisation), the closest LCFS counterpart of the stage's equivalised\n  HBAI before-housing-costs net income.  (eqincdmp is the McClements\n  version and is not used.)\n* burden: the stage's construction -- energy rebased to the FY2021-22 cap\n  mean, total spending rebased to the ONS FYE2022 mean, times the realised\n  rise -- so decile means and p10/p90 are level-comparable.  The variance\n  split is invariant to those scalings.\n* weights: the annual household weight (weighta; cal_weight_annual from\n  2024-25).",
+ "definitions": "matched to the household stage as closely as the LCFS allows:\n\n* energy = electricity + gas, built from the labelled LCFS parts exactly as\n  the Microcosm UK build derives its donors' electricity and gas (LCF User\n  Guide Volume F; microcosm.build.uk_runtime.lcfs_consumption): each fuel's\n  account payment less rebate (b489, b490), prepayment-meter payments\n  (b1751, b1701), the fuel components of combined bills and key/meter\n  payments (b227/b226, b2332/b2331), the diary second-dwelling and\n  slot-meter lines (c45112/c45114, c45212/c45214), and whatever a combined\n  payment (b231 less its rebate b174; b233) leaves unsplit.  Negative\n  amounts (refunds) are read as zero, as the build does.  Oil, bottled gas,\n  solid fuel and heat are excluded.\n* total spending = the twelve COICOP divisions p601..p612, the sum\n  PolicyEngine UK's ``consumption`` variable adds.\n* deciles: household-weighted deciles of the LCFS's own equivalised\n  disposable income on the modified-OECD scale (eqincdop: normal weekly\n  disposable income p389p over a scale of 1.0 for a single adult and 1.5\n  for a couple, i.e. the HBAI before-housing-costs scale up to its\n  normalisation), the closest LCFS counterpart of the stage's equivalised\n  HBAI before-housing-costs net income.  (eqincdmp is the McClements\n  version and is not used.)\n* burden: the stage's construction -- energy rebased to the FY2021-22 cap\n  mean, total spending rebased to the ONS FYE2022 mean, times the realised\n  rise -- so decile means and p10/p90 are level-comparable.  The base and\n  realised FY mean caps are the household stage's central ones, read from\n  results/second_stage_energy.json (consumption-weighted, on the caps\n  Ofgem set), and recorded with each year as ``burden_basis``.  The burden\n  is linear in (realised cap - base cap), so a committed year computed on\n  another basis is realigned exactly by that ratio without re-reading the\n  microdata (``realign``).  The variance split is invariant to those\n  scalings.\n* weights: the annual household weight (weighta; cal_weight_annual from\n  2024-25).",
  "lcfs": {
   "2024-25": {
    "households": 4995,
@@ -34,85 +34,89 @@
    "by_decile": [
     {
      "decile": 1,
-     "burden_pct_of_spending": 5.97,
+     "burden_pct_of_spending": 6.3,
      "raw_energy_share_of_spending_pct": 9.49,
-     "p10_burden_pct_spending": 2.09,
-     "p50_burden_pct_spending": 6.65,
-     "p90_burden_pct_spending": 16.25
+     "p10_burden_pct_spending": 2.2,
+     "p50_burden_pct_spending": 7.01,
+     "p90_burden_pct_spending": 17.14
     },
     {
      "decile": 2,
-     "burden_pct_of_spending": 5.03,
+     "burden_pct_of_spending": 5.31,
      "raw_energy_share_of_spending_pct": 8.0,
-     "p10_burden_pct_spending": 2.14,
-     "p50_burden_pct_spending": 5.46,
-     "p90_burden_pct_spending": 12.8
+     "p10_burden_pct_spending": 2.26,
+     "p50_burden_pct_spending": 5.76,
+     "p90_burden_pct_spending": 13.5
     },
     {
      "decile": 3,
-     "burden_pct_of_spending": 4.8,
+     "burden_pct_of_spending": 5.06,
      "raw_energy_share_of_spending_pct": 7.63,
-     "p10_burden_pct_spending": 1.86,
-     "p50_burden_pct_spending": 5.15,
-     "p90_burden_pct_spending": 11.93
+     "p10_burden_pct_spending": 1.96,
+     "p50_burden_pct_spending": 5.44,
+     "p90_burden_pct_spending": 12.58
     },
     {
      "decile": 4,
-     "burden_pct_of_spending": 4.61,
+     "burden_pct_of_spending": 4.86,
      "raw_energy_share_of_spending_pct": 7.32,
-     "p10_burden_pct_spending": 2.0,
-     "p50_burden_pct_spending": 4.79,
-     "p90_burden_pct_spending": 9.96
+     "p10_burden_pct_spending": 2.11,
+     "p50_burden_pct_spending": 5.05,
+     "p90_burden_pct_spending": 10.5
     },
     {
      "decile": 5,
-     "burden_pct_of_spending": 3.79,
+     "burden_pct_of_spending": 4.0,
      "raw_energy_share_of_spending_pct": 6.03,
-     "p10_burden_pct_spending": 1.75,
-     "p50_burden_pct_spending": 4.0,
-     "p90_burden_pct_spending": 8.95
+     "p10_burden_pct_spending": 1.85,
+     "p50_burden_pct_spending": 4.22,
+     "p90_burden_pct_spending": 9.44
     },
     {
      "decile": 6,
-     "burden_pct_of_spending": 3.61,
+     "burden_pct_of_spending": 3.81,
      "raw_energy_share_of_spending_pct": 5.75,
-     "p10_burden_pct_spending": 1.54,
-     "p50_burden_pct_spending": 3.79,
-     "p90_burden_pct_spending": 8.86
+     "p10_burden_pct_spending": 1.62,
+     "p50_burden_pct_spending": 3.99,
+     "p90_burden_pct_spending": 9.34
     },
     {
      "decile": 7,
-     "burden_pct_of_spending": 3.59,
+     "burden_pct_of_spending": 3.78,
      "raw_energy_share_of_spending_pct": 5.7,
-     "p10_burden_pct_spending": 1.59,
-     "p50_burden_pct_spending": 3.93,
-     "p90_burden_pct_spending": 7.66
+     "p10_burden_pct_spending": 1.68,
+     "p50_burden_pct_spending": 4.14,
+     "p90_burden_pct_spending": 8.07
     },
     {
      "decile": 8,
-     "burden_pct_of_spending": 3.42,
+     "burden_pct_of_spending": 3.6,
      "raw_energy_share_of_spending_pct": 5.43,
-     "p10_burden_pct_spending": 1.51,
-     "p50_burden_pct_spending": 3.44,
-     "p90_burden_pct_spending": 8.16
+     "p10_burden_pct_spending": 1.59,
+     "p50_burden_pct_spending": 3.63,
+     "p90_burden_pct_spending": 8.61
     },
     {
      "decile": 9,
-     "burden_pct_of_spending": 3.0,
+     "burden_pct_of_spending": 3.16,
      "raw_energy_share_of_spending_pct": 4.77,
-     "p10_burden_pct_spending": 1.26,
-     "p50_burden_pct_spending": 3.07,
-     "p90_burden_pct_spending": 7.78
+     "p10_burden_pct_spending": 1.33,
+     "p50_burden_pct_spending": 3.24,
+     "p90_burden_pct_spending": 8.21
     },
     {
      "decile": 10,
-     "burden_pct_of_spending": 2.58,
+     "burden_pct_of_spending": 2.72,
      "raw_energy_share_of_spending_pct": 4.1,
-     "p10_burden_pct_spending": 0.98,
-     "p50_burden_pct_spending": 2.74,
-     "p90_burden_pct_spending": 7.09
+     "p10_burden_pct_spending": 1.03,
+     "p50_burden_pct_spending": 2.89,
+     "p90_burden_pct_spending": 7.47
     }
-   ]
+   ],
+   "burden_basis": {
+    "base_cap": 1227.4554,
+    "realised_cap": 2311.4455
+   }
   },
   "2021-22": {
    "households": 5632,
@@ -146,85 +150,90 @@
    "by_decile": [
     {
      "decile": 1,
-     "burden_pct_of_spending": 5.47,
+     "burden_pct_of_spending": 5.77,
      "raw_energy_share_of_spending_pct": 7.93,
-     "p10_burden_pct_spending": 2.17,
-     "p50_burden_pct_spending": 6.15,
-     "p90_burden_pct_spending": 15.99
+     "p10_burden_pct_spending": 2.29,
+     "p50_burden_pct_spending": 6.48,
+     "p90_burden_pct_spending": 16.86
     },
     {
      "decile": 2,
-     "burden_pct_of_spending": 5.06,
+     "burden_pct_of_spending": 5.34,
      "raw_energy_share_of_spending_pct": 7.34,
-     "p10_burden_pct_spending": 2.19,
-     "p50_burden_pct_spending": 5.23,
-     "p90_burden_pct_spending": 12.72
+     "p10_burden_pct_spending": 2.31,
+     "p50_burden_pct_spending": 5.51,
+     "p90_burden_pct_spending": 13.41
     },
     {
      "decile": 3,
-     "burden_pct_of_spending": 4.76,
+     "burden_pct_of_spending": 5.02,
      "raw_energy_share_of_spending_pct": 6.9,
-     "p10_burden_pct_spending": 2.16,
-     "p50_burden_pct_spending": 4.95,
-     "p90_burden_pct_spending": 11.6
+     "p10_burden_pct_spending": 2.28,
+     "p50_burden_pct_spending": 5.22,
+     "p90_burden_pct_spending": 12.23
     },
     {
      "decile": 4,
-     "burden_pct_of_spending": 4.46,
+     "burden_pct_of_spending": 4.7,
      "raw_energy_share_of_spending_pct": 6.47,
-     "p10_burden_pct_spending": 1.91,
-     "p50_burden_pct_spending": 4.94,
-     "p90_burden_pct_spending": 10.93
+     "p10_burden_pct_spending": 2.01,
+     "p50_burden_pct_spending": 5.21,
+     "p90_burden_pct_spending": 11.53
     },
     {
      "decile": 5,
-     "burden_pct_of_spending": 4.14,
+     "burden_pct_of_spending": 4.37,
      "raw_energy_share_of_spending_pct": 6.0,
-     "p10_burden_pct_spending": 1.95,
-     "p50_burden_pct_spending": 4.23,
-     "p90_burden_pct_spending": 9.07
+     "p10_burden_pct_spending": 2.06,
+     "p50_burden_pct_spending": 4.46,
+     "p90_burden_pct_spending": 9.56
     },
     {
      "decile": 6,
-     "burden_pct_of_spending": 3.56,
+     "burden_pct_of_spending": 3.75,
      "raw_energy_share_of_spending_pct": 5.16,
-     "p10_burden_pct_spending": 1.65,
-     "p50_burden_pct_spending": 3.87,
-     "p90_burden_pct_spending": 8.42
+     "p10_burden_pct_spending": 1.74,
+     "p50_burden_pct_spending": 4.08,
+     "p90_burden_pct_spending": 8.88
     },
     {
      "decile": 7,
-     "burden_pct_of_spending": 3.51,
+     "burden_pct_of_spending": 3.7,
      "raw_energy_share_of_spending_pct": 5.09,
-     "p10_burden_pct_spending": 1.58,
-     "p50_burden_pct_spending": 3.67,
-     "p90_burden_pct_spending": 8.61
+     "p10_burden_pct_spending": 1.67,
+     "p50_burden_pct_spending": 3.87,
+     "p90_burden_pct_spending": 9.08
     },
     {
      "decile": 8,
-     "burden_pct_of_spending": 3.24,
+     "burden_pct_of_spending": 3.42,
      "raw_energy_share_of_spending_pct": 4.69,
-     "p10_burden_pct_spending": 1.48,
-     "p50_burden_pct_spending": 3.38,
-     "p90_burden_pct_spending": 7.98
+     "p10_burden_pct_spending": 1.56,
+     "p50_burden_pct_spending": 3.56,
+     "p90_burden_pct_spending": 8.41
     },
     {
      "decile": 9,
-     "burden_pct_of_spending": 3.01,
+     "burden_pct_of_spending": 3.17,
      "raw_energy_share_of_spending_pct": 4.37,
-     "p10_burden_pct_spending": 1.41,
-     "p50_burden_pct_spending": 3.15,
-     "p90_burden_pct_spending": 7.33
+     "p10_burden_pct_spending": 1.49,
+     "p50_burden_pct_spending": 3.32,
+     "p90_burden_pct_spending": 7.73
     },
     {
      "decile": 10,
-     "burden_pct_of_spending": 2.71,
+     "burden_pct_of_spending": 2.86,
      "raw_energy_share_of_spending_pct": 3.93,
-     "p10_burden_pct_spending": 1.11,
-     "p50_burden_pct_spending": 2.95,
-     "p90_burden_pct_spending": 6.44
+     "p10_burden_pct_spending": 1.17,
+     "p50_burden_pct_spending": 3.11,
+     "p90_burden_pct_spending": 6.79
     }
-   ]
+   ],
+   "burden_basis": {
+    "base_cap": 1227.4554,
+    "realised_cap": 2311.4455
+   },
+   "burden_realigned": "burden figures rescaled from the stored basis by 1.0545 (ratio of realised-minus-base caps); microdata not re-read"
   },
   "2022-23": {
    "households": 4459,
@@ -258,85 +267,90 @@
    "by_decile": [
     {
      "decile": 1,
-     "burden_pct_of_spending": 5.47,
+     "burden_pct_of_spending": 5.77,
      "raw_energy_share_of_spending_pct": 10.62,
-     "p10_burden_pct_spending": 1.67,
-     "p50_burden_pct_spending": 6.1,
-     "p90_burden_pct_spending": 15.5
+     "p10_burden_pct_spending": 1.76,
+     "p50_burden_pct_spending": 6.43,
+     "p90_burden_pct_spending": 16.34
     },
     {
      "decile": 2,
-     "burden_pct_of_spending": 5.53,
+     "burden_pct_of_spending": 5.83,
      "raw_energy_share_of_spending_pct": 10.74,
-     "p10_burden_pct_spending": 1.64,
-     "p50_burden_pct_spending": 5.66,
-     "p90_burden_pct_spending": 13.17
+     "p10_burden_pct_spending": 1.73,
+     "p50_burden_pct_spending": 5.97,
+     "p90_burden_pct_spending": 13.89
     },
     {
      "decile": 3,
-     "burden_pct_of_spending": 4.43,
+     "burden_pct_of_spending": 4.67,
      "raw_energy_share_of_spending_pct": 8.61,
-     "p10_burden_pct_spending": 1.8,
-     "p50_burden_pct_spending": 4.65,
-     "p90_burden_pct_spending": 10.42
+     "p10_burden_pct_spending": 1.9,
+     "p50_burden_pct_spending": 4.9,
+     "p90_burden_pct_spending": 10.99
     },
     {
      "decile": 4,
-     "burden_pct_of_spending": 4.48,
+     "burden_pct_of_spending": 4.72,
      "raw_energy_share_of_spending_pct": 8.7,
-     "p10_burden_pct_spending": 1.67,
-     "p50_burden_pct_spending": 4.61,
-     "p90_burden_pct_spending": 11.73
+     "p10_burden_pct_spending": 1.76,
+     "p50_burden_pct_spending": 4.86,
+     "p90_burden_pct_spending": 12.37
     },
     {
      "decile": 5,
-     "burden_pct_of_spending": 3.94,
+     "burden_pct_of_spending": 4.15,
      "raw_energy_share_of_spending_pct": 7.66,
-     "p10_burden_pct_spending": 1.67,
-     "p50_burden_pct_spending": 4.04,
-     "p90_burden_pct_spending": 9.25
+     "p10_burden_pct_spending": 1.76,
+     "p50_burden_pct_spending": 4.26,
+     "p90_burden_pct_spending": 9.75
     },
     {
      "decile": 6,
-     "burden_pct_of_spending": 3.56,
+     "burden_pct_of_spending": 3.75,
      "raw_energy_share_of_spending_pct": 6.92,
-     "p10_burden_pct_spending": 1.37,
-     "p50_burden_pct_spending": 3.5,
-     "p90_burden_pct_spending": 8.6
+     "p10_burden_pct_spending": 1.44,
+     "p50_burden_pct_spending": 3.69,
+     "p90_burden_pct_spending": 9.07
     },
     {
      "decile": 7,
-     "burden_pct_of_spending": 3.49,
+     "burden_pct_of_spending": 3.68,
      "raw_energy_share_of_spending_pct": 6.78,
-     "p10_burden_pct_spending": 1.35,
-     "p50_burden_pct_spending": 3.54,
-     "p90_burden_pct_spending": 8.4
+     "p10_burden_pct_spending": 1.42,
+     "p50_burden_pct_spending": 3.73,
+     "p90_burden_pct_spending": 8.86
     },
     {
      "decile": 8,
-     "burden_pct_of_spending": 3.34,
+     "burden_pct_of_spending": 3.52,
      "raw_energy_share_of_spending_pct": 6.49,
-     "p10_burden_pct_spending": 1.45,
-     "p50_burden_pct_spending": 3.28,
-     "p90_burden_pct_spending": 6.92
+     "p10_burden_pct_spending": 1.53,
+     "p50_burden_pct_spending": 3.46,
+     "p90_burden_pct_spending": 7.3
     },
     {
      "decile": 9,
-     "burden_pct_of_spending": 3.01,
+     "burden_pct_of_spending": 3.17,
      "raw_energy_share_of_spending_pct": 5.84,
-     "p10_burden_pct_spending": 1.26,
-     "p50_burden_pct_spending": 2.92,
-     "p90_burden_pct_spending": 6.69
+     "p10_burden_pct_spending": 1.33,
+     "p50_burden_pct_spending": 3.08,
+     "p90_burden_pct_spending": 7.05
     },
     {
      "decile": 10,
-     "burden_pct_of_spending": 2.68,
+     "burden_pct_of_spending": 2.83,
      "raw_energy_share_of_spending_pct": 5.21,
-     "p10_burden_pct_spending": 0.98,
-     "p50_burden_pct_spending": 2.81,
-     "p90_burden_pct_spending": 6.76
+     "p10_burden_pct_spending": 1.03,
+     "p50_burden_pct_spending": 2.96,
+     "p90_burden_pct_spending": 7.13
     }
-   ]
+   ],
+   "burden_basis": {
+    "base_cap": 1227.4554,
+    "realised_cap": 2311.4455
+   },
+   "burden_realigned": "burden figures rescaled from the stored basis by 1.0545 (ratio of realised-minus-base caps); microdata not re-read"
   }
  },
  "not_computed": {},
@@ -355,66 +369,81 @@
     "within_pct": 89.8
    }
   },
+  "raw_energy_share_of_spending_pct": 4.72,
+  "burden_basis": {
+   "base_cap": 1227.4554,
+   "realised_cap": 2311.4455
+  },
   "by_decile": [
    {
     "decile": 1,
-    "burden_pct_of_spending": 5.34,
-    "p10_burden_pct_spending": 1.97,
-    "p90_burden_pct_spending": 15.06
+    "burden_pct_of_spending": 5.63,
+    "raw_energy_share_of_spending_pct": 6.75,
+    "p10_burden_pct_spending": 2.08,
+    "p90_burden_pct_spending": 15.88
    },
    {
     "decile": 2,
-    "burden_pct_of_spending": 5.28,
-    "p10_burden_pct_spending": 2.09,
-    "p90_burden_pct_spending": 13.59
+    "burden_pct_of_spending": 5.56,
+    "raw_energy_share_of_spending_pct": 6.67,
+    "p10_burden_pct_spending": 2.2,
+    "p90_burden_pct_spending": 14.33
    },
    {
     "decile": 3,
-    "burden_pct_of_spending": 4.94,
-    "p10_burden_pct_spending": 2.04,
-    "p90_burden_pct_spending": 13.6
+    "burden_pct_of_spending": 5.2,
+    "raw_energy_share_of_spending_pct": 6.24,
+    "p10_burden_pct_spending": 2.15,
+    "p90_burden_pct_spending": 14.34
    },
    {
     "decile": 4,
-    "burden_pct_of_spending": 4.95,
-    "p10_burden_pct_spending": 1.88,
-    "p90_burden_pct_spending": 12.32
+    "burden_pct_of_spending": 5.22,
+    "raw_energy_share_of_spending_pct": 6.25,
+    "p10_burden_pct_spending": 1.99,
+    "p90_burden_pct_spending": 12.99
    },
    {
     "decile": 5,
-    "burden_pct_of_spending": 4.51,
-    "p10_burden_pct_spending": 1.76,
-    "p90_burden_pct_spending": 11.21
+    "burden_pct_of_spending": 4.76,
+    "raw_energy_share_of_spending_pct": 5.7,
+    "p10_burden_pct_spending": 1.86,
+    "p90_burden_pct_spending": 11.82
    },
    {
     "decile": 6,
-    "burden_pct_of_spending": 3.82,
-    "p10_burden_pct_spending": 1.48,
-    "p90_burden_pct_spending": 10.23
+    "burden_pct_of_spending": 4.03,
+    "raw_energy_share_of_spending_pct": 4.82,
+    "p10_burden_pct_spending": 1.57,
+    "p90_burden_pct_spending": 10.79
    },
    {
     "decile": 7,
-    "burden_pct_of_spending": 3.62,
-    "p10_burden_pct_spending": 1.37,
-    "p90_burden_pct_spending": 9.61
+    "burden_pct_of_spending": 3.82,
+    "raw_energy_share_of_spending_pct": 4.57,
+    "p10_burden_pct_spending": 1.44,
+    "p90_burden_pct_spending": 10.13
    },
    {
     "decile": 8,
-    "burden_pct_of_spending": 3.31,
-    "p10_burden_pct_spending": 1.23,
-    "p90_burden_pct_spending": 8.57
+    "burden_pct_of_spending": 3.49,
+    "raw_energy_share_of_spending_pct": 4.18,
+    "p10_burden_pct_spending": 1.29,
+    "p90_burden_pct_spending": 9.04
    },
    {
     "decile": 9,
-    "burden_pct_of_spending": 3.01,
-    "p10_burden_pct_spending": 1.15,
-    "p90_burden_pct_spending": 9.03
+    "burden_pct_of_spending": 3.17,
+    "raw_energy_share_of_spending_pct": 3.8,
+    "p10_burden_pct_spending": 1.21,
+    "p90_burden_pct_spending": 9.53
    },
    {
     "decile": 10,
-    "burden_pct_of_spending": 2.37,
-    "p10_burden_pct_spending": 0.77,
-    "p90_burden_pct_spending": 7.42
+    "burden_pct_of_spending": 2.5,
+    "raw_energy_share_of_spending_pct": 2.99,
+    "p10_burden_pct_spending": 0.81,
+    "p90_burden_pct_spending": 7.83
    }
   ]
  }

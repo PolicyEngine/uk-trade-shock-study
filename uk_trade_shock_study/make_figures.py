@@ -203,7 +203,7 @@ def fig_incidence_profile(d: Data):
         ("Energy 2022-23, realised path (cost)", d.en_real_pct, BLUE, "-", "o", BLUE),
         ("Energy 2022-23, gross counterfactual (cost)", d.en_gross_pct, BLUE, "--", "o", "white"),
         ("TCA food NTBs, window average (cost)", d.tca_win_pct, GREEN, "-", "s", GREEN),
-        ("India CETA, 100% pass-through (GAIN)", d.ceta_pct, TEAL, ":", "^", "white"),
+        ("UK–India agreement, 100% pass-through (gain)", d.ceta_pct, TEAL, ":", "^", "white"),
     ]
     for label, y, color, ls, marker, mfc in series:
         ax.plot(
@@ -218,7 +218,7 @@ def fig_incidence_profile(d: Data):
         ("Energy, counterfactual", d.en_gross_pct[-1]),
         ("Energy, realised", d.en_real_pct[-1]),
         ("TCA food, window avg.", d.tca_win_pct[-1]),
-        ("India CETA gain", d.ceta_pct[-1]),
+        ("UK–India gain", d.ceta_pct[-1]),
     ):
         ax.annotate(text, xy=(10, yv), xytext=(7, 0), textcoords="offset points",
                     va="center", ha="left", fontsize=7.2, color=INK2,
@@ -253,7 +253,7 @@ def fig_energy_epg(d: Data):
 
     w, gap = 0.62, 14.0
     ax.bar(d.deciles, d.en_net_gbp, width=w, color=BLUE,
-           label="Borne by the household, net of the EPG", zorder=3)
+           label="Borne by the household, net of the Guarantee", zorder=3)
     ax.bar(d.deciles, d.en_cushion_gbp, width=w, bottom=d.en_net_gbp + gap,
            color=TEAL, edgecolor="white", linewidth=0.0, hatch="///", zorder=3,
            label="Cushioned by the Energy Price Guarantee")
@@ -499,13 +499,13 @@ def write_tables(d: Data):
     A("\\vspace{2pt}")
     A("\\begin{minipage}{\\linewidth}\\footnotesize")
     A("\\emph{Notes.} \\pounds\\ per household per year; \\% spend is the burden or")
-    A("gain as a percentage of that decile's total expenditure. The EPG cushions")
-    A("%.1f\\%% of the gross energy shock at every decile by construction."
+    A("gain as a percentage of that decile's total expenditure. The Energy Price Guarantee cushions")
+    A("%.1f\\%% of the counterfactual energy shock at every decile by construction."
       % (100 * d.cushion_share))
     A("Ratios are computed on unrounded values, so they may differ from the")
-    A("displayed cells in the last digit. $^{\\dagger}$~CETA ratio is on the \\%-of-spending basis (\\pounds\\ gains are")
+    A("displayed cells in the last digit. $^{\\dagger}$~UK--India ratio is on the \\%-of-spending basis (\\pounds\\ gains are")
     A("not comparable across deciles). Spending bases: ONS Family Spending")
-    A("workbook~1, sheet 3.1E, FYE2022 vintage (TCA, energy) and FYE2025 vintage (CETA).")
+    A("workbook~1, sheet 3.1E, FYE2022 vintage (TCA, energy) and FYE2025 vintage (UK--India agreement).")
     A("\\end{minipage}")
     A("\\end{table}")
     A("")
@@ -518,7 +518,7 @@ def write_tables(d: Data):
          "$+8\\%$ on food prices", "Estimate\\newline (ex post)"),
         ("E2 Energy 2022--23", "Apr 2022--\\newline Mar 2023", "Market",
          "Consumer prices (energy)", "\\citet{ofgem2022}; \\citet{obrenergy2023}",
-         "Cap \\pounds1{,}277 $\\to$ \\pounds3{,}549; EPG \\pounds2{,}500",
+         "FY-mean cap \\pounds1{,}227 $\\to$ \\pounds3{,}240 (\\pounds2{,}311 with the Guarantee)",
          "Observed\\newline (statutory)"),
         ("E3 US tariffs 2025", "2025", "Policy\\newline (foreign)",
          "Earnings only; no UK retaliation", "Constructed here (Appendix~\\ref{app:e3})",
@@ -549,7 +549,7 @@ def write_tables(d: Data):
     A("\\vspace{2pt}")
     A("\\begin{minipage}{\\linewidth}\\footnotesize")
     A("\\emph{Notes.} Type distinguishes a policy instrument from a")
-    A("market price imported through the terms of trade. E3's consumer-price row is exactly zero (the UK imposed no")
+    A("market price imported through the terms of trade. E3's consumer-price effect is exactly zero (the UK imposed no")
     A("retaliatory tariffs), so its household incidence runs through earnings alone.")
     A("$^{w}$~the \\emph{estimation} window of the cited study; the TCA itself")
     A("entered into force in January 2021.")

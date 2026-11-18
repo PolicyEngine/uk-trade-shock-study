@@ -22,7 +22,7 @@ import json
 
 import numpy as np
 
-from second_stage_energy import P, load_sim, col_components, ctr_rebate, weighted, wmean, wquantile, variance_split
+from second_stage_energy import P, load_sim, col_components, ctr_rebate, energy_convention, weighted, wmean, wquantile, variance_split
 from second_stage_energy import RESULTS_DIR, PAPER_DIR
 
                            # MsEnergyCashOutlayScalePct (incidence.py computes
@@ -59,11 +59,12 @@ def main() -> None:
         P["ons_total_spend_yr"] / wmean(np.asarray(sim.calculate("consumption", yr)), w))
     dec = deciles_of(equiv_income, w)
 
-    base_cap_fy = (P["cap_apr_2021"] + P["cap_oct_2021"]) / 2.0
-    rebase = base_cap_fy / wmean(energy_raw, w)
+    # Central price-path convention (second_stage_energy.energy_convention).
+    conv = energy_convention(sim, w, energy_raw, yr)
+    rebase = conv["rebase"]
     energy = energy_raw * rebase
-    counter_rise = (P["cap_apr_2022"] + P["cap_oct_2022"]) / 2.0 / base_cap_fy - 1.0
-    realised_rise = (P["cap_apr_2022"] + P["epg_level"]) / 2.0 / base_cap_fy - 1.0
+    counter_rise = conv["counter_rise"]
+    realised_rise = conv["realised_rise"]
     dE_counter = energy * counter_rise
     dE_realised = energy * realised_rise
     epg = dE_counter - dE_realised

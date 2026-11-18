@@ -14,7 +14,7 @@ import argparse
 
 import numpy as np
 
-from second_stage_energy import P, load_sim, col_components, ctr_rebate, weighted, wmean
+from second_stage_energy import P, load_sim, col_components, ctr_rebate, energy_convention, weighted, wmean
 from second_stage_energy import RESULTS_DIR, PAPER_DIR
 
 
@@ -47,11 +47,12 @@ def main() -> None:
     equiv_net = equiv * scale
 
     energy_raw = np.asarray(sim.calculate("domestic_energy_consumption", yr))
-    base_cap_fy = (P["cap_apr_2021"] + P["cap_oct_2021"]) / 2.0
-    rebase = base_cap_fy / wmean(energy_raw, w)
+    # Central price-path convention (second_stage_energy.energy_convention).
+    conv = energy_convention(sim, w, energy_raw, yr)
+    rebase = conv["rebase"]
     energy = energy_raw * rebase
-    counter_rise = (P["cap_apr_2022"] + P["cap_oct_2022"]) / 2.0 / base_cap_fy - 1.0
-    realised_rise = (P["cap_apr_2022"] + P["epg_level"]) / 2.0 / base_cap_fy - 1.0
+    counter_rise = conv["counter_rise"]
+    realised_rise = conv["realised_rise"]
     dE = energy * counter_rise
     epg = energy * (counter_rise - realised_rise)
     ebss = np.full_like(energy, P["ebss_per_household"])

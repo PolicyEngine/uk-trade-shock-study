@@ -197,3 +197,89 @@ def test_new_macros_are_emitted():
                  "SsNoCtrEnergySpecificRatePct", "SsNoCtrCushionPctDecOne",
                  "SsEnergySpecificPctDecTen"):
         assert name in SS_MACROS, name
+
+
+def test_central_convention_is_consumption_weights_on_the_actual_caps():
+    sh = SS["shock"]
+    assert sh["convention"] == "consumption_actual"
+    wt = sh["fy_weights"]
+    assert sum(wt.values()) == pytest.approx(1.0, abs=1e-3)
+    base = wt["apr_sep"] * 1138 + (wt["oct_dec"] + wt["jan_mar"]) * 1277
+    counter = wt["apr_sep"] * 1971 + wt["oct_dec"] * 3549 + wt["jan_mar"] * 4279
+    realised = wt["apr_sep"] * 1971 + (wt["oct_dec"] + wt["jan_mar"]) * 2500
+    assert sh["base_fy_mean_cap"] == pytest.approx(base, abs=0.5)
+    assert sh["counterfactual_fy_mean_cap"] == pytest.approx(counter, abs=1.0)
+    assert sh["realised_fy_mean_cap"] == pytest.approx(realised, abs=1.0)
+    assert sh["counterfactual_rise"] == pytest.approx(counter / base - 1, abs=1e-3)
+    # the Guarantee returns the same share of every household's loss
+    d = SS["discretionary"]
+    assert d["epg_rate_pct"] == pytest.approx(
+        100 * (counter - realised) / (counter - base), abs=0.1)
+    assert SS_MACROS["SsEpgRatePct"] == MACROS["SsGridPaperEpgRatePct"]
+    # the seasonal file's central variant is the second stage's headline
+    seas = json.loads((RESULTS / "seasonal_energy.json").read_text())
+    assert seas["central_convention"] == "consumption_actual"
+    c = seas["consumption_actual"]
+    assert c["full_rate_pct"] == d["rate_pct_of_counterfactual"]
+    assert c["energy_rate_pct"] == d["energy_specific_rate_pct"]
+    assert c["counter_agg_gbp_bn"] == pytest.approx(
+        sh["counterfactual_aggregate_gbp_bn"], abs=0.02)
+
+
+def test_convention_helpers():
+    from second_stage_energy import EQUAL_WEIGHTS, convention_caps, fy_weights
+
+    base, counter, realised = convention_caps(EQUAL_WEIGHTS, False)
+    assert (base, counter, realised) == (1207.5, 2760.0, 2235.5)
+    assert convention_caps(EQUAL_WEIGHTS, True)[1] == pytest.approx(2942.5)
+    wt = fy_weights([1 / 12] * 12)
+    assert wt == pytest.approx({"apr_sep": 0.5, "oct_dec": 0.25, "jan_mar": 0.25})
+
+
+def test_no_synthetic_run():
+    r = json.loads((RESULTS / "second_stage_energy_nosyn.json").read_text())
+    x = r["meta"]["synthetic_excluded"]
+    assert x["records_excluded"] > 0
+    assert x["records_excluded"] + x["records_kept"] == SS["meta"]["records"]
+    # weights rescaled: the household total is unchanged
+    assert r["meta"]["weighted_households_m"] == SS["meta"]["weighted_households_m"]
+    assert x["weight_scale"] == pytest.approx(
+        1 / (1 - x["weight_share_excluded_pct"] / 100), abs=1e-4)
+    assert SS_MACROS["SsNoSynDiscretionaryRatePct"] == (
+        f"{r['discretionary']['rate_pct_of_counterfactual']:.1f}")
+    assert len(r["by_decile"]) == 10
+
+
+def test_lag_by_decile_adds_up_and_nets_against_the_payments():
+    lag = json.loads((RESULTS / "uprating_lag_reform.json").read_text())
+    rows = lag["by_decile"]
+    assert len(rows) == 10
+    assert sum(x["lag_gbp_bn"] for x in rows) == pytest.approx(
+        lag["lag_cost_gbp_bn"], abs=0.02)
+    for x in rows + [lag["all_households"]]:
+        assert x["col_minus_lag_gbp_per_household"] == pytest.approx(
+            x["col_payments_gbp_per_household"] - x["lag_gbp_per_household"], abs=0.11)
+        assert x["lag_pct_of_energy_shock"] == pytest.approx(
+            100 * x["lag_gbp_per_household"]
+            / x["counterfactual_energy_shock_gbp_per_household"], abs=0.1)
+    # the energy shock per household is the second stage's, decile by decile
+    for x, y in zip(rows, SS["by_decile"]):
+        assert x["counterfactual_energy_shock_gbp_per_household"] == pytest.approx(
+            y["counterfactual_gbp_per_year"], abs=0.11)
+    table = (RESULTS / "table_lagdecile.tex").read_text()
+    assert table.count("\\\\") == 12          # header + ten deciles + all
+
+
+def test_lcfs_table_and_basis():
+    res = json.loads((RESULTS / "lcfs_validation.json").read_text())
+    sh = SS["shock"]
+    for year in res["lcfs"].values():
+        b = year["burden_basis"]
+        assert b["base_cap"] == pytest.approx(sh["base_fy_mean_cap"], abs=1e-3)
+        assert b["realised_cap"] == pytest.approx(sh["realised_fy_mean_cap"], abs=1e-3)
+    mc = res["microcosm"]["by_decile"]
+    assert [x["burden_pct_of_spending"] for x in mc] == [
+        x["burden_pct_of_spending"] for x in SS["by_decile"]]
+    table = (RESULTS / "table_lcfs.tex").read_text()
+    assert "Microcosm UK" in table and "LCFS 2024--25" in table
+    assert "Within-decile variance share" in table

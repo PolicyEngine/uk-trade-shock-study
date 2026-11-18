@@ -114,7 +114,7 @@
       "path": "results/deflated_inputs.json",
       "produced_by": "see Makefile",
       "quoted_by": "paper (generated macros)",
-      "sha256": "24bddf12d3def3a7672d3b0c3c18379c425a68d5038e06ee7c8220a19fcb3fdd"
+      "sha256": "5aedfeff6ef38438b2cb6df08b5ad672a6272eb2128ac6c84e1509269945f3fc"
     },
     {
       "path": "results/e3_ashe.json",
@@ -129,16 +129,34 @@
       "produced_by": "analysis/emit_e3_constants.py"
     },
     {
+      "path": "results/e3_income_shares.json",
+      "produced_by": "see Makefile",
+      "quoted_by": "paper (generated macros)",
+      "sha256": "38a13cebc1ecb1ca6f1f25a4a898f5cf29d8f8e325bf1895b418ea8e1cc36479"
+    },
+    {
+      "path": "results/e3_industry.json",
+      "produced_by": "see Makefile",
+      "quoted_by": "paper (generated macros)",
+      "sha256": "761e429ddef433994c011b69e4c197486122b1295f704f0b49f65210e5eb272a"
+    },
+    {
       "path": "results/e3_sensitivity.json",
       "produced_by": "see Makefile",
       "quoted_by": "paper (generated macros)",
       "sha256": "7aa0e8e574f79b535a5cbb875a8f0606a836219f290edb9bc965e042bc868702"
     },
     {
+      "path": "results/e3_uniform.json",
+      "produced_by": "see Makefile",
+      "quoted_by": "paper (generated macros)",
+      "sha256": "2909ad8fbad2c79cd4100c576d9f3c6599d7831ea587d4a426899d61f618fc82"
+    },
+    {
       "path": "results/energy_referee_checks.json",
       "produced_by": "see Makefile",
       "quoted_by": "paper (generated macros)",
-      "sha256": "6b846e4e57026920889e53560f53c7d9c8c652e134b6a22c60b67b8454882cd9"
+      "sha256": "9db1d3a26a51f52edeb51bfa18fd0c918a324356488e4d8455a00ea5c99c4560"
     },
     {
       "path": "results/full_tariff_displacement.json",
@@ -184,7 +202,7 @@
     },
     {
       "path": "results/grid_energy.json",
-      "sha256": "a06df786a690c9a8ecee28736847b877a222eb685f6abbea86d81b4c80b83930",
+      "sha256": "82a9cf71929587682971e1595e4167548a133b03aa552bc26cddf7846c57f2cb",
       "quoted_by": "paper (generated macros)",
       "produced_by": "uk_trade_shock_study/grid_energy.py"
     },
@@ -192,11 +210,11 @@
       "path": "results/lcfs_validation.json",
       "produced_by": "see Makefile",
       "quoted_by": "paper (generated macros)",
-      "sha256": "381f3255c80567464132b5ef7a6cf78a352f186e1bf152f18cef78f5c29fbf87"
+      "sha256": "8af786ba844925fe654803793a031f698d7ab001f0f3aeeaacff86311bfb297e"
     },
     {
       "path": "results/results.json",
-      "sha256": "049f4bc4884c8f78c3fee6770787fc1504a163ca909bf82f89ad31d87c51bdd9",
+      "sha256": "0ed01792e43aad497c0471a0dbb2ca3fc196acd108d2fe3edc1e35d24e96c38a",
       "quoted_by": "paper (generated macros)",
       "produced_by": "uk_trade_shock_study/incidence.py"
     },
@@ -204,19 +222,25 @@
       "path": "results/seasonal_energy.json",
       "produced_by": "see Makefile",
       "quoted_by": "paper (generated macros)",
-      "sha256": "be2dd503d10f641d9823bdebb79e315190e1621518b6a12706a08d170ccd10c8"
+      "sha256": "5252607ddc91bff615929e3438d2ac31c9c166e675f5fc019b946bacb00a4392"
     },
     {
       "path": "results/second_stage_energy.json",
-      "sha256": "bcc23d3d375c241e8c9c7347980f16d8083f413ab4f9d8b96ce0b640f595f5df",
+      "sha256": "bdd427ad56b8004ddf3187d4cd8072f8e72b64d0ba067d256d462d16489be743",
       "quoted_by": "paper (generated macros)",
       "produced_by": "uk_trade_shock_study/second_stage_energy.py"
+    },
+    {
+      "path": "results/second_stage_energy_nosyn.json",
+      "produced_by": "see Makefile",
+      "quoted_by": "paper (generated macros)",
+      "sha256": "432bbf72531ea441df9ecb2c1b6b6b4ee0bedae9c2a7ded9390a5152c2e556bb"
     },
     {
       "path": "results/uprating_lag_reform.json",
       "produced_by": "see Makefile",
       "quoted_by": "paper (generated macros)",
-      "sha256": "8581963b85ecc7d394349fc88ae9a764561fca50ffc5e12432186e0790fcc3fc"
+      "sha256": "e76ab2ec0e943d07e8017eb02a0ff2a74a68f603afc623ac7b76821a624c25e1"
     }
   ]
 }

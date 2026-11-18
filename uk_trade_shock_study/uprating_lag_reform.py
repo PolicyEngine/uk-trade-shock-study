@@ -15,7 +15,11 @@ parameter change between the two years.  This script isolates the lag:
   uplift that sat in the 2021-22 parameter);
 * everything else (tapers, thresholds not in the order, taxes, the
   cost-of-living payments) stays at 2022-23 law;
-* cost = change in the aggregate of the cash benefits, by benefit.
+* cost = change in the aggregate of the cash benefits, by benefit;
+* by equivalised-income decile (the household stage's deciles, ranked at
+  the stage's rulebook year): the lag cost per household, as a share of the
+  decile's counterfactual energy shock on the stage's central price-path
+  convention, and netted against the 2022-23 Cost of Living Payments.
 
 The parameter list is built from the model, not typed in: every currency
 parameter under gov.dwp and gov.hmrc.child_benefit whose 2022-23 value is
@@ -39,7 +43,8 @@ import shutil
 import numpy as np
 
 from second_stage_energy import (P, PAPER_DIR, RESULTS_DIR, UPRATED_CASH,
-                                 load_sim, weighted)
+                                 col_components, energy_convention, load_sim,
+                                 weighted, wmean)
 
 RULE_YEAR = 2022
 APPLIED = P["uprating_applied_apr_2022"]      # 3.1%
@@ -131,13 +136,21 @@ def main() -> None:
         f"{RULE_YEAR}-06-01"))
     reform[SEPTEMBER_CPI_INDEX] = {period: index_2022 * FACTOR}
 
+    hh_arrays = {}     # per-household benefit amounts of each run
+
     def totals(reform_dict):
-        sim = load_sim([RULE_YEAR], reform=reform_dict, deflate=args.deflate)
+        # The baseline also holds inputs at the stage's rulebook year, for
+        # the stage's decile ranking and energy shock (by-decile block).
+        years = [RULE_YEAR] if reform_dict else [RULE_YEAR, P["sim_year"]]
+        sim = load_sim(years, reform=reform_dict, deflate=args.deflate)
         w = np.asarray(sim.calculate("household_weight", RULE_YEAR))
-        out = {v: weighted(np.asarray(sim.calculate(v, RULE_YEAR,
-                                                    map_to="household")), w) / 1e9
-               for v in UPRATED_CASH + STATE_PENSION_PARTS
-               + ["household_benefits", "household_net_income"]}
+        arrays = {v: np.asarray(sim.calculate(v, RULE_YEAR, map_to="household"))
+                  for v in UPRATED_CASH + STATE_PENSION_PARTS
+                  + ["household_benefits", "household_net_income"]}
+        hh_arrays["cf" if reform_dict else "base"] = arrays
+        if not reform_dict:
+            hh_arrays["sim"], hh_arrays["w"] = sim, w
+        out = {v: weighted(a, w) / 1e9 for v, a in arrays.items()}
         # The reform must have reached the rulebook the simulation uses.
         probe = "gov.dwp.universal_credit.standard_allowance.amount.SINGLE_OLD"
         out["_probe"] = float(sim.tax_benefit_system.parameters.get_child(probe)(
@@ -221,6 +234,50 @@ def main() -> None:
                 "because income is unchanged, and unmodelled-as-rules reported "
                 "amounts do not move.",
     }
+    # --- By equivalised-income decile ---------------------------------------
+    sim0, w = hh_arrays["sim"], hh_arrays["w"]
+    yr = P["sim_year"]
+    equiv = np.asarray(sim0.calculate("equiv_hbai_household_net_income", yr))
+    order = np.argsort(equiv)           # identical to second_stage_energy.py
+    cum = np.cumsum(w[order])
+    dec = np.zeros(len(equiv), dtype=int)
+    dec[order] = np.minimum((cum / cum[-1] * 10).astype(int), 9)
+    energy_raw = np.asarray(sim0.calculate("domestic_energy_consumption", yr))
+    conv = energy_convention(sim0, w, energy_raw, yr)
+    shock = energy_raw * conv["rebase"] * conv["counter_rise"]
+    lag_hh = sum(hh_arrays["cf"][v] - hh_arrays["base"][v] for v in UPRATED_CASH)
+    addon_hh = sum(hh_arrays["base"][v] * (FACTOR - 1) for v in addon)
+    col_hh = sum(col_components(sim0))
+
+    def drow(m, label):
+        lag, add = wmean(lag_hh[m], w[m]), wmean(addon_hh[m], w[m])
+        col_d, sh = wmean(col_hh[m], w[m]), wmean(shock[m], w[m])
+        return {"decile": label,
+                "lag_gbp_per_household": round(lag, 1),
+                "lag_with_reported_add_on_gbp_per_household": round(lag + add, 1),
+                "counterfactual_energy_shock_gbp_per_household": round(sh, 1),
+                "lag_pct_of_energy_shock": round(100 * lag / sh, 1),
+                "lag_with_add_on_pct_of_energy_shock": round(
+                    100 * (lag + add) / sh, 1),
+                "col_payments_gbp_per_household": round(col_d, 1),
+                "col_minus_lag_gbp_per_household": round(col_d - lag, 1),
+                "col_minus_lag_with_add_on_gbp_per_household": round(
+                    col_d - lag - add, 1),
+                "lag_gbp_bn": round(weighted(lag_hh[m], w[m]) / 1e9, 3)}
+
+    res["by_decile"] = [drow(dec == d, d + 1) for d in range(10)]
+    res["all_households"] = drow(np.ones_like(dec, dtype=bool), "all")
+    res["by_decile_note"] = (
+        "deciles of equivalised HBAI net income at the household stage's "
+        f"rulebook year ({yr}), as in second_stage_energy.py; lag = change "
+        "in the cash benefits per household under the 10.1 per cent "
+        "counterfactual (rules-priced; the reported-amount add-on is shown "
+        "separately); energy shock = counterfactual loss on the "
+        f"{conv['name']} convention; Cost of Living Payments from the "
+        "model's 2022-23 rules")
+    if abs(sum(r["lag_gbp_bn"] for r in res["by_decile"]) - total) > 0.01:
+        raise RuntimeError("decile lag costs do not add to the aggregate")
+
     suffix = "_deflated" if args.deflate else ""
     (RESULTS_DIR / f"uprating_lag_reform{suffix}.json").write_text(
         json.dumps(res, indent=1))
@@ -279,6 +336,50 @@ def emit() -> None:
             add("VsVintagePct", f"{100 * (r['lag_cost_gbp_bn'] / old - 1):.0f}")
             add("WithReportedVsVintagePct",
                 f"{100 * (ao['lag_cost_with_add_on_gbp_bn'] / old - 1):.0f}")
+    # By decile: SsLagDec<Word><Quantity>, and the table.
+    words = ("One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight",
+             "Nine", "Ten")
+
+    def tex(x, fmt=",.0f"):
+        return f"$-${abs(x):{fmt}}" if x < 0 else f"{x:{fmt}}"
+
+    def addd(k, v):
+        m.append(f"\\newcommand{{\\SsLagDec{k}}}{{{v}}}")
+
+    rows = r.get("by_decile", [])
+    for row, wd in zip(rows, words):
+        addd(f"{wd}Gbp", tex(row["lag_gbp_per_household"]))
+        addd(f"{wd}PctOfShock", tex(row["lag_pct_of_energy_shock"], ".1f"))
+        addd(f"{wd}ColGbp", tex(row["col_payments_gbp_per_household"]))
+        addd(f"{wd}NetGbp", tex(row["col_minus_lag_gbp_per_household"]))
+        addd(f"{wd}WithReportedGbp",
+             tex(row["lag_with_reported_add_on_gbp_per_household"]))
+    if rows:
+        a = r["all_households"]
+        addd("AllGbp", tex(a["lag_gbp_per_household"]))
+        addd("AllPctOfShock", tex(a["lag_pct_of_energy_shock"], ".1f"))
+        addd("AllColGbp", tex(a["col_payments_gbp_per_household"]))
+        addd("AllNetGbp", tex(a["col_minus_lag_gbp_per_household"]))
+        nets = [x["col_minus_lag_gbp_per_household"] for x in rows]
+        addd("NetNegativeCount", str(sum(n < 0 for n in nets)))
+        addd("BottomHalfSharePct", f"{100 * sum(x['lag_gbp_bn'] for x in rows[:5]) / sum(x['lag_gbp_bn'] for x in rows):.0f}")
+        t = ["% generated by uprating_lag_reform.py -- do not edit by hand.",
+             "\\begin{tabular}{lrrrr}", "\\toprule",
+             "Decile & Lag cost (\\pounds) & \\% of energy shock & "
+             "CoL payments (\\pounds) & CoL $-$ lag (\\pounds) \\\\",
+             "\\midrule"]
+        for x in rows + [a]:
+            lab = "All households" if x["decile"] == "all" else str(x["decile"])
+            if x["decile"] == "all":
+                t.append("\\midrule")
+            t.append(f"{lab} & {tex(x['lag_gbp_per_household'])} & "
+                     f"{tex(x['lag_pct_of_energy_shock'], '.1f')} & "
+                     f"{tex(x['col_payments_gbp_per_household'])} & "
+                     f"{tex(x['col_minus_lag_gbp_per_household'])} \\\\")
+        t += ["\\bottomrule", "\\end{tabular}"]
+        tp = RESULTS_DIR / "table_lagdecile.tex"
+        tp.write_text("\n".join(t) + "\n")
+        shutil.copy(tp, PAPER_DIR / "table_lagdecile.tex")
     defl = RESULTS_DIR / "uprating_lag_reform_deflated.json"
     if defl.exists():
         d = json.loads(defl.read_text())

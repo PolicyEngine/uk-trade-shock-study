@@ -1,96 +1,88 @@
 \section{Introduction}\label{sec:intro}
 
-Between 2021 and 2026 Britain experienced four trade events: a new
-customs border with the EU (2021), the 2022 terms-of-trade
-deterioration, US tariffs on its exports (2025) and a trade agreement
-with India (2026). Three were policy acts, one of them foreign; the
-second was a market event.
+Tax--benefit systems insure households against earnings losses
+automatically: when pay falls, tax liabilities fall and means-tested
+entitlements rise, with no decision by anyone. They do not insure
+against import-price rises in the same way. Benefits are set in cash
+and re-indexed once a year to past inflation, so when the price of
+food or energy jumps, any support within the year has to be
+legislated. Between 2021 and 2026 the United Kingdom met both kinds of
+shock in quick succession: a new customs border with the EU, the 2022
+terms-of-trade deterioration, US tariffs on its exports and a trade
+agreement with India.
 
-Each episode has its own literature, and several have been studied at
-household level: the TCA food shock by income decile, the
-energy shock's incidence and relief in detail. To my knowledge no study has put these episodes side by side, or run a
-trade-labelled shock through the statutory tax--benefit system. This paper does both: it
-measures household incidence by income decile for the price-led
-episodes on a common basis, and computes the automatic and
-discretionary policy response to each episode.
+This paper asks who bore these four shocks and how much of their cost
+the state absorbed, automatically and by discretion. I take the size
+of each shock from published sources (an estimate for the post-Brexit
+food-price effect, Ofgem's price-cap levels for energy, the
+government's projection for the UK--India agreement) and build an
+assumed earnings scenario for the tariffs. I then compute their
+incidence by income decile, first on published expenditure tables and
+then on household microdata in the PolicyEngine UK tax--benefit model,
+where each legislated instrument and a counterfactual April 2022
+uprating are scored on the same households. The results are
+conditional incidence, given the shock, not causal estimates of what
+each event did.
 
-The design applies one household lens to each shock: income deciles throughout and, for the household-stage results, the same microdata, model version and tax--benefit calculator. Three
-shocks are \emph{imported shocks}, taken from published sources (an estimate for the food shock, observed
-cap levels for energy, the government's own projections for the
-positive one) and never re-estimated here; the tariff shock is an assumed scenario. Each is mapped onto households
-through two channels: an expenditure channel, consumer prices against expenditure patterns,
-and labour income through the statutory tax--benefit system.
+There are four findings. First, both adverse price shocks were
+regressive, because of the goods they fell on. On its realised path
+the energy shock cost the bottom decile
+\MsEnergyRealisedPctSpendDecOne\ per cent of spending against
+\MsEnergyRealisedPctSpendDecTen\ per cent at the top, and the food
+shock \MsTcaWindowAvgPctSpendDecOne\ against
+\MsTcaWindowAvgPctSpendDecTen\ per cent; the UK--India agreement's
+consumer-price gains fall on clothing and footwear and are small and
+proportional. Yet \SsWithinPct\ per cent of the variance in the energy
+burden lies within income deciles.
 
-Because gross sizes span more than two orders of magnitude, comparisons run in ratios: burden as a share of spending by decile,
-and cushioning as a share of the gross shock. And because the rulebook itself moved
-across the window (the Covid uplift removed in 2021; upratings lagging
-a year behind prices; the Energy Price Guarantee legislated
-mid-shock), the design treats the tax--benefit vintage as an explicit
-dimension: for the energy episode, the same households are scored under two consecutive parameter systems and with the discretionary layer switched off.
+Second, the discretionary response to the energy shock was large and
+the response to the food shock was nil. The Energy Price Guarantee
+absorbed \SsEpgRatePct\ per cent of the counterfactual energy cost;
+energy-specific instruments together returned
+\SsEnergySpecificRatePct\ per cent
+(\SsEnergySpecificRateMinPct--\SsEnergySpecificRateMaxPct\ across
+price-path conventions) and, with the Cost of Living Payments,
+\SsDiscretionaryRatePct\ per cent
+(\SsFullRateMinPct--\SsFullRateMaxPct). Rates fall with income above
+the third decile, whose point estimate is
+\SsGridPaperFullMaxDecilePct\ per cent. No instrument was legislated
+against the food-price rise.
 
-Three results stand out. First, both negative price shocks were regressive and the positive episode was proportional: on its realised path the energy shock
-took \MsEnergyRealisedPctSpendDecOne\ per cent of bottom-decile
-spending against \MsEnergyRealisedPctSpendDecTen\ per cent at the
-top. The TCA food shock was
-\MsTcaWindowAvgPctSpendDecOne\ against
-\MsTcaWindowAvgPctSpendDecTen\ per cent on the window-average path,
-while the UK--India agreement's consumer gains are proportional and worth
-a few pounds a year, too small to register as a share of spending. Second, each episode's regressivity is generated by its category's
-budget-share gradient: food takes \MsTcaBudgetSharePctDecOne\ per
-cent of bottom-decile spending against \MsTcaBudgetSharePctDecTen\
-at the top, energy \MsEnergyBudgetSharePctDecOne\ against
-\MsEnergyBudgetSharePctDecTen, while clothing and footwear take similar shares in every decile.
-Which goods a shock hits, not just how large it is, determines its distributional profile.
+Third, the one automatic price-side channel, indexation, arrived a
+year late. Had the April 2022 uprating matched that year's inflation,
+benefit income would have been \pounds\SsLagReformBn\ billion higher,
+\pounds\SsLagDecAllGbp\ a household against \pounds\SsLagDecAllColGbp\
+of Cost of Living Payments; the shortfall exceeded the payments in
+every income decile.
 
-Third, the finding that motivates the rulebook axis: the modelled
-responses ran through different instruments on different margins. The
-earnings-led tariff scenario was cushioned automatically
-(taxes and benefits offset \EThreeDispTaxBenRatePct\ to
-\EThreeWageTaxBenRatePct\ per cent of the loss); the
-price-led energy shock was cushioned by discretion, the Guarantee
-alone taking \MsEnergyCushionShareFyPct\ per cent of the
-counterfactual shock; and indexation, the price side's one automatic
-channel, followed the previous September's inflation, leaving a
-single adult's Universal Credit allowance
-\pounds\MsUcLagCostGbp\ below contemporaneous indexation in the
-crisis year, months after the \pounds\MsUcUpliftRemovalGbp\ uplift
-ended. The automatic and discretionary rates measure different things and are not directly comparable (Section~\ref{sec:framework}).
+Fourth, in the tariff scenario taxes and benefits offset
+\EThreeDispTaxBenRatePct\ to \EThreeWageTaxBenRatePct\ per cent of
+lost earnings. That rate is a property of the UK system, not of the
+tariff: the same loss spread evenly over all employees is cushioned
+within a point of it. What is specific to the tariff is who bears it.
+The loss rises with income as a share of household income, the
+opposite of the price shocks.
 
-The paper makes three contributions. First, the statutory household stage itself. The trade literature
-measures shocks without the system that redistributes them; the
-microsimulation literature measures the system against income shocks,
-for which it is designed.
-Joining them for the energy and post-Brexit
-food episodes shows that, with nominal incomes fixed, the modelled cash benefits do
-not respond to a \emph{price} shock (the model's own Energy Price
-Guarantee variable does, and the paper counts it as discretionary),
-that the discretionary response to one shock was large, cushioned
-lower deciles at higher rates and on the headline convention returned
-the bottom four deciles more than their counterfactual energy cost,
-while the other received no instrument,
-and that, on imputed exposure, most of the variance in the energy
-burden lies within income deciles rather than between them
-(Section~\ref{sec:results-secondstage}); an appendix exercise aggregates the measured incidence into MPC-weighted first-round
-demand and Atkinson-weighted welfare under assumed parameters
-(Appendix~\ref{sec:results-mpc}).
+The paper joins two literatures. Studies of trade and households
+measure exposure through spending and earnings but stop before the
+tax--benefit system \citep{porto2006, fajgelbaumkhandelwal2016}.
+Studies of automatic stabilisers measure the system against income
+and employment shocks \citep{dolls2012, brewertasseva2021}. The
+closest work on the 2022 episode scores fiscal measures against
+inflation in the EU \citep{amores2025} and UK tax--benefit policy over
+2019--23 \citep{popova2026}, and \citet{levell2025} study the welfare
+effects of the energy shock and its relief on transaction data. I add
+three things: a decomposition of the energy response by instrument
+and decile that separates energy-specific from general support; the
+indexation lag by decile on the same households; and a comparison
+across episodes that sets a cushioned price shock beside an
+uncushioned one and an earnings shock beside both.
 
-Second, the rulebook axis: holding a shock fixed and
-varying the vintage of the welfare state that receives it. It is executed here for the
-largest episode, the same households scored under the 2022 and 2023
-parameter systems, which prices the crisis-year uprating lag through
-the full statutory structure (Section~\ref{sec:results-indexation}).
-
-Third, the comparative set: the tariff shock is carried as an assumed earnings scenario, and every imported shock is labelled estimate or projection. The comparative design cannot rank episodes
-on welfare and its cross-episode ratios are descriptive; it records
-that, on an episode-specific attribution, the energy shock was met
-with energy-specific instruments and the food price rise with none.
-
-Section~\ref{sec:literature} positions the paper.
-Section~\ref{sec:framework} defines the estimand and sets out the four
-episodes and the decile-table method. Section~\ref{sec:results}
-reports incidence by decile from published expenditure tables;
-Section~\ref{sec:results-secondstage} reports the household-stage
-results on Microcosm UK records in PolicyEngine UK.
-Section~\ref{sec:discussion} concludes, and the appendix holds the
-sensitivity grid, the reconciliations and the demand and welfare
-aggregation.
+The estimates are first-round and static, they inherit the
+uncertainty of the shocks they condition on, and the energy levels
+depend on stated conventions that I vary. Section~\ref{sec:literature}
+reviews the literature. Section~\ref{sec:framework} sets out the
+framework, the four episodes and the method.
+Section~\ref{sec:results} reports incidence on published expenditure
+tables and Section~\ref{sec:results-secondstage} the household-level
+results. Section~\ref{sec:discussion} concludes.

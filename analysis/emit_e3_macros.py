@@ -26,6 +26,23 @@ Three families of macro:
   (results/e3_sensitivity.json, analysis/sensitivity_duration_takeup.py).
   Emitted only when that file exists.
 
+* ``\\EThreeUnif...`` -- the uniform benchmark: the same gross loss spread
+  over every employee (results/e3_uniform.json,
+  analysis/e3_uniform_and_income_shares.py). ``...GapPts`` is tariff pattern
+  minus uniform.
+* ``\\EThree{Disp,Wage}SharePctDec<N>`` -- gross earnings loss as a
+  percentage of the decile's baseline HBAI household net income;
+  ``\\EThree{Disp,Wage}NetSharePctDec<N>`` -- the post-cushion net income
+  loss on the same base (``\\EThreeNetSharePctDec<N>`` is the displacement
+  one, the central margin); ``...SpendSharePctDec<N>`` -- the net loss as a
+  percentage of consumption; ``\\EThreeLossSharePctDec<N>`` -- the decile's
+  share of the total gross loss. ``<N>`` runs One..Ten, plus ``All``.
+  DECILES HERE ARE HOUSEHOLD-WEIGHTED deciles of equivalised HBAI net income
+  (as in the price episodes); the older ``...DecGbp<N>`` macros use
+  person-weighted deciles. From results/e3_income_shares.json.
+* ``\\EThreeInd...`` -- summary of the industry table
+  (results/e3_industry.json, analysis/e3_industry_table.py).
+
 The wage-cut margin mixes the Universal Credit claiming re-draw exactly
 (all-claim and none-claim simulations, weights uc_takeup and 1 - uc_takeup),
 like the displacement margin. ``\\EThreeWageDraws`` is kept because the
@@ -190,6 +207,75 @@ def sensitivity_macros(sens: dict) -> dict:
     return m
 
 
+DECILE_WORDS = ["One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"]
+_LINES = (("income_tax", "Tax"), ("national_insurance", "Ni"), ("universal_credit", "Uc"),
+          ("jsa_contrib", "JsaContrib"), ("pension_contributions", "Pension"))
+
+
+def uniform_macros(unif: dict) -> dict:
+    """Macros for the uniform (economy-wide) benchmark."""
+    rows, gaps = unif["rows"], unif["tariff_minus_uniform"]
+    m = {
+        "EThreeUnifShockPct": f"{100 * unif['uniform_shock']:.3f}",
+        "EThreeUnifEmployeesM": f"{unif['employees'] / 1e6:.1f}",
+        "EThreeUnifEmployeeRecords": f"{unif['employee_records']:,}",
+        "EThreeUnifGrossM": f"{unif['gross_earnings_loss'] / 1e6:,.0f}",
+        "EThreeUnifDispWorkersK": (
+            f"{rows['uniform_displacement']['extra']['displaced_weighted_mean'] / 1e3:.0f}"
+        ),
+    }
+    for margin, key in (("wage_cut", "Wage"), ("displacement", "Disp")):
+        row, gap = rows[f"uniform_{margin}"], gaps[margin]
+        m[f"EThreeUnif{key}RatePct"] = f"{100 * row['cushioning_rate']:.1f}"
+        m[f"EThreeUnif{key}TaxBenRatePct"] = f"{100 * row['tax_benefit_cushioning_rate']:.1f}"
+        m[f"EThreeUnif{key}SamplingSe"] = f"{100 * row['cushioning_rate_sampling_se']:.1f}"
+        m[f"EThreeUnif{key}ExchequerM"] = f"{row['exchequer_cost'] / 1e6:,.0f}"
+        m[f"EThreeUnif{key}GapPts"] = f"{100 * gap['cushioning_rate']:+.1f}"
+        m[f"EThreeUnif{key}TaxBenGapPts"] = f"{100 * gap['tax_benefit_cushioning_rate']:+.1f}"
+        for line, stem in _LINES:
+            m[f"EThreeUnif{key}{stem}OfGrossPct"] = f"{100 * row['share_of_gross_loss'][line]:.1f}"
+            m[f"EThreeUnif{key}{stem}GapPts"] = f"{100 * gap['share_of_gross_loss'][line]:+.1f}"
+    return m
+
+
+def income_share_macros(income: dict) -> dict:
+    """Macros for losses as shares of decile income and consumption."""
+    shares = income["shares"]
+    keys = [*map(str, range(1, 11)), "all"]
+    words = [*DECILE_WORDS, "All"]
+    m = {}
+
+    def put(stem, table, field, digits=3):
+        for key, word in zip(keys, words):
+            m[f"EThree{stem}PctDec{word}"] = f"{100 * table[key][field]:.{digits}f}"
+
+    for pattern, prefix in (("tariff", ""), ("uniform", "Unif")):
+        for margin, key in (("displacement", "Disp"), ("wage_cut", "Wage")):
+            table = shares[f"{pattern}_{margin}"]
+            put(f"{prefix}{key}Share", table, "gross_loss_share_of_income")
+            put(f"{prefix}{key}NetShare", table, "net_loss_share_of_income")
+            put(f"{prefix}{key}NetSpendShare", table, "net_loss_share_of_consumption")
+            put(f"{prefix}{key}CushionRate", table, "cushioning_rate", 1)
+        put(f"{prefix}LossShare", shares[f"{pattern}_wage_cut"], "share_of_total_gross_loss", 1)
+    # the central margin, under the short name
+    put("NetShare", shares["tariff_displacement"], "net_loss_share_of_income")
+    return m
+
+
+def industry_macros(industry: dict) -> dict:
+    rows = industry["rows"]
+    return {
+        "EThreeIndDivisions": f"{len(rows)}",
+        "EThreeIndRowsShown": f"{industry['top_rows_shown']}",
+        "EThreeIndTopLossSharePct": f"{100 * rows[0]['loss_share']:.0f}",
+        "EThreeIndTopThreeLossSharePct": f"{100 * industry['top3_loss_share']:.0f}",
+        "EThreeIndTopFiveLossSharePct": f"{100 * industry['top5_loss_share']:.0f}",
+        "EThreeIndEmployeesM": f"{industry['total']['employees'] / 1e6:.2f}",
+        "EThreeIndMeanShockPct": f"{100 * industry['total']['shock']:.2f}",
+        "EThreeIndMaxShockPct": f"{100 * max(r['shock'] for r in rows):.2f}",
+    }
+
+
 def main() -> None:
     disp = _load("full_tariff_displacement")
     no_jsa = _load("full_tariff_displacement_no_jsa")
@@ -317,6 +403,12 @@ def main() -> None:
         if abs(sens["central"]["cushioning_rate"] - disp["cushioning_rate"]) > 1e-6:
             raise ValueError("e3_sensitivity.json was built on a different central run")
         m.update(sensitivity_macros(sens))
+    for name, build in (("e3_uniform", uniform_macros),
+                        ("e3_income_shares", income_share_macros),
+                        ("e3_industry", industry_macros)):
+        payload = _load(name)
+        if payload is not None:
+            m.update(build(payload))
     bad = [k for k in m if not k.isalpha()]
     if bad:
         raise ValueError(f"macro names must be letters only: {bad}")

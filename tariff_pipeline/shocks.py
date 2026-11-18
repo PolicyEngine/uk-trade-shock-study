@@ -213,6 +213,14 @@ class TradeShockScenario:
     #: Weeks of New Style JSA paid within the simulated year (statutory
     #: maximum 182 days = 26 weeks, Jobseekers Act 1995 s. 5(1)).
     new_style_jsa_weeks: float = 26.0
+    #: UNIFORM BENCHMARK. When set, EVERY person takes this shock instead of
+    #: their division's tariff shock, so every employee (not only those in
+    #: the exposed divisions) loses this share of earnings (wage cut) or
+    #: faces this job-loss probability (displacement). Used to ask what the
+    #: tariff's sectoral pattern adds to an economy-wide loss of the same
+    #: size (analysis/e3_uniform_and_income_shares.py). ``elasticity`` and
+    #: ``excluded_divisions`` are then ignored.
+    uniform_shock: float | None = None
 
     @property
     def wage_bill_incidence(self) -> float:
@@ -239,6 +247,8 @@ class TradeShockScenario:
             raise ValueError("duration_equivalent must lie in (0, 1]")
         if not 0.0 <= self.new_style_jsa_weeks <= 26.0:
             raise ValueError("new_style_jsa_weeks must lie in [0, 26]")
+        if self.uniform_shock is not None and not 0.0 < self.uniform_shock < 1.0:
+            raise ValueError("uniform_shock must lie strictly between 0 and 1")
 
 
 #: Scenario presets: {full_tariff, epd} x {displacement, wage_cut, inactivity}.
@@ -329,6 +339,10 @@ TRANSITION_PRESETS = {
 
 
 def _person_shock(persons: pd.DataFrame, scenario: TradeShockScenario) -> np.ndarray:
+    if scenario.uniform_shock is not None:
+        return np.full(
+            len(persons), scenario.uniform_shock * scenario.duration_equivalent, dtype=float
+        )
     shock = person_earnings_shock(
         persons["sic_division"],
         scenario.tariff_scenario,

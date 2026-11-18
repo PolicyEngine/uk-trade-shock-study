@@ -47,10 +47,10 @@ REBASES_FINE = [round(0.55 + 0.05 * i, 2) for i in range(11)]
 # without the rebate.  The paper-facing macros named ...Ebss... report the
 # "energy" stack (see the macro block below).
 STACKS = ["none", "epg", "epg_ebss", "energy", "full"]
-STACK_LABEL = {"none": "None", "epg": "EPG only",
-               "epg_ebss": "EPG + EBSS",
-               "energy": "+ CT rebate (energy-specific)",
-               "full": "Full stack"}
+STACK_LABEL = {"none": "None", "epg": "Guarantee only",
+               "epg_ebss": "+ Bills Support Scheme",
+               "energy": "+ Council Tax rebate",
+               "full": "+ Cost of Living Payments"}
 
 
 def main() -> None:

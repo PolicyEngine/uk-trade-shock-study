@@ -698,6 +698,7 @@ def emit_macros(res, path=None):
     words = ("One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten")
     for row, wd in zip(res["by_decile"], words):
         add(f"CushionPctDec{wd}", f"{row['cushioning_rate_pct']:.0f}")
+        add(f"CushionPctOneDpDec{wd}", f"{row['cushioning_rate_pct']:.1f}")
         add(f"EnergySpecificPctDec{wd}", f"{row['energy_specific_rate_pct']:.0f}")
         add(f"NoCtrCushionPctDec{wd}",
             f"{row['cushioning_rate_pct_without_ctr']:.0f}")

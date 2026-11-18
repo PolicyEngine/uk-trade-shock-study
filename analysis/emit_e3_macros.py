@@ -19,6 +19,20 @@ Three families of macro:
   ``\\EThreeDispBelowWage``) stay defined and still describe the BERNOULLI
   draws -- the only thing a per-draw statistic can describe.
 
+* ``\\EThreeAshe...`` / ``\\EThreeHigherRate...`` -- the ASHE validation of
+  the exposed employees' earnings (results/e3_ashe.json, written by
+  analysis/ashe_validation.py). Emitted only when that file exists.
+* ``\\EThreeSens...`` -- duration, take-up and New Style JSA sensitivity
+  (results/e3_sensitivity.json, analysis/sensitivity_duration_takeup.py).
+  Emitted only when that file exists.
+
+The wage-cut margin mixes the Universal Credit claiming re-draw exactly
+(all-claim and none-claim simulations, weights uc_takeup and 1 - uc_takeup),
+like the displacement margin. ``\\EThreeWageDraws`` is kept because the
+appendix uses it in "averages \\EThreeWageDraws\\ take-up draws"; it now
+expands to words that keep that sentence true ("the all-claim and
+none-claim") rather than to a draw count, which would be zero.
+
 Split macros: ``\\EThree{Disp,DispNoJsa,Wage}<Line>SharePct`` is the line's
 share of the total cushion (the lines sum to 100);
 ``...<Line>OfGrossPct`` is its share of the gross earnings loss (the lines
@@ -74,6 +88,108 @@ def _split(result: dict, key: str) -> dict:
     return m
 
 
+def _k(value: float) -> str:
+    """GBP thousand, one decimal."""
+    return f"{value / 1e3:.1f}"
+
+
+def ashe_macros(ashe: dict) -> dict:
+    """Macros for the ASHE validation of exposed employees' earnings."""
+    bench = ashe["ashe"][ashe["benchmark_edition"]]
+    overall = ashe["model"]["overall"]
+    displaced = overall["expected_displaced_weighted"]
+    mean = bench["expected_displaced_weighted_mean"]
+    median = bench["expected_displaced_weighted_mean_of_division_medians"]
+    above = bench["share_above_higher_rate"]
+    top = next(k for k in displaced if k.startswith("loss_share_of_"))
+    n_top = top.split("_")[3]
+    m = {
+        # mean earnings of the expected displaced workers (gross loss / workers)
+        "EThreeAsheModelMeanK": _k(displaced["mean"]),
+        "EThreeAsheMeanK": _k(mean["ashe"]),
+        "EThreeAsheModelOverAsheMeanPct": f"{100 * bench['model_over_ashe_mean']:.0f}",
+        # like-for-like median: weighted mean of division medians, both sides
+        "EThreeAsheModelMedianK": _k(median["model"]),
+        "EThreeAsheMedianK": _k(median["ashe"]),
+        "EThreeAsheModelOverAsheMedianPct": f"{100 * bench['model_over_ashe_median']:.0f}",
+        # the model's pooled median over expected displaced workers
+        "EThreeAsheModelPooledMedianK": _k(displaced["median"]),
+        "EThreeAsheModelEmployeeMeanK": _k(overall["employee_weighted"]["mean"]),
+        "EThreeAsheModelEmployeeMedianK": _k(overall["employee_weighted"]["median"]),
+        "EThreeAsheLossWeightedRatioPct": f"{100 * bench['loss_weighted_ratio_of_means']:.0f}",
+        "EThreeAsheJobCountMeanK": _k(bench["ashe_mean_with_ashe_job_counts"]["ashe"]),
+        "EThreeAsheManufacturingMeanK": _k(bench["manufacturing_section_c"]["mean_uprated"]),
+        "EThreeAsheManufacturingMedianK": _k(bench["manufacturing_section_c"]["median_uprated"]),
+        "EThreeAsheDivisions": f"{mean['divisions']}",
+        "EThreeAsheEdition": ashe["benchmark_edition"],
+        "EThreeAsheTaxYear": bench["tax_year"].replace("-", "--"),
+        "EThreeAsheUpratingPct": f"{100 * (bench['uprating_factor'] - 1):.1f}",
+        # higher-rate exposure
+        "EThreeHigherRateThreshold": f"{ashe['higher_rate_threshold']:,.0f}",
+        "EThreeHigherRateSharePct": f"{100 * displaced['share_above_higher_rate']:.0f}",
+        "EThreeHigherRateLossSharePct": (
+            f"{100 * displaced['share_of_gross_loss_above_higher_rate']:.0f}"
+        ),
+        "EThreeAsheHigherRateSharePct": f"{100 * above['ashe_interpolated']:.0f}",
+        "EThreeAsheHigherRateLowPct": f"{100 * above['ashe_lower_bound']:.0f}",
+        "EThreeAsheHigherRateHighPct": f"{100 * above['ashe_upper_bound']:.0f}",
+        "EThreeAsheHigherRateModelSharePct": f"{100 * above['model']:.0f}",
+        # concentration: the mean without the largest loss records
+        "EThreeAsheTopRecords": n_top,
+        "EThreeAsheTopLossSharePct": f"{100 * displaced[top]:.1f}",
+        "EThreeAsheModelMeanExTopK": _k(
+            displaced[f"mean_without_{n_top}_largest_loss_records"]
+        ),
+    }
+    check = next((v for k, v in ashe["ashe"].items() if k != ashe["benchmark_edition"]), None)
+    if check is not None:
+        m["EThreeAsheCheckEdition"] = check["edition"]
+        m["EThreeAsheCheckMeanK"] = _k(check["expected_displaced_weighted_mean"]["ashe"])
+        m["EThreeAsheCheckMedianK"] = _k(
+            check["expected_displaced_weighted_mean_of_division_medians"]["ashe"]
+        )
+    return m
+
+
+def sensitivity_macros(sens: dict) -> dict:
+    """Macros for the duration, take-up and New Style JSA sensitivity."""
+    pct = lambda row, key="cushioning_rate": f"{100 * row[key]:.1f}"
+    takeup = sens["uc_takeup"]
+    grid = sorted(takeup, key=float)
+    low, high = grid[0], grid[-1]
+    m = {
+        "EThreeSensTakeupLow": low,
+        "EThreeSensTakeupHigh": high,
+        "EThreeSensTakeupLowRatePct": pct(takeup[low]),
+        "EThreeSensTakeupHighRatePct": pct(takeup[high]),
+        "EThreeSensTakeupLowTaxBenRatePct": pct(takeup[low], "tax_benefit_cushioning_rate"),
+        "EThreeSensTakeupHighTaxBenRatePct": pct(takeup[high], "tax_benefit_cushioning_rate"),
+        "EThreeSensTakeupRangePts": (
+            f"{100 * (takeup[high]['cushioning_rate'] - takeup[low]['cushioning_rate']):.1f}"
+        ),
+    }
+    for weeks, stem in (("0", "Zero"), ("13", "Thirteen")):
+        row = sens["new_style_jsa_weeks"][weeks]
+        m[f"EThreeSensJsa{stem}RatePct"] = pct(row)
+        m[f"EThreeSensJsa{stem}TaxBenRatePct"] = pct(row, "tax_benefit_cushioning_rate")
+    lines = (("income_tax", "Tax"), ("national_insurance", "Ni"),
+             ("universal_credit", "Uc"), ("jsa_contrib", "JsaContrib"))
+    for label, stem in (("6m", "SixMonth"), ("3m", "ThreeMonth")):
+        spell = sens["duration"].get(label)
+        if spell is None:
+            continue
+        m[f"EThreeSens{stem}JsaWeeks"] = f"{spell['new_style_jsa_weeks']:.0f}"
+        for method, tag in (("annual_averaging", "Annual"), ("monthly_state_mix", "Mix")):
+            row = spell[method]
+            m[f"EThreeSens{stem}{tag}RatePct"] = pct(row)
+            m[f"EThreeSens{stem}{tag}TaxBenRatePct"] = pct(row, "tax_benefit_cushioning_rate")
+            for line, line_stem in lines:
+                m[f"EThreeSens{stem}{tag}{line_stem}OfGrossPct"] = (
+                    f"{100 * row['share_of_gross_loss'][line]:.1f}"
+                )
+    return m
+
+
 def main() -> None:
     disp = _load("full_tariff_displacement")
     no_jsa = _load("full_tariff_displacement_no_jsa")
@@ -83,6 +199,13 @@ def main() -> None:
         raise FileNotFoundError("run analysis/run_scenarios.py --e3 first")
     if disp.get("design") != "exact_expectation":
         raise ValueError("full_tariff_displacement.json is not the exact-expectation run")
+    if wage.get("design") != "exact_takeup_expectation":
+        raise ValueError(
+            "full_tariff_wage_cut.json is not the exact-take-up run; run "
+            "analysis/run_scenarios.py --e3 --e3-part wage_cut"
+        )
+    if wage["uc_takeup"] != disp["uc_takeup"]:
+        raise ValueError("wage-cut and displacement runs use different UC take-up")
     d = bern["draws"]
     rates = np.array([x["cushioning_rate"] for x in d])
     gross = np.array([x["gross_earnings_loss"] for x in d])
@@ -121,7 +244,13 @@ def main() -> None:
         "EThreeDispNoJsaExchequerM": f"{no_jsa['exchequer_cost_mean'] / 1e6:,.0f}",
         # ---- wage cut
         "EThreeWageRatePct": f"{100 * wage_rate:.1f}",
-        "EThreeWageDraws": f"{wage['n_draws']}",
+        # no draws: the claiming re-draw is mixed exactly (see module docstring)
+        "EThreeWageDraws": "the all-claim and none-claim",
+        "EThreeWageTakeupPasses": f"{wage['n_simulation_passes']}",
+        "EThreeWageRedrawnUnits": f"{wage['redrawn_benefit_units']}",
+        "EThreeWageAllClaimRatePct": f"{100 * wage['takeup_nodes']['1']['cushioning_rate']:.2f}",
+        "EThreeWageNoneClaimRatePct": f"{100 * wage['takeup_nodes']['0']['cushioning_rate']:.2f}",
+        "EThreeWageSamplingSe": f"{100 * wage['cushioning_rate_sampling_se']:.1f}",
         "EThreeWageExchequerM": f"{wage['exchequer_cost_mean'] / 1e6:,.0f}",
         "EThreeDispMinusWagePts": f"{100 * (disp['cushioning_rate'] - wage_rate):.1f}",
         # ---- Bernoulli comparator (superseded 20-draw run, no New Style JSA)
@@ -180,6 +309,17 @@ def main() -> None:
     low_nj = _load("full_tariff_obr_low_displacement_no_jsa")
     if low_nj is not None:
         m["EThreeObrLowDispNoJsaRatePct"] = f"{100 * low_nj['cushioning_rate']:.1f}"
+    ashe = _load("e3_ashe")
+    if ashe is not None:
+        m.update(ashe_macros(ashe))
+    sens = _load("e3_sensitivity")
+    if sens is not None:
+        if abs(sens["central"]["cushioning_rate"] - disp["cushioning_rate"]) > 1e-6:
+            raise ValueError("e3_sensitivity.json was built on a different central run")
+        m.update(sensitivity_macros(sens))
+    bad = [k for k in m if not k.isalpha()]
+    if bad:
+        raise ValueError(f"macro names must be letters only: {bad}")
     lines = ["% Generated by analysis/emit_e3_macros.py -- do not edit."]
     lines += [f"\\newcommand{{\\{k}}}{{{v}}}" for k, v in m.items()]
     out = RESULTS / "generated_e3.tex"

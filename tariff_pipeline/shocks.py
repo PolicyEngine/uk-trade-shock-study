@@ -969,6 +969,62 @@ def apply_fixed_displacement(
     return _attach_scenario_attrs(_blank_reallocation(shocked), scenario, seed)
 
 
+def apply_partial_year_spell(
+    persons: pd.DataFrame,
+    scenario: TradeShockScenario,
+    affected: np.ndarray,
+    spell_fraction: float,
+    baseline_hours: np.ndarray,
+    seed: int = 0,
+) -> pd.DataFrame:
+    """Shocked person table for a PART-YEAR job-loss spell, annual averaging.
+
+    Duration sensitivity for the exact-expectation design. The annual model
+    has no months, so a worker out of work for ``spell_fraction`` of the year
+    is represented by their ANNUAL totals: earnings and hours are scaled by
+    ``1 - spell_fraction`` and the worker keeps their baseline employment
+    status (they are in work for most or half of the year; a full-year
+    UNEMPLOYED status against positive earnings is the incoherent hybrid this
+    function deliberately avoids). Earnings-linked deductions are scaled by
+    ``build_shocked_simulation`` through the earnings factor. New Style JSA
+    is paid for ``min(scenario.new_style_jsa_weeks, 52 x spell_fraction)``
+    weeks -- a six-month spell contains the whole 26-week entitlement.
+
+    WHAT THIS GETS RIGHT AND WRONG. Income tax is assessed on annual income,
+    so it is right. Universal Credit and National Insurance are assessed
+    monthly / per pay period; averaging the year's earnings before applying
+    their thresholds and taper UNDERSTATES Universal Credit for the months
+    out of work (and understates National Insurance paid in the months in
+    work). The annual-averaging rate is therefore a lower bound on the
+    benefit response; ``analysis/sensitivity_duration_takeup.py`` pairs it
+    with a monthly-state mix that errs the other way.
+    """
+    if scenario.margin != "displacement":
+        raise ValueError("apply_partial_year_spell requires the displacement margin")
+    if not 0.0 < spell_fraction < 1.0:
+        raise ValueError("spell_fraction must lie strictly between 0 and 1")
+    affected = np.asarray(affected, dtype=bool)
+    if affected.shape != (len(persons),):
+        raise ValueError("spell mask must have one entry per person")
+    earnings = persons["employment_income"].to_numpy(dtype=float)
+    if (affected & ~(earnings > 0)).any():
+        raise ValueError("only employees with positive earnings can lose their job")
+    keep = np.where(affected, 1.0 - spell_fraction, 1.0)
+    shocked = persons.copy()
+    shocked["displaced"] = np.zeros(len(persons), dtype=bool)
+    shocked["inactive"] = np.zeros(len(persons), dtype=bool)
+    shocked["lcwra"] = np.zeros(len(persons), dtype=bool)
+    shocked["earnings_changed"] = affected
+    shocked["new_style_jsa_recipient"] = affected
+    shocked["employment_income"] = earnings * keep
+    shocked["hours_worked"] = np.asarray(baseline_hours, dtype=float) * keep
+    shocked = _attach_scenario_attrs(_blank_reallocation(shocked), scenario, seed)
+    shocked.attrs["new_style_jsa_weeks"] = min(
+        float(scenario.new_style_jsa_weeks), 52.0 * spell_fraction
+    )
+    return shocked
+
+
 #: NEW STYLE (CONTRIBUTION-BASED) JSA -- A LABELLED APPROXIMATION.
 #:
 #: policyengine-uk 2.174.1 has no entitlement formula for contributory JSA:
@@ -1013,14 +1069,24 @@ def new_style_jsa_amounts(
     weekly_rate_25_plus: float,
     weekly_lower_earnings_limit: float,
     weeks: float = 26.0,
+    max_weeks: float = 26.0,
 ) -> np.ndarray:
-    """Annual New Style JSA (£) per person under the approximation above."""
+    """Annual New Style JSA (£) per person under the approximation above.
+
+    ``max_weeks`` is the statutory 26 except in ONE use: the duration
+    sensitivity's "out of work" state, an annualised state in which the
+    benefit is in payment every week (``weeks = max_weeks = 52``) and whose
+    outcomes are then multiplied by the share of the year spent out of work.
+    It never represents a 52-week entitlement.
+    """
     displaced_unemployed = np.asarray(displaced_unemployed, dtype=bool)
     age = np.asarray(age, dtype=float)
     baseline_earnings = np.asarray(baseline_earnings, dtype=float)
     state_pension_age = np.asarray(state_pension_age, dtype=bool)
-    if not 0.0 <= weeks <= 26.0:
-        raise ValueError("New Style JSA is payable for at most 26 weeks")
+    if not 0.0 <= weeks <= max_weeks or max_weeks > 52.0:
+        raise ValueError(
+            f"New Style JSA is payable for at most {max_weeks:.0f} weeks"
+        )
     eligible = (
         displaced_unemployed
         & (age >= NEW_STYLE_JSA_MIN_AGE)
@@ -1056,8 +1122,15 @@ def apply_new_style_jsa(sim, baseline_sim, shocked_table, period) -> np.ndarray:
             dtype=dtype,
         )
 
+    # Recipients: displaced-and-unemployed workers, or -- for the part-year
+    # spell table, whose workers keep their employment status -- the workers
+    # the table names explicitly.
+    if "new_style_jsa_recipient" in shocked_table:
+        recipients = shocked_table["new_style_jsa_recipient"].to_numpy(dtype=bool)
+    else:
+        recipients = displaced & ~inactive
     award = new_style_jsa_amounts(
-        displaced & ~inactive,
+        recipients,
         _person("age"),
         _person("employment_income"),
         _person("is_SP_age", bool),
@@ -1065,6 +1138,7 @@ def apply_new_style_jsa(sim, baseline_sim, shocked_table, period) -> np.ndarray:
         float(contrib.amount_over_25),
         lel,
         float(shocked_table.attrs.get("new_style_jsa_weeks", 26.0)),
+        float(shocked_table.attrs.get("new_style_jsa_max_weeks", 26.0)),
     )
     reported = np.maximum(_person("jsa_contrib_reported"), award)
     sim.set_input("jsa_contrib_reported", period, reported)

@@ -12,20 +12,29 @@ dataset.
 ## Layout
 
 ```
-uk_trade_shock_study/   the pipeline package
+uk_trade_shock_study/   household and decile-table pipeline
+  microcosm.py            certified Microcosm UK loader (policyengine.py)
   incidence.py            decile-table incidence from public data
   second_stage_energy.py  energy episode on Microcosm UK households
-  vintage_and_tca.py      rulebook-vintage run + TCA food second stage
-  grid_energy.py          rebase x stack sensitivity grid (+ path variant)
-  fig_extra.py            decomposition/paths figures, household bootstrap
+  vintage_and_tca.py      policy-vintage run + TCA food on households
+  uprating_lag_reform.py  parameters-only uprating-lag costing
+  deflated_inputs.py      deflated-input robustness
+  grid_energy.py          rebase x stack grid, price paths, seasonality
+  energy_referee_checks.py  grid extremes, Council Tax rebate, CoL outturn
+  ceta_second_stage.py    UK-India agreement on households
+  rank_robustness.py      decile-ranking robustness
   mpc_welfare.py          MPC-weighted demand + Atkinson welfare
-  make_figures.py         first-pass figures and generated tables
-  figstyle.py             PolicyEngine figure schema (shared with the
-                          sibling AI-shock study)
-data/raw/               pinned public inputs (SHA256-verified per run)
-results/                pipeline outputs: results.json + generated macros
+  lcfs_validation.py      within-decile spread against the LCFS (aggregates)
+  fig_extra.py, fig_grid.py, make_figures.py, make_within_decile.py  figures
+tariff_pipeline/        US-tariff earnings scenario (exposure, shocks,
+                        exact-expectation displacement, runner)
+analysis/               tariff runs and macro emitters (run_scenarios.py,
+                        ashe_validation.py, sensitivity_duration_takeup.py,
+                        emit_e3_*.py, emit_data_macros.py, validate_manifest.py)
+data/raw/               pinned public inputs (SHA256-verified)
+results/                pipeline outputs and generated macros
 paper/                  the manuscript; every number is a generated macro
-tests/                  public-data checks (hashes, macros, sync, first pass)
+tests/                  pipeline, macro and manifest checks
 NOTES.md                replication notes, conventions, dataset hashes
 ```
 
@@ -33,10 +42,11 @@ NOTES.md                replication notes, conventions, dataset hashes
 
 ```bash
 make bootstrap                       # uv sync
-make test                            # public-data checks
-make first-pass                      # public data only
+make test                            # pipeline and macro checks
 export HUGGING_FACE_TOKEN=...        # access to the certified Microcosm UK build
-make second-stage                    # no DATASET argument needed
+make e3                              # tariff scenario
+make first-pass                      # decile-table analysis (public data)
+make second-stage                    # household stage on Microcosm UK
 make grid
 make paper
 ```

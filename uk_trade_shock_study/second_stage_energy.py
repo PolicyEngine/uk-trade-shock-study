@@ -129,6 +129,18 @@ def col_components(sim):
     return mt, total - mt - dis, dis
 
 
+def ctr_rebate(sim):
+    """The GBP 150 Council Tax Rebate per household (April 2022; part of the
+    Energy Bills Rebate package, so classed energy-specific), from
+    PolicyEngine UK's own rule at period 2022: council tax bands A-D in
+    England, Scotland and Wales, none in Northern Ireland.  The component
+    variable alone is read -- NOT energy_bills_rebate, which at calendar
+    2022 also carries the October-December part of the GBP 400 scheme that
+    the stack already counts in full as a flat GBP 400."""
+    return np.asarray(sim.calculate("ebr_council_tax_rebate", COL_YEAR,
+                                    map_to="household"))
+
+
 #: Referee robustness switch (set by ``--deflate``): scale the copied inputs
 #: from 2024-25 levels to each back-dated rulebook year with PolicyEngine
 #: UK's own projection indices, inverted (microcosm.copy_inputs).  Off in
@@ -276,7 +288,11 @@ def main() -> None:
     ebss = np.full_like(energy, P["ebss_per_household"])
     means_tested_amt = sum(hh(v) for v in MEANS_TESTED)
     col = sum(col_components(sim))
-    discretionary = epg_cushion + ebss + col
+    ctr = ctr_rebate(sim)
+    energy_specific = epg_cushion + ebss + ctr     # legislated against energy
+    discretionary = energy_specific + col
+    discretionary_no_ctr = epg_cushion + ebss + col
+    energy_specific_no_ctr = epg_cushion + ebss
 
     gap = P["cpi_sep_2022_yoy"] - P["uprating_applied_apr_2022"]
     shortfall = benefit_income * gap
@@ -336,9 +352,25 @@ def main() -> None:
         "discretionary": {
             "epg_gbp_bn": round(weighted(epg_cushion, w) / 1e9, 2),
             "ebss_gbp_bn": round(weighted(ebss, w) / 1e9, 2),
+            "ctr_gbp_bn": round(weighted(ctr, w) / 1e9, 2),
+            "ctr_households_m": round(
+                weighted((ctr > 0).astype(float), w) / 1e6, 2),
+            "energy_specific_gbp_bn": round(weighted(energy_specific, w) / 1e9, 2),
+            "energy_specific_rate_pct": round(
+                100 * weighted(energy_specific, w) / G, 1),
             "col_payments_gbp_bn": round(weighted(col, w) / 1e9, 2),
             "total_gbp_bn": round(weighted(discretionary, w) / 1e9, 2),
             "rate_pct_of_counterfactual": round(100 * weighted(discretionary, w) / G, 1),
+            # What the Council Tax Rebate adds: the same stack without it.
+            "without_ctr": {
+                "total_gbp_bn": round(weighted(discretionary_no_ctr, w) / 1e9, 2),
+                "rate_pct_of_counterfactual": round(
+                    100 * weighted(discretionary_no_ctr, w) / G, 1),
+                "energy_specific_gbp_bn": round(
+                    weighted(energy_specific_no_ctr, w) / 1e9, 2),
+                "energy_specific_rate_pct": round(
+                    100 * weighted(energy_specific_no_ctr, w) / G, 1),
+            },
         },
     }
 
@@ -374,6 +406,14 @@ def main() -> None:
             "discretionary_gbp_per_year": round(wmean(discretionary[m], wd), 1),
             "cushioning_rate_pct": round(
                 100 * weighted(discretionary[m], wd) / weighted(dE_counter[m], wd), 1),
+            "energy_specific_rate_pct": round(
+                100 * weighted(energy_specific[m], wd) / weighted(dE_counter[m], wd), 1),
+            "cushioning_rate_pct_without_ctr": round(
+                100 * weighted(discretionary_no_ctr[m], wd)
+                / weighted(dE_counter[m], wd), 1),
+            "energy_specific_rate_pct_without_ctr": round(
+                100 * weighted(energy_specific_no_ctr[m], wd)
+                / weighted(dE_counter[m], wd), 1),
             "burden_pct_of_spending": round(
                 100 * weighted(dE_realised[m], wd) / weighted(total_spend[m], wd), 2),
         })
@@ -485,6 +525,18 @@ def emit_macros(res, path=None):
     add("EpgBn", f"{d['epg_gbp_bn']:,.1f}")
     add("EbssBn", f"{d['ebss_gbp_bn']:,.1f}")
     add("ColBn", f"{d['col_payments_gbp_bn']:,.1f}")
+    # Council Tax Rebate (in the central stack, energy-specific) and the
+    # same headline numbers without it.
+    nc = d["without_ctr"]
+    add("CtrBn", f"{d['ctr_gbp_bn']:,.1f}")
+    add("CtrHouseholdsM", f"{d['ctr_households_m']:.1f}")
+    add("EnergySpecificBn", f"{d['energy_specific_gbp_bn']:,.1f}")
+    add("EnergySpecificRatePct", f"{d['energy_specific_rate_pct']:.1f}")
+    add("NoCtrDiscretionaryBn", f"{nc['total_gbp_bn']:,.1f}")
+    add("NoCtrDiscretionaryRatePct", f"{nc['rate_pct_of_counterfactual']:.1f}")
+    add("NoCtrEnergySpecificBn", f"{nc['energy_specific_gbp_bn']:,.1f}")
+    add("NoCtrEnergySpecificRatePct", f"{nc['energy_specific_rate_pct']:.1f}")
+    add("CtrRateAddPp", f"{d['rate_pct_of_counterfactual'] - nc['rate_pct_of_counterfactual']:.1f}")
     add("DiscretionaryBn", f"{d['total_gbp_bn']:,.1f}")
     add("DiscretionaryRatePct", f"{d['rate_pct_of_counterfactual']:.1f}")
     add("BetweenPct", f"{v['expenditure_share_trimmed_1_99']['between_pct']:.1f}")
@@ -504,6 +556,11 @@ def emit_macros(res, path=None):
     words = ("One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten")
     for row, wd in zip(res["by_decile"], words):
         add(f"CushionPctDec{wd}", f"{row['cushioning_rate_pct']:.0f}")
+        add(f"EnergySpecificPctDec{wd}", f"{row['energy_specific_rate_pct']:.0f}")
+        add(f"NoCtrCushionPctDec{wd}",
+            f"{row['cushioning_rate_pct_without_ctr']:.0f}")
+        add(f"NoCtrEnergySpecificPctDec{wd}",
+            f"{row['energy_specific_rate_pct_without_ctr']:.0f}")
         add(f"BurdenPctSpendDec{wd}", f"{row['burden_pct_of_spending']:.2f}")
     for row, wd in zip(res["within_decile_dispersion"], words):
         add(f"PTenDec{wd}", f"{row['p10_burden_pct_spending']:.2f}")

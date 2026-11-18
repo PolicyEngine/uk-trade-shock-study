@@ -7,7 +7,7 @@ Runs five post-Covid UK trade-shock episodes through a common household lens:
   E2  Energy price shock 2022-23               (Ofgem cap 1,277 -> 3,549 gross;
       2,500 under the Energy Price Guarantee)
   E3  US tariffs 2025                          (UK consumer side literally zero;
-      earnings side imported as declared constants from the companion study)
+      earnings side from the paper's own tariff scenario, results/e3_constants.json)
   E4  India CETA 2026+                         (DBT IA Annex 9 Table 18 duty
       savings on final goods, allocated by category spending)
 
@@ -99,7 +99,7 @@ D = {
     "cap_wholesale_oct_2022": 2468.0,
     "obr_epg_cost_bn": 27.0,           # context anchor only
     "obr_energy_subsidy_bn": 47.0,     # context anchor only
-    # E3 -- companion study declared constants (earnings side)
+    # E3 -- placeholders; overwritten from results/e3_constants.json below
     "ust_gross_shock_m": 886.0,        # GBP m / yr gross earnings shock
     "ust_displacement_cushion_pct": 36.6,
     "ust_wage_cut_cushion_pct": 43.9,
@@ -121,7 +121,7 @@ D = {
 # Episode-3 constants from the in-repo tariff pipeline, when available
 # (analysis/run_scenarios.py + analysis/emit_e3_constants.py). When the
 # file exists it is the source of record; the D defaults above are the
-# companion manuscript's values, kept for provenance.
+# placeholders only; the run fails if the constants file is missing.
 _E3 = OUT / "e3_constants.json"
 if not _E3.exists():
     raise FileNotFoundError(
@@ -398,7 +398,7 @@ def episode_e2(fs22, inc22):
 def episode_e3():
     """US tariffs 2025: no UK retaliation, so the UK consumer-price channel
     is literally zero at every decile. Earnings side imported from the
-    companion study as declared constants."""
+    tariff scenario (results/e3_constants.json)."""
     return {
         "consumer_side": {
             "per_decile_gbp_per_year": [0.0] * 10,
@@ -571,7 +571,7 @@ def module_three(e1, e2, e3, e4):
         " of the gross shock (all deciles)", s2)
 
     add("E3 US tariffs 2025", D["ust_gross_shock_m"] / 1000,
-        "GBP bn/yr, gross earnings shock (companion study)",
+        "GBP bn/yr, gross earnings shock (tariff scenario)",
         "cost", "earnings only (no UK retaliation)", 0.0, 0.0, "cost",
         (f"automatic stabilisers: {D['ust_displacement_cushion_pct']:.1f}% "
          f"(displacement) / {D['ust_wage_cut_cushion_pct']:.1f}% (wage cut)"),

@@ -1,0 +1,1019 @@
+{
+ "meta": {
+  "col_year": 2022,
+  "sim_year": 2023,
+  "paper_rebase": 0.7401,
+  "low_rebase": 0.6,
+  "central_stack": "Guarantee + Bills Support (GBP 400) + Council Tax Rebate (GBP 150) + Cost of Living Payments"
+ },
+ "grid": {
+  "note": "rate_d(rebase) = epg_rate + cash_d / (rebase * shock_unit_d); a decile is at or above 100 per cent for every rebase at or below its rebase_at_100.  Stacks: epg_ebss = Guarantee + GBP 400; energy = + Council Tax Rebate (energy-specific); full = + Cost of Living Payments; full_noctr = full without the rebate",
+  "paper_rebase": 0.7401,
+  "epg_rate": 0.337842,
+  "shock_unit_by_decile_gbp_bn": [
+   5.457724,
+   5.690917,
+   5.408702,
+   5.712662,
+   5.919839,
+   5.844202,
+   5.991614,
+   6.227385,
+   6.793123,
+   7.765092
+  ],
+  "cash_by_decile_gbp_bn": {
+   "epg": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "epg_ebss": [
+    1.158935,
+    1.159833,
+    1.15953,
+    1.158746,
+    1.159699,
+    1.159423,
+    1.158,
+    1.161622,
+    1.159441,
+    1.159941
+   ],
+   "energy": [
+    1.520298,
+    1.536202,
+    1.526965,
+    1.529804,
+    1.521467,
+    1.516663,
+    1.489134,
+    1.489335,
+    1.44925,
+    1.374681
+   ],
+   "full": [
+    2.775586,
+    2.91065,
+    2.896383,
+    2.825009,
+    2.636263,
+    2.428311,
+    2.26305,
+    1.994957,
+    1.74401,
+    1.645897
+   ],
+   "full_noctr": [
+    2.414224,
+    2.534281,
+    2.528949,
+    2.453951,
+    2.274494,
+    2.07107,
+    1.931916,
+    1.667244,
+    1.454201,
+    1.431157
+   ]
+  },
+  "table_cells": [
+   {
+    "rebase": 0.6,
+    "rebase_label": "0.6",
+    "stack": "none",
+    "counter_agg_gbp_bn": 36.5,
+    "discretionary_gbp_bn": 0.0,
+    "rate_pct": 0.0,
+    "cushion_pct_by_decile": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "cushion_pct_d1": 0.0,
+    "cushion_pct_d10": 0.0,
+    "max_decile_pct": 0.0,
+    "max_decile": null,
+    "deciles_above_100": []
+   },
+   {
+    "rebase": 0.6,
+    "rebase_label": "0.6",
+    "stack": "epg",
+    "counter_agg_gbp_bn": 36.5,
+    "discretionary_gbp_bn": 12.3,
+    "rate_pct": 33.8,
+    "cushion_pct_by_decile": [
+     33.8,
+     33.8,
+     33.8,
+     33.8,
+     33.8,
+     33.8,
+     33.8,
+     33.8,
+     33.8,
+     33.8
+    ],
+    "cushion_pct_d1": 33.8,
+    "cushion_pct_d10": 33.8,
+    "max_decile_pct": 33.8,
+    "max_decile": null,
+    "deciles_above_100": []
+   },
+   {
+    "rebase": 0.6,
+    "rebase_label": "0.6",
+    "stack": "epg_ebss",
+    "counter_agg_gbp_bn": 36.5,
+    "discretionary_gbp_bn": 23.9,
+    "rate_pct": 65.6,
+    "cushion_pct_by_decile": [
+     69.2,
+     67.8,
+     69.5,
+     67.6,
+     66.4,
+     66.8,
+     66.0,
+     64.9,
+     62.2,
+     58.7
+    ],
+    "cushion_pct_d1": 69.2,
+    "cushion_pct_d10": 58.7,
+    "max_decile_pct": 69.5,
+    "max_decile": 3,
+    "deciles_above_100": []
+   },
+   {
+    "rebase": 0.6,
+    "rebase_label": "0.6",
+    "stack": "energy",
+    "counter_agg_gbp_bn": 36.5,
+    "discretionary_gbp_bn": 27.3,
+    "rate_pct": 74.8,
+    "cushion_pct_by_decile": [
+     80.2,
+     78.8,
+     80.8,
+     78.4,
+     76.6,
+     77.0,
+     75.2,
+     73.6,
+     69.3,
+     63.3
+    ],
+    "cushion_pct_d1": 80.2,
+    "cushion_pct_d10": 63.3,
+    "max_decile_pct": 80.8,
+    "max_decile": 3,
+    "deciles_above_100": []
+   },
+   {
+    "rebase": 0.6,
+    "rebase_label": "0.6",
+    "stack": "full",
+    "counter_agg_gbp_bn": 36.5,
+    "discretionary_gbp_bn": 36.4,
+    "rate_pct": 99.9,
+    "cushion_pct_by_decile": [
+     118.5,
+     119.0,
+     123.0,
+     116.2,
+     108.0,
+     103.0,
+     96.7,
+     87.2,
+     76.6,
+     69.1
+    ],
+    "cushion_pct_d1": 118.5,
+    "cushion_pct_d10": 69.1,
+    "max_decile_pct": 123.0,
+    "max_decile": 3,
+    "deciles_above_100": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6
+    ]
+   },
+   {
+    "rebase": 0.7401,
+    "rebase_label": "paper",
+    "stack": "none",
+    "counter_agg_gbp_bn": 45.0,
+    "discretionary_gbp_bn": 0.0,
+    "rate_pct": 0.0,
+    "cushion_pct_by_decile": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "cushion_pct_d1": 0.0,
+    "cushion_pct_d10": 0.0,
+    "max_decile_pct": 0.0,
+    "max_decile": null,
+    "deciles_above_100": []
+   },
+   {
+    "rebase": 0.7401,
+    "rebase_label": "paper",
+    "stack": "epg",
+    "counter_agg_gbp_bn": 45.0,
+    "discretionary_gbp_bn": 15.2,
+    "rate_pct": 33.8,
+    "cushion_pct_by_decile": [
+     33.8,
+     33.8,
+     33.8,
+     33.8,
+     33.8,
+     33.8,
+     33.8,
+     33.8,
+     33.8,
+     33.8
+    ],
+    "cushion_pct_d1": 33.8,
+    "cushion_pct_d10": 33.8,
+    "max_decile_pct": 33.8,
+    "max_decile": null,
+    "deciles_above_100": []
+   },
+   {
+    "rebase": 0.7401,
+    "rebase_label": "paper",
+    "stack": "epg_ebss",
+    "counter_agg_gbp_bn": 45.0,
+    "discretionary_gbp_bn": 26.8,
+    "rate_pct": 59.5,
+    "cushion_pct_by_decile": [
+     62.5,
+     61.3,
+     62.8,
+     61.2,
+     60.3,
+     60.6,
+     59.9,
+     59.0,
+     56.8,
+     54.0
+    ],
+    "cushion_pct_d1": 62.5,
+    "cushion_pct_d10": 54.0,
+    "max_decile_pct": 62.8,
+    "max_decile": 3,
+    "deciles_above_100": []
+   },
+   {
+    "rebase": 0.7401,
+    "rebase_label": "paper",
+    "stack": "energy",
+    "counter_agg_gbp_bn": 45.0,
+    "discretionary_gbp_bn": 30.2,
+    "rate_pct": 67.0,
+    "cushion_pct_by_decile": [
+     71.4,
+     70.3,
+     71.9,
+     70.0,
+     68.5,
+     68.9,
+     67.4,
+     66.1,
+     62.6,
+     57.7
+    ],
+    "cushion_pct_d1": 71.4,
+    "cushion_pct_d10": 57.7,
+    "max_decile_pct": 71.9,
+    "max_decile": 3,
+    "deciles_above_100": []
+   },
+   {
+    "rebase": 0.7401,
+    "rebase_label": "paper",
+    "stack": "full",
+    "counter_agg_gbp_bn": 45.0,
+    "discretionary_gbp_bn": 39.3,
+    "rate_pct": 87.4,
+    "cushion_pct_by_decile": [
+     102.5,
+     102.9,
+     106.1,
+     100.6,
+     94.0,
+     89.9,
+     84.8,
+     77.1,
+     68.5,
+     62.4
+    ],
+    "cushion_pct_d1": 102.5,
+    "cushion_pct_d10": 62.4,
+    "max_decile_pct": 106.1,
+    "max_decile": 3,
+    "deciles_above_100": [
+     1,
+     2,
+     3,
+     4
+    ]
+   },
+   {
+    "rebase": 0.8,
+    "rebase_label": "0.8",
+    "stack": "none",
+    "counter_agg_gbp_bn": 48.6,
+    "discretionary_gbp_bn": 0.0,
+    "rate_pct": 0.0,
+    "cushion_pct_by_decile": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "cushion_pct_d1": 0.0,
+    "cushion_pct_d10": 0.0,
+    "max_decile_pct": 0.0,
+    "max_decile": null,
+    "deciles_above_100": []
+   },
+   {
+    "rebase": 0.8,
+    "rebase_label": "0.8",
+    "stack": "epg",
+    "counter_agg_gbp_bn": 48.6,
+    "discretionary_gbp_bn": 16.4,
+    "rate_pct": 33.8,
+    "cushion_pct_by_decile": [
+     33.8,
+     33.8,
+     33.8,
+     33.8,
+     33.8,
+     33.8,
+     33.8,
+     33.8,
+     33.8,
+     33.8
+    ],
+    "cushion_pct_d1": 33.8,
+    "cushion_pct_d10": 33.8,
+    "max_decile_pct": 33.8,
+    "max_decile": null,
+    "deciles_above_100": []
+   },
+   {
+    "rebase": 0.8,
+    "rebase_label": "0.8",
+    "stack": "epg_ebss",
+    "counter_agg_gbp_bn": 48.6,
+    "discretionary_gbp_bn": 28.0,
+    "rate_pct": 57.6,
+    "cushion_pct_by_decile": [
+     60.3,
+     59.3,
+     60.6,
+     59.1,
+     58.3,
+     58.6,
+     57.9,
+     57.1,
+     55.1,
+     52.5
+    ],
+    "cushion_pct_d1": 60.3,
+    "cushion_pct_d10": 52.5,
+    "max_decile_pct": 60.6,
+    "max_decile": 3,
+    "deciles_above_100": []
+   },
+   {
+    "rebase": 0.8,
+    "rebase_label": "0.8",
+    "stack": "energy",
+    "counter_agg_gbp_bn": 48.6,
+    "discretionary_gbp_bn": 31.4,
+    "rate_pct": 64.5,
+    "cushion_pct_by_decile": [
+     68.6,
+     67.5,
+     69.1,
+     67.3,
+     65.9,
+     66.2,
+     64.9,
+     63.7,
+     60.5,
+     55.9
+    ],
+    "cushion_pct_d1": 68.6,
+    "cushion_pct_d10": 55.9,
+    "max_decile_pct": 69.1,
+    "max_decile": 3,
+    "deciles_above_100": []
+   },
+   {
+    "rebase": 0.8,
+    "rebase_label": "0.8",
+    "stack": "full",
+    "counter_agg_gbp_bn": 48.6,
+    "discretionary_gbp_bn": 40.6,
+    "rate_pct": 83.4,
+    "cushion_pct_by_decile": [
+     97.4,
+     97.7,
+     100.7,
+     95.6,
+     89.5,
+     85.7,
+     81.0,
+     73.8,
+     65.9,
+     60.3
+    ],
+    "cushion_pct_d1": 97.4,
+    "cushion_pct_d10": 60.3,
+    "max_decile_pct": 100.7,
+    "max_decile": 3,
+    "deciles_above_100": [
+     3
+    ]
+   },
+   {
+    "rebase": 1.0,
+    "rebase_label": "1.0",
+    "stack": "none",
+    "counter_agg_gbp_bn": 60.8,
+    "discretionary_gbp_bn": 0.0,
+    "rate_pct": 0.0,
+    "cushion_pct_by_decile": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "cushion_pct_d1": 0.0,
+    "cushion_pct_d10": 0.0,
+    "max_decile_pct": 0.0,
+    "max_decile": null,
+    "deciles_above_100": []
+   },
+   {
+    "rebase": 1.0,
+    "rebase_label": "1.0",
+    "stack": "epg",
+    "counter_agg_gbp_bn": 60.8,
+    "discretionary_gbp_bn": 20.5,
+    "rate_pct": 33.8,
+    "cushion_pct_by_decile": [
+     33.8,
+     33.8,
+     33.8,
+     33.8,
+     33.8,
+     33.8,
+     33.8,
+     33.8,
+     33.8,
+     33.8
+    ],
+    "cushion_pct_d1": 33.8,
+    "cushion_pct_d10": 33.8,
+    "max_decile_pct": 33.8,
+    "max_decile": null,
+    "deciles_above_100": []
+   },
+   {
+    "rebase": 1.0,
+    "rebase_label": "1.0",
+    "stack": "epg_ebss",
+    "counter_agg_gbp_bn": 60.8,
+    "discretionary_gbp_bn": 32.1,
+    "rate_pct": 52.9,
+    "cushion_pct_by_decile": [
+     55.0,
+     54.2,
+     55.2,
+     54.1,
+     53.4,
+     53.6,
+     53.1,
+     52.4,
+     50.9,
+     48.7
+    ],
+    "cushion_pct_d1": 55.0,
+    "cushion_pct_d10": 48.7,
+    "max_decile_pct": 55.2,
+    "max_decile": 3,
+    "deciles_above_100": []
+   },
+   {
+    "rebase": 1.0,
+    "rebase_label": "1.0",
+    "stack": "energy",
+    "counter_agg_gbp_bn": 60.8,
+    "discretionary_gbp_bn": 35.5,
+    "rate_pct": 58.4,
+    "cushion_pct_by_decile": [
+     61.6,
+     60.8,
+     62.0,
+     60.6,
+     59.5,
+     59.7,
+     58.6,
+     57.7,
+     55.1,
+     51.5
+    ],
+    "cushion_pct_d1": 61.6,
+    "cushion_pct_d10": 51.5,
+    "max_decile_pct": 62.0,
+    "max_decile": 3,
+    "deciles_above_100": []
+   },
+   {
+    "rebase": 1.0,
+    "rebase_label": "1.0",
+    "stack": "full",
+    "counter_agg_gbp_bn": 60.8,
+    "discretionary_gbp_bn": 44.7,
+    "rate_pct": 73.4,
+    "cushion_pct_by_decile": [
+     84.6,
+     84.9,
+     87.3,
+     83.2,
+     78.3,
+     75.3,
+     71.6,
+     65.8,
+     59.5,
+     55.0
+    ],
+    "cushion_pct_d1": 84.6,
+    "cushion_pct_d10": 55.0,
+    "max_decile_pct": 87.3,
+    "max_decile": 3,
+    "deciles_above_100": []
+   }
+  ],
+  "without_ctr_cells": [
+   {
+    "rebase": 0.6,
+    "rebase_label": "0.6",
+    "stack": "full_noctr",
+    "counter_agg_gbp_bn": 36.5,
+    "discretionary_gbp_bn": 33.1,
+    "rate_pct": 90.7,
+    "cushion_pct_by_decile": [
+     107.5,
+     108.0,
+     111.7,
+     105.4,
+     97.8,
+     92.8,
+     87.5,
+     78.4,
+     69.5,
+     64.5
+    ],
+    "cushion_pct_d1": 107.5,
+    "cushion_pct_d10": 64.5,
+    "max_decile_pct": 111.7,
+    "max_decile": 3,
+    "deciles_above_100": [
+     1,
+     2,
+     3,
+     4
+    ]
+   },
+   {
+    "rebase": 0.7401,
+    "rebase_label": "paper",
+    "stack": "full_noctr",
+    "counter_agg_gbp_bn": 45.0,
+    "discretionary_gbp_bn": 36.0,
+    "rate_pct": 79.9,
+    "cushion_pct_by_decile": [
+     93.6,
+     94.0,
+     97.0,
+     91.8,
+     85.7,
+     81.7,
+     77.4,
+     70.0,
+     62.7,
+     58.7
+    ],
+    "cushion_pct_d1": 93.6,
+    "cushion_pct_d10": 58.7,
+    "max_decile_pct": 97.0,
+    "max_decile": 3,
+    "deciles_above_100": []
+   },
+   {
+    "rebase": 0.8,
+    "rebase_label": "0.8",
+    "stack": "full_noctr",
+    "counter_agg_gbp_bn": 48.6,
+    "discretionary_gbp_bn": 37.2,
+    "rate_pct": 76.5,
+    "cushion_pct_by_decile": [
+     89.1,
+     89.4,
+     92.2,
+     87.5,
+     81.8,
+     78.1,
+     74.1,
+     67.3,
+     60.5,
+     56.8
+    ],
+    "cushion_pct_d1": 89.1,
+    "cushion_pct_d10": 56.8,
+    "max_decile_pct": 92.2,
+    "max_decile": 3,
+    "deciles_above_100": []
+   },
+   {
+    "rebase": 1.0,
+    "rebase_label": "1.0",
+    "stack": "full_noctr",
+    "counter_agg_gbp_bn": 60.8,
+    "discretionary_gbp_bn": 41.3,
+    "rate_pct": 67.9,
+    "cushion_pct_by_decile": [
+     78.0,
+     78.3,
+     80.5,
+     76.7,
+     72.2,
+     69.2,
+     66.0,
+     60.6,
+     55.2,
+     52.2
+    ],
+    "cushion_pct_d1": 78.0,
+    "cushion_pct_d10": 52.2,
+    "max_decile_pct": 80.5,
+    "max_decile": 3,
+    "deciles_above_100": []
+   }
+  ],
+  "thresholds": {
+   "epg_ebss": {
+    "rebase_at_100_by_decile": [
+     0.3207,
+     0.3078,
+     0.3238,
+     0.3063,
+     0.2959,
+     0.2996,
+     0.2919,
+     0.2817,
+     0.2578,
+     0.2256
+    ],
+    "first_decile": 3,
+    "rebase_at_100": 0.3238,
+    "ratio_to_paper_rebase": 0.437,
+    "aggregate_rebase_at_100": 0.288,
+    "deciles_at_or_above_100_at_paper_rebase": []
+   },
+   "energy": {
+    "rebase_at_100_by_decile": [
+     0.4207,
+     0.4077,
+     0.4264,
+     0.4044,
+     0.3881,
+     0.3919,
+     0.3753,
+     0.3612,
+     0.3222,
+     0.2674
+    ],
+    "first_decile": 3,
+    "rebase_at_100": 0.4264,
+    "ratio_to_paper_rebase": 0.576,
+    "aggregate_rebase_at_100": 0.3714,
+    "deciles_at_or_above_100_at_paper_rebase": []
+   },
+   "full": {
+    "rebase_at_100_by_decile": [
+     0.768,
+     0.7724,
+     0.8087,
+     0.7468,
+     0.6725,
+     0.6275,
+     0.5704,
+     0.4838,
+     0.3877,
+     0.3201
+    ],
+    "first_decile": 3,
+    "rebase_at_100": 0.8087,
+    "ratio_to_paper_rebase": 1.093,
+    "aggregate_rebase_at_100": 0.599,
+    "deciles_at_or_above_100_at_paper_rebase": [
+     1,
+     2,
+     3,
+     4
+    ]
+   },
+   "full_noctr": {
+    "rebase_at_100_by_decile": [
+     0.668,
+     0.6725,
+     0.7061,
+     0.6487,
+     0.5802,
+     0.5352,
+     0.4869,
+     0.4043,
+     0.3233,
+     0.2783
+    ],
+    "first_decile": 3,
+    "rebase_at_100": 0.7061,
+    "ratio_to_paper_rebase": 0.954,
+    "aggregate_rebase_at_100": 0.5156,
+    "deciles_at_or_above_100_at_paper_rebase": []
+   }
+  }
+ },
+ "council_tax_rebate": {
+  "source_variable": "ebr_council_tax_rebate at period 2022 (PolicyEngine UK's own rule: GBP 150 per household in council tax bands A-D in England, Scotland and Wales; none in Northern Ireland)",
+  "classification": "energy-specific (part of the February 2022 Energy Bills Rebate package); in the central stack",
+  "model_gbp_bn": 3.359,
+  "model_households_m": 22.391,
+  "model_by_nation": {
+   "england": {
+    "gbp_bn": 2.932,
+    "households_m": 19.545
+   },
+   "scotland": {
+    "gbp_bn": 0.275,
+    "households_m": 1.833
+   },
+   "wales": {
+    "gbp_bn": 0.152,
+    "households_m": 1.013
+   },
+   "northern_ireland": {
+    "gbp_bn": 0.0,
+    "households_m": 0.0
+   }
+  },
+  "outturn": {
+   "england_core": {
+    "status": "progress figure to end-September 2022 (over 99 per cent of eligible households paid), not a final outturn; no final total was found",
+    "spend_gbp_bn": 2.87,
+    "households_m": 19.0,
+    "households_note": "'more than 19 million households in England'",
+    "as_of": "2022-09-30",
+    "coverage": "England",
+    "source": "DLUHC press release, Over 19 million households have received their council tax rebate (31 October 2022)",
+    "url": "https://www.gov.uk/government/news/over-19-million-households-have-received-their-council-tax-rebate"
+   },
+   "scotland": {
+    "status": "announced reach, NOT an outturn; no spend total found",
+    "households_m_announced": 1.85,
+    "note": "bands A-D plus all Council Tax Reduction recipients; the model pays bands A-D only",
+    "source": "Holyrood magazine, 10 February 2022, reporting the Scottish Government announcement (around 1.85 million households, 73 per cent)",
+    "url": "https://www.holyrood.com/news/view,cost-of-living-crisis-kate-forbes-hands-out-150-to-three-quarters-of-scots-households",
+    "rules_url": "https://www.gov.scot/publications/local-government-finance-circular-2-2022-guidance-to-local-authorities-april-2022-cost-of-living-award/"
+   },
+   "wales": {
+    "status": "households paid only ('over one million' by the 30 September 2022 close); no spend total found on the page",
+    "households_m_paid_at_least": 1.0,
+    "note": "bands A-D plus all Council Tax Reduction Scheme recipients; the model pays bands A-D only",
+    "source": "Welsh Government, Cabinet Sub-Committee on Cost of Living meeting, 10 October 2022, para 3.13",
+    "url": "https://gov.wales/node/51547",
+    "rules_url": "https://media.service.gov.wales/news/gbp-380m-to-help-tackle-the-cost-of-living-crisis-in-wales"
+   },
+   "northern_ireland": "no Council Tax Rebate (domestic rates, not council tax); the model pays none"
+  },
+  "england_model_over_outturn_pct": 2.1,
+  "energy_specific_rate_pct": {
+   "without": 59.5,
+   "with": 67.0
+  },
+  "full_stack_rate_pct": {
+   "without": 79.9,
+   "with": 87.4
+  },
+  "full_stack_by_decile_pct": {
+   "without": [
+    93.6,
+    94.0,
+    97.0,
+    91.8,
+    85.7,
+    81.7,
+    77.4,
+    70.0,
+    62.7,
+    58.7
+   ],
+   "with": [
+    102.5,
+    102.9,
+    106.1,
+    100.6,
+    94.0,
+    89.9,
+    84.8,
+    77.1,
+    68.5,
+    62.4
+   ]
+  },
+  "energy_specific_by_decile_pct": {
+   "without": [
+    62.5,
+    61.3,
+    62.8,
+    61.2,
+    60.3,
+    60.6,
+    59.9,
+    59.0,
+    56.8,
+    54.0
+   ],
+   "with": [
+    71.4,
+    70.3,
+    71.9,
+    70.0,
+    68.5,
+    68.9,
+    67.4,
+    66.1,
+    62.6,
+    57.7
+   ]
+  },
+  "caveats": [
+   "the model omits the Scottish and Welsh awards to Council Tax Reduction recipients in bands E and above, and the English discretionary fund",
+   "paid from April 2022 on council tax band, not on energy use: like the GBP 400 it is flat cash, so its rate rises as the rebase falls",
+   "household weights exceed the ONS household count (second_stage_energy.json, weight_excess_pct), which overstates every per-household flat payment by about that share"
+  ]
+ },
+ "cost_of_living_outturn": {
+  "components": {
+   "means_tested": {
+    "model_uk_gbp_bn": 5.267,
+    "model_gb_gbp_bn": 5.119,
+    "model_uk_recipients_m": 8.103,
+    "model_gb_recipients_m": 7.876,
+    "recipient_unit": "benefit units",
+    "amount_gbp": 650.0,
+    "outturn_gbp_bn": 5.4,
+    "model_uk_over_outturn_pct": -2.5,
+    "model_gb_over_outturn_pct": -5.2
+   },
+   "pensioner": {
+    "model_uk_gbp_bn": 2.746,
+    "model_gb_gbp_bn": 2.67,
+    "model_uk_recipients_m": 9.152,
+    "model_gb_recipients_m": 8.901,
+    "recipient_unit": "households",
+    "amount_gbp": 300.0,
+    "outturn_gbp_bn": 2.6,
+    "model_uk_over_outturn_pct": 5.6,
+    "model_gb_over_outturn_pct": 2.7
+   },
+   "disability": {
+    "model_uk_gbp_bn": 1.154,
+    "model_gb_gbp_bn": 1.114,
+    "model_uk_recipients_m": 7.691,
+    "model_gb_recipients_m": 7.427,
+    "recipient_unit": "persons",
+    "amount_gbp": 150.0,
+    "outturn_gbp_bn": 0.9,
+    "model_uk_over_outturn_pct": 28.2,
+    "model_gb_over_outturn_pct": 23.8
+   }
+  },
+  "outturn": {
+   "means_tested": {
+    "spend_gbp_bn": 5.4,
+    "first_payment": {
+     "payments_m": 8.4,
+     "spend_gbp_bn": 2.7,
+     "dwp_payments_m": 7.2,
+     "hmrc_payments_m": 1.2,
+     "as_of": "2022-09-08"
+    },
+    "second_payment": {
+     "payments_m": 8.3,
+     "spend_gbp_bn": 2.7,
+     "dwp_payments_m": 7.3,
+     "hmrc_payments_m": 1.0,
+     "as_of": "2022-12-12"
+    },
+    "payments_m": 8.4,
+    "coverage": "not stated on the page (GB or UK)",
+    "source": "DWP, Cost of Living Payment 2022 to 2023 management information (last updated 12 December 2022)",
+    "url": "https://www.gov.uk/government/publications/cost-of-living-payment-management-information/cost-of-living-payment-management-information"
+   },
+   "disability": {
+    "spend_gbp_bn": 0.9,
+    "payments_m": 6.0,
+    "as_of": "2022-09-30",
+    "coverage": "not stated on the page (GB or UK)",
+    "source": "DWP, Cost of Living Payment 2022 to 2023 management information (last updated 12 December 2022)",
+    "url": "https://www.gov.uk/government/publications/cost-of-living-payment-management-information/cost-of-living-payment-management-information"
+   },
+   "pensioner": {
+    "spend_gbp_bn": 2.6,
+    "households_m_estimate": 8.7,
+    "as_of": "2022-12-20",
+    "coverage": "UK",
+    "source": "DWP, Pensioner Cost of Living Payment management information (20 December 2022)",
+    "url": "https://www.gov.uk/government/publications/pensioner-cost-of-living-payment-management-information/pensioner-cost-of-living-payment-management-information"
+   },
+   "caveat": "management information: snapshots at the dates shown, gross payments, rounded to the nearest GBP 100m and 100,000 payments; no later final outturn by component was found"
+  },
+  "total": {
+   "model_uk_gbp_bn": 9.166,
+   "model_gb_gbp_bn": 8.904,
+   "outturn_gbp_bn": 8.9,
+   "model_uk_over_outturn_pct": 3.0
+  },
+  "outturn_scaled": {
+   "full_rate_pct_col_scaled": 86.8,
+   "full_rate_pct_col_and_ebss_scaled": 87.0,
+   "full_rate_pct_central": 87.4,
+   "cushion_pct_by_decile_col_scaled": [
+    102.5,
+    102.4,
+    105.3,
+    99.6,
+    93.0,
+    89.1,
+    84.1,
+    76.5,
+    68.1,
+    62.2
+   ],
+   "deciles_above_100_col_scaled": [
+    1,
+    2,
+    3
+   ],
+   "note": "proportional scaling of each component to its management-information spend; the geographic coverage of the means-tested and disability figures is not stated on the page, so the UK model total is the one scaled.  The Council Tax Rebate is left at the model's amount"
+  }
+ }
+}

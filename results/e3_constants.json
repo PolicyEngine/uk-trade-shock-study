@@ -10,6 +10,8 @@
  "displacement_cushion_sd_pct": 3.3,
  "displacement_cushion_sd_source": "SD across the 20 single Bernoulli draws of the superseded run (no New Style JSA); not the precision of the central estimate",
  "wagecut_cushion_sd_pct": 0.0,
+ "wagecut_design": "exact_takeup_expectation",
+ "wagecut_cushion_sampling_se_pct": 0.8,
  "displacement_cushion_mc_se_pct": 0.0,
  "displacement_cushion_sampling_se_pct": 0.6,
  "displacement_cushion_no_jsa_pct": 34.0,

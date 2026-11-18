@@ -2,7 +2,8 @@
 
 1. fig_decomp.png  -- additive decile decomposition of the counterfactual
    shock into the part households bore (realised burden) and what each
-   discretionary instrument returned (EPG, EBSS, cost-of-living payments),
+   discretionary instrument returned (EPG, EBSS, Council Tax energy
+   rebate, cost-of-living payments),
    in pounds a year, with bootstrap intervals on the borne component.
 2. fig_paths.png   -- three shock paths by decile as a share of spending:
    gross counterfactual, realised, and cash-outlay (the gross
@@ -21,7 +22,7 @@ import json
 
 import numpy as np
 
-from second_stage_energy import P, load_sim, col_components, weighted, wmean, wquantile, variance_split
+from second_stage_energy import P, load_sim, col_components, ctr_rebate, weighted, wmean, wquantile, variance_split
 from second_stage_energy import RESULTS_DIR, PAPER_DIR
 
                            # MsEnergyCashOutlayScalePct (incidence.py computes
@@ -73,14 +74,15 @@ def main() -> None:
                             "income_support", "housing_benefit", "jsa_income",
                             "esa_income"])
     col = sum(col_components(sim))
+    ctr = ctr_rebate(sim)
 
     # --- Per-decile means (point estimates) --------------------------------
     def dmeans(x):
         return np.array([wmean(x[dec == d], w[dec == d]) for d in range(10)])
 
     m_counter, m_real, m_epg = dmeans(dE_counter), dmeans(dE_realised), dmeans(epg)
-    m_ebss, m_col = dmeans(ebss), dmeans(col)
-    net_borne = m_counter - m_epg - m_ebss - m_col   # can be negative (D1)
+    m_ebss, m_ctr, m_col = dmeans(ebss), dmeans(ctr), dmeans(col)
+    net_borne = m_counter - m_epg - m_ebss - m_ctr - m_col   # negative = net gain
 
     spend = np.array([weighted(total_spend[dec == d], w[dec == d]) /
                       weighted(w[dec == d] * 0 + 1, w[dec == d]) for d in range(10)])
@@ -108,7 +110,7 @@ def main() -> None:
                        np.cumsum(np.bincount(inverse))[:-1])
     n_src = len(members)
     boot_net, boot_within, boot_d1cushion, boot_rate = [], [], [], []
-    disc = epg + ebss + col
+    disc = epg + ebss + ctr + col
     spend_share = dE_realised / np.maximum(total_spend, 1)
     for _ in range(N_BOOT):
         idx = np.concatenate([members[j] for j in rng.integers(0, n_src, n_src)])
@@ -173,7 +175,10 @@ def main() -> None:
            label="Returned: Energy Price Guarantee", zorder=3)
     ax.bar(x, m_ebss, bottom=borne + m_epg, color=TEAL,
            label="Returned: Bills Support Scheme", zorder=3)
-    ax.bar(x, m_col, bottom=borne + m_epg + m_ebss, color=TEAL, hatch="///",
+    ax.bar(x, m_ctr, bottom=borne + m_epg + m_ebss, color=TEAL, hatch="...",
+           edgecolor="white", linewidth=0,
+           label="Returned: Council Tax energy rebate", zorder=3)
+    ax.bar(x, m_col, bottom=borne + m_epg + m_ebss + m_ctr, color=TEAL, hatch="///",
            edgecolor="white", linewidth=0, label="Returned: cost-of-living payments",
            zorder=3)
     if (over < 0).any():  # only label a net gain when one occurs

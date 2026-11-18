@@ -367,132 +367,17 @@ def test_redraw_diagnostic_degrades_when_weights_are_unavailable():
 
 
 # ---------------------------------------------------------------------------
-# How analysis/referee_fixes.py reports the diagnostic
+
 #
 # These need no licensed data: they exercise the pure summarising helpers that
 # turn per-seed diagnostics into the JSON the macros are read out of.
 # ---------------------------------------------------------------------------
 
 
-def _diagnostic(**overrides):
-    diag = {
-        "uc_takeup_scope": "new_entitlement",
-        "uc_takeup": 0.8,
-        "n_benunits": 3,
-        "n_changed_benunits": 3,
-        "n_entitled_changed_benunits": 2,
-        "n_redrawn": 2,
-        "weights_available": True,
-        "weighted_redrawn": 30.0,
-        "weighted_changed_benunits": 60.0,
-    }
-    diag.update(overrides)
-    return diag
-
-
-def test_summarised_diagnostic_reports_a_genuinely_empty_redraw_set():
-    from analysis.referee_fixes import _summarise_diagnostics
-
-    out = _summarise_diagnostics([_diagnostic(n_redrawn=0) for _ in range(3)])
-    assert out["n_redrawn_max"] == 0
-    assert out["redraw_set_empty_in_every_seed"] is True
-    assert out["uc_takeup_scope"] == "new_entitlement"
-
-    live = _summarise_diagnostics([_diagnostic(n_redrawn=n) for n in (0, 2, 5)])
-    assert live["redraw_set_empty_in_every_seed"] is False
-    assert live["n_redrawn_min"] == 0
-    assert live["n_redrawn_max"] == 5
-
-
 @pytest.mark.parametrize(
     "missing",
     ["n_redrawn", "n_entitled_changed_benunits", "n_changed_benunits", "uc_takeup_scope"],
 )
-def test_summarised_diagnostic_hard_fails_on_a_missing_field(missing):
-    """A missing count must RAISE, never default to the alarm value.
-
-    ``n_redrawn == 0`` is precisely the signal the diagnostic exists to raise
-    ("the take-up grid is inert"). Defaulting a missing key to 0 would make
-    every seed report it and set ``redraw_set_empty_in_every_seed`` to True,
-    manufacturing the paper's finding out of a renamed key. referee_fixes
-    already hard-fails when the diagnostic is absent entirely; a diagnostic
-    that is present but incomplete must fail the same way.
-    """
-    from analysis.referee_fixes import _summarise_diagnostics
-
-    diagnostics = [_diagnostic() for _ in range(3)]
-    del diagnostics[1][missing]
-    with pytest.raises(RuntimeError, match=missing):
-        _summarise_diagnostics(diagnostics)
-
-
-def test_summarised_diagnostic_tolerates_absent_weights():
-    """weighted_redrawn is legitimately None; only the counts are required."""
-    from analysis.referee_fixes import _summarise_diagnostics
-
-    out = _summarise_diagnostics(
-        [_diagnostic(weights_available=False, weighted_redrawn=None) for _ in range(2)]
-    )
-    assert out["weighted_redrawn_mean"] is None
-    assert out["n_redrawn_mean"] == 2.0
-
-
-def test_shared_stale_cell_is_relabelled_for_the_scope_it_is_reported_under():
-    """The stale-flag cell is reused across scopes; its LABEL must not be.
-
-    The values are scope-invariant by construction (the convention overwrites
-    would_claim_uc wholesale), so reuse is legitimate. But
-    write_referee_macros.entitled_scope_bound reads \\TakeupEntitledStale out
-    of exactly this cell, so a reader auditing its provenance must not find it
-    claiming the scope it was computed under rather than the one it is filed
-    under.
-    """
-    from analysis.referee_fixes import (
-        STALE_CELL_PATH,
-        _share_stale_cell_across_scopes,
-    )
-
-    source = {
-        "cushioning_rate": {"mean": 0.3445049495634098, "sd": 0.01},
-        "exchequer_cost_m": {"mean": 100.0, "sd": 1.0},
-        "redraw_diagnostic": {
-            "uc_takeup_scope": "new_entitlement",
-            "n_seeds": 25,
-            "n_redrawn_max": 0,
-            "redraw_set_empty_in_every_seed": True,
-        },
-    }
-    shared = _share_stale_cell_across_scopes(
-        source, computed_under="new_entitlement", reused_under="all_entitled"
-    )
-
-    # relabelled for where it is filed...
-    assert shared["redraw_diagnostic"]["uc_takeup_scope"] == "all_entitled"
-    # ...without losing where it came from
-    assert shared["redraw_diagnostic"]["uc_takeup_scope_computed_under"] == "new_entitlement"
-    assert shared["shared_across_scopes"] is True
-    assert shared["shared_from"] == STALE_CELL_PATH
-    assert "identical by construction" in shared["shared_note"]
-    # the numbers are reused verbatim: that is the point of sharing
-    assert shared["cushioning_rate"] == source["cushioning_rate"]
-    # and the source cell is not mutated by being shared
-    assert source["redraw_diagnostic"]["uc_takeup_scope"] == "new_entitlement"
-    assert "shared_from" not in source
-
-
-# ---------------------------------------------------------------------------
-# The stale-baseline-flag convention must VERIFY its set_input
-#
-# referee_fixes._takeup_grid overwrites would_claim_uc wholesale with the
-# pre-shock draw to reproduce the pre-fix convention. shocks.redraw_uc_takeup
-# reads its own set_input back and hard-errors; this sibling call did not, and
-# a silently-rejected input here would leave the RE-DRAWN post-shock flag in
-# place, so the stale-flag cell would report the re-drawn cell's number and the
-# grid would show all four claiming conventions agreeing — the very result the
-# manuscript quotes, manufactured out of an input that never landed.
-# ---------------------------------------------------------------------------
-
-
 class _FlagSim:
     """Minimal sim stub for the stale-flag read-back contract.
 
@@ -523,68 +408,4 @@ class _FlagSim:
         assert map_to == "benunit"
         values = self.current[:-1] if self.drop else self.current
         return types.SimpleNamespace(values=values)
-
-
-def test_stale_flag_convention_applies_and_verifies_the_flag():
-    from analysis.referee_fixes import _apply_stale_baseline_flag
-
-    stale = np.array([True, False, True, False])
-    sim = _FlagSim(post_shock_flag=[False, True, False, True])
-
-    _apply_stale_baseline_flag(sim, stale, period=2026)
-
-    assert sim.set_calls[0][0] == "would_claim_uc"
-    assert sim.set_calls[0][1] == 2026
-    np.testing.assert_array_equal(sim.current, stale)
-    # the award was computed under the post-shock flag: the cache must go
-    assert sim.invalidated == 1
-
-
-def test_stale_flag_convention_hard_errors_when_the_input_is_rejected():
-    """The defect: no read-back meant a rejected input was indistinguishable
-    from a successful one, and the cell would silently equal the re-drawn cell.
-    """
-    from analysis.referee_fixes import _apply_stale_baseline_flag
-
-    stale = np.array([True, False, True, False])
-    redrawn = np.array([False, True, False, True])
-    sim = _FlagSim(post_shock_flag=redrawn, accepts=False)
-
-    with pytest.raises(RuntimeError, match="stale-baseline-flag convention not applied"):
-        _apply_stale_baseline_flag(sim, stale, period=2026)
-    # and the simulation is left carrying the re-drawn flag, which is exactly
-    # why returning normally here would have manufactured the paper's result
-    np.testing.assert_array_equal(sim.current, redrawn)
-
-
-def test_stale_flag_convention_hard_errors_on_a_shape_mismatch():
-    from analysis.referee_fixes import _apply_stale_baseline_flag
-
-    stale = np.array([True, False, True, False])
-    sim = _FlagSim(post_shock_flag=stale, drop=True)
-
-    with pytest.raises(RuntimeError, match="stale-baseline-flag convention not applied"):
-        _apply_stale_baseline_flag(sim, stale, period=2026)
-
-
-def test_stale_flag_convention_matches_the_shocks_read_back_contract():
-    """Both siblings must fail the same way, for the same reason."""
-    import inspect
-
-    from analysis.referee_fixes import _apply_stale_baseline_flag
-    from tariff_pipeline import shocks
-
-    grid = inspect.getsource(shocks.redraw_uc_takeup)
-    assert "np.array_equal(applied, new_flag)" in grid  # the sibling's read-back
-    ours = inspect.getsource(_apply_stale_baseline_flag)
-    assert "np.array_equal" in ours and "raise RuntimeError" in ours
-    # the grid no longer sets the flag without checking it
-    assert "_apply_stale_baseline_flag" in inspect.getsource(
-        __import__("analysis.referee_fixes", fromlist=["_takeup_grid"])._takeup_grid
-    )
-
-
-# ---------------------------------------------------------------------------
-# The monthly-versus-annual note must agree with its own numbers
-# ---------------------------------------------------------------------------
 

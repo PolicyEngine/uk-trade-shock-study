@@ -14,7 +14,7 @@ import argparse
 
 import numpy as np
 
-from second_stage_energy import P, load_sim, col_components, weighted, wmean
+from second_stage_energy import P, load_sim, col_components, ctr_rebate, weighted, wmean
 from second_stage_energy import RESULTS_DIR, PAPER_DIR
 
 
@@ -59,7 +59,7 @@ def main() -> None:
                              "income_support", "housing_benefit", "jsa_income",
                              "esa_income"])
     col = sum(col_components(sim))
-    disc = epg + ebss + col
+    disc = epg + ebss + ctr_rebate(sim) + col
 
     out = {}
     for tag, ranking in (("Base", equiv), ("Net", equiv_net)):

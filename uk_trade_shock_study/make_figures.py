@@ -141,8 +141,10 @@ class Data:
         n = e2["net_of_epg"]["per_decile"]
         self.en_gross_gbp = np.array([r["gbp_per_year"] for r in g])
         self.en_gross_pct = np.array([r["pct_of_total_spend"] for r in g])
-        self.en_net_gbp = np.array([r["gbp_per_year"] for r in n])
-        self.en_net_pct = np.array([r["pct_of_total_spend"] for r in n])
+        # Net of the Guarantee = the realised path; one series for text,
+        # tables and figures (the two differed only in the last digit).
+        self.en_net_gbp = self.en_real_gbp
+        self.en_net_pct = self.en_real_pct
         self.en_cushion_gbp = np.array(e2["epg_cushion"]["per_decile_gbp_per_year"])
         self.cushion_share = e2["epg_cushion"]["share_of_gross_shock"]
         self.en_base_wk = np.array(e2["base_spend_elec_gas_gbp_per_week"]["per_decile"])
@@ -368,12 +370,12 @@ def fig_episode_map(d: Data):
     e3_bn = ep["E3_us_tariffs"]["earnings_side_declared"]["gross_shock_gbp_m_per_year"] / 1e3
     eps = [
         ("E1", "E1  TCA food NTBs", -1.02, -0.72, e1_bn, "cost", False,
-         "+8% on food prices"),
+         "+8 pp on food prices"),
         ("E2", "E2  Energy 2022-23", -0.98, -1.60, e2_bn, "cost", True,
          "FY-mean cap \u00a31,208 \u2192 \u00a32,760"),
         ("E3", "E3  US tariffs 2025", 0.42, -1.10, e3_bn, "cost", False,
-         "earnings only; zero consumer row"),
-        ("E4", "E4  India CETA", -1.02, 1.15, 0.18, "gain", False,
+         "earnings only; no UK retaliation"),
+        ("E4", "E4  UK–India agreement", -1.02, 1.15, 0.18, "gain", False,
          "duty cut on final goods"),
     ]
     lo = np.log10(min(e[4] for e in eps))
@@ -515,7 +517,7 @@ def write_tables(d: Data):
     rows = [
         ("E1 TCA food NTBs", "Dec 2019--\\newline Mar 2023$^{w}$", "Policy",
          "Consumer prices (food)", "\\citet{bakker2023}",
-         "$+8\\%$ on food prices", "Estimate\\newline (ex post)"),
+         "$+8$ pp on food prices", "Estimate\\newline (ex post)"),
         ("E2 Energy 2022--23", "Apr 2022--\\newline Mar 2023", "Market",
          "Consumer prices (energy)", "\\citet{ofgem2022}; \\citet{obrenergy2023}",
          "FY-mean cap \\pounds1{,}227 $\\to$ \\pounds3{,}240 (\\pounds2{,}311 with the Guarantee)",

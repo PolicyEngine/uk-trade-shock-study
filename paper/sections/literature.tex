@@ -1,89 +1,174 @@
 \section{Literature}\label{sec:literature}
 
+The paper draws on four literatures: the household incidence of trade
+policy, the microsimulation of shocks through tax--benefit systems,
+the distributional analysis of price shocks and benefit indexation,
+and the UK's episode-specific record since 2020. A note on terms: in
+trade economics ``trade shock'' usually denotes an import-competition
+shock to local labour markets \citep{autordornhanson2013}; this paper
+uses it more broadly, for trade-related price and earnings shocks to
+households.
+
 \subsection{Trade and households}
 
 The method for carrying trade shocks to household microdata is the
 first-order incidence approach of \citet{deaton1989} and
-\citet{porto2006}, applied at scale by the World Bank's Household
-Impacts of Tariffs programme and the OECD's concordance work
-\citep{artucporto2021, artucporto2019, luu2020}.
+\citet{porto2006}. It is best developed for developing countries: the
+World Bank's Household Impacts of Tariffs programme simulates tariff
+changes through both expenditure and income for 54 countries
+\citep{artucporto2021, artucporto2019}, and the OECD has published the
+concordances for mapping trade-model output onto household-budget
+categories \citep{luu2020}. On the consumption side,
 \citet{fajgelbaumkhandelwal2016} show that the gains from trade flow
 disproportionately to lower-income households through traded-goods
-budget shares, and \citet{cravinolevchenko2017} that a large
-devaluation raised lower-income households' cost of living by more.
-\citet{jaravel2021} reviews evidence that trade affects price levels
-similarly across income groups; the episodes here are consistent with
-that in general, and regressive because they fell on food and energy
-(Figure~\ref{fig:budget-shares}). \citet{borusyakjaravel2024} find
-that most of the variance in welfare changes from trade shocks lies
-within income deciles.
+budget shares, and \citet{cravinolevchenko2017} that after Mexico's
+1994 devaluation lower-income households' cost of living rose about
+half again as much as higher-income households', because they spend
+more on tradeables and buy cheaper varieties within categories, the
+second being a margin that category-level data cannot see.
 
-Evidence from the 2018--19 US tariffs finds near-complete pass-through
-to US import prices
-\citep{amitireddingweinstein2019, fajgelbaumetal2020, cavalloetal2021},
-so a US tariff reaches the UK through export demand and earnings. The
-2025 tariffs have been scored distributionally for US households
-\citep{budgetlab2025, tpc2025, fleckpradhan2026} and modelled with
-flexible and rigid wages \citep{ignatenko2025, rodriguezclare2025};
-export-demand shocks pass into incumbent wages at elasticities well
-below one \citep{hummels2014, garinsilverio2024}, which motivates
-treating wage cuts and displacement as two margins. Work linking trade
-models to microdata rarely carries statutory tax rules
-\citep{robilliardrobinson2005, peichl2008, colombo2010, cali2019}. To
-my knowledge no UK shock arriving under a trade label has been run
-through a statutory tax--benefit calculator.
+\citet{jaravel2021} reviews evidence that trade affects price levels
+roughly similarly across income groups, innovation rather than trade
+driving inflation inequality. The episodes here are consistent with
+that as a statement about trade in general. What makes the UK's
+adverse episodes regressive is not trade exposure as such but the
+categories they fell on, food and domestic energy, whose budget shares
+fall steeply with income (Figure~\ref{fig:budget-shares}); where a
+trade shock falls on clothing, as the UK--India agreement does, the
+incidence is flat. \citet{borusyakjaravel2024} add that for trade
+shocks most of the variance in household welfare changes lies within
+income deciles rather than between them.
+
+Evidence from the 2018--19 US tariffs
+\citep{amitireddingweinstein2019, fajgelbaumetal2020, cavalloetal2021}
+finds near-complete pass-through to US import prices, so the cost of a
+US tariff falls largely on US buyers and reaches an exporting country
+such as the UK through export demand and earnings rather than through
+its own consumer prices. The 2025 tariffs produced a fast-moving US
+applied literature: the Budget Lab's distributional scoring of the
+enacted schedules, the Tax Policy Center's implementation of tariffs
+inside a tax microsimulation model \citep{budgetlab2025, tpc2025}, and
+an academic treatment of two-sided incidence on household expenditure
+microdata \citep{fleckpradhan2026}. \citet{ignatenko2025} and
+\citet{rodriguezclare2025} model the same tariffs with flexible and
+with rigid wages, and \citet{hummels2014} and
+\citet{garinsilverio2024} find that export-demand shocks pass into
+incumbent wages at elasticities well below one. These results motivate
+treating wage cuts and displacement as two margins, with the wage cut
+an upper bound on the wage response.
+
+Work linking trade models to microdata supplies the architecture for a
+trade model above and household data below
+\citep{robilliardrobinson2005, peichl2008, colombo2010, cali2019}; of
+it, only \citet{peichl2008} carries statutory tax rules in the micro
+layer. The World Bank and OECD frameworks stop at market incomes and
+expenditure, and the Tax Policy Center's model carries tariffs through
+the US tax code but not through transfers. To my knowledge no UK shock
+arriving under a trade label has been run through a statutory
+tax--benefit calculator (EUROMOD, UKMOD, TAXBEN or PolicyEngine). The
+claim is narrow: price and energy shocks as such have been run through
+these models, and what is new is the trade shock as the input and the
+comparison across episodes.
 
 \subsection{Shocks through tax--benefit systems}
 
-\citet{dolls2012} measure the income-stabilisation coefficients of the
-US and European systems, \citet{brewertasseva2021} decompose the UK's
-Covid response into automatic and discretionary parts, and
-\citet{navicke2014} supply the labour-transition method.
-\citet{cohenfollette2000} find in a macro model that automatic
-stabilisers do very little against a supply shock, and only modestly
-damp demand shocks. Two studies are closest to this one.
-\citet{amores2025} run the 2022 inflation shock and its fiscal
-measures through EUROMOD for the EU, separating income support from
-price measures. \citet{popova2026} use UKMOD with imputed consumption
-and an indexation counterfactual over 2019--23. Neither isolates the
-September-CPI timing lag or the Energy Price Guarantee as a separate
-layer, or treats a trade shock as the input. Related microsimulations
-of the inflation episode include \citet{eckerstorfer2025},
-\citet{sologon2025}, \citet{curci2025} and \citet{leventi2024}.
+\citet{dolls2012} measure the stabilisation coefficients of the US and
+European systems against stylised income and unemployment shocks;
+\citet{brewertasseva2021} impose the observed Covid labour-market
+shock on Family Resources Survey microdata through UKMOD and decompose
+the cushioning into automatic and discretionary parts; and the EUROMOD
+nowcasting tradition supplies the labour-transition method
+\citep{navicke2014}. Simulating a supply shock in a macro model,
+\citet{cohenfollette2000} found that automatic stabilisers do very
+little against a supply shock, and only modestly damp demand shocks.
 
-On indexation, \citet{paulus2020} treat non-indexation as a
-distributional phenomenon. \citet{cribb2023} quantified the 2022--23
-uprating shortfall (benefits rose 3.1 per cent against roughly ten per
-cent inflation; recipients would not be made whole until April 2025 on
-then-current forecasts) and scored the Cost of Living Payments against
-timely indexation; \citet{obrwelfare2022} puts the real fall at about
-\pounds 12 billion; and \citet{judgemurphy2023} show working-age
-benefits were uprated below outturn inflation in ten of fifteen years.
-This paper adds neither the discovery of the lag nor a better estimate
-of it, only its incidence by decile beside the support that was paid.
+Two studies come close to this paper's treatment of the price side.
+\citet{amores2025} run the 2022 inflation shock and its offsetting
+fiscal measures through EUROMOD for the EU, separating income support
+from price measures, in effect a price-shock stabilisation
+coefficient; they find fiscal measures recovered roughly a third of
+welfare losses while targeting them poorly. \citet{popova2026} are
+closer still on the UK: UKMOD with LCFS consumption imputed onto the
+FRS, disposable and consumable income, and a CPI-versus-earnings
+indexation counterfactual over 2019--23. Neither isolates the
+September-CPI timing lag or the Energy Price Guarantee as a separate
+layer, separates energy-specific from general support, or treats a
+trade shock as the input. Related microsimulations of the inflation
+episode include \citet{eckerstorfer2025} for Austria, with lagged wage
+and pension adjustment, \citet{sologon2025}, who decompose inflation's
+welfare impact across expenditure patterns, and \citet{curci2025}, who
+find for Italy that social bonuses costing a fifth as much as
+untargeted VAT and excise cuts drove most of the inequality reduction.
+
+\subsection{Price shocks and indexation}
+
+\citet{paulus2020} supply the canonical treatment of non-indexation as
+a distributional phenomenon, and \citet{leventi2024} treat indexation
+itself as a stabiliser. For the UK, \citet{cribb2023} quantified the
+2022--23 uprating shortfall directly (benefits rose 3.1 per cent
+against roughly ten per cent inflation; recipients would not be made
+whole until April 2025 on then-current forecasts) and scored the flat
+Cost of Living Payments against a timely-indexation counterfactual,
+finding the discretionary route cost more while leaving hundreds of
+thousands of means-tested households worse off than indexation would
+have. \citet{obrwelfare2022} puts the aggregate real fall at around
+five per cent, some \pounds 12 billion, in 2022--23, and
+\citet{judgemurphy2023} show that such lags do not wash out over a
+cycle: across fifteen years, working-age benefits were uprated below
+outturn inflation in ten. This paper adds neither the discovery of the
+lag nor a better estimate of it, only its incidence by decile beside
+the support that was paid.
+
+On the energy shock, \citet{levell2025} are the closest study and a
+standing challenge to any decile-based exercise: using transaction
+data they find income explains only a small share of the variation in
+energy spending, so within-decile dispersion in exposure dwarfs the
+between-decile gradient, and they show that an optimal package retains
+a strictly positive price subsidy even when transfers can condition on
+income and past usage. \citet{chenlevell2024} measure household price
+experiences in scanner data and find that inflation inequality rose in
+2021--23 partly because cheaper goods inflated fastest, a
+within-category margin that published expenditure tables hold fixed
+and so understate. \citet{bonnet2025} study the choice between
+subsidies and transfers for transport fuel in France, and
+\citet{auclert2023} add an externality a domestic incidence exercise
+cannot see: national price subsidies insulate one importer at the cost
+of world energy demand. Across countries, \citet{ari2022} and
+\citet{amaglobeli2026} document that most European crisis support was
+untargeted and price-distorting, and \citet{nao2024} records the UK's
+fiscal counterpart: an initial \pounds 139 billion estimate for the
+eight energy support schemes against an estimated final cost of
+\pounds 44 billion, of which the Guarantee's outturn was \pounds 24.0
+billion. For the euro area, \citet{pallotti2023} find consumption
+losses from the inflation shock roughly flat across the income
+distribution, with the incidence falling instead along an age
+gradient.
 
 \subsection{The UK episodes}
 
-On energy, \citet{levell2025} find on transaction data that income
-explains little of the variation in energy spending, and that an
-optimal package retains a price subsidy even when transfers can
-condition on income and past usage; \citet{chenlevell2024} show that
-inflation inequality in 2021--23 also had a within-category margin
-that expenditure tables miss. Most European crisis support was
-untargeted \citep{ari2022, amaglobeli2026, bonnet2025, auclert2023},
-and \citet{nao2024} records an estimated final cost of \pounds 44
-billion for the UK's energy schemes, of which the Guarantee's outturn
-was \pounds 24.0 billion. For the euro area \citet{pallotti2023} find
-losses from the inflation shock roughly flat across incomes.
+The Brexit episode has the richest distributional record, and two
+precedents sit close to this paper. \citet{breinlich2016} distributed
+projected Brexit price changes across income groups and household
+types, and \citet{clarke2017} did the same for an MFN tariff scenario,
+finding the largest effects on unemployed, single-parent and pensioner
+households. Both are ex-ante exercises predating the border; relative
+to them this paper uses realised episodes, a tax--benefit stage, and a
+comparison across shocks. \citet{davenportlevell2021} supply the
+earnings-side counterpart (barrier exposure by occupation, sector and
+region), and \citet{alabrese2026} and \citet{dhingra2026} the regional
+accounting, the latter in a spatial general-equilibrium model in which
+the damage runs through real wages and productivity.
 
-On Brexit, \citet{breinlich2016} and \citet{clarke2017} distributed
-projected price changes across households before the border existed,
-\citet{breinlich2022} find the depreciation's consumer cost roughly
-flat across the income distribution, and \citet{bakker2023, bakker2026}
-find the non-tariff-barrier effect on food prices regressive: the two
-shocks fell on different baskets. Regional and labour-market studies
-cover the earnings side
-\citep{davenportlevell2021, alabrese2026, dhingra2026, freeman2022}.
-None of these models the tax--benefit response, and the UK--India
-impact assessment leaves household analysis to be ``developed further
-for future FTA IAs'' \citep{rpc2025, dbtindia2026}.
+The record also contains a contrast that the comparison here helps to
+explain. \citet{breinlich2022} find the consumer cost of the post-2016
+depreciation roughly flat across the income distribution;
+\citet{bakker2023, bakker2026} find the non-tariff-barrier effect on
+food prices regressive, the bottom decile's cost-of-living increase
+around half again larger than the top's. The same country, in adjacent
+years, saw opposite incidence because the two shocks fell on different
+baskets. None of these studies models the tax--benefit response; the
+energy-crisis literature scores the discretionary response but not
+alongside another shock; and the UK--India impact assessment
+\citep{dbtindia2026} leaves household analysis, in its scrutineer's
+words, to be ``developed further for future FTA IAs''
+\citep{rpc2025}.

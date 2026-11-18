@@ -175,12 +175,12 @@ def main() -> None:
     ax.bar(x, m_epg, bottom=borne, color=BLUE_LIGHT,
            label="Returned: Energy Price Guarantee", zorder=3)
     ax.bar(x, m_ebss, bottom=borne + m_epg, color=TEAL,
-           label="Returned: Bills Support Scheme", zorder=3)
+           label="Returned: Energy Bills Support Scheme", zorder=3)
     ax.bar(x, m_ctr, bottom=borne + m_epg + m_ebss, color=TEAL, hatch="...",
            edgecolor="white", linewidth=0,
            label="Returned: Council Tax energy rebate", zorder=3)
     ax.bar(x, m_col, bottom=borne + m_epg + m_ebss + m_ctr, color=TEAL, hatch="///",
-           edgecolor="white", linewidth=0, label="Returned: cost-of-living payments",
+           edgecolor="white", linewidth=0, label="Returned: Cost of Living Payments",
            zorder=3)
     if (over < 0).any():  # only label a net gain when one occurs
         ax.bar(x, over, color=TEAL, hatch="xxx", edgecolor="white", linewidth=0,

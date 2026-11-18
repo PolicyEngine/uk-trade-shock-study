@@ -21,7 +21,7 @@ apply_style()
 fig, ax = plt.subplots(figsize=(WIDTH, 4.2))
 
 ax.bar(dec, mean, width=0.62, color=BLUE, zorder=2,
-       label="Decile mean burden")
+       label="Decile burden over decile spending")
 for d, lo, hi in zip(dec, p10, p90):
     ax.plot([d, d], [lo, hi], color=GREEN, lw=2.0, solid_capstyle="butt",
             zorder=3)

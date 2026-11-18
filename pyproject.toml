@@ -1,7 +1,7 @@
 [project]
 name = "uk-trade-shock-study"
 version = "0.1.0"
-description = "Who pays for trade shocks: distributional incidence and fiscal cushioning in the UK"
+description = "Who pays for trade shocks? Distributional incidence and fiscal cushioning in the UK"
 requires-python = ">=3.13"
 dependencies = [
     "policyengine[uk]==6.20.0",

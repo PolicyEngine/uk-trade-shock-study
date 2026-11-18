@@ -503,9 +503,10 @@ def write_tables(d: Data):
     A("\\vspace{2pt}")
     A("\\begin{minipage}{\\linewidth}\\footnotesize")
     A("\\emph{Notes.} \\pounds\\ per household per year; \\% spend is the burden or")
-    A("gain as a percentage of that decile's total expenditure. The Energy Price Guarantee cushions")
+    A("gain as a percentage of that decile's total expenditure. The Energy Price Guarantee absorbs")
     A("%.1f\\%% of the counterfactual energy shock at every decile by construction."
       % (100 * d.cushion_share))
+    A("TCA food is on the window-average path; the UK--India gain is at full pass-through.")
     A("Ratios are computed on unrounded values, so they may differ from the")
     A("displayed cells in the last digit. $^{\\dagger}$~UK--India ratio is on the \\%-of-spending basis (\\pounds\\ gains are")
     A("not comparable across deciles). Spending bases: ONS Family Spending")
@@ -521,7 +522,7 @@ def write_tables(d: Data):
          "Consumer prices (food)", "\\citet{bakker2023}",
          "$+8$ pp on food prices", "Estimate\\newline (ex post)"),
         ("E2 Energy 2022--23", "Apr 2022--\\newline Mar 2023", "Market",
-         "Consumer prices (energy)", "\\citet{ofgem2021, ofgem2022}; \\citet{obrenergy2023}",
+         "Consumer prices (energy)", "\\citet{ofgem2021, ofgem2022, ofgemcap2023}; \\citet{obrenergy2023}",
          "FY-mean cap \\pounds\\SsBaseFyCap\\ $\\to$ \\pounds\\SsCounterFyCap\\ (\\pounds\\SsRealisedFyCap\\ with the Guarantee)",
          "Observed\\newline (statutory)"),
         ("E3 US tariffs 2025", "2025", "Policy\\newline (foreign)",

@@ -20,12 +20,19 @@ cumulative of \pounds 250 per household: a linear ramp to the
 end-state price effect overshoots it by a factor of
 \MsTcaCrossCheckRatio, so the headline path is rescaled to the
 published figure (Section~\ref{sec:results}). The energy shock uses
-the same price path as the household stage.
+the same price path as the household stage, and the Guarantee's share
+of it is computable per decile from cap levels alone. Where a
+published aggregate exists it is reported beside the computed one as a
+check, not used to rescale it: the National Audit Office's outturn for
+the Guarantee is the main example.
 
 \paragraph{Indexation arithmetic.} For a single adult the paper
 computes the shortfall of the Universal Credit standard allowance in
-2022--23 against indexation to contemporaneous CPI, month by month
-(Appendix~\ref{sec:results-rulebook}).
+2022--23 against indexation to contemporaneous CPI, month by month,
+and against a single April uprating at that month's inflation rate
+(Appendix~\ref{sec:results-rulebook}). This is statutory arithmetic on
+public parameters, for one benefit and one household type; the
+household stage prices the same lag across the whole benefit system.
 
 \paragraph{Data caveats.} The FYE2025 Family Spending workbook carries
 an ONS correction notice affecting percentage standard errors, so no
@@ -34,5 +41,8 @@ food and energy episodes use the FYE2022 workbook (April 2021 to March
 2022), the last year before the energy shock, and the UK--India
 agreement the FYE2025 workbook. The two sit either side of a change in
 the ONS equivalence scale, so income levels are not comparable across
-them, and episodes are compared as shares of spending. Ranges are
-bounds across assumptions, not confidence intervals.
+them, and episodes are compared as shares of spending. Pass-through
+assumptions are reported as separate variants. Ranges are bounds
+across assumptions, not confidence intervals, and the status of each
+shock (estimate, observation, projection or scenario) is given in
+Table~\ref{tab:first-stages}.

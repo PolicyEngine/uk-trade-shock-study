@@ -5,9 +5,9 @@
 \renewcommand{\theHfigure}{A\arabic{figure}}
 \renewcommand{\theHtable}{A\arabic{table}}
 
-\section{Data and conventions}\label{app:conventions}
+\section{Data and conventions}\label{app:data}
 
-\subsection{Household-stage conventions}
+\subsection{Household-stage conventions}\label{app:conventions}
 
 \runin{Exposure variable.} Household energy exposure is the model's
 domestic energy consumption, electricity plus gas, with a weighted
@@ -121,7 +121,7 @@ Guarantee, its cost-of-living payment variable
 \pounds\SsNativeEbrBn\ billion energy-bills rebate sit inside the
 income that ranks the deciles. Re-ranking on income net of the three
 moves the bottom decile's full-stack rate from \SsRankBaseDOne\ to
-\SsRankNetDOne\ per cent and the top decile's from \SsRankBaseDTen\ to
+\SsRankNetDOne\ per cent and leaves the top decile's at
 \SsRankNetDTen, so the ranking does not drive the gradient.
 
 \subsection{Reconciliations}\label{app:recon}
@@ -160,6 +160,7 @@ Guarantee absorbed.
 \label{fig:energy-epg}
 \end{figure}
 
+\FloatBarrier
 \section{Energy robustness}\label{app:energy}
 
 \subsection{The wholesale share of the energy price rise}\label{app:wholesale}
@@ -194,13 +195,18 @@ Guarantee's rate, \SsGridPaperEpgRatePct\ per cent, is invariant to
 the rebase, because a price cap scales with the bill, and across
 deciles. The full stack returns \SsGridPaperFullRatePct\ per cent of
 the counterfactual shock at the paper's rebase and
-\SsGridUnityFullRatePct\ per cent with none. Rates fall with income in
-every cell that includes a flat-cash instrument, but levels move: on
+\SsGridUnityFullRatePct\ per cent with none. In every cell that
+includes a flat-cash instrument the rate peaks in the third decile and
+is lower at the top than at the bottom, but levels move: on
 the full stack \SsGridLowDecilesAboveHundred\ deciles are returned
 more than their cost at a factor of \SsGridLowRebase\ (aggregate rate
-\SsGridLowFullRatePct\ per cent), decile \SsDecilesAboveHundredList\
-alone at the paper's rebase (\SsGridPaperFullMaxDecilePct\ per cent)
-and none at one (the highest is \SsGridUnityFullMaxDecilePct). The
+\SsGridLowFullRatePct\ per cent) and none at one (the highest is
+\SsGridUnityFullMaxDecilePct). At the paper's rebase, on the headline
+path and the full sample, only decile \SsDecilesAboveHundredList\
+does (\SsGridPaperFullMaxDecilePct\ per cent), and only as a point
+estimate; on the equal-half-year paths the bottom decile also exceeds
+100 (Table~\ref{tab:paths}), and without the synthetic records
+\SsNoSynDecilesAboveHundred\ deciles do. The
 highest decile rate reaches 100 per cent at a factor of
 \SsGridMaxDecileRebaseAtHundred, or
 \SsGridNoCtrMaxDecileRebaseAtHundred\ without the Council Tax energy
@@ -262,6 +268,7 @@ Payments.
 \label{fig:paths}
 \end{figure}
 
+\FloatBarrier
 \section{Indexation: Universal Credit arithmetic for a single adult}\label{sec:results-rulebook}
 
 Universal Credit's standard allowance rose 3.1 per cent in April 2022,
@@ -271,8 +278,8 @@ CPI, an upper-bound counterfactual under which no actual benefit
 system operates, a single adult's standard allowance fell
 \pounds\MsUcLagCostGbp\ short over 2022--23
 (\MsUcLagCostPctAllowance\ per cent of the annual allowance); against
-a single April 2022 uprating at that year's CPI,
-\pounds\MsUcLagCostFlatAltGbp. Both figures are for the standard
+a single April 2022 uprating at the April 2022 CPI inflation rate of
+9.0 per cent in place of 3.1, \pounds\MsUcLagCostFlatAltGbp. Both figures are for the standard
 allowance only, before elements and caseload weighting, and the range
 is the result. Figure~\ref{fig:uprating-lag} shows the gap month by
 month.
@@ -291,6 +298,7 @@ months before the energy shock.
 \label{fig:uprating-lag}
 \end{figure}
 
+\FloatBarrier
 \section{The tariff earnings scenario}\label{app:e3}
 
 \runin{Construction.} The shock to division $j$ is
@@ -383,7 +391,8 @@ displacement, the exposed employees' mean earnings are
 \pounds\EThreeAsheMeanK\ thousand in the Annual Survey of Hours and
 Earnings \citep[\EThreeAsheEdition\ edition, uprated
 \EThreeAsheUpratingPct\ per cent to 2026--27 by the model's earnings
-growth;][]{ashe} for the same \EThreeAsheDivisions\ divisions, and the
+growth;][]{ashe} for \EThreeAsheDivisions\ of the \EThreeIndDivisions\
+divisions (ASHE suppresses the estimate for tobacco), and the
 mean of division medians is \pounds\EThreeAsheModelMedianK\ thousand
 against \pounds\EThreeAsheMedianK\ thousand. The share above the
 \pounds\EThreeHigherRateThreshold\ higher-rate threshold is
@@ -419,6 +428,7 @@ household-side offset because the government balance includes employer
 contributions, and poverty before housing costs rises
 \EThreeDispPovertyPp\ points under displacement.
 
+\FloatBarrier
 \section{From incidence to demand and welfare}\label{sec:results-mpc}
 
 This appendix aggregates the energy incidence into first-round demand
@@ -470,8 +480,7 @@ larger in pounds at the top.
 \emph{Notes.} MPC gradient: 0.8 (bottom decile) to 0.3 (top), linear;
 MPC flat: 0.5 everywhere. The asymmetric variant (after
 \citealp{bunn2018}; 0.5 out of losses, 0.14 out of gains) gives a net
-effect of $\SsMpcNetAsymBn$ billion pounds. Bills Support Scheme is
-the Energy Bills Support Scheme. Rows are computed on unrounded
+effect of $\SsMpcNetAsymBn$ billion pounds. Rows are computed on unrounded
 arrays, so they may differ from column sums in the last digit.
 \end{minipage}
 \end{table}

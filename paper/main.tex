@@ -5,6 +5,7 @@
 \newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
 \usepackage{amsmath}
 \usepackage{graphicx}
+\usepackage{placeins}
 \usepackage{xcolor}
 \definecolor{paperblue}{rgb}{0,0,0.7}
 % Run-in paragraph headings: bold blue, upright.
@@ -48,17 +49,18 @@
 \maketitle
 
 \begin{abstract}
-\noindent I study who bore four UK trade-related shocks of 2021--26, and
-how much of their cost the state absorbed: the post-Brexit rise in food
+\noindent I study who bore four UK trade-related shocks of 2021--26 and
+how much the state absorbed: the post-Brexit rise in food
 prices, the 2022 energy price surge, the 2025 US tariffs and the
 UK--India agreement. Taking shock sizes from published estimates and
 projections, and an assumed tariff scenario, I trace their conditional
 incidence through household microdata and a tax--benefit microsimulation
 model. Both adverse price shocks were regressive; the UK--India
-agreement's consumer-price gains are small and proportional.
+agreement's consumer-price gains are negligible.
 Energy-specific support offset \SsEnergySpecificRatePct\ per cent of
-the energy cost, or \SsDiscretionaryRatePct\ per cent including
-Cost of Living Payments; no instrument was legislated for food. In the
+the cost households would have faced without it, or
+\SsDiscretionaryRatePct\ per cent including Cost of Living Payments;
+no instrument was legislated for food. In the
 tariff scenario, taxes and benefits offset \EThreeDispTaxBenRatePct\ to
 \EThreeWageTaxBenRatePct\ per cent of lost earnings. By construction
 the automatic system cushions earnings losses but not price rises
@@ -91,7 +93,9 @@ and Food Survey, Wealth and Assets Survey and Survey of Personal
 Incomes microdata. Those microdata are available to researchers under
 licence from the UK Data Service, and the dataset is held in
 PolicyEngine's access-controlled Hugging Face repository; neither is
-redistributed with the code.
+redistributed with the code. Replicators can obtain access to
+Microcosm UK on request to PolicyEngine, subject to the underlying UK
+Data Service licences.
 
 \clearpage
 \input{sections/references}

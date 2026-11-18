@@ -327,6 +327,9 @@ def emit() -> None:
     add("WithReportedStatePensionBn", f"{ao['state_pension_with_add_on_gbp_bn']:,.1f}")
     add("WithReportedNonStatePensionBn",
         f"{ao['non_state_pension_with_add_on_gbp_bn']:,.1f}")
+    # Flat multiplication on the reform's own base and factor: the upper
+    # bound tapers and caps pull the parameters-only reform below.
+    add("FlatBn", f"{r['benefit_base_gbp_bn'] * (r['parameter_factor'] - 1):,.1f}")
     vin = RESULTS_DIR / "generated_vintage.tex"
     if vin.exists():
         import re

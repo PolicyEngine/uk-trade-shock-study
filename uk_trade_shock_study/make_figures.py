@@ -258,7 +258,7 @@ def fig_energy_epg(d: Data):
            label="Borne by the household, net of the Guarantee", zorder=3)
     ax.bar(d.deciles, d.en_cushion_gbp, width=w, bottom=d.en_net_gbp + gap,
            color=TEAL, edgecolor="white", linewidth=0.0, hatch="///", zorder=3,
-           label="Cushioned by the Energy Price Guarantee")
+           label="Absorbed by the Energy Price Guarantee")
     # Tone-on-tone ring so the hatch does not bleed into the surface.
     ax.bar(d.deciles, d.en_cushion_gbp, width=w, bottom=d.en_net_gbp + gap,
            color="none", edgecolor=TEAL, linewidth=0.8, zorder=4)
@@ -368,11 +368,13 @@ def fig_episode_map(d: Data):
     e1_bn = d.res["derived"]["tca_window_average"]["aggregate_gbp_bn_per_year"]
     e2_bn = ep["E2_energy"]["gross"]["aggregate_gbp_bn_per_year"]
     e3_bn = ep["E3_us_tariffs"]["earnings_side_declared"]["gross_shock_gbp_m_per_year"] / 1e3
+    ss = json.loads((RESULTS.parent / "second_stage_energy.json").read_text())["shock"]
     eps = [
         ("E1", "E1  TCA food NTBs", -1.02, -0.72, e1_bn, "cost", False,
          "+8 pp on food prices"),
         ("E2", "E2  Energy 2022-23", -0.98, -1.60, e2_bn, "cost", True,
-         "FY-mean cap \u00a31,208 \u2192 \u00a32,760"),
+         f"FY-mean cap \u00a3{ss['base_fy_mean_cap']:,.0f} \u2192 "
+         f"\u00a3{ss['counterfactual_fy_mean_cap']:,.0f}"),
         ("E3", "E3  US tariffs 2025", 0.42, -1.10, e3_bn, "cost", False,
          "earnings only; no UK retaliation"),
         ("E4", "E4  UK–India agreement", -1.02, 1.15, 0.18, "gain", False,
@@ -470,7 +472,7 @@ def write_tables(d: Data):
     A("\\begin{table}[tbp]")
     A("\\centering")
     A("\\small")
-    A("\\caption{Incidence by income decile. Food is on the window-average path; energy is shown gross and net of the Energy Price Guarantee; the UK--India agreement is a gain at full pass-through.}")
+    A("\\caption{Incidence by income decile. Energy is shown gross and net of the Energy Price Guarantee.}")
     A("\\label{tab:decile-full}")
     A("\\begin{tabular}{@{}l rr rr rr r@{}}")
     A("\\toprule")
@@ -519,8 +521,8 @@ def write_tables(d: Data):
          "Consumer prices (food)", "\\citet{bakker2023}",
          "$+8$ pp on food prices", "Estimate\\newline (ex post)"),
         ("E2 Energy 2022--23", "Apr 2022--\\newline Mar 2023", "Market",
-         "Consumer prices (energy)", "\\citet{ofgem2022}; \\citet{obrenergy2023}",
-         "FY-mean cap \\pounds1{,}227 $\\to$ \\pounds3{,}240 (\\pounds2{,}311 with the Guarantee)",
+         "Consumer prices (energy)", "\\citet{ofgem2021, ofgem2022}; \\citet{obrenergy2023}",
+         "FY-mean cap \\pounds\\SsBaseFyCap\\ $\\to$ \\pounds\\SsCounterFyCap\\ (\\pounds\\SsRealisedFyCap\\ with the Guarantee)",
          "Observed\\newline (statutory)"),
         ("E3 US tariffs 2025", "2025", "Policy\\newline (foreign)",
          "Earnings only; no UK retaliation", "Constructed here (Appendix~\\ref{app:e3})",

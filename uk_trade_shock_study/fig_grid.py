@@ -14,10 +14,10 @@ data = json.load(open(RESULTS_DIR / "grid_energy.json"))
 cells = data["cells_fine"]
 paper_rb = data["meta"]["paper_rebase"]
 stacks = ["epg", "epg_ebss", "ctr", "col_mt", "col_pen", "col_dis"]
-stack_lab = ["EPG only", "+ Bills Support (\u00a3400)",
+stack_lab = ["Energy Price Guarantee only", "+ Bills Support (\u00a3400)",
              "+ Council Tax rebate (\u00a3150)\n= energy-specific stack",
              "+ CoL means-tested (\u00a3650)", "+ CoL pensioner (\u00a3300)",
-             "+ CoL disability (\u00a3150)\n= full modelled stack"]
+             "+ CoL disability (\u00a3150)\n= full stack"]
 rebases = sorted({c["rebase"] for c in cells})
 
 M = np.zeros((len(stacks), len(rebases)))

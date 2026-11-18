@@ -90,7 +90,11 @@ def main() -> None:
     b23 = sum(agg(v, 2023) for v in UPRATED_CASH)
     uprating_effect = b23 - b22                      # GBP bn from +10.1%
     per_point = uprating_effect / (100 * APRIL_2023_UPRATING)
-    gap_pp = 100 * (P["cpi_sep_2022_yoy"] - P["uprating_applied_apr_2022"])
+    # The shortfall as a growth ratio, 1.101/1.031 - 1 (6.79 per cent), the
+    # same factor the parameters-only reform applies, not the 7.0-point
+    # difference of rates.
+    gap_pp = 100 * ((1 + P["cpi_sep_2022_yoy"])
+                    / (1 + P["uprating_applied_apr_2022"]) - 1)
     lag_cost = per_point * gap_pp                    # linear-in-rate step
 
     # CoL eligibility composition under both vintages.

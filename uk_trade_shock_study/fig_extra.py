@@ -173,7 +173,7 @@ def main() -> None:
     over = np.minimum(net_borne, 0)
     ax.bar(x, borne, color=BLUE, label="Borne by the household", zorder=3)
     ax.bar(x, m_epg, bottom=borne, color=BLUE_LIGHT,
-           label="Returned: Energy Price Guarantee", zorder=3)
+           label="Absorbed: Energy Price Guarantee", zorder=3)
     ax.bar(x, m_ebss, bottom=borne + m_epg, color=TEAL,
            label="Returned: Energy Bills Support Scheme", zorder=3)
     ax.bar(x, m_ctr, bottom=borne + m_epg + m_ebss, color=TEAL, hatch="...",

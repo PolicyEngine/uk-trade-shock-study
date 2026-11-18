@@ -43,7 +43,7 @@ import argparse
 
 import numpy as np
 
-from second_stage_energy import P, load_sim, col_components, weighted, wmean
+from second_stage_energy import P, load_sim, col_components, ctr_rebate, weighted, wmean
 from second_stage_energy import RESULTS_DIR, PAPER_DIR
 
 MPC_GRADIENT = np.linspace(0.8, 0.3, 10)   # Jappelli-Pistaferri / FHN
@@ -95,7 +95,9 @@ def main() -> None:
                              "esa_income"])
     col = sum(col_components(sim))
 
-    flows = {"burden": -dE_counter, "epg": epg, "ebss": ebss, "col": col}
+    ctr = ctr_rebate(sim)
+    flows = {"burden": -dE_counter, "epg": epg, "ebss": ebss, "ctr": ctr,
+             "col": col}
     flows["net"] = sum(flows.values())
 
     # --- MPC-weighted first-round demand ------------------------------------
@@ -110,9 +112,9 @@ def main() -> None:
     # Asymmetric: burden at MPC_NEG, transfers at MPC_POS.
     out["net_asym"] = (demand(flows["burden"], mpc_scalar=MPC_NEG)
                        + sum(demand(flows[k], mpc_scalar=MPC_POS)
-                             for k in ("epg", "ebss", "col")))
+                             for k in ("epg", "ebss", "ctr", "col")))
     # Demand-efficiency: consumption protected per pound of fiscal cost.
-    for k in ("epg", "ebss", "col"):
+    for k in ("epg", "ebss", "ctr", "col"):
         out[f"{k}_per_pound"] = out[f"{k}_gradient"] / (weighted(flows[k], w) / 1e9)
 
     # --- Atkinson-weighted welfare aggregation ------------------------------
@@ -135,6 +137,7 @@ def main() -> None:
         "MpcBurdenFlatBn": f"{-out['burden_flat']:,.1f}",
         "MpcEpgPerPound": f"{out['epg_per_pound']:.2f}",
         "MpcEbssPerPound": f"{out['ebss_per_pound']:.2f}",
+        "MpcCtrPerPound": f"{out['ctr_per_pound']:.2f}",
         "MpcColPerPound": f"{out['col_per_pound']:.2f}",
         "WelfPremiumGammaOne": f"{prem[1.0]:.2f}",
         "WelfPremiumGammaTwo": f"{prem[2.0]:.2f}",
@@ -147,6 +150,7 @@ def main() -> None:
     rows = [("Counterfactual burden (no policy)", "burden"),
             ("Energy Price Guarantee", "epg"),
             ("Bills Support Scheme", "ebss"),
+            ("Council Tax energy rebate", "ctr"),
             ("Cost-of-living payments", "col"),
             ("Net position (full stack)", "net")]
     with open(RESULTS_DIR / "table_mpc.tex", "w") as f:

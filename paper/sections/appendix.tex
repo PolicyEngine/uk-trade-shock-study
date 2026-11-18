@@ -77,10 +77,28 @@ rules (the means-tested payment per benefit unit, the pensioner
 payment through Winter Fuel Payment eligibility, and \pounds 150 per
 disabled person), \pounds\SsColBn\ billion in total; modelled
 eligibility in the simulated year is not receipt in the actual 2022
-qualifying windows.
+qualifying windows. DWP management information puts the three payments
+at \pounds\SsColOutturnTotalBn\ billion, so the model is
+\SsColOutturnTotalExcessPct\ per cent high: \SsColOutturnMtExcessPct\
+per cent on the means-tested payment (\pounds\SsColModelMtBn\ against
+\pounds\SsColOutturnMtBn\ billion), \SsColOutturnPenExcessPct\ on the
+pensioner payment (\pounds\SsColModelPenBn\ against
+\pounds\SsColOutturnPenBn) and \SsColOutturnDisExcessPct\ on the
+disability payment (\pounds\SsColModelDisBn\ against
+\pounds\SsColOutturnDisBn). Scaling each to its official figure moves
+the full-stack rate from \SsDiscretionaryRatePct\ to
+\SsColOutturnCalFullRatePct\ per cent and leaves
+\SsColOutturnCalDecilesAboveHundred\ deciles above 100 per cent (the
+highest at \SsColOutturnCalFullMaxDecilePct).
 
-The
-council-tax rebate and the Warm Home Discount are not modelled. The
+The Council Tax energy rebate enters as \pounds 150 to every household
+in bands A to D in England, Scotland and Wales, \pounds\SsCtrBn\
+billion to \SsCtrHouseholdsM\ million households; it adds
+\SsCtrRateAddPp\ points to both the energy-specific and the full-stack
+rate. The modelled \pounds\SsCtrEnglandBn\ billion for England compares
+with \pounds\SsCtrOutturnEnglandBn\ billion paid by the end of
+September 2022 on the department's progress figures. The Warm Home
+Discount and the discretionary council funds are not modelled. The
 discretionary total is therefore an approximation with omissions on
 both sides, not a bound.
 
@@ -146,8 +164,9 @@ sampling error, clustered on households. Benefit units newly entitled
 to Universal Credit claim with an assumed probability of 0.8 (no
 official Universal Credit take-up estimate exists), mixed exactly in
 the expectation; others keep their baseline flags, and baseline
-poverty lines are frozen. The wage-cut rate averages \EThreeWageDraws\
-take-up draws.
+poverty lines are frozen. The wage-cut rate mixes the same two take-up
+passes exactly; only \EThreeWageRedrawnUnits\ benefit units are
+re-drawn.
 
 Displaced workers receive an approximation of contribution-based New
 Style Jobseeker's Allowance: \EThreeDispJsaWeeks\ weeks at the model's
@@ -195,7 +214,38 @@ offset \EThreeWageTaxBenRatePct\ (wage cut) and
 \end{minipage}
 \end{table}
 
-Redundancy pay, partial-year spells, re-employment and behavioural
+\runin{Exposed earnings against ASHE.} Weighted by expected
+displacement, the exposed employees' mean earnings are
+\pounds\EThreeAsheModelMeanK\ thousand against \pounds\EThreeAsheMeanK\ thousand
+in the Annual Survey of Hours and Earnings (\EThreeAsheEdition\
+edition, uprated \EThreeAsheUpratingPct\ per cent to 2026--27 by the
+model's earnings growth) for the same \EThreeAsheDivisions\ divisions,
+and the mean of division medians is \pounds\EThreeAsheModelMedianK\ thousand
+against \pounds\EThreeAsheMedianK\ thousand. The share above the
+\pounds\EThreeHigherRateThreshold\ higher-rate threshold is
+\EThreeHigherRateSharePct\ per cent in the model against about
+\EThreeAsheHigherRateSharePct\ per cent implied by ASHE
+(\EThreeAsheHigherRateLowPct--\EThreeAsheHigherRateHighPct). Modelled
+exposed earnings are therefore, if anything, below ASHE, so the
+income-tax relief is not inflated by over-stated pay; the
+division-level fit is noisy, and the model's distribution is more
+skewed, with \EThreeHigherRateLossSharePct\ per cent of the gross loss
+on employees above the threshold.
+
+\runin{Sensitivity.} Universal Credit take-up of
+\EThreeSensTakeupLow\ and \EThreeSensTakeupHigh\ in place of 0.8
+gives displacement rates of \EThreeSensTakeupLowRatePct\ and
+\EThreeSensTakeupHighRatePct\ per cent; 13 weeks of the New Style
+allowance gives \EThreeSensJsaThirteenRatePct\ and none
+\EThreeSensJsaZeroRatePct. Part-year spells are cushioned more: two
+approximations give \EThreeSensSixMonthAnnualRatePct\ and
+\EThreeSensSixMonthMixRatePct\ per cent for six months and
+\EThreeSensThreeMonthAnnualRatePct\ and
+\EThreeSensThreeMonthMixRatePct\ for three, because income tax is
+then relieved at marginal rates and the fixed weeks of allowance cover
+more of the loss.
+
+Redundancy pay, re-employment and behavioural
 responses are not modelled. The Exchequer cost is
 \pounds\EThreeWageExchequerM\ million (wage cut) and
 \pounds\EThreeDispExchequerM\ million (displacement), above the
@@ -253,9 +303,9 @@ result survives.
 
 \subsection{Reconciliations}\label{app:recon}
 
-\paragraph{Energy budget shares.} One comparator needs reconciling. \citet{rf2022} report energy budget
+\paragraph{Energy budget shares.} One comparator needs reconciling. A 2026 release by \citet{rf2022} reports energy budget
 shares of roughly 11 per cent in the second decile against 6 per cent
-in the ninth; the shares computed here are
+in the ninth, not a 2022--23 figure; the shares computed here are
 \MsEnergyBudgetSharePctDecTwo\ and
 \MsEnergyBudgetSharePctDecNine\ per cent. The gap is definitional,
 not substantive: this paper measures electricity and gas only, as a
@@ -328,8 +378,8 @@ a year's lag, with the incidence of the full discretionary stack reported in Sec
 \subsection{The two-axis sensitivity grid}\label{sec:results-grid}
 
 Table~\ref{tab:grid} and Figure~\ref{fig:grid} vary the two conventions the headline rates
-depend on: the rebase factor (the paper's computed \SsRebaseFactor,
-an intermediate 0.8, and 1.0, no rebase) and the discretionary stack,
+depend on: the rebase factor (\SsGridLowRebase, the paper's computed \SsRebaseFactor,
+0.8, and 1.0, no rebase) and the discretionary stack,
 built up one instrument at a time. First, the Guarantee's cushioning rate
 (\SsGridPaperEpgRatePct\ per cent) is invariant to \emph{both}
 axes, to the rebase because a price cap scales with the bill it
@@ -345,10 +395,18 @@ counterfactual shock at the paper's rebase and
 progressive gradient survives every cell: without rebasing, the full
 stack returns \SsGridUnityFullDOne\ per cent of the bottom
 decile's loss against \SsGridUnityFullDTen\ per cent of the top
-decile's. The direction of the results holds across the grid, and
-no decile's point estimate exceeds 100 per cent at rebase factors of \SsRebaseFactor\ or above (the third decile's is highest, at \SsCushionPctDecThree; Figure~\ref{fig:grid} extends the aggregate rate to lower factors): the bottom
-decile's is \SsGridPaperFullDOne\ per cent at the paper's rebase and
-\SsGridUnityFullDOne\ per cent without rebasing.
+decile's. The direction of the results holds across the grid; the
+level does not. On the full stack \SsGridLowDecilesAboveHundred\
+deciles are returned more than their counterfactual cost at a rebase
+of \SsGridLowRebase\ (the aggregate rate is \SsGridLowFullRatePct\ per
+cent), deciles \SsDecilesAboveHundredList\ at the paper's rebase (the
+third highest, at \SsGridPaperFullMaxDecilePct) and none at one
+(\SsGridUnityFullMaxDecilePct). The highest decile rate reaches 100
+per cent at a factor of \SsGridMaxDecileRebaseAtHundred;
+without the Council Tax energy rebate the threshold is
+\SsGridNoCtrMaxDecileRebaseAtHundred\ and no decile exceeds 100 at
+the paper's rebase. On the energy-specific stack no decile exceeds 100
+per cent in any cell.
 
 One external anchor bears on the
 choice of cell: at a
@@ -381,14 +439,14 @@ with the actual caps and consumption weights, against an outturn of
 \pounds 24.0 billion \citep{nao2024}: the last two bracket the
 outturn. The full-stack rate is \SsSeasEqHeldFullRatePct,
 \SsSeasEqActualFullRatePct\ and \SsSeasCwActualFullRatePct\ per cent,
-so the headline is the conservative case.
+so the headline is the lowest of the three, by a small margin.
 
 \begin{table}[tbp]
 \centering
 \caption{Cushioning under two conventions: rebase factor $\times$
 discretionary stack}
 \label{tab:grid}
-\small
+\footnotesize\setlength{\tabcolsep}{4pt}
 \input{table_grid}
 \begin{minipage}{.85\textwidth}\footnotesize
 \emph{Notes:} Each cell is arithmetic on the same simulated
@@ -396,14 +454,18 @@ households; the measured automatic response is zero in every cell
 (Section~\ref{sec:results-secondstage}), so no re-simulation is
 required. ``Rate'' is the discretionary cushioning rate against the
 counterfactual shock on the financial-year basis; D1 and D10 are the
-bottom- and top-decile rates. The EPG row's rate is constant across
+bottom- and top-decile rates, and ``Max decile'' the highest decile
+rate. EPG is the Energy Price Guarantee, EBSS the Energy Bills Support
+Scheme and CT rebate the \pounds 150 Council Tax energy rebate; the
+energy-specific stack is those three, and the full stack adds the
+cost-of-living payments. The EPG row's rate is constant across
 rebase and deciles by construction.
 \end{minipage}
 \end{table}
 
 \begin{figure}[tbp]\centering
 \includegraphics[width=\textwidth]{figures/fig_grid.png}
-\caption{Discretionary cushioning rate by rebase factor (0.55--1.05) and instrument stack. Dashed rule: the paper's rebase. The EPG row is constant; all variation comes from the flat-cash payments.}
+\caption{Discretionary cushioning rate by rebase factor (0.55--1.05) and instrument stack. Dashed rule: the paper's rebase. The EPG row is constant; all variation comes from the flat-cash payments. The colour scale saturates at 100 per cent.}
 \label{fig:grid}
 \end{figure}
 
@@ -423,15 +485,16 @@ first-round policy-simulation quantities, no general-equilibrium
 feedback, no intertemporal response.
 
 \runin{Demand.} Each flow of the energy episode, the counterfactual
-burden and the three instruments, is weighted by a marginal
+burden and the four instruments, is weighted by a marginal
 propensity to consume assigned by equivalised-income decile, under
 three assumed scenarios: a gradient falling from 0.8 in the bottom
 decile to 0.3 in the top, a deliberately steep stylisation of the
 cash-on-hand and liquidity gradients of \citet{jappelli2014} and
 \citet{fagereng2021}, whose mapping into income deciles is flatter; a flat 0.5, which
 switches the heterogeneity channel off; and an asymmetric UK variant
-after \citet{bunn2018}, who find MPCs out of income \emph{losses}
-far larger than out of gains; the variant assumes 0.5 and 0.14.
+after \citet{bunn2018}, who report a mean MPC of 0.64 out of negative
+income shocks and 0.14 out of positive ones; the variant assumes 0.5
+for losses, below their 0.64 estimate, and 0.14 for gains.
 
 Table~\ref{tab:mpc} reports the results, with the flat scenario as
 the anchor and the gradient as the deliberately steep variant. First,
@@ -444,9 +507,10 @@ $\SsMpcNetGradientBn$ billion pounds.
 Second, under the gradient
 scenario only, first-round consumption per pound of modelled outlay is
 \SsMpcColPerPound\ for the cost-of-living payments,
+\SsMpcCtrPerPound\ for the Council Tax energy rebate,
 \SsMpcEbssPerPound\ for the Energy Bills Support Scheme and
 \SsMpcEpgPerPound\ for the Guarantee; under the flat and asymmetric
-scenarios the three coincide, so the ordering is a property of the
+scenarios the four coincide, so the ordering is a property of the
 assumed gradient rather than an estimated one. Third, the asymmetric
 scenario applies the assumed gain-MPC of 0.14 to every
 instrument, although the Guarantee truncates a loss rather than paying
@@ -476,7 +540,7 @@ assumed MPC scenarios}
 \begin{minipage}{.85\textwidth}\footnotesize
 \emph{Notes:} MPC gradient: 0.8 (bottom decile) to 0.3 (top),
 linear; MPC flat: 0.5 everywhere. The asymmetric variant
-(after \citealp{bunn2018}; assumed 0.5 out of losses, 0.14 out of gains) gives a
+(after \citealp{bunn2018}; assumed 0.5 out of losses, below their 0.64, and 0.14 out of gains) gives a
 net effect of $\SsMpcNetAsymBn$ billion pounds (not shown by row).
 First-round, no general-equilibrium feedback; parameters imported,
 not estimated. Rates and sums are computed on unrounded arrays, so

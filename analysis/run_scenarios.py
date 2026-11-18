@@ -3,6 +3,7 @@
 Usage: python analysis/run_scenarios.py [--data-dir DATA] [--period 2026]
        [--n-draws 100] [--scenarios full_tariff_displacement ...]
        python analysis/run_scenarios.py --e3     (the paper's E3 results)
+       python analysis/run_scenarios.py --e3 --e3-part wage_cut   (wage cut only)
 
 The paper's E3 files are produced by two commands:
     run_scenarios.py --n-draws 20 --scenarios full_tariff_displacement
@@ -58,10 +59,13 @@ ALL_PRESETS.update(OBR_LOW_PRESETS)
 
 #: E3 (referee rerun). The displacement margin is evaluated by the
 #: exact-expectation design (tariff_pipeline/expectation.py) with the New
-#: Style JSA approximation ON in the central case and OFF as a variant; the
-#: wage-cut margin displaces nobody, is deterministic apart from the UC
-#: claiming draw, and keeps the Monte Carlo runner.
-E3_WAGE_DRAWS = 3
+#: Style JSA approximation ON in the central case and OFF as a variant. The
+#: wage-cut margin displaces nobody and is deterministic apart from the UC
+#: claiming re-draw, which is mixed exactly from an all-claim and a
+#: none-claim simulation -- the same take-up treatment as the displacement
+#: margin (expectation.wage_cut_expectation_result). It formerly averaged
+#: three random claiming draws.
+E3_PARTS = ("displacement", "wage_cut")
 E3_ELASTICITIES = {
     "full_tariff": None,  # scenario default
     "full_tariff_obr_low": ELASTICITY_SCENARIOS["obr_low"],
@@ -80,8 +84,13 @@ def _e3_displacement(prefix: str, elasticity, new_style_jsa: bool) -> TradeShock
     )
 
 
-def run_e3(period: int, results: Path, pass_cache: Path | None = None) -> None:
-    """Exact-expectation displacement + Monte Carlo wage cut for E3."""
+def run_e3(
+    period: int,
+    results: Path,
+    pass_cache: Path | None = None,
+    parts: tuple[str, ...] = E3_PARTS,
+) -> None:
+    """Exact-expectation displacement and exact-take-up wage cut for E3."""
     import json
     import pickle
 
@@ -89,13 +98,9 @@ def run_e3(period: int, results: Path, pass_cache: Path | None = None) -> None:
         expectation_result,
         run_passes,
         validate_against_draw,
+        wage_cut_expectation_result,
     )
-    from tariff_pipeline.runner import (
-        _baseline_and_persons,
-        _metrics,
-        json_value,
-        run_monte_carlo_prepared,
-    )
+    from tariff_pipeline.runner import _baseline_and_persons, _metrics, json_value
 
     dataset, baseline, persons = _baseline_and_persons(None, None, period)
     base_metrics = _metrics(baseline, period)
@@ -109,7 +114,7 @@ def run_e3(period: int, results: Path, pass_cache: Path | None = None) -> None:
             json.dumps(json_value(payload), indent=2, allow_nan=False)
         )
 
-    for new_style_jsa in (True, False):
+    for new_style_jsa in (True, False) if "displacement" in parts else ():
         central = _e3_displacement("full_tariff", None, new_style_jsa)
         passes = run_passes(dataset, baseline, persons, central, period, base_metrics)
         if pass_cache is not None:
@@ -136,15 +141,19 @@ def run_e3(period: int, results: Path, pass_cache: Path | None = None) -> None:
             )
         del passes
 
-    for name in ("full_tariff_wage_cut", "full_tariff_obr_low_wage_cut"):
-        result = run_monte_carlo_prepared(
-            dataset, baseline, persons, ALL_PRESETS[name], period, E3_WAGE_DRAWS
+    wage_names = ("full_tariff_wage_cut", "full_tariff_obr_low_wage_cut")
+    for name in wage_names if "wage_cut" in parts else ():
+        out = wage_cut_expectation_result(
+            dataset, baseline, persons, ALL_PRESETS[name], period, base_metrics,
+            equiv, region,
         )
-        write_result(result, results / f"{name}.json")
+        write(out, name)
         print(
-            f"{name}: cushioning {100 * result.cushioning_rate_pooled:.2f}% "
-            f"split of gross "
-            f"{ {k: round(100 * v, 2) for k, v in result.cushion_component_shares['share_of_gross_loss'].items()} }"
+            f"{name}: cushioning {100 * out['cushioning_rate']:.2f}% "
+            f"(all claim {100 * out['takeup_nodes']['1']['cushioning_rate']:.2f}, "
+            f"none claim {100 * out['takeup_nodes']['0']['cushioning_rate']:.2f}; "
+            f"{out['redrawn_benefit_units']} benefit units re-drawn), split of gross "
+            f"{ {k: round(100 * v, 2) for k, v in out['cushion_component_shares']['share_of_gross_loss'].items()} }"
         )
 
 
@@ -159,14 +168,27 @@ def main() -> None:
         action="store_true",
         help="run the E3 set: exact-expectation displacement (with and "
         "without New Style JSA, central and OBR-low elasticity) and the "
-        "Monte Carlo wage cut; ignores --scenarios and --n-draws",
+        "wage cut with the take-up re-draw mixed exactly; ignores "
+        "--scenarios and --n-draws",
+    )
+    parser.add_argument(
+        "--e3-part",
+        nargs="*",
+        choices=E3_PARTS,
+        default=list(E3_PARTS),
+        help="with --e3: which margins to (re)run",
     )
     parser.add_argument("--pass-cache", default=None, help="directory to pickle E3 passes")
     args = parser.parse_args()
     if args.e3:
         results = Path("results")
         results.mkdir(exist_ok=True)
-        run_e3(args.period, results, Path(args.pass_cache) if args.pass_cache else None)
+        run_e3(
+            args.period,
+            results,
+            Path(args.pass_cache) if args.pass_cache else None,
+            tuple(args.e3_part),
+        )
         return
 
     data = Path(args.data_dir)

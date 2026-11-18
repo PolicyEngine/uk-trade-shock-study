@@ -18,8 +18,11 @@ bootstrap:
 e3:
 	PYTHONPATH=. $(PYTHON) analysis/run_scenarios.py --n-draws 20 --scenarios full_tariff_displacement
 	PYTHONPATH=. $(PYTHON) analysis/run_scenarios.py --e3
+	PYTHONPATH=. $(PYTHON) analysis/ashe_validation.py
+	PYTHONPATH=. $(PYTHON) analysis/sensitivity_duration_takeup.py
 	PYTHONPATH=. $(PYTHON) analysis/emit_e3_constants.py
 	PYTHONPATH=. $(PYTHON) analysis/emit_e3_macros.py
+	PYTHONPATH=. $(PYTHON) analysis/emit_data_macros.py
 
 # First pass: public-data incidence for all five episodes (no licensed data).
 first-pass:

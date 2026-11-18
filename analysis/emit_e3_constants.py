@@ -7,7 +7,8 @@ Reads the E3 result files written by ``analysis/run_scenarios.py --e3``:
   estimate: exact-expectation design (tariff_pipeline/expectation.py), New
   Style JSA approximation on;
 * results/full_tariff_displacement_no_jsa.json -- the same without it;
-* results/full_tariff_wage_cut.json -- the wage-cut margin;
+* results/full_tariff_wage_cut.json -- the wage-cut margin, with the
+  Universal Credit claiming re-draw mixed exactly (no draws);
 * results/full_tariff_displacement_bernoulli.json -- the superseded 20-draw
   Bernoulli run (no New Style JSA), kept as a comparator: it is the only
   source of a per-draw dispersion.
@@ -39,6 +40,11 @@ def main() -> None:
     no_jsa = _load("full_tariff_displacement_no_jsa")
     wage = _load("full_tariff_wage_cut")
     bern = _load("full_tariff_displacement_bernoulli")
+    if wage.get("design") != "exact_takeup_expectation":
+        raise ValueError(
+            "results/full_tariff_wage_cut.json is not the exact-take-up run; "
+            "run analysis/run_scenarios.py --e3"
+        )
     if disp.get("design") != "exact_expectation" or not disp.get("new_style_jsa"):
         raise ValueError(
             "results/full_tariff_displacement.json is not the exact-expectation "
@@ -60,7 +66,12 @@ def main() -> None:
             "SD across the 20 single Bernoulli draws of the superseded run "
             "(no New Style JSA); not the precision of the central estimate"
         ),
+        # no claiming draws any more (exact take-up mix): zero by construction
         "wagecut_cushion_sd_pct": round(100 * wage["cushioning_rate_sd"], 1),
+        "wagecut_design": "exact_takeup_expectation",
+        "wagecut_cushion_sampling_se_pct": round(
+            100 * wage["cushioning_rate_sampling_se"], 1
+        ),
         "displacement_cushion_mc_se_pct": 0.0,
         "displacement_cushion_sampling_se_pct": round(
             100 * disp["cushioning_rate_sampling_se"], 1

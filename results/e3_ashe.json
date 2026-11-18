@@ -1,0 +1,844 @@
+{
+  "period": 2026,
+  "tax_year": "2026-27",
+  "scenario": "full_tariff",
+  "benchmark_edition": "2025 revised",
+  "higher_rate_threshold": 50270.0,
+  "higher_rate_threshold_note": "Personal allowance plus the UK basic-rate limit from the model's parameters; employment income above it. Scottish taxpayers meet their higher rate at a lower threshold, which is not applied here.",
+  "uprating_note": "ASHE annual pay is uprated from its tax year to the simulation year by the model's growth in aggregate employment income.",
+  "coverage_note": "ASHE annual estimates: employee JOBS on adult rates, in the same job for more than a year, UK. Model: PERSONS with positive employment income in the survey-based Microcosm UK (FRS) data, classified by the SIC division of their main job; part-year and new-in-job workers are included.",
+  "model": {
+    "overall": {
+      "records": 5295,
+      "employees": 2158409.255115935,
+      "expected_displaced": 21117.37484601231,
+      "gross_earnings_loss": 1007106224.6537682,
+      "employee_weighted": {
+        "mean": 45039.59219630562,
+        "median": 35438.16796875,
+        "share_above_higher_rate": 0.26578908983133465
+      },
+      "expected_displaced_weighted": {
+        "mean": 47690.88165539405,
+        "median": 35775.13671875,
+        "share_above_higher_rate": 0.31898673994040566,
+        "share_of_gross_loss_above_higher_rate": 0.5821263053583363,
+        "mean_without_10_largest_loss_records": 46286.94949632503,
+        "loss_share_of_10_largest_loss_records": 0.13520985811618355,
+        "max_earnings": 11803830.0
+      }
+    },
+    "by_division": {
+      "10": {
+        "description": "Food products",
+        "shock": 0.0009900000000000002,
+        "records": 1015,
+        "employees": 380920.1888697166,
+        "wage_bill": 14221268081.266502,
+        "mean": 37333.983592375305,
+        "median": 34483.4140625,
+        "share_above_higher_rate": 0.11366830741214468
+      },
+      "11": {
+        "description": "Beverages",
+        "shock": 0.006270000000000001,
+        "records": 85,
+        "employees": 43971.46756834537,
+        "wage_bill": 2255026469.807542,
+        "mean": 51283.85734004733,
+        "median": 35020.8828125,
+        "share_above_higher_rate": 0.24910563234033045
+      },
+      "12": {
+        "description": "Tobacco",
+        "shock": 0.00472,
+        "records": 14,
+        "employees": 1889.127514243126,
+        "wage_bill": 253314526.35988906,
+        "mean": 134090.75059783823,
+        "median": 102383.1640625,
+        "share_above_higher_rate": 1.0
+      },
+      "13": {
+        "description": "Textiles",
+        "shock": 0.00478,
+        "records": 92,
+        "employees": 14711.43934058398,
+        "wage_bill": 504201021.06257325,
+        "mean": 34272.71862323151,
+        "median": 24655.080078125,
+        "share_above_higher_rate": 0.06115790681563515
+      },
+      "14": {
+        "description": "Wearing apparel",
+        "shock": 0.01465,
+        "records": 96,
+        "employees": 47701.33854841348,
+        "wage_bill": 2309462126.6718593,
+        "mean": 48415.038171893626,
+        "median": 25681.810546875,
+        "share_above_higher_rate": 0.3465954319271825
+      },
+      "15": {
+        "description": "Leather",
+        "shock": 0.007850000000000001,
+        "records": 2,
+        "employees": 213.96073293685913,
+        "wage_bill": 4974807.687787816,
+        "mean": 23251.03125,
+        "median": 23251.03125,
+        "share_above_higher_rate": 0.0
+      },
+      "16": {
+        "description": "Wood products",
+        "shock": 0.00017,
+        "records": 94,
+        "employees": 30719.73579706438,
+        "wage_bill": 1140745158.2158148,
+        "mean": 37133.950817533594,
+        "median": 28361.765625,
+        "share_above_higher_rate": 0.15758423734433558
+      },
+      "17": {
+        "description": "Paper",
+        "shock": 0.0015900000000000003,
+        "records": 111,
+        "employees": 55959.31744709052,
+        "wage_bill": 2383138758.662046,
+        "mean": 42586.98760783316,
+        "median": 33528.66015625,
+        "share_above_higher_rate": 0.1771207102473398
+      },
+      "18": {
+        "description": "Printing",
+        "shock": 0.0047,
+        "records": 153,
+        "employees": 57290.211444824934,
+        "wage_bill": 2504376529.533635,
+        "mean": 43713.864312502155,
+        "median": 36292.13671875,
+        "share_above_higher_rate": 0.17761610151407148
+      },
+      "19": {
+        "description": "Coke and refined petroleum",
+        "shock": 0.00255,
+        "records": 10,
+        "employees": 5417.720474809408,
+        "wage_bill": 383111034.23567593,
+        "mean": 70714.43349966362,
+        "median": 49313.8984375,
+        "share_above_higher_rate": 0.47282159128131934
+      },
+      "20": {
+        "description": "Chemicals",
+        "shock": 0.012520000000000002,
+        "records": 128,
+        "employees": 61440.524504523724,
+        "wage_bill": 2579874912.1011147,
+        "mean": 41989.793103266304,
+        "median": 30756.79296875,
+        "share_above_higher_rate": 0.1265911612536671
+      },
+      "21": {
+        "description": "Pharmaceuticals",
+        "shock": 0.01301,
+        "records": 321,
+        "employees": 132984.31591805536,
+        "wage_bill": 6988871788.421132,
+        "mean": 52554.10564902751,
+        "median": 39083.71875,
+        "share_above_higher_rate": 0.36273441558455627
+      },
+      "22": {
+        "description": "Rubber and plastic products",
+        "shock": 0.00196,
+        "records": 313,
+        "employees": 146671.6839196682,
+        "wage_bill": 5878051599.910549,
+        "mean": 40076.25359459258,
+        "median": 34125.515625,
+        "share_above_higher_rate": 0.248796894095365
+      },
+      "23": {
+        "description": "Other non-metallic mineral products",
+        "shock": 0.0025000000000000005,
+        "records": 166,
+        "employees": 67504.42758641392,
+        "wage_bill": 2223384284.940403,
+        "mean": 32936.86598696359,
+        "median": 27270.1171875,
+        "share_above_higher_rate": 0.19248697670564036
+      },
+      "24": {
+        "description": "Basic metals (incl. steel)",
+        "shock": 0.012625,
+        "records": 176,
+        "employees": 78990.4760920927,
+        "wage_bill": 4332811826.112172,
+        "mean": 54852.33208444867,
+        "median": 55993.42578125,
+        "share_above_higher_rate": 0.5661404717379617
+      },
+      "25": {
+        "description": "Fabricated metal products",
+        "shock": 0.0030800000000000003,
+        "records": 502,
+        "employees": 211638.8823608486,
+        "wage_bill": 10607015493.927376,
+        "mean": 50118.46299510408,
+        "median": 42851.5390625,
+        "share_above_higher_rate": 0.34408823559105395
+      },
+      "26": {
+        "description": "Computer electronic and optical products",
+        "shock": 0.01786,
+        "records": 327,
+        "employees": 92896.85054034181,
+        "wage_bill": 6433625338.21327,
+        "mean": 69255.5807951678,
+        "median": 57874.5,
+        "share_above_higher_rate": 0.5508150911402551
+      },
+      "27": {
+        "description": "Electrical equipment",
+        "shock": 0.01263,
+        "records": 232,
+        "employees": 69841.6220670268,
+        "wage_bill": 2895851469.251637,
+        "mean": 41463.118747048815,
+        "median": 32293.099609375,
+        "share_above_higher_rate": 0.18117620603394002
+      },
+      "28": {
+        "description": "Machinery and equipment n.e.c.",
+        "shock": 0.01801,
+        "records": 398,
+        "employees": 141238.86397940386,
+        "wage_bill": 7648163877.241596,
+        "mean": 54150.56211693184,
+        "median": 39425.66015625,
+        "share_above_higher_rate": 0.32511133134721254
+      },
+      "29": {
+        "description": "Motor vehicles trailers and semi-trailers",
+        "shock": 0.027425,
+        "records": 311,
+        "employees": 190281.82989082625,
+        "wage_bill": 7815164111.629894,
+        "mean": 41071.520681264345,
+        "median": 31450.669921875,
+        "share_above_higher_rate": 0.29756469126704166
+      },
+      "30": {
+        "description": "Other transport equipment (incl. aerospace)",
+        "shock": 0.015690000000000003,
+        "records": 380,
+        "employees": 140475.0016689822,
+        "wage_bill": 6857666134.620251,
+        "mean": 48817.69747744711,
+        "median": 46641.1953125,
+        "share_above_higher_rate": 0.3688053736535926
+      },
+      "31": {
+        "description": "Furniture",
+        "shock": 0.006350000000000001,
+        "records": 165,
+        "employees": 51194.925898715854,
+        "wage_bill": 1511977165.778485,
+        "mean": 29533.730916415112,
+        "median": 30327.431640625,
+        "share_above_higher_rate": 0.058943795714493194
+      },
+      "32": {
+        "description": "Other manufacturing",
+        "shock": 0.01391,
+        "records": 204,
+        "employees": 134455.3429510072,
+        "wage_bill": 5481796127.502269,
+        "mean": 40770.385223737256,
+        "median": 28080.955078125,
+        "share_above_higher_rate": 0.21112583134653287
+      }
+    }
+  },
+  "ashe": {
+    "2025 revised": {
+      "table": "ASHE Table 4.7a: Annual pay - Gross (GBP) - For all employee jobs, UK, by two-digit SIC 2007",
+      "edition": "2025 revised",
+      "tax_year": "2024-25",
+      "dataset_page": "https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/earningsandworkinghours/datasets/industry2digitsicashetable4",
+      "zip_url": "https://www.ons.gov.uk/file?uri=/employmentandlabourmarket/peopleinwork/earningsandworkinghours/datasets/industry2digitsicashetable4/2025revised/ashetable42025revised.zip",
+      "zip_sha256": "df87c313d1cb40bf499f1ec001076bcb9c9884c6443d76b186f09e84ff614bc3",
+      "zip_member": "sic07 Industry (2) Table 4.7a   Annual pay - Gross 2025.xlsx",
+      "local_file": "data/raw/ashe_table4_7a_annual_pay_gross_2025_revised.xlsx",
+      "sha256": "5ec5fe60b9aaae2555996cbb66f8d4c29868105e59384b95d85db36462728baf",
+      "licence": "Open Government Licence v3.0",
+      "manufacturing_section_c": {
+        "mean_uprated": 47391.149046926694,
+        "median_uprated": 40209.768615131565
+      },
+      "uprating_factor": 1.0800367610833081,
+      "expected_displaced_weighted_mean": {
+        "model": 47654.38443050254,
+        "ashe": 52016.73006882034,
+        "divisions": 22,
+        "weight_covered": 0.9995777561400386
+      },
+      "expected_displaced_weighted_mean_of_division_medians": {
+        "model": 37878.17599167877,
+        "ashe": 45362.942627417484,
+        "divisions": 21,
+        "weight_covered": 0.9994982201292513
+      },
+      "model_over_ashe_mean": 0.916135719555108,
+      "model_over_ashe_median": 0.8350026210333432,
+      "ashe_mean_with_ashe_job_counts": {
+        "ashe": 51930.396921383755,
+        "divisions": 21
+      },
+      "loss_weighted_ratio_of_means": 0.9680023830821233,
+      "loss_weighted_ratio_of_medians": 0.8802294876908873,
+      "share_above_higher_rate": {
+        "model": 0.32602632817632304,
+        "ashe_interpolated": 0.4346959747027898,
+        "ashe_lower_bound": 0.3840545967426933,
+        "ashe_upper_bound": 0.4773424664704632,
+        "divisions": 15,
+        "weight_covered": 0.921070104386893
+      },
+      "by_division": {
+        "10": {
+          "ashe_mean": 38811.87703526143,
+          "ashe_median": 33390.52450932766,
+          "ashe_jobs_thousand": 315.0,
+          "ashe_share_above_higher_rate": {
+            "interpolated": 0.18812946819729193,
+            "lower_bound": 0.09999999999999998,
+            "upper_bound": 0.19999999999999996
+          },
+          "model_over_ashe_mean": 0.9619216189533057,
+          "model_over_ashe_median": 1.0327305296706866
+        },
+        "11": {
+          "ashe_mean": 50067.80415191946,
+          "ashe_median": 42369.086111565426,
+          "ashe_jobs_thousand": 48.0,
+          "ashe_share_above_higher_rate": {
+            "interpolated": 0.38198249692261055,
+            "lower_bound": 0.30000000000000004,
+            "upper_bound": 0.4
+          },
+          "model_over_ashe_mean": 1.024288127045437,
+          "model_over_ashe_median": 0.8265668681237003
+        },
+        "12": {
+          "ashe_mean": null,
+          "ashe_median": null,
+          "ashe_jobs_thousand": null,
+          "ashe_share_above_higher_rate": null,
+          "model_over_ashe_mean": null,
+          "model_over_ashe_median": null
+        },
+        "13": {
+          "ashe_mean": 32700.057007967105,
+          "ashe_median": 29549.26576485877,
+          "ashe_jobs_thousand": 37.0,
+          "ashe_share_above_higher_rate": null,
+          "model_over_ashe_mean": 1.0480935435336163,
+          "model_over_ashe_median": 0.8343720034981668
+        },
+        "14": {
+          "ashe_mean": 30536.419364488913,
+          "ashe_median": 26585.536888770064,
+          "ashe_jobs_thousand": 14.0,
+          "ashe_share_above_higher_rate": null,
+          "model_over_ashe_mean": 1.5854851085846668,
+          "model_over_ashe_median": 0.9660068425296009
+        },
+        "15": {
+          "ashe_mean": 35511.392697066956,
+          "ashe_median": null,
+          "ashe_jobs_thousand": null,
+          "ashe_share_above_higher_rate": null,
+          "model_over_ashe_mean": 0.6547485041869509,
+          "model_over_ashe_median": null
+        },
+        "16": {
+          "ashe_mean": 40474.809636301405,
+          "ashe_median": 34950.20559600807,
+          "ashe_jobs_thousand": 58.0,
+          "ashe_share_above_higher_rate": null,
+          "model_over_ashe_mean": 0.9174583191672029,
+          "model_over_ashe_median": 0.8114906662591826
+        },
+        "17": {
+          "ashe_mean": 46428.404278097034,
+          "ashe_median": 38290.003272305985,
+          "ashe_jobs_thousand": 45.0,
+          "ashe_share_above_higher_rate": {
+            "interpolated": 0.28251246850949874,
+            "lower_bound": 0.25,
+            "upper_bound": 0.30000000000000004
+          },
+          "model_over_ashe_mean": 0.917261496922131,
+          "model_over_ashe_median": 0.8756504907509444
+        },
+        "18": {
+          "ashe_mean": 38429.65202551406,
+          "ashe_median": 33172.89710196938,
+          "ashe_jobs_thousand": 54.0,
+          "ashe_share_above_higher_rate": null,
+          "model_over_ashe_mean": 1.137503516385728,
+          "model_over_ashe_median": 1.094029761922586
+        },
+        "19": {
+          "ashe_mean": 70412.88863515017,
+          "ashe_median": 67731.0493537042,
+          "ashe_jobs_thousand": 10.0,
+          "ashe_share_above_higher_rate": {
+            "interpolated": 0.6333653411291349,
+            "lower_bound": 0.6,
+            "upper_bound": 0.7
+          },
+          "model_over_ashe_mean": 1.0042825237021011,
+          "model_over_ashe_median": 0.7280840752957126
+        },
+        "20": {
+          "ashe_mean": 54217.08938064931,
+          "ashe_median": 42415.74369964422,
+          "ashe_jobs_thousand": 89.0,
+          "ashe_share_above_higher_rate": {
+            "interpolated": 0.3746971999151788,
+            "lower_bound": 0.30000000000000004,
+            "upper_bound": 0.4
+          },
+          "model_over_ashe_mean": 0.7744752361836107,
+          "model_over_ashe_median": 0.7251268110856673
+        },
+        "21": {
+          "ashe_mean": 72035.64386867783,
+          "ashe_median": 56068.38039282221,
+          "ashe_jobs_thousand": 76.0,
+          "ashe_share_above_higher_rate": {
+            "interpolated": 0.5913617071027244,
+            "lower_bound": 0.5,
+            "upper_bound": 0.6
+          },
+          "model_over_ashe_mean": 0.7295569641167435,
+          "model_over_ashe_median": 0.6970723690638911
+        },
+        "22": {
+          "ashe_mean": 40620.182584343216,
+          "ashe_median": 35185.54560624812,
+          "ashe_jobs_thousand": 142.0,
+          "ashe_share_above_higher_rate": null,
+          "model_over_ashe_mean": 0.986609390821392,
+          "model_over_ashe_median": 0.9698731407177645
+        },
+        "23": {
+          "ashe_mean": 45189.926124162805,
+          "ashe_median": 40054.351325211675,
+          "ashe_jobs_thousand": 80.0,
+          "ashe_share_above_higher_rate": {
+            "interpolated": 0.31539625024924944,
+            "lower_bound": 0.30000000000000004,
+            "upper_bound": 0.4
+          },
+          "model_over_ashe_mean": 0.7288541675520117,
+          "model_over_ashe_median": 0.6808278323143181
+        },
+        "24": {
+          "ashe_mean": 51778.58238147542,
+          "ashe_median": 47328.61491845998,
+          "ashe_jobs_thousand": 69.0,
+          "ashe_share_above_higher_rate": {
+            "interpolated": 0.44330123028912194,
+            "lower_bound": 0.4,
+            "upper_bound": 0.5
+          },
+          "model_over_ashe_mean": 1.0593633421696949,
+          "model_over_ashe_median": 1.1830776344864133
+        },
+        "25": {
+          "ashe_mean": 45075.982245868516,
+          "ashe_median": 38318.94825750302,
+          "ashe_jobs_thousand": 251.0,
+          "ashe_share_above_higher_rate": {
+            "interpolated": 0.27877135753435,
+            "lower_bound": 0.25,
+            "upper_bound": 0.30000000000000004
+          },
+          "model_over_ashe_mean": 1.1118662422425134,
+          "model_over_ashe_median": 1.1182858875598047
+        },
+        "26": {
+          "ashe_mean": 49798.874998409716,
+          "ashe_median": 42671.06438996432,
+          "ashe_jobs_thousand": 126.0,
+          "ashe_share_above_higher_rate": {
+            "interpolated": 0.38447789529443466,
+            "lower_bound": 0.30000000000000004,
+            "upper_bound": 0.4
+          },
+          "model_over_ashe_mean": 1.3907057297454897,
+          "model_over_ashe_median": 1.3562937983241714
+        },
+        "27": {
+          "ashe_mean": 48297.83990785613,
+          "ashe_median": 43052.1013592745,
+          "ashe_jobs_thousand": 94.0,
+          "ashe_share_above_higher_rate": {
+            "interpolated": 0.38187233917771435,
+            "lower_bound": 0.30000000000000004,
+            "upper_bound": 0.4
+          },
+          "model_over_ashe_mean": 0.8584880571502417,
+          "model_over_ashe_median": 0.7500934586185596
+        },
+        "28": {
+          "ashe_mean": 50234.56182783072,
+          "ashe_median": 42126.40185135,
+          "ashe_jobs_thousand": 185.0,
+          "ashe_share_above_higher_rate": {
+            "interpolated": 0.3477065379248876,
+            "lower_bound": 0.30000000000000004,
+            "upper_bound": 0.4
+          },
+          "model_over_ashe_mean": 1.0779543037027466,
+          "model_over_ashe_median": 0.9358895709956427
+        },
+        "29": {
+          "ashe_mean": 56840.714680672885,
+          "ashe_median": 50890.14414180829,
+          "ashe_jobs_thousand": 164.0,
+          "ashe_share_above_higher_rate": {
+            "interpolated": 0.5115948384418206,
+            "lower_bound": 0.5,
+            "upper_bound": 0.6
+          },
+          "model_over_ashe_mean": 0.7225722074748927,
+          "model_over_ashe_median": 0.6180110206454891
+        },
+        "30": {
+          "ashe_mean": 56941.374106805844,
+          "ashe_median": 54440.548986517446,
+          "ashe_jobs_thousand": 169.0,
+          "ashe_share_above_higher_rate": {
+            "interpolated": 0.5884343981329988,
+            "lower_bound": 0.5,
+            "upper_bound": 0.6
+          },
+          "model_over_ashe_mean": 0.8573326204927717,
+          "model_over_ashe_median": 0.8567363147651393
+        },
+        "31": {
+          "ashe_mean": 35573.81882185757,
+          "ashe_median": 31381.5481300366,
+          "ashe_jobs_thousand": 64.0,
+          "ashe_share_above_higher_rate": null,
+          "model_over_ashe_mean": 0.8302097411669715,
+          "model_over_ashe_median": 0.9664096721728441
+        },
+        "32": {
+          "ashe_mean": 41082.00630338244,
+          "ashe_median": 36733.88630693715,
+          "ashe_jobs_thousand": 70.0,
+          "ashe_share_above_higher_rate": {
+            "interpolated": 0.23026182229583425,
+            "lower_bound": 0.19999999999999996,
+            "upper_bound": 0.25
+          },
+          "model_over_ashe_mean": 0.9924146577130648,
+          "model_over_ashe_median": 0.7644428047576862
+        }
+      }
+    },
+    "2026 provisional": {
+      "table": "ASHE Table 4.7a: Annual pay - Gross (GBP) - For all employee jobs, UK, by two-digit SIC 2007",
+      "edition": "2026 provisional",
+      "tax_year": "2025-26",
+      "dataset_page": "https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/earningsandworkinghours/datasets/industry2digitsicashetable4",
+      "zip_url": "https://www.ons.gov.uk/file?uri=/employmentandlabourmarket/peopleinwork/earningsandworkinghours/datasets/industry2digitsicashetable4/2026provisional/ashetable42026provisional.zip",
+      "zip_sha256": "afa6848f20c5554ef16fbc7fc099aee05d12714a36b239b1892cb90c2a7c687c",
+      "zip_member": "PROV - sic07 Industry (2) Table 4.7a   Annual pay - Gross 2026.xlsx",
+      "local_file": "data/raw/ashe_table4_7a_annual_pay_gross_2026_provisional.xlsx",
+      "sha256": "d9d2ad3b89e303b33e754811383ed668746bb725d886bb1d6c66aba15a329bd0",
+      "licence": "Open Government Licence v3.0",
+      "manufacturing_section_c": {
+        "mean_uprated": 46968.94398603735,
+        "median_uprated": 40254.91600803326
+      },
+      "uprating_factor": 1.0372999996916377,
+      "expected_displaced_weighted_mean": {
+        "model": 47654.38443050254,
+        "ashe": 51035.18305970446,
+        "divisions": 22,
+        "weight_covered": 0.9995777561400386
+      },
+      "expected_displaced_weighted_mean_of_division_medians": {
+        "model": 37869.52193299833,
+        "ashe": 44728.72269537741,
+        "divisions": 21,
+        "weight_covered": 0.998923546641391
+      },
+      "model_over_ashe_mean": 0.9337555304691113,
+      "model_over_ashe_median": 0.8466488567291917,
+      "ashe_mean_with_ashe_job_counts": {
+        "ashe": 50918.306666674165,
+        "divisions": 22
+      },
+      "loss_weighted_ratio_of_means": 0.9808870074308085,
+      "loss_weighted_ratio_of_medians": 0.8852293691315855,
+      "share_above_higher_rate": {
+        "model": 0.3259219896310925,
+        "ashe_interpolated": 0.42211468672847846,
+        "ashe_lower_bound": 0.3651159438361979,
+        "ashe_upper_bound": 0.4550160022632107,
+        "divisions": 14,
+        "weight_covered": 0.9204158948882453
+      },
+      "by_division": {
+        "10": {
+          "ashe_mean": 40559.46728794272,
+          "ashe_median": 34795.191189656296,
+          "ashe_jobs_thousand": 330.0,
+          "ashe_share_above_higher_rate": {
+            "interpolated": 0.21570927672285378,
+            "lower_bound": 0.19999999999999996,
+            "upper_bound": 0.25
+          },
+          "model_over_ashe_mean": 0.920475195774421,
+          "model_over_ashe_median": 0.9910396489716953
+        },
+        "11": {
+          "ashe_mean": 50751.56216491288,
+          "ashe_median": 43494.507637070215,
+          "ashe_jobs_thousand": 51.0,
+          "ashe_share_above_higher_rate": {
+            "interpolated": 0.3799499476034701,
+            "lower_bound": 0.30000000000000004,
+            "upper_bound": 0.4
+          },
+          "model_over_ashe_mean": 1.0104882520345837,
+          "model_over_ashe_median": 0.8051794287389938
+        },
+        "12": {
+          "ashe_mean": null,
+          "ashe_median": null,
+          "ashe_jobs_thousand": null,
+          "ashe_share_above_higher_rate": null,
+          "model_over_ashe_mean": null,
+          "model_over_ashe_median": null
+        },
+        "13": {
+          "ashe_mean": 35092.377639567945,
+          "ashe_median": 30468.612890942473,
+          "ashe_jobs_thousand": 37.0,
+          "ashe_share_above_higher_rate": null,
+          "model_over_ashe_mean": 0.9766428189974725,
+          "model_over_ashe_median": 0.8091960131684995
+        },
+        "14": {
+          "ashe_mean": 27661.99028177681,
+          "ashe_median": 26324.288202174474,
+          "ashe_jobs_thousand": 13.0,
+          "ashe_share_above_higher_rate": null,
+          "model_over_ashe_mean": 1.7502369742277195,
+          "model_over_ashe_median": 0.9755937311442137
+        },
+        "15": {
+          "ashe_mean": 35010.32720959234,
+          "ashe_median": 26967.310471983317,
+          "ashe_jobs_thousand": 7.0,
+          "ashe_share_above_higher_rate": null,
+          "model_over_ashe_mean": 0.6641192214744438,
+          "model_over_ashe_median": 0.862193182896596
+        },
+        "16": {
+          "ashe_mean": 36697.91057909067,
+          "ashe_median": 33675.42583998917,
+          "ashe_jobs_thousand": 50.0,
+          "ashe_share_above_higher_rate": null,
+          "model_over_ashe_mean": 1.0118818818718078,
+          "model_over_ashe_median": 0.8422095613508394
+        },
+        "17": {
+          "ashe_mean": 47270.69455594765,
+          "ashe_median": 39853.27344815266,
+          "ashe_jobs_thousand": 51.0,
+          "ashe_share_above_higher_rate": {
+            "interpolated": 0.27940060026604685,
+            "lower_bound": 0.25,
+            "upper_bound": 0.30000000000000004
+          },
+          "model_over_ashe_mean": 0.9009173232567791,
+          "model_over_ashe_median": 0.8413025394229987
+        },
+        "18": {
+          "ashe_mean": 38197.12026864499,
+          "ashe_median": 32136.072640446782,
+          "ashe_jobs_thousand": 54.0,
+          "ashe_share_above_higher_rate": null,
+          "model_over_ashe_mean": 1.1444282711643505,
+          "model_over_ashe_median": 1.1293270688301953
+        },
+        "19": {
+          "ashe_mean": 87558.907893971,
+          "ashe_median": null,
+          "ashe_jobs_thousand": 7.0,
+          "ashe_share_above_higher_rate": null,
+          "model_over_ashe_mean": 0.8076212369539246,
+          "model_over_ashe_median": null
+        },
+        "20": {
+          "ashe_mean": 47189.57769597176,
+          "ashe_median": 39589.79924823098,
+          "ashe_jobs_thousand": 79.0,
+          "ashe_share_above_higher_rate": {
+            "interpolated": 0.29805343502821113,
+            "lower_bound": 0.25,
+            "upper_bound": 0.30000000000000004
+          },
+          "model_over_ashe_mean": 0.8898107411300413,
+          "model_over_ashe_median": 0.7768868130879529
+        },
+        "21": {
+          "ashe_mean": 67844.39901983163,
+          "ashe_median": 55312.67399355698,
+          "ashe_jobs_thousand": 70.0,
+          "ashe_share_above_higher_rate": {
+            "interpolated": 0.5840656048425351,
+            "lower_bound": 0.5,
+            "upper_bound": 0.6
+          },
+          "model_over_ashe_mean": 0.7746270349253943,
+          "model_over_ashe_median": 0.7065960823834446
+        },
+        "22": {
+          "ashe_mean": 40780.10099787713,
+          "ashe_median": 35214.88276953153,
+          "ashe_jobs_thousand": 132.0,
+          "ashe_share_above_higher_rate": null,
+          "model_over_ashe_mean": 0.9827404203015291,
+          "model_over_ashe_median": 0.9690651491966895
+        },
+        "23": {
+          "ashe_mean": 44660.64029672355,
+          "ashe_median": 39705.4581981966,
+          "ashe_jobs_thousand": 77.0,
+          "ashe_share_above_higher_rate": {
+            "interpolated": 0.2946517630020541,
+            "lower_bound": 0.25,
+            "upper_bound": 0.30000000000000004
+          },
+          "model_over_ashe_mean": 0.7374920235834582,
+          "model_over_ashe_median": 0.6868102881819557
+        },
+        "24": {
+          "ashe_mean": 51046.881474825095,
+          "ashe_median": 46184.84891627044,
+          "ashe_jobs_thousand": 71.0,
+          "ashe_share_above_higher_rate": {
+            "interpolated": 0.4283523895579916,
+            "lower_bound": 0.4,
+            "upper_bound": 0.5
+          },
+          "model_over_ashe_mean": 1.07454815063483,
+          "model_over_ashe_median": 1.2123765064764367
+        },
+        "25": {
+          "ashe_mean": 45416.20961649894,
+          "ashe_median": 38936.50770842519,
+          "ashe_jobs_thousand": 260.0,
+          "ashe_share_above_higher_rate": {
+            "interpolated": 0.28301964344459096,
+            "lower_bound": 0.25,
+            "upper_bound": 0.30000000000000004
+          },
+          "model_over_ashe_mean": 1.1035368961503313,
+          "model_over_ashe_median": 1.1005491140446493
+        },
+        "26": {
+          "ashe_mean": 51977.235844548515,
+          "ashe_median": 44412.62186679728,
+          "ashe_jobs_thousand": 130.0,
+          "ashe_share_above_higher_rate": {
+            "interpolated": 0.4108036361987477,
+            "lower_bound": 0.4,
+            "upper_bound": 0.5
+          },
+          "model_over_ashe_mean": 1.3324213892846222,
+          "model_over_ashe_median": 1.3031092866703007
+        },
+        "27": {
+          "ashe_mean": 49719.65612521964,
+          "ashe_median": 43348.24833711369,
+          "ashe_jobs_thousand": 89.0,
+          "ashe_share_above_higher_rate": {
+            "interpolated": 0.3961906754780312,
+            "lower_bound": 0.30000000000000004,
+            "upper_bound": 0.4
+          },
+          "model_over_ashe_mean": 0.8339381640658048,
+          "model_over_ashe_median": 0.7449689629494545
+        },
+        "28": {
+          "ashe_mean": 49415.41603531008,
+          "ashe_median": 42714.769227302015,
+          "ashe_jobs_thousand": 189.0,
+          "ashe_share_above_higher_rate": {
+            "interpolated": 0.3424054460848047,
+            "lower_bound": 0.30000000000000004,
+            "upper_bound": 0.4
+          },
+          "model_over_ashe_mean": 1.0958232564153305,
+          "model_over_ashe_median": 0.922998318133258
+        },
+        "29": {
+          "ashe_mean": 54677.431473745826,
+          "ashe_median": 49672.977625233514,
+          "ashe_jobs_thousand": 153.0,
+          "ashe_share_above_higher_rate": {
+            "interpolated": 0.4852878453217996,
+            "lower_bound": 0.4,
+            "upper_bound": 0.5
+          },
+          "model_over_ashe_mean": 0.7511603887425736,
+          "model_over_ashe_median": 0.6331545122815083
+        },
+        "30": {
+          "ashe_mean": 58290.45110267177,
+          "ashe_median": 52668.492564343025,
+          "ashe_jobs_thousand": 128.0,
+          "ashe_share_above_higher_rate": {
+            "interpolated": 0.5612320797848134,
+            "lower_bound": 0.5,
+            "upper_bound": 0.6
+          },
+          "model_over_ashe_mean": 0.8374904732073609,
+          "model_over_ashe_median": 0.8855616145747913
+        },
+        "31": {
+          "ashe_mean": 35861.01693933945,
+          "ashe_median": 31567.73597061573,
+          "ashe_jobs_thousand": 61.0,
+          "ashe_share_above_higher_rate": null,
+          "model_over_ashe_mean": 0.823560886919988,
+          "model_over_ashe_median": 0.9607097470928785
+        },
+        "32": {
+          "ashe_mean": 40382.29644799539,
+          "ashe_median": 34704.94608968312,
+          "ashe_jobs_thousand": 67.0,
+          "ashe_share_above_higher_rate": {
+            "interpolated": 0.22506229116552956,
+            "lower_bound": 0.19999999999999996,
+            "upper_bound": 0.25
+          },
+          "model_over_ashe_mean": 1.0096103691438563,
+          "model_over_ashe_median": 0.8091340930355958
+        }
+      }
+    }
+  }
+}

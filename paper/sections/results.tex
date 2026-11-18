@@ -77,7 +77,8 @@ modelled entitlement reads food consumption
 $^{i}$~the Guarantee alone against the counterfactual shock
 (\pounds\MsEnergyGrossAggBn\,bn, FY basis), constant across deciles
 because the instrument capped a price; with the Energy Bills Support Scheme
-the energy-specific stack returns \SsGridPaperEbssRatePct\ per cent
+and the Council Tax energy rebate
+the energy-specific stack returns \SsEnergySpecificRatePct\ per cent
 on the household-stage base (Section~\ref{sec:results-secondstage}).
 $^{m}$~the tariff episode's earnings-channel rate
 (\EThreeDispTaxBenRatePct--\EThreeWageTaxBenRatePct\ per
@@ -177,8 +178,7 @@ Ofgem actually set for the final quarter
 model's monthly consumption weights the Guarantee absorbs
 \pounds\SsSeasCwActualEpgBn\ billion and the full-stack rate is
 \SsSeasCwActualFullRatePct\ per cent, against
-\SsSeasEqHeldFullRatePct\ on the headline convention, which is the
-conservative case.
+\SsSeasEqHeldFullRatePct\ on the headline convention.
 
 Because both paths are
 financial-year means, the \pounds\MsEnergyCushionAggSixMonthsBn\
@@ -204,10 +204,10 @@ optimal package when income predicts exposure poorly
 finding here is descriptive: the Guarantee cushioned proportionally. Whether the overall
 discretionary response was progressive cannot be judged from the Guarantee
 alone: the Energy Bills Support Scheme's flat \pounds 400, the
-means-tested cost-of-living payments and the council-tax rebate, jointly of the same order as the Guarantee and in part targeted, are
+\pounds 150 Council Tax energy rebate and the cost-of-living payments, jointly larger than the Guarantee and in part targeted, are
 not in the decile-table analysis. Section~\ref{sec:results-secondstage}
 reports the household-stage result: with the full stack,
-the cushioning rate falls with income.
+the cushioning rate falls with income above the third decile.
 
 
 
@@ -225,7 +225,13 @@ The displacement rate is an exact expectation over independent job
 losses, computed from all \EThreeDispExposedRecords\ exposed records,
 and includes an approximation of contribution-based New Style
 Jobseeker's Allowance; without it the rate is
-\EThreeDispNoJsaRatePct\ per cent. Displacement is cushioned less than
+\EThreeDispNoJsaRatePct\ per cent, and with six- or three-month spells
+in place of a full year it is about \EThreeSensSixMonthAnnualRatePct\
+to \EThreeSensThreeMonthMixRatePct\ per cent
+(Appendix~\ref{app:e3}). The exposed workers' mean earnings,
+\pounds\EThreeAsheModelMeanK\ thousand, are \EThreeAsheModelOverAsheMeanPct\
+per cent of the ASHE mean for the same divisions, so modelled exposed
+pay is not overstated against that benchmark. Displacement is cushioned less than
 wage cuts, the reverse of the
 EU-average ordering in \citet{dolls2012}, where an unemployment
 shock is cushioned more than a proportional income shock (47 against
@@ -329,9 +335,12 @@ claimed accuracy.
 \runin{Exposure, coverage and weights.} Exposure is the model's
 domestic energy consumption. The Guarantee enters as the difference
 between the two capped paths, the Energy Bills Support Scheme as its
-flat \pounds 400 to every weighted household, and the 2022--23
-cost-of-living payments on the model's own 2022--23 eligibility rules; the council-tax
-rebate and the Warm Home Discount are not modelled.
+flat \pounds 400 to every weighted household, the April 2022 Council
+Tax energy rebate as \pounds 150 to households in bands A to D in
+England, Scotland and Wales (\pounds\SsCtrBn\ billion to
+\SsCtrHouseholdsM\ million households), and the 2022--23
+cost-of-living payments on the model's own 2022--23 eligibility rules; the
+Warm Home Discount is not modelled.
 
 Deciles are of
 equivalised HBAI before-housing-costs income, and burdens are shares
@@ -365,8 +374,8 @@ first-order claim: a shock of this size moved nominal incomes in
 general equilibrium, wage bargaining, self-employment margins, and
 those excluded channels (Section~\ref{sec:framework}) would trigger
 means-tested responses the first-order calculation cannot. This is consistent with \citet{cohenfollette2000}, who find in a
-macro model that automatic stabilisers do little against a supply
-shock.
+macro model that automatic stabilisers do very little against a supply
+shock and only modestly damp demand shocks.
 
 Two qualifications bound the claim. It is a statement about the
 \emph{modelled} statutory system, so channels outside it, the Warm
@@ -438,11 +447,14 @@ month-by-month CPI indexation over 2022--23
 Against a counterfactual shock of \pounds\SsCounterAggBn\ billion
 (\SsCounterRisePct\ per cent on the FY basis), the
 \emph{energy-specific} instruments, the Guarantee
-(\pounds\SsEpgBn\ billion) and the Energy Bills Support Scheme
-(\pounds\SsEbssBn\ billion), returned \SsGridPaperEbssRatePct\ per
+(\pounds\SsEpgBn\ billion), the Energy Bills Support Scheme
+(\pounds\SsEbssBn\ billion) and the Council Tax energy rebate
+(\pounds\SsCtrBn\ billion, adding \SsCtrRateAddPp\ points), returned
+\SsEnergySpecificRatePct\ per
 cent (\SsGridPaperEbssDOne\ per cent at the bottom decile,
 \SsGridPaperEbssDTen\ at the top). Adding the cost-of-living payments
-(\pounds\SsColBn\ billion) takes the full stack to
+(\pounds\SsColBn\ billion in the model against \pounds\SsColOutturnTotalBn\
+billion in DWP management information; Appendix~\ref{app:conventions}) takes the full stack to
 \pounds\SsDiscretionaryBn\ billion, or \SsDiscretionaryRatePct\ per
 cent. Two attributions are reported: the cost-of-living
 payments were legislated against the general inflation episode, not
@@ -457,18 +469,22 @@ with income above the third decile: on the full stack,
 loss was returned against \SsCushionPctDecTen\ per cent of the top
 decile's, because flat payments are worth more relative to a small
 bill and the cost-of-living payments concentrate in the lower deciles. Two
-features of the profile need noting. First, no
-decile's point estimate reaches 100 per cent at the paper's rebase (the
-third decile's interval includes it, and rates would pass 100 at
-rebase factors below about 0.7): the bottom decile's
-\SsCushionPctDecOne\ per cent exists only on the full-stack
-attribution, and it compares the instruments with the counterfactual
+features of the profile need noting. First, on the full stack deciles
+\SsDecilesAboveHundredList\ receive more than their counterfactual
+energy cost at the paper's rebase (point estimates; the third decile's
+\SsGridPaperFullMaxDecilePct\ per cent is the highest). This depends on
+the rebase: the highest decile rate falls to 100 per cent at a factor
+of \SsGridMaxDecileRebaseAtHundred, above the paper's \SsRebaseFactor,
+and at a factor of one no decile exceeds it. It exists only on the
+full-stack attribution (no decile exceeds 100 per cent on the
+energy-specific stack, or on the full stack without the rebate), and it
+compares the instruments with the counterfactual
 energy cost alone, not with inflation generally, against which the
 preceding subsection shows those households were not made whole.
 
 Second, rates are flat to rising over deciles one to three
 (\SsCushionPctDecOne, \SsCushionPctDecTwo\ and
-\SsCushionPctDecThree\ per cent), then fall. Adding the Energy Bills Support Scheme and the cost-of-living payments
+\SsCushionPctDecThree\ per cent), then fall. Adding the flat-cash instruments
 changes the pattern from the Guarantee's constant rate to rates that
 fall with income. Figure~\ref{fig:decomp} shows the anatomy in
 pounds: the counterfactual shock by decile, split into the part the
@@ -482,16 +498,18 @@ the disclosed modelling approximations.
 
 Recalibrating the Energy Bills Support Scheme to its
 \pounds\SsEbssOutturnBn\ billion NAO outturn leaves the full-stack
-rate at \SsCalFullRatePct\ per cent. The same bootstrap puts
+rate at \SsCalFullRatePct\ per cent, and scaling the cost-of-living
+payments to the official figures gives \SsColOutturnCalFullRatePct\
+per cent, with \SsColOutturnCalDecilesAboveHundred\ deciles above 100. The same bootstrap puts
 \SsCushionDecOneLo--\SsCushionDecOneHi\ per cent around the bottom
-decile's \SsCushionPctDecOne, an interval that excludes 100 per cent. The net borne amount is positive in deciles one, two, four and five
-and spans zero only in the third (95 per cent intervals
-\pounds\SsNetLoDecOne--\SsNetHiDecOne,
-\pounds\SsNetLoDecTwo--\SsNetHiDecTwo,
-\pounds\SsNetLoDecThree--\SsNetHiDecThree,
-\pounds\SsNetLoDecFour--\SsNetHiDecFour\ and
-\pounds\SsNetLoDecFive--\SsNetHiDecFive\ a year for deciles one to
-five). These
+decile's \SsCushionPctDecOne, an interval that includes 100 per cent. The net amount borne (negative when the household gained) has 95 per cent intervals of
+$\SsNetLoDecOne$ to $\SsNetHiDecOne$,
+$\SsNetLoDecTwo$ to $\SsNetHiDecTwo$,
+$\SsNetLoDecThree$ to $\SsNetHiDecThree$,
+$\SsNetLoDecFour$ to $\SsNetHiDecFour$ and
+$\SsNetLoDecFive$ to $\SsNetHiDecFive$ pounds a year for deciles one to
+five: only the third decile's net gain and the fifth decile's net cost
+are distinguishable from zero. These
 are sampling intervals over the survey base only: the resampling does
 not re-calibrate the grossing weights or reflect the survey's design,
 and imputation uncertainty from the consumption donor models is not
@@ -499,7 +517,7 @@ captured (Section~\ref{sec:results-withindec}).
 
 \begin{figure}[tbp]\centering
 \includegraphics[width=\textwidth]{figures/fig_decomp.png}
-\caption{Energy shock by decile in pounds a year: counterfactual shock (dashed), the part borne by the household, and the parts returned by each instrument. Whiskers: 95 per cent household-bootstrap intervals on the part borne.}
+\caption{Energy shock by decile in pounds a year: counterfactual shock (dashed), the part borne by the household, and the parts returned by each instrument, including the Council Tax energy rebate. In deciles one to four the instruments sum to more than the counterfactual shock. Whiskers: 95 per cent household-bootstrap intervals on the net position.}
 \label{fig:decomp}
 \end{figure}
 
@@ -520,9 +538,10 @@ against \SsGridUnityFullDTen\ per cent of the top decile's. And on the
 path that uses the January 2023 cap Ofgem actually set, rather than
 the October 2022 cap, for the final quarter, the Guarantee absorbs
 \SsAnnEpgRatePct\ per cent and the full stack \SsAnnFullRatePct\ per
-cent. No decile's point estimate exceeds 100 per cent at rebase
-factors of \SsRebaseFactor\ or above (the third decile's is highest,
-at \SsCushionPctDecThree).
+cent. Whether any decile is returned more than its counterfactual
+cost depends on the rebase: \SsGridLowDecilesAboveHundred\ deciles at
+\SsGridLowRebase, \SsDecilesAboveHundred\ at the paper's
+\SsRebaseFactor\ and none at one.
 
 
 \subsection{Imputed exposure varies mostly within deciles}\label{sec:results-withindec}
@@ -621,7 +640,7 @@ for food.
 Episode-specific,
 the contrast is the paper's central comparative fact: against the
 energy shock the state legislated instruments returning
-\SsGridPaperEbssRatePct\ per cent of the counterfactual loss; against
+\SsEnergySpecificRatePct\ per cent of the counterfactual loss; against
 the food shock, of the same sign and a similar spending-share
 gradient, it legislated none. The two episodes differed in size (the realised household-stage energy aggregate is about \SsEnergyToTcaRatio\ times the window-average food aggregate, and a smaller multiple of its end-state rate) and in speed; the paper does not estimate why
 policymakers responded to one and not the other.

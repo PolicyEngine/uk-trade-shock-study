@@ -55,6 +55,14 @@ already second-order term.
 WHAT IS NOT AVAILABLE. Non-linear statistics (the Gini) have no exact
 expectation under this design and are reported as null.
 
+WAGE-CUT MARGIN. ``wage_cut_expectation_result`` gives the wage-cut margin
+the SAME take-up treatment: the cut itself is deterministic (every exposed
+employee loses s_i of earnings), so the only randomness is the claiming
+re-draw of the newly entitled benefit units, and one forced "all claim" and
+one forced "none claim" simulation mixed with weights uc_takeup and
+1 - uc_takeup give its expectation (exact when no household holds two
+re-drawn benefit units; the function counts them).
+
 PRECISION. Assignment (Monte Carlo) error is zero by construction. What
 remains is that the survey holds a finite number of exposed households;
 ``sampling_se`` is a household-clustered linearisation SE of the ratio that
@@ -80,7 +88,9 @@ from tariff_pipeline.shocks import (
     TradeShockScenario,
     _person_shock,
     apply_fixed_displacement,
+    apply_shocks,
     build_shocked_simulation,
+    uc_takeup_redraw_diagnostic,
 )
 
 #: Take-up values the passes are run at; mixed with the scenario's uc_takeup.
@@ -176,9 +186,19 @@ class ExpectationPasses:
 
 def run_passes(
     dataset, baseline, persons: pd.DataFrame, scenario: TradeShockScenario, period: int,
-    baseline_metrics: dict, log=print,
+    baseline_metrics: dict, log=print, build_table=None,
 ) -> ExpectationPasses:
-    """Run the displacement passes for ``scenario``'s exposed set."""
+    """Run the displacement passes for ``scenario``'s exposed set.
+
+    ``build_table(displaced, scenario_at_node)`` builds the shocked person
+    table of one pass; the default is the full-year job loss
+    (``apply_fixed_displacement``). The duration sensitivity passes other
+    builders (a part-year spell); everything else -- the ranks, the take-up
+    nodes, the separability checks -- is shared.
+    """
+    if build_table is None:
+        def build_table(displaced, node_scenario):
+            return apply_fixed_displacement(persons, node_scenario, displaced, seed=0)
     if scenario.margin != "displacement" or scenario.selection_risk_column is not None:
         raise ValueError(
             "the exact-expectation design covers the uniform-risk displacement margin"
@@ -212,9 +232,7 @@ def run_passes(
         touched[household[displaced]] = True
         by_takeup = {}
         for node in TAKEUP_NODES:
-            table = apply_fixed_displacement(
-                persons, replace(scenario, uc_takeup=node), displaced, seed=0
-            )
+            table = build_table(displaced, replace(scenario, uc_takeup=node))
             sim = build_shocked_simulation(dataset, baseline, table, period)
             outcome = _household_outcomes(sim, period, lines)
             del sim
@@ -292,6 +310,49 @@ def expected_household_changes(
     return expected, {"first_order": first_order, "p_single": p_single, "p_pair": p_pair}
 
 
+def _incidence_by_decile_and_region(
+    expected_net: np.ndarray,
+    household: np.ndarray,
+    household_weight: np.ndarray,
+    weight: np.ndarray,
+    baseline_equiv: np.ndarray,
+    baseline_region: np.ndarray,
+) -> tuple[dict, dict]:
+    """Person-weighted mean change in household income per head, by baseline
+    equivalised-income decile and by region.
+
+    The household total change is spread over its members, so the sum over
+    persons of weight * change / people equals w_h * change_h per household.
+    """
+    net_change_person = (expected_net * household_weight)[household]
+    people = np.bincount(household, minlength=household_weight.size).astype(float)
+    per_head = net_change_person / people[household]
+    order = np.argsort(baseline_equiv)
+    cum = np.cumsum(weight[order])
+    ranks = np.empty(len(weight))
+    ranks[order] = cum / cum[-1]
+    deciles = np.clip(np.ceil(ranks * 10).astype(int), 1, 10)
+    decile_change = {
+        int(d): float(per_head[deciles == d].sum() / weight[deciles == d].sum())
+        for d in range(1, 11)
+    }
+    region_change = {
+        r: float(per_head[baseline_region == r].sum() / weight[baseline_region == r].sum())
+        for r in sorted(set(baseline_region))
+    }
+    return decile_change, region_change
+
+
+def _clustered_ratio_se(numerator_h: np.ndarray, gross_h: np.ndarray) -> float:
+    """Household-clustered linearisation SE of sum(numerator) / sum(gross)."""
+    active = gross_h > 0
+    gross = float(gross_h.sum())
+    ratio = float(numerator_h.sum()) / gross
+    z = (numerator_h[active] - ratio * gross_h[active]) / gross
+    m = int(active.sum())
+    return float(np.sqrt(m / (m - 1) * np.square(z).sum()))
+
+
 def expectation_result(
     passes: ExpectationPasses,
     persons: pd.DataFrame,
@@ -342,25 +403,10 @@ def expectation_result(
 
     record_loss = (shock * earnings * weight)[exposed]
     person_w_total = float(weight.sum())
-    net_change_person = (expected["hbai_household_net_income"] * w)[passes.household]
-    # person-weighted mean change in household income per head: the household
-    # total change spread over its members, so sum over persons of
-    # weight * change / people = w_h * change_h per household.
-    people = np.bincount(passes.household, minlength=w.size).astype(float)
-    per_head = net_change_person / people[passes.household]
-    order = np.argsort(baseline_equiv)
-    cum = np.cumsum(weight[order])
-    ranks = np.empty(len(weight))
-    ranks[order] = cum / cum[-1]
-    deciles = np.clip(np.ceil(ranks * 10).astype(int), 1, 10)
-    decile_change = {
-        int(d): float(per_head[deciles == d].sum() / weight[deciles == d].sum())
-        for d in range(1, 11)
-    }
-    region_change = {
-        r: float(per_head[baseline_region == r].sum() / weight[baseline_region == r].sum())
-        for r in sorted(set(baseline_region))
-    }
+    decile_change, region_change = _incidence_by_decile_and_region(
+        expected["hbai_household_net_income"], passes.household, w, weight,
+        baseline_equiv, baseline_region,
+    )
     displaced_w = float((shock * weight)[exposed].sum())
     band_share = {}
     for lo, hi in AGE_BANDS:
@@ -488,6 +534,169 @@ def validate_against_draw(
     }
 
 
+def wage_cut_expectation_result(
+    dataset,
+    baseline,
+    persons: pd.DataFrame,
+    scenario: TradeShockScenario,
+    period: int,
+    baseline_metrics: dict,
+    baseline_equiv: np.ndarray,
+    baseline_region: np.ndarray,
+    log=print,
+) -> dict:
+    """Wage-cut margin with the claiming re-draw mixed exactly.
+
+    Two simulations of the SAME deterministic wage cut, with the newly
+    entitled benefit units forced to all claim (1.0) and to none claim (0.0);
+    every household outcome is mixed with weights ``uc_takeup`` and
+    ``1 - uc_takeup``. For a household with one re-drawn benefit unit that is
+    the expectation over its claiming draw; the number of households holding
+    two or more is reported (``households_with_two_redrawn_units``) and the
+    mix treats their claiming as perfectly correlated. The keys the Monte
+    Carlo schema's readers use are kept; ``n_draws`` is 0 and ``draws`` is
+    empty because nothing is drawn. The Gini is non-linear, so it is
+    reported at the two nodes rather than as an expectation.
+    """
+    from tariff_pipeline.runner import gini
+
+    if scenario.margin != "wage_cut":
+        raise ValueError("wage_cut_expectation_result requires the wage_cut margin")
+    lines = (baseline_metrics["poverty_line_bhc"], baseline_metrics["poverty_line_ahc"])
+
+    def _calc(sim, name, entity="household", dtype=float):
+        return np.asarray(sim.calculate(name, period=period, map_to=entity).values, dtype=dtype)
+
+    household_ids = _calc(baseline, "household_id", dtype=None)
+    household = pd.Index(household_ids).get_indexer(
+        _calc(baseline, "household_id", "person", dtype=None)
+    )
+    w = _calc(baseline, "household_weight")
+    people = _calc(baseline, "household_count_people")
+    weight = persons["weight"].to_numpy(dtype=float)
+    earnings = persons["employment_income"].to_numpy(dtype=float)
+    shock = _person_shock(persons, scenario)
+    exposed = (earnings > 0) & (shock > 0)
+    base = _household_outcomes(baseline, period, lines)
+    base_flag = _calc(baseline, "would_claim_uc", "benunit", dtype=bool)
+    benunit_household = pd.Index(household_ids).get_indexer(
+        _calc(baseline, "household_id", "benunit", dtype=None)
+    )
+    delta, node_summary, flags = {}, {}, {}
+    for node in TAKEUP_NODES:
+        table = apply_shocks(persons, replace(scenario, uc_takeup=node), seed=0)
+        sim = build_shocked_simulation(dataset, baseline, table, period)
+        outcome = _household_outcomes(sim, period, lines)
+        delta[node] = {name: outcome[name] - base[name] for name in base}
+        flags[node] = _calc(sim, "would_claim_uc", "benunit", dtype=bool)
+        gross = -float((w * delta[node]["employment_income"]).sum())
+        net = -float((w * delta[node]["hbai_household_net_income"]).sum())
+        node_summary[f"{node:.0f}"] = {
+            "cushioning_rate": 1.0 - net / gross,
+            "net_disposable_loss": net,
+            "gini_change": gini(_calc(sim, "equiv_hbai_household_net_income"), w * people)
+            - baseline_metrics["gini"],
+            "uc_takeup_redraw": uc_takeup_redraw_diagnostic(table),
+        }
+        del sim
+        log(f"[expectation] wage cut take-up {node:.0f}: "
+            f"cushioning {100 * node_summary[f'{node:.0f}']['cushioning_rate']:.3f}%")
+    # The re-drawn benefit units are exactly those whose flag differs between
+    # the two forced nodes; everything else is identical across nodes.
+    redrawn = flags[1.0] != flags[0.0]
+    if (flags[0.0] & redrawn).any() or not np.array_equal(
+        flags[1.0][~redrawn], base_flag[~redrawn]
+    ):
+        raise RuntimeError("forced take-up nodes are not all-claim / none-claim")
+    per_household = np.bincount(benunit_household[redrawn], minlength=w.size)
+    untouched = per_household == 0
+    node_gap = max(
+        float(np.abs(delta[1.0][name][untouched] - delta[0.0][name][untouched]).max())
+        for name in base
+    )
+    if node_gap > SEPARABILITY_TOL:
+        raise RuntimeError(
+            f"a household with no re-drawn benefit unit differs between the "
+            f"take-up nodes by £{node_gap:,.2f}"
+        )
+    mix = scenario.uc_takeup
+    expected = {
+        name: mix * delta[1.0][name] + (1.0 - mix) * delta[0.0][name] for name in base
+    }
+    totals = {name: float((w * values).sum()) for name, values in expected.items()}
+    components = cushion_components(totals)
+    gross = components["gross_loss"]
+    net = -totals["hbai_household_net_income"]
+    target_gross = float((shock * earnings * weight)[exposed].sum())
+    if not np.isclose(gross, target_gross, rtol=1e-6, atol=1.0):
+        raise AssertionError(
+            f"simulated wage-cut loss £{gross:,.0f} differs from the imposed "
+            f"£{target_gross:,.0f}"
+        )
+    rate = 1.0 - net / gross
+    g_h = -w * expected["employment_income"]
+    sampling_se = _clustered_ratio_se(-w * expected["hbai_household_net_income"], g_h)
+    decile_change, region_change = _incidence_by_decile_and_region(
+        expected["hbai_household_net_income"], household, w, weight,
+        baseline_equiv, baseline_region,
+    )
+    record_loss = (shock * earnings * weight)[exposed]
+    person_w_total = float(weight.sum())
+    return {
+        "scenario": scenario.name,
+        "tariff_scenario": scenario.tariff_scenario,
+        "margin": scenario.margin,
+        "design": "exact_takeup_expectation",
+        "selection_method": "exact_takeup_expectation",
+        "design_note": (
+            "Deterministic wage cut (every exposed employee loses s_i of "
+            "earnings). The Universal Credit claiming re-draw of newly "
+            "entitled benefit units is mixed exactly from one all-claim and "
+            "one none-claim simulation with weights uc_takeup and "
+            "1 - uc_takeup (tariff_pipeline/expectation.py). No draws: Monte "
+            "Carlo error is zero by construction."
+        ),
+        "elasticity": scenario.elasticity,
+        "uc_takeup": scenario.uc_takeup,
+        "uc_takeup_scope": scenario.uc_takeup_scope,
+        "n_draws": 0,
+        "draws": [],
+        "n_simulation_passes": len(TAKEUP_NODES),
+        "takeup_nodes": node_summary,
+        "redrawn_benefit_units": int(redrawn.sum()),
+        "households_with_two_redrawn_units": int((per_household >= 2).sum()),
+        "max_untouched_household_node_gap": node_gap,
+        "exposed_records": int(exposed.sum()),
+        "exposed_households": int((g_h > 0).sum()),
+        "effective_loss_records": float(record_loss.sum() ** 2 / np.square(record_loss).sum()),
+        "max_record_loss_share": float(record_loss.max() / record_loss.sum()),
+        "target_gross_earnings_loss": target_gross,
+        "gross_earnings_loss": gross,
+        "net_disposable_loss": net,
+        "cushioning_rate": rate,
+        # legacy keys, so readers of the Monte Carlo schema keep working
+        "cushioning_rate_mean": rate,
+        "cushioning_rate_pooled": rate,
+        "cushioning_rate_sd": 0.0,
+        "cushioning_rate_mc_se": 0.0,
+        "cushioning_rate_sampling_se": sampling_se,
+        "sampling_se_note": (
+            "Household-clustered linearisation SE of the ratio over exposed "
+            "households, weights treated as fixed. Survey sampling error, "
+            "NOT Monte Carlo error."
+        ),
+        "cushion_components_mean": components,
+        "cushion_component_shares": component_shares(components),
+        "exchequer_cost_mean": -totals["gov_balance"],
+        "poverty_rate_change_bhc_mean": totals["poor_people_bhc"] / person_w_total,
+        "poverty_rate_change_ahc_mean": totals["poor_people_ahc"] / person_w_total,
+        "gini_change_mean": None,
+        "displaced_weighted_mean": 0.0,
+        "decile_income_change": decile_change,
+        "region_income_change": region_change,
+    }
+
+
 __all__ = [
     "CUSHION_GROUP_NAMES",
     "ExpectationPasses",
@@ -497,4 +706,5 @@ __all__ = [
     "run_passes",
     "subset_probabilities",
     "validate_against_draw",
+    "wage_cut_expectation_result",
 ]

@@ -794,7 +794,7 @@
   {
    "episode": "E3 US tariffs 2025",
    "gross_shock": 1.0071,
-   "gross_shock_label": "GBP bn/yr, gross earnings shock (companion study)",
+   "gross_shock_label": "GBP bn/yr, gross earnings shock (tariff scenario)",
    "sign": "cost",
    "channel": "earnings only (no UK retaliation)",
    "bottom_decile_pct_of_spend": 0.0,

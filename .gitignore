@@ -9,10 +9,6 @@ paper/*.fls
 paper/main.aux
 paper/main.log
 paper/main.out
-paper/supplement.aux
-paper/supplement.log
-paper/supplement.out
-paper/supplement.toc
 results/bootstrap_contributions.npz
 
 # Per-record inclusion diagnostic: carries person-level FRS survey weights
@@ -39,3 +35,6 @@ paper/*.fdb_latexmk
 # `make lfs-benchmarks LFS_TAB=/path/to/panel.tab`.
 /results/lfs_imputed_frs_transition_parameters.csv.gz
 /results/lfs_qrf_benchmark.csv.gz
+
+# Licensed microdata (Microcosm UK and any FRS derivative) must never be committed.
+*.h5

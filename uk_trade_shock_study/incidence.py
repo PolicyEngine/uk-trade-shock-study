@@ -7,7 +7,7 @@ Runs five post-Covid UK trade-shock episodes through a common household lens:
   E2  Energy price shock 2022-23               (Ofgem cap 1,277 -> 3,549 gross;
       2,500 under the Energy Price Guarantee)
   E3  US tariffs 2025                          (UK consumer side literally zero;
-      earnings side imported as declared constants from the companion study)
+      earnings side from the paper's own tariff scenario, results/e3_constants.json)
   E4  India CETA 2026+                         (DBT IA Annex 9 Table 18 duty
       savings on final goods, allocated by category spending)
 
@@ -88,6 +88,12 @@ D = {
     # E2 -- Ofgem price cap / EPG, typical-consumption annual bill (GBP)
     "cap_winter_2021_22": 1277.0,
     "cap_oct_2022": 3549.0,
+    "cap_jan_2023": 4279.0,            # Ofgem cap set for Jan-Mar 2023
+    # Consumption weights of the financial-year quarters (Apr-Sep, Oct-Dec,
+    # Jan-Mar), from PolicyEngine UK's monthly domestic energy profile
+    # (monthly_domestic_energy_consumption); tests check these against
+    # results/seasonal_energy.json so the two stages share one convention.
+    "fy_weights": (0.3564, 0.297, 0.3465),
     "epg_level": 2500.0,
     # Half-year caps needed for the REALISED FY2022-23 path (Ofgem letters).
     "cap_apr_2021": 1138.0,
@@ -99,7 +105,7 @@ D = {
     "cap_wholesale_oct_2022": 2468.0,
     "obr_epg_cost_bn": 27.0,           # context anchor only
     "obr_energy_subsidy_bn": 47.0,     # context anchor only
-    # E3 -- companion study declared constants (earnings side)
+    # E3 -- placeholders; overwritten from results/e3_constants.json below
     "ust_gross_shock_m": 886.0,        # GBP m / yr gross earnings shock
     "ust_displacement_cushion_pct": 36.6,
     "ust_wage_cut_cushion_pct": 43.9,
@@ -121,16 +127,33 @@ D = {
 # Episode-3 constants from the in-repo tariff pipeline, when available
 # (analysis/run_scenarios.py + analysis/emit_e3_constants.py). When the
 # file exists it is the source of record; the D defaults above are the
-# companion manuscript's values, kept for provenance.
+# placeholders only; the run fails if the constants file is missing.
 _E3 = OUT / "e3_constants.json"
-if _E3.exists():
+if not _E3.exists():
+    raise FileNotFoundError(
+        f"{_E3} missing: run analysis/run_scenarios.py and "
+        "analysis/emit_e3_constants.py first (the in-repository E3 constants "
+        "are the source of record; no silent fallback to stale values).")
+if True:
     _e3 = json.loads(_E3.read_text())
     D["ust_gross_shock_m"] = float(_e3["gross_shock_gbp_m_per_year"])
     D["ust_displacement_cushion_pct"] = float(_e3["displacement_cushion_pct"])
     D["ust_wage_cut_cushion_pct"] = float(_e3["wagecut_cushion_pct"])
-    D["ust_displacement_cushion_sd_pct"] = float(_e3.get("displacement_cushion_sd_pct", 0.0))
+    D["ust_displacement_cushion_sd_pct"] = float(_e3["displacement_cushion_sd_pct"])
 
 
+
+
+def fy_mean_caps():
+    """Consumption-weighted financial-year mean caps (base, counterfactual,
+    realised) on the caps Ofgem actually set: FY2021-22 at 1,138 (Apr-Sep)
+    and 1,277 (Oct-Mar); FY2022-23 counterfactual 1,971 / 3,549 / 4,279;
+    realised 1,971 then the Guarantee's 2,500 (Oct-Mar)."""
+    a, b, c = D["fy_weights"]
+    base = a * D["cap_apr_2021"] + (b + c) * D["cap_winter_2021_22"]
+    counter = a * D["cap_apr_2022"] + b * D["cap_oct_2022"] + c * D["cap_jan_2023"]
+    realised = a * D["cap_apr_2022"] + (b + c) * D["epg_level"]
+    return base, counter, realised
 
 def verify_statutory_rates():
     """Check the hard-coded UC values against the pinned source documents."""
@@ -336,9 +359,7 @@ def episode_e2(fs22, inc22):
     # Both paths on ONE basis: financial-year mean caps.  Mixing a
     # point-to-point cap ratio with a financial-year mean ratio changes the
     # denominator of the cushioning rate without saying so.
-    _base_fy = (D["cap_apr_2021"] + D["cap_winter_2021_22"]) / 2.0
-    _counter_fy = (D["cap_apr_2022"] + D["cap_oct_2022"]) / 2.0
-    _realised_fy = (D["cap_apr_2022"] + D["epg_level"]) / 2.0
+    _base_fy, _counter_fy, _realised_fy = fy_mean_caps()
     gross_f = _counter_fy / _base_fy - 1.0
     net_f = _realised_fy / _base_fy - 1.0
     cushion_share = (gross_f - net_f) / gross_f          # FY basis
@@ -393,7 +414,7 @@ def episode_e2(fs22, inc22):
 def episode_e3():
     """US tariffs 2025: no UK retaliation, so the UK consumer-price channel
     is literally zero at every decile. Earnings side imported from the
-    companion study as declared constants."""
+    tariff scenario (results/e3_constants.json)."""
     return {
         "consumer_side": {
             "per_decile_gbp_per_year": [0.0] * 10,
@@ -405,7 +426,7 @@ def episode_e3():
             "gross_shock_gbp_m_per_year": D["ust_gross_shock_m"],
             "displacement_cushioning_pct": D["ust_displacement_cushion_pct"],
             "wage_cut_cushioning_pct": D["ust_wage_cut_cushion_pct"],
-            "source": "companion uk-trade-shock-study (declared constants)",
+            "source": "tariff earnings scenario (results/e3_constants.json)",
         },
     }
 
@@ -566,7 +587,7 @@ def module_three(e1, e2, e3, e4):
         " of the gross shock (all deciles)", s2)
 
     add("E3 US tariffs 2025", D["ust_gross_shock_m"] / 1000,
-        "GBP bn/yr, gross earnings shock (companion study)",
+        "GBP bn/yr, gross earnings shock (tariff scenario)",
         "cost", "earnings only (no UK retaliation)", 0.0, 0.0, "cost",
         (f"automatic stabilisers: {D['ust_displacement_cushion_pct']:.1f}% "
          f"(displacement) / {D['ust_wage_cut_cushion_pct']:.1f}% (wage cut)"),
@@ -629,39 +650,43 @@ def derived_variants(res):
     # foregone consumption as welfare loss, so the two answer different
     # questions and both are reported.  ASSUMPTION: observed weather-adjusted
     # domestic demand reduction, set in PARAMS and cited in NOTES.
-    p_ratio = 1.0 + en["price_factors"]["gross"]
+    # The demand fall was observed at the prices households actually faced
+    # (Energy Price Guarantee in force), so it is applied to the REALISED
+    # path, not to the never-realised counterfactual: applied there it would
+    # put "cash paid" above the realised fixed-basket burden.
+    gross_rise = en["price_factors"]["gross"]
+    _b, _c, _r = fy_mean_caps()
+    realised_rise = _r / _b - 1.0
+    p_ratio = 1.0 + realised_rise
     q = 1.0 - ENERGY_OBSERVED_DEMAND_FALL
+    scale = (p_ratio * q - 1.0) / (p_ratio - 1.0)
     d["energy_cash_outlay"] = {
+        "basis": "realised path (EPG in force)",
         "observed_demand_fall": ENERGY_OBSERVED_DEMAND_FALL,
         "price_ratio": round(p_ratio, 4),
         "expenditure_ratio": round(p_ratio * q, 4),
-        "burden_scale_vs_fixed_basket": round(
-            (p_ratio * q - 1.0) / (p_ratio - 1.0), 4),
+        "burden_scale_vs_fixed_basket": round(scale, 4),
         "note": "cash outlay, not welfare; fixed-basket remains the "
                 "first-order welfare measure",
     }
+    to_realised = realised_rise / gross_rise
     d["energy_cash_outlay"]["aggregate_gbp_bn_per_year"] = round(
-        en["gross"]["aggregate_gbp_bn_per_year"]
-        * d["energy_cash_outlay"]["burden_scale_vs_fixed_basket"], 1)
+        en["gross"]["aggregate_gbp_bn_per_year"] * to_realised * scale, 1)
     d["energy_cash_outlay"]["decile_one_gbp_per_year"] = round(
-        en["gross"]["per_decile"][0]["gbp_per_year"]
-        * d["energy_cash_outlay"]["burden_scale_vs_fixed_basket"])
+        en["gross"]["per_decile"][0]["gbp_per_year"] * to_realised * scale)
 
-    # REALISED FY2022-23 path.  The gross counterfactual holds the October
-    # 2022 cap for a full year, which no household experienced: the first
-    # half of FY2022-23 was capped at 1,971 and the second at the EPG's
-    # 2,500.  The realised comparison is against the preceding financial
+    # REALISED FY2022-23 path: the first half of FY2022-23 was capped at
+    # 1,971 and the second at the EPG's 2,500.  The realised comparison is against the preceding financial
     # year's two caps (1,138 and 1,277).
-    realised = (D["cap_apr_2022"] + D["epg_level"]) / 2.0
-    base_fy = (D["cap_apr_2021"] + D["cap_winter_2021_22"]) / 2.0
+    base_fy, _counter, realised = fy_mean_caps()
     r_rise = realised / base_fy - 1.0
     d["energy_realised_path"] = {
         "fy2022_23_mean_cap": round(realised, 2),
         "fy2021_22_mean_cap": round(base_fy, 2),
         "realised_price_rise": round(r_rise, 4),
         "gross_counterfactual_price_rise": en["price_factors"]["gross"],
-        "note": "half-year caps 1,971 (Apr-Sep 22) and 2,500 (EPG, Oct 22-Mar 23) "
-                "against 1,138 and 1,277; what households actually faced",
+        "note": "consumption-weighted caps 1,971 (Apr-Sep 22) and 2,500 (EPG, "
+                "Oct 22-Mar 23) against 1,138 and 1,277; what households faced",
     }
     scale = r_rise / en["price_factors"]["gross"]
     d["energy_realised_path"]["per_decile"] = [
@@ -840,7 +865,7 @@ def latex_macros(res):
     add("TcaWindowAvgAggBn", fmt(dv["tca_window_average"]["aggregate_gbp_bn_per_year"], 1))
 
     co = dv["energy_cash_outlay"]
-    add("EnergyObservedDemandFallPct", fmt(100 * co["observed_demand_fall"]))
+    add("EnergyObservedDemandFallPct", fmt(100 * co["observed_demand_fall"], 1))
     add("EnergyCashOutlayScalePct", fmt(100 * co["burden_scale_vs_fixed_basket"]))
     add("EnergyCashOutlayGbpDecOne", fmt(co["decile_one_gbp_per_year"]))
     add("EnergyCashOutlayAggBn", fmt(co["aggregate_gbp_bn_per_year"], 1))

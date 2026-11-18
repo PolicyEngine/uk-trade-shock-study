@@ -24,7 +24,7 @@ promised but not delivered.
 Also recomputes the cost-of-living entitlement flags under both
 parameter vintages (the eligibility-composition sensitivity).
 
-Run:  python vintage_and_tca.py --dataset <enhanced_frs.h5>
+Run:  python vintage_and_tca.py   (certified Microcosm UK via policyengine.py)
 Emits out/generated_vintage.tex, copied to the paper.
 """
 
@@ -34,7 +34,7 @@ import h5py  # noqa: F401  (h5 read via pandas)
 import numpy as np
 import pandas as pd
 
-from second_stage_energy import P, weighted, wmean, wquantile, variance_split
+from second_stage_energy import P, load_sim, weighted, wmean, wquantile, variance_split
 from second_stage_energy import RESULTS_DIR, PAPER_DIR
 
 UPRATED_CASH = ["universal_credit", "pension_credit", "tax_credits",
@@ -70,29 +70,17 @@ def deciles_of(equiv_income, w):
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--dataset", required=True)
+    ap.add_argument("--dataset", default=None,
+                    help="ignored; data come from the certified Microcosm UK build")
     args = ap.parse_args()
 
-    from policyengine_uk import Microsimulation
+    yr = P["sim_year"]
+    # Inputs copied into both rulebook years (and the template year), so the
+    # 2022 and 2023 parameter systems act on the same Microcosm households.
+    sim = load_sim([2022, 2023, yr])
+    n = sim._copied_inputs
 
-    sim = Microsimulation(dataset=args.dataset)
-    vars_ = sim.tax_benefit_system.variables
-
-    # --- Copy every dataset input to the 2022 period ------------------------
-    n, failed = 0, []
-    for ent in ("person", "benunit", "household"):
-        df = pd.read_hdf(args.dataset, ent)
-        for col in df.columns:
-            if col in vars_:
-                try:
-                    sim.set_input(col, 2022, df[col].values)
-                    n += 1
-                except Exception as e:
-                    failed.append((col, str(e)[:60]))
-    if failed:
-        print(f"WARNING: {len(failed)} input copies failed:", failed)
-
-    w = np.asarray(sim.calculate("household_weight", 2023))
+    w = np.asarray(sim.calculate("household_weight", yr))
 
     def agg(v, yr):
         return weighted(np.asarray(sim.calculate(v, yr, map_to="household")),
@@ -102,7 +90,11 @@ def main() -> None:
     b23 = sum(agg(v, 2023) for v in UPRATED_CASH)
     uprating_effect = b23 - b22                      # GBP bn from +10.1%
     per_point = uprating_effect / (100 * APRIL_2023_UPRATING)
-    gap_pp = 100 * (P["cpi_sep_2022_yoy"] - P["uprating_applied_apr_2022"])
+    # The shortfall as a growth ratio, 1.101/1.031 - 1 (6.79 per cent), the
+    # same factor the parameters-only reform applies, not the 7.0-point
+    # difference of rates.
+    gap_pp = 100 * ((1 + P["cpi_sep_2022_yoy"])
+                    / (1 + P["uprating_applied_apr_2022"]) - 1)
     lag_cost = per_point * gap_pp                    # linear-in-rate step
 
     # CoL eligibility composition under both vintages.
@@ -117,12 +109,12 @@ def main() -> None:
 
     # --- TCA food episode on household records ------------------------------
     food = np.asarray(sim.calculate(
-        "food_and_non_alcoholic_beverages_consumption", 2023,
+        "food_and_non_alcoholic_beverages_consumption", yr,
         map_to="household"))
-    total_spend = np.asarray(sim.calculate("consumption", 2023)) * (
-        P["ons_total_spend_yr"] / wmean(np.asarray(sim.calculate("consumption", 2023)), w))
+    total_spend = np.asarray(sim.calculate("consumption", yr)) * (
+        P["ons_total_spend_yr"] / wmean(np.asarray(sim.calculate("consumption", yr)), w))
     equiv_income = np.asarray(
-        sim.calculate("equiv_hbai_household_net_income", 2023))
+        sim.calculate("equiv_hbai_household_net_income", yr))
     dec = deciles_of(equiv_income, w)
 
     food_rebase = TCA_FOOD_BASE_YR / wmean(food, w)

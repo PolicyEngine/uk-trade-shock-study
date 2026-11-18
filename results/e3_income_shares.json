@@ -1,0 +1,552 @@
+{
+  "period": 2026,
+  "decile_definition": "Household-weighted deciles of equivalised HBAI household net income (before housing costs) at baseline, as in the price episodes.",
+  "income_concept": "hbai_household_net_income (baseline, decile aggregate)",
+  "consumption_concept": "model variable `consumption` at the simulation year (LCFS-imputed, not rebased to an ONS control total)",
+  "decile_baseline": {
+    "1": {
+      "households": 2913958.6603229716,
+      "net_income": 44222039257.80963,
+      "consumption": 67037617958.76541
+    },
+    "2": {
+      "households": 2913075.4496181,
+      "net_income": 78681030889.17014,
+      "consumption": 69602702214.12808
+    },
+    "3": {
+      "households": 2914462.7640530076,
+      "net_income": 89664708162.47461,
+      "consumption": 74033865375.8311
+    },
+    "4": {
+      "households": 2914065.737571636,
+      "net_income": 103738919191.54712,
+      "consumption": 76761942246.00148
+    },
+    "5": {
+      "households": 2913792.683088478,
+      "net_income": 120060207400.0,
+      "consumption": 85291933874.20944
+    },
+    "6": {
+      "households": 2915612.9348672517,
+      "net_income": 138480489582.32245,
+      "consumption": 102369926102.32404
+    },
+    "7": {
+      "households": 2912999.9456071025,
+      "net_income": 162373537251.9546,
+      "consumption": 108284595757.03105
+    },
+    "8": {
+      "households": 2913765.431806432,
+      "net_income": 185191805360.01978,
+      "consumption": 123689443257.4051
+    },
+    "9": {
+      "households": 2913210.670050729,
+      "net_income": 221585150281.30167,
+      "consumption": 149304098959.46112
+    },
+    "10": {
+      "households": 2916808.2667679926,
+      "net_income": 385899699688.08923,
+      "consumption": 216884881719.88312
+    }
+  },
+  "shares": {
+    "tariff_wage_cut": {
+      "1": {
+        "gross_loss": 3751347.5257251677,
+        "net_loss": 2292431.515901361,
+        "share_of_total_gross_loss": 0.003724877571982715,
+        "cushioning_rate": 0.38890452026083233,
+        "gross_loss_share_of_income": 8.482981763584496e-05,
+        "net_loss_share_of_income": 5.1839118104362786e-05,
+        "net_loss_per_household": 0.7867069451312247,
+        "gross_loss_share_of_consumption": 5.595884281020557e-05,
+        "net_loss_share_of_consumption": 3.419619589275125e-05
+      },
+      "2": {
+        "gross_loss": 26955515.81548723,
+        "net_loss": 17385951.75369859,
+        "share_of_total_gross_loss": 0.026765314494002896,
+        "cushioning_rate": 0.3550132049890311,
+        "gross_loss_share_of_income": 0.0003425923060598518,
+        "net_loss_share_of_income": 0.00022096751348096074,
+        "net_loss_per_household": 5.968246293098197,
+        "gross_loss_share_of_consumption": 0.0003872768579093435,
+        "net_loss_share_of_consumption": 0.00024978845936486584
+      },
+      "3": {
+        "gross_loss": 29062968.523573287,
+        "net_loss": 17149874.292361088,
+        "share_of_total_gross_loss": 0.02885789676544855,
+        "cushioning_rate": 0.40990631158511426,
+        "gross_loss_share_of_income": 0.0003241294051937412,
+        "net_loss_share_of_income": 0.00019126671623449778,
+        "net_loss_per_household": 5.884403295141626,
+        "gross_loss_share_of_consumption": 0.000392563165195223,
+        "net_loss_share_of_consumption": 0.00023164904608587126
+      },
+      "4": {
+        "gross_loss": 86039770.68461606,
+        "net_loss": 50905324.09238726,
+        "share_of_total_gross_loss": 0.0854326638424973,
+        "cushioning_rate": 0.4083512346983841,
+        "gross_loss_share_of_income": 0.0008293875756093936,
+        "net_loss_share_of_income": 0.0004907061350657983,
+        "net_loss_per_household": 17.468831754910216,
+        "gross_loss_share_of_consumption": 0.001120864951656403,
+        "net_loss_share_of_consumption": 0.0006631583647173663
+      },
+      "5": {
+        "gross_loss": 67359582.75452588,
+        "net_loss": 43417455.351225205,
+        "share_of_total_gross_loss": 0.06688428553735362,
+        "cushioning_rate": 0.3554375847390773,
+        "gross_loss_share_of_income": 0.0005610483624279153,
+        "net_loss_share_of_income": 0.00036163068756472265,
+        "net_loss_per_household": 14.900667299776735,
+        "gross_loss_share_of_consumption": 0.0007897532591284586,
+        "net_loss_share_of_consumption": 0.0005090452681640247
+      },
+      "6": {
+        "gross_loss": 92241186.17616929,
+        "net_loss": 58939268.311787665,
+        "share_of_total_gross_loss": 0.09159032140971175,
+        "cushioning_rate": 0.3610308935184232,
+        "gross_loss_share_of_income": 0.0006660951766879385,
+        "net_loss_share_of_income": 0.00042561423987998,
+        "net_loss_per_household": 20.215052418976587,
+        "gross_loss_share_of_consumption": 0.0009010574656854734,
+        "net_loss_share_of_consumption": 0.000575747883737601
+      },
+      "7": {
+        "gross_loss": 94192780.91152063,
+        "net_loss": 57356971.10697682,
+        "share_of_total_gross_loss": 0.09352814546079177,
+        "cushioning_rate": 0.39106829045789915,
+        "gross_loss_share_of_income": 0.0005800993345692897,
+        "net_loss_share_of_income": 0.0003532408795035127,
+        "net_loss_per_household": 19.690000747673537,
+        "gross_loss_share_of_consumption": 0.0008698631624656047,
+        "net_loss_share_of_consumption": 0.0005296872625878789
+      },
+      "8": {
+        "gross_loss": 144935069.04273582,
+        "net_loss": 84693328.50067589,
+        "share_of_total_gross_loss": 0.14391238997956934,
+        "cushioning_rate": 0.4156464059384892,
+        "gross_loss_share_of_income": 0.0007826213949422688,
+        "net_loss_share_of_income": 0.00045732762492394787,
+        "net_loss_per_household": 29.06662546551285,
+        "gross_loss_share_of_consumption": 0.0011717658777161547,
+        "net_loss_share_of_consumption": 0.0006847256020420759
+      },
+      "9": {
+        "gross_loss": 182230027.43974698,
+        "net_loss": 105558111.04206866,
+        "share_of_total_gross_loss": 0.1809441907200782,
+        "cushioning_rate": 0.4207424949383236,
+        "gross_loss_share_of_income": 0.0008223927786153833,
+        "net_loss_share_of_income": 0.00047637718912148653,
+        "net_loss_per_household": 36.234286839348464,
+        "gross_loss_share_of_consumption": 0.0012205293003323765,
+        "net_loss_share_of_consumption": 0.0007070007573652059
+      },
+      "10": {
+        "gross_loss": 280338012.5347445,
+        "net_loss": 148080470.11049062,
+        "share_of_total_gross_loss": 0.2783599142185637,
+        "cushioning_rate": 0.4717788402236823,
+        "gross_loss_share_of_income": 0.0007264530466370745,
+        "net_loss_share_of_income": 0.00038372787081767485,
+        "net_loss_per_household": 50.767982180252496,
+        "gross_loss_share_of_consumption": 0.001292565947020752,
+        "net_loss_share_of_consumption": 0.000682760683622676
+      },
+      "all": {
+        "gross_loss": 1007106261.408845,
+        "net_loss": 585779186.0775732,
+        "share_of_total_gross_loss": 1.0,
+        "cushioning_rate": 0.41835414144072114,
+        "gross_loss_share_of_income": 0.0006582834497707206,
+        "net_loss_share_of_income": 0.00038288784231725473,
+        "net_loss_per_household": 20.101028076402706,
+        "gross_loss_share_of_consumption": 0.000938360989921317,
+        "net_loss_share_of_consumption": 0.0005457937836213192
+      }
+    },
+    "uniform_wage_cut": {
+      "1": {
+        "gross_loss": 11815232.362335423,
+        "net_loss": 7687904.464743512,
+        "share_of_total_gross_loss": 0.01173186193863601,
+        "cushioning_rate": 0.3493226177039903,
+        "gross_loss_share_of_income": 0.0002671797266845592,
+        "net_loss_share_of_income": 0.00017384780516167228,
+        "net_loss_per_household": 2.6383025158947913,
+        "gross_loss_share_of_consumption": 0.00017624779522451003,
+        "net_loss_share_of_consumption": 0.00011468045403212734
+      },
+      "2": {
+        "gross_loss": 25903542.11981733,
+        "net_loss": 15716451.99542079,
+        "share_of_total_gross_loss": 0.025720762025815195,
+        "cushioning_rate": 0.3932701588561117,
+        "gross_loss_share_of_income": 0.0003292222004094606,
+        "net_loss_share_of_income": 0.0001997489333554734,
+        "net_loss_per_household": 5.395140725751265,
+        "gross_loss_share_of_consumption": 0.0003721628801152979,
+        "net_loss_share_of_consumption": 0.00022580232513200668
+      },
+      "3": {
+        "gross_loss": 32634002.836362597,
+        "net_loss": 20390534.115442023,
+        "share_of_total_gross_loss": 0.032403731390144706,
+        "cushioning_rate": 0.37517520551534145,
+        "gross_loss_share_of_income": 0.0003639559365679192,
+        "net_loss_share_of_income": 0.00022740869326752153,
+        "net_loss_per_household": 6.996326858911677,
+        "gross_loss_share_of_consumption": 0.00044079831129574125,
+        "net_loss_share_of_consumption": 0.00027542171426454603
+      },
+      "4": {
+        "gross_loss": 42139993.038239405,
+        "net_loss": 26418359.85363545,
+        "share_of_total_gross_loss": 0.0418426456000724,
+        "cushioning_rate": 0.3730810579474363,
+        "gross_loss_share_of_income": 0.00040621199224594455,
+        "net_loss_share_of_income": 0.00025466199242789176,
+        "net_loss_per_household": 9.065807786357809,
+        "gross_loss_share_of_consumption": 0.000548969864561165,
+        "net_loss_share_of_consumption": 0.0003441596067094248
+      },
+      "5": {
+        "gross_loss": 59230093.90942145,
+        "net_loss": 38909933.22703256,
+        "share_of_total_gross_loss": 0.05881215561810812,
+        "cushioning_rate": 0.34307155942490686,
+        "gross_loss_share_of_income": 0.0004933365949642817,
+        "net_loss_share_of_income": 0.0003240868400085119,
+        "net_loss_per_household": 13.353706820963641,
+        "gross_loss_share_of_consumption": 0.0006944395702971795,
+        "net_loss_share_of_consumption": 0.0004561971039889639
+      },
+      "6": {
+        "gross_loss": 85493601.87645747,
+        "net_loss": 55053559.47147772,
+        "share_of_total_gross_loss": 0.08489034350679979,
+        "cushioning_rate": 0.356050531699052,
+        "gross_loss_share_of_income": 0.000617369292485308,
+        "net_loss_share_of_income": 0.00039755462764124653,
+        "net_loss_per_household": 18.882327902000583,
+        "gross_loss_share_of_consumption": 0.0008351437295266013,
+        "net_loss_share_of_consumption": 0.0005377903605835256
+      },
+      "7": {
+        "gross_loss": 104072743.48480646,
+        "net_loss": 66202054.813841306,
+        "share_of_total_gross_loss": 0.10333838732033966,
+        "cushioning_rate": 0.3638867142624512,
+        "gross_loss_share_of_income": 0.0006409464574471705,
+        "net_loss_share_of_income": 0.00040771455702856156,
+        "net_loss_per_household": 22.726418142807084,
+        "gross_loss_share_of_consumption": 0.0009611038648408021,
+        "net_loss_share_of_consumption": 0.0006113709373989396
+      },
+      "8": {
+        "gross_loss": 137732999.2647999,
+        "net_loss": 86302528.8402469,
+        "share_of_total_gross_loss": 0.1367611302271073,
+        "cushioning_rate": 0.37340703171412715,
+        "gross_loss_share_of_income": 0.00074373160841022,
+        "net_loss_share_of_income": 0.0004660169961217861,
+        "net_loss_per_household": 29.618900649371206,
+        "gross_loss_share_of_consumption": 0.0011135388408060767,
+        "net_loss_share_of_consumption": 0.0006977356075622896
+      },
+      "9": {
+        "gross_loss": 175276507.8248527,
+        "net_loss": 103646624.2494315,
+        "share_of_total_gross_loss": 0.17403972497761103,
+        "cushioning_rate": 0.40866790686518173,
+        "gross_loss_share_of_income": 0.000791011977121841,
+        "net_loss_share_of_income": 0.0004677507681261693,
+        "net_loss_per_household": 35.57814246493429,
+        "gross_loss_share_of_consumption": 0.001173956435532581,
+        "net_loss_share_of_consumption": 0.0006941981162725715
+      },
+      "10": {
+        "gross_loss": 332807608.275094,
+        "net_loss": 173377030.63784477,
+        "share_of_total_gross_loss": 0.33045925739536586,
+        "cushioning_rate": 0.4790472743804167,
+        "gross_loss_share_of_income": 0.0008624199721950861,
+        "net_loss_share_of_income": 0.00044928003514379524,
+        "net_loss_per_household": 59.44066759998505,
+        "gross_loss_share_of_consumption": 0.0015344896593803639,
+        "net_loss_share_of_consumption": 0.0007993965704892665
+      },
+      "all": {
+        "gross_loss": 1007106324.9921867,
+        "net_loss": 593704981.6691166,
+        "share_of_total_gross_loss": 1.0,
+        "cushioning_rate": 0.4104843084232217,
+        "gross_loss_share_of_income": 0.0006582834913312421,
+        "net_loss_share_of_income": 0.0003880684476457134,
+        "net_loss_per_household": 20.37300195922405,
+        "gross_loss_share_of_consumption": 0.0009383610491644473,
+        "net_loss_share_of_consumption": 0.0005531785628468905
+      }
+    },
+    "tariff_displacement": {
+      "1": {
+        "gross_loss": 3751344.426204107,
+        "net_loss": 2412338.3599318494,
+        "share_of_total_gross_loss": 0.0037250344106021923,
+        "cushioning_rate": 0.3569403163620368,
+        "gross_loss_share_of_income": 8.482974754588274e-05,
+        "net_loss_share_of_income": 5.4550590619943636e-05,
+        "net_loss_per_household": 0.8278560683714282,
+        "gross_loss_share_of_consumption": 5.595879657465671e-05,
+        "net_loss_share_of_consumption": 3.5984846022059876e-05
+      },
+      "2": {
+        "gross_loss": 26955498.33082981,
+        "net_loss": 18407028.415628735,
+        "share_of_total_gross_loss": 0.026766446220155147,
+        "cushioning_rate": 0.31713269813394374,
+        "gross_loss_share_of_income": 0.00034259208383783437,
+        "net_loss_share_of_income": 0.00023394493193101167,
+        "net_loss_per_household": 6.31876130020658,
+        "gross_loss_share_of_consumption": 0.00038727660670275437,
+        "net_loss_share_of_consumption": 0.0002644585314949517
+      },
+      "3": {
+        "gross_loss": 29062956.54955677,
+        "net_loss": 18161033.337312333,
+        "share_of_total_gross_loss": 0.02885912380231145,
+        "cushioning_rate": 0.3751140457322364,
+        "gross_loss_share_of_income": 0.0003241292716516067,
+        "net_loss_share_of_income": 0.00020254382922212945,
+        "net_loss_per_household": 6.231348556348213,
+        "gross_loss_share_of_consumption": 0.0003925630034582064,
+        "net_loss_share_of_consumption": 0.0002453071070262007
+      },
+      "4": {
+        "gross_loss": 86039819.49691059,
+        "net_loss": 53643896.745703205,
+        "share_of_total_gross_loss": 0.08543638010661173,
+        "cushioning_rate": 0.3765224397335075,
+        "gross_loss_share_of_income": 0.0008293880461395949,
+        "net_loss_share_of_income": 0.0005171048355213077,
+        "net_loss_per_household": 18.408608993977605,
+        "gross_loss_share_of_consumption": 0.001120865587548267,
+        "net_loss_share_of_consumption": 0.0006988345419112621
+      },
+      "5": {
+        "gross_loss": 67359558.72730076,
+        "net_loss": 43592638.54703246,
+        "share_of_total_gross_loss": 0.06688713315403857,
+        "cushioning_rate": 0.3528366371354448,
+        "gross_loss_share_of_income": 0.0005610481623014485,
+        "net_loss_share_of_income": 0.0003630898154439842,
+        "net_loss_per_household": 14.960789351981758,
+        "gross_loss_share_of_consumption": 0.0007897529774227447,
+        "net_loss_share_of_consumption": 0.0005110991927011986
+      },
+      "6": {
+        "gross_loss": 92239777.47867912,
+        "net_loss": 60931109.89901913,
+        "share_of_total_gross_loss": 0.0915928547467569,
+        "cushioning_rate": 0.3394269634583287,
+        "gross_loss_share_of_income": 0.0006660850041539272,
+        "net_loss_share_of_income": 0.0004399977937888314,
+        "net_loss_per_household": 20.898216347703688,
+        "gross_loss_share_of_consumption": 0.0009010437048326155,
+        "net_loss_share_of_consumption": 0.0005952051761580382
+      },
+      "7": {
+        "gross_loss": 94192763.29926515,
+        "net_loss": 61146181.94358066,
+        "share_of_total_gross_loss": 0.09353214332134999,
+        "cushioning_rate": 0.3508399180379742,
+        "gross_loss_share_of_income": 0.0005800992261017662,
+        "net_loss_share_of_income": 0.0003765772611623302,
+        "net_loss_per_household": 20.990794056069607,
+        "gross_loss_share_of_consumption": 0.0008698629998177658,
+        "net_loss_share_of_consumption": 0.0005646803362574345
+      },
+      "8": {
+        "gross_loss": 144931908.6285252,
+        "net_loss": 92447444.093751,
+        "share_of_total_gross_loss": 0.1439154301760014,
+        "cushioning_rate": 0.3621318799388551,
+        "gross_loss_share_of_income": 0.0007826043293156096,
+        "net_loss_share_of_income": 0.0004991983522922611,
+        "net_loss_per_household": 31.72782650401506,
+        "gross_loss_share_of_consumption": 0.0011717403265120473,
+        "net_loss_share_of_consumption": 0.0007474157992720717
+      },
+      "9": {
+        "gross_loss": 182192435.02114445,
+        "net_loss": 118717345.51604956,
+        "share_of_total_gross_loss": 0.18091463024948087,
+        "cushioning_rate": 0.3483958568187985,
+        "gross_loss_share_of_income": 0.0008222231263685843,
+        "net_loss_share_of_income": 0.0005357639957611702,
+        "net_loss_per_household": 40.75137673238794,
+        "gross_loss_share_of_consumption": 0.0012202775160956106,
+        "net_loss_share_of_consumption": 0.0007951378853187651
+      },
+      "10": {
+        "gross_loss": 280336964.231901,
+        "net_loss": 165206522.36753976,
+        "share_of_total_gross_loss": 0.2783708238126919,
+        "cushioning_rate": 0.4106859121479348,
+        "gross_loss_share_of_income": 0.0007264503301207248,
+        "net_loss_share_of_income": 0.0004281074136649266,
+        "net_loss_per_household": 56.639486472177,
+        "gross_loss_share_of_consumption": 0.0012925611135679305,
+        "net_loss_share_of_consumption": 0.0007617244736353346
+      },
+      "all": {
+        "gross_loss": 1007063026.1903168,
+        "net_loss": 634665539.2255489,
+        "share_of_total_gross_loss": 1.0,
+        "cushioning_rate": 0.3697856810149551,
+        "gross_loss_share_of_income": 0.0006582551895663163,
+        "net_loss_share_of_income": 0.0004148418460109076,
+        "net_loss_per_household": 21.778564562054257,
+        "gross_loss_share_of_consumption": 0.0009383207059473094,
+        "net_loss_share_of_consumption": 0.0005913431446881501
+      }
+    },
+    "uniform_displacement": {
+      "1": {
+        "gross_loss": 11815021.187389469,
+        "net_loss": 6353361.824344067,
+        "share_of_total_gross_loss": 0.011734326719358076,
+        "cushioning_rate": 0.462264034606624,
+        "gross_loss_share_of_income": 0.00026717495135195356,
+        "net_loss_share_of_income": 0.000143669580394171,
+        "net_loss_per_household": 2.1803198208858205,
+        "gross_loss_share_of_consumption": 0.00017624464512830458,
+        "net_loss_share_of_consumption": 9.477308439348182e-05
+      },
+      "2": {
+        "gross_loss": 25902493.253740527,
+        "net_loss": 17342686.331943315,
+        "share_of_total_gross_loss": 0.025725583887210718,
+        "cushioning_rate": 0.33046266388125045,
+        "gross_loss_share_of_income": 0.000329208869800228,
+        "net_loss_share_of_income": 0.0002204176297127089,
+        "net_loss_per_household": 5.953394147143327,
+        "gross_loss_share_of_consumption": 0.0003721478107854668,
+        "net_loss_share_of_consumption": 0.00024916685387572587
+      },
+      "3": {
+        "gross_loss": 32632210.172476795,
+        "net_loss": 21192827.836049207,
+        "share_of_total_gross_loss": 0.032409338050726634,
+        "cushioning_rate": 0.3505549356284786,
+        "gross_loss_share_of_income": 0.0003639359435971893,
+        "net_loss_share_of_income": 0.00023635640231658696,
+        "net_loss_per_household": 7.271606999904616,
+        "gross_loss_share_of_consumption": 0.00044077409718944405,
+        "net_loss_share_of_consumption": 0.0002862585619224977
+      },
+      "4": {
+        "gross_loss": 42136243.38165114,
+        "net_loss": 27001837.225268412,
+        "share_of_total_gross_loss": 0.04184846042378791,
+        "cushioning_rate": 0.35917787020788927,
+        "gross_loss_share_of_income": 0.0004061758471172167,
+        "net_loss_share_of_income": 0.0002602864714197696,
+        "net_loss_per_household": 9.266035723603723,
+        "gross_loss_share_of_consumption": 0.0005489210167014243,
+        "net_loss_share_of_consumption": 0.0003517607350102574
+      },
+      "5": {
+        "gross_loss": 59222262.047248006,
+        "net_loss": 38755354.5928982,
+        "share_of_total_gross_loss": 0.058817784657345475,
+        "cushioning_rate": 0.34559482780345574,
+        "gross_loss_share_of_income": 0.0004932713621753081,
+        "net_loss_share_of_income": 0.00032279933070395643,
+        "net_loss_per_household": 13.300656157808527,
+        "gross_loss_share_of_consumption": 0.00069434774611384,
+        "net_loss_share_of_consumption": 0.0004543847563599098
+      },
+      "6": {
+        "gross_loss": 85478223.65061067,
+        "net_loss": 56614187.41247261,
+        "share_of_total_gross_loss": 0.08489442276897395,
+        "cushioning_rate": 0.3376770714857017,
+        "gross_loss_share_of_income": 0.000617258242720152,
+        "net_loss_share_of_income": 0.00040882428696800065,
+        "net_loss_per_household": 19.41759371946615,
+        "gross_loss_share_of_consumption": 0.0008349935074210248,
+        "net_loss_share_of_consumption": 0.0005530353451255187
+      },
+      "7": {
+        "gross_loss": 104044083.1516378,
+        "net_loss": 69254614.97718525,
+        "share_of_total_gross_loss": 0.10333348079142396,
+        "cushioning_rate": 0.3343723844800387,
+        "gross_loss_share_of_income": 0.0006407699488014039,
+        "net_loss_share_of_income": 0.0004265141731175262,
+        "net_loss_per_household": 23.77432759022994,
+        "gross_loss_share_of_consumption": 0.0009608391888454004,
+        "net_loss_share_of_consumption": 0.0006395610981692976
+      },
+      "8": {
+        "gross_loss": 137691178.4882686,
+        "net_loss": 92862658.11570811,
+        "share_of_total_gross_loss": 0.1367507725233106,
+        "cushioning_rate": 0.32557292968757556,
+        "gross_loss_share_of_income": 0.0007435057842899249,
+        "net_loss_share_of_income": 0.0005014404278589954,
+        "net_loss_per_household": 31.870327344139206,
+        "gross_loss_share_of_consumption": 0.0011132007296833332,
+        "net_loss_share_of_consumption": 0.0007507727067899836
+      },
+      "9": {
+        "gross_loss": 175197752.91551906,
+        "net_loss": 115748447.37761666,
+        "share_of_total_gross_loss": 0.17400118379832588,
+        "cushioning_rate": 0.33932687234047487,
+        "gross_loss_share_of_income": 0.0007906565611147952,
+        "net_loss_share_of_income": 0.0005223655431362362,
+        "net_loss_per_household": 39.732261235882774,
+        "gross_loss_share_of_consumption": 0.0011734289556450059,
+        "net_loss_share_of_consumption": 0.0007752529782122361
+      },
+      "10": {
+        "gross_loss": 332757318.9725152,
+        "net_loss": 196231972.30864462,
+        "share_of_total_gross_loss": 0.3304846463795368,
+        "cushioning_rate": 0.41028503019988327,
+        "gross_loss_share_of_income": 0.0008622896551655072,
+        "net_loss_share_of_income": 0.00050850511795488,
+        "net_loss_per_household": 67.27626719396336,
+        "gross_loss_share_of_consumption": 0.0015342577884349114,
+        "net_loss_share_of_consumption": 0.0009047747853724876
+      },
+      "all": {
+        "gross_loss": 1006876787.2210573,
+        "net_loss": 641357948.0021305,
+        "share_of_total_gross_loss": 1.0,
+        "cushioning_rate": 0.3630224113396687,
+        "gross_loss_share_of_income": 0.0006581334566014209,
+        "net_loss_share_of_income": 0.0004192162622026619,
+        "net_loss_per_household": 22.008214744092335,
+        "gross_loss_share_of_consumption": 0.0009381471796867221,
+        "net_loss_share_of_consumption": 0.0005975787283253387
+      }
+    }
+  }
+}

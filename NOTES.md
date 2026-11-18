@@ -117,9 +117,13 @@ every run.
 
 - The UK imposed no retaliatory tariffs, so the UK **consumer-price first
   stage is literally zero at every decile** (explicit zero row).
-- Earnings side imported unchanged from the companion uk-trade-shock-study as
-  declared constants: gross shock **£886m/yr**, displacement cushioning
-  **36.6%**, wage-cut cushioning **43.9%** (macros `\MsUSTariff…`).
+- Earnings side: computed by the tariff pipeline (`analysis/run_scenarios.py`,
+  `analysis/emit_e3_constants.py`) on the certified Microcosm UK 2024-25
+  dataset at 2026 (20 assignment draws for displacement; 3 for the wage-cut
+  scenario, which is deterministic up to UC take-up redraws). The gross
+  shock and the two cushioning rates are read from
+  `results/e3_constants.json`, the source of record for the
+  `\MsUSTariff…` macros; no values are hard-coded here.
 
 ## 7. E4 — India CETA consumer duty reductions (declared first stage)
 
@@ -174,8 +178,8 @@ structure no longer earned its row. History retains the implementation.
   progressive (gains); < 0.8 the reverse; else roughly proportional.
 - Normalised column: bottom-decile % of spending per £1bn of gross shock, so
   episodes of wildly different size are comparable (E1 0.162, E2 0.194,
-  E4 0.084 %-points per £bn; E3 n/a — consumer side zero; E5 n/a — near-zero benchmark).
-- E3's size is the *earnings-side* gross (£0.886bn/yr, companion study);
+  E4 0.084 %-points per £bn; E3 n/a — consumer side zero).
+- E3's size is the *earnings-side* gross (see `results/e3_constants.json`);
   its consumer row is zero, so no consumer normalisation is offered.
 
 ## 11. Determinism
@@ -198,32 +202,42 @@ pipeline root).
   deductions), caseload-weighted aggregate cost of the uprating lag.
 
 
-## 12. Second stage (added in the referee rounds)
+## 12. Second stage
 
-Scripts: `second_stage_energy.py` (energy episode through PolicyEngine UK
-2.95.0; emits `results/generated_secondstage.tex`), `grid_energy.py`
-(rebase x stack sensitivity grid, fine sweep, announced-path variant),
+Scripts: `second_stage_energy.py` (energy episode through PolicyEngine UK;
+emits `results/generated_secondstage.tex`), `grid_energy.py` (rebase x
+stack sensitivity grid, fine sweep, January-2023-cap path variant),
 `fig_extra.py` (decomposition/paths figures, 999-rep household
 bootstrap), `vintage_and_tca.py` (two-vintage rulebook run with all
-input columns copied to 2022; TCA food second stage), `mpc_welfare.py`
-(MPC-weighted demand, Atkinson welfare). All write generated `.tex` to
-`results/` and copy to `paper/`; paper/pipeline sync is verifiable by diff
-(`make test` checks it).
+input columns copied to 2022; TCA food second stage), `ceta_second_stage.py`
+(India gains on household records), `mpc_welfare.py` (MPC-weighted demand,
+Atkinson welfare). All write generated `.tex` to `results/` and copy to
+`paper/`; paper/pipeline sync is verifiable by diff (`make test` checks it).
 
-Input dataset: `enhanced_frs_2023_24.h5` from policyengine-uk-data release
-1.55.12 (Hugging Face `policyengine/policyengine-uk-data-private`, revision
-`4e25f9d6b67244340161098e76bb5e67148eb1e7`; 2023 vintage; 53,508 household
-records; person weights 69.8m; household weights 31.4m against an ONS count
-of 28.4m).
-SHA256: `584ae33d80ca0431254610a3f8254d132da73477d31966d6446282861ecae50d`.
-The consumption block is imputed by quantile regression forest from the
-LCFS 2023-24 with electricity and gas calibrated to NEED 2023 kWh targets by
-income band (policyengine-uk-data `datasets/imputations/consumption.py`). The QRF consumption imputation is upstream in
-policyengine-uk-data; its provenance is outside this project and its
-error is a declared limitation of the within-decile results.
+Model and data: policyengine.py 6.20.0 (`policyengine[uk]==6.20.0`,
+policyengine-uk 2.174.1), every simulation built with
+`policyengine.uk.managed_microsimulation()` (see
+`uk_trade_shock_study/microcosm.py`). Input dataset: the certified
+Microcosm UK 2024-25 build
+`microcosm-uk-2024-25-national-20261107T020434Z-eeb6093e`,
+SHA256 `0a9b77db1c0dee2693cb2d47bad68da34cb662916eee4829942bcd45de581f25`;
+78,181 household records; household weights 29.0m against an ONS count of
+28.4m (2.1% above); person weights 69.0m. Private Hugging Face repository:
+`HUGGING_FACE_TOKEN` (or a saved `huggingface-cli login`) is required;
+`make second-stage` and `make grid` take no `DATASET` argument.
+
+Microcosm UK carries survey inputs for 2024-25 only. The energy episode
+copies every input into 2023 (and 2022 for the vintage run) and evaluates
+under 2023-24 (and 2022-23) rules: households, weights and nominal incomes
+are held at 2024-25 values, and because energy and total spending are
+rebased to FY2021-22 the microdata serve as a distributional template. The
+tariff (E3) episode runs on the same dataset at 2026. The consumption
+block is imputed upstream of this project; its provenance is outside this
+project and its error is a declared limitation of the within-decile
+results.
 
 Conventions shared with the paper: FY-mean cap basis; energy numerator
-rebased to the FY2021-22 cap mean (0.606); expenditure denominator
-rebased to the ONS FYE2022 mean total spend (GBP 27,503/yr); food
+rebased to the FY2021-22 cap mean (factor in `\SsRebaseFactor`); expenditure denominator
+rebased to the ONS FYE2022 mean total spend (GBP 27,503/yr; factor in `\SsSpendRebase`); food
 rebased to the ONS FYE2022 food base. Rates computed on unrounded
 arrays.

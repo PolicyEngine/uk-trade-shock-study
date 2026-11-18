@@ -2,7 +2,8 @@
 
 1. fig_decomp.png  -- additive decile decomposition of the counterfactual
    shock into the part households bore (realised burden) and what each
-   discretionary instrument returned (EPG, EBSS, cost-of-living payments),
+   discretionary instrument returned (EPG, EBSS, Council Tax energy
+   rebate, cost-of-living payments),
    in pounds a year, with bootstrap intervals on the borne component.
 2. fig_paths.png   -- three shock paths by decile as a share of spending:
    gross counterfactual, realised, and cash-outlay (the gross
@@ -13,7 +14,7 @@
    53,508-record base only: imputation (donor-model) uncertainty is not
    captured and is flagged in the manuscript.
 
-Run:  python fig_extra.py --dataset <enhanced_frs.h5>
+Run:  python fig_extra.py   (certified Microcosm UK via policyengine.py)
 """
 
 import argparse
@@ -21,10 +22,9 @@ import json
 
 import numpy as np
 
-from second_stage_energy import P, weighted, wmean, wquantile, variance_split
+from second_stage_energy import P, load_sim, col_components, ctr_rebate, energy_convention, weighted, wmean, wquantile, variance_split
 from second_stage_energy import RESULTS_DIR, PAPER_DIR
 
-CASH_OUTLAY_SCALE = 0.77   # observed demand response; matches the first pass's
                            # MsEnergyCashOutlayScalePct (incidence.py computes
                            # 0.769) and is applied to the gross counterfactual,
                            # the same convention as the first pass
@@ -42,13 +42,12 @@ def deciles_of(equiv_income, w):
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--dataset", required=True)
+    ap.add_argument("--dataset", default=None,
+                    help="ignored; data come from the certified Microcosm UK build")
     args = ap.parse_args()
 
-    from policyengine_uk import Microsimulation
-
     yr = P["sim_year"]
-    sim = Microsimulation(dataset=args.dataset)
+    sim = load_sim()
 
     def hh(name):
         return np.asarray(sim.calculate(name, yr, map_to="household"))
@@ -60,11 +59,12 @@ def main() -> None:
         P["ons_total_spend_yr"] / wmean(np.asarray(sim.calculate("consumption", yr)), w))
     dec = deciles_of(equiv_income, w)
 
-    base_cap_fy = (P["cap_apr_2021"] + P["cap_oct_2021"]) / 2.0
-    rebase = base_cap_fy / wmean(energy_raw, w)
+    # Central price-path convention (second_stage_energy.energy_convention).
+    conv = energy_convention(sim, w, energy_raw, yr)
+    rebase = conv["rebase"]
     energy = energy_raw * rebase
-    counter_rise = (P["cap_apr_2022"] + P["cap_oct_2022"]) / 2.0 / base_cap_fy - 1.0
-    realised_rise = (P["cap_apr_2022"] + P["epg_level"]) / 2.0 / base_cap_fy - 1.0
+    counter_rise = conv["counter_rise"]
+    realised_rise = conv["realised_rise"]
     dE_counter = energy * counter_rise
     dE_realised = energy * realised_rise
     epg = dE_counter - dE_realised
@@ -74,18 +74,16 @@ def main() -> None:
                            ["universal_credit", "pension_credit", "tax_credits",
                             "income_support", "housing_benefit", "jsa_income",
                             "esa_income"])
-    col = ((means_tested_amt > 0) * P["col_means_tested"]
-           + (hh("state_pension") > 0) * P["col_pensioner"]
-           + ((hh("pip") + hh("dla") + hh("attendance_allowance")) > 0)
-           * P["col_disability"])
+    col = sum(col_components(sim))
+    ctr = ctr_rebate(sim)
 
     # --- Per-decile means (point estimates) --------------------------------
     def dmeans(x):
         return np.array([wmean(x[dec == d], w[dec == d]) for d in range(10)])
 
     m_counter, m_real, m_epg = dmeans(dE_counter), dmeans(dE_realised), dmeans(epg)
-    m_ebss, m_col = dmeans(ebss), dmeans(col)
-    net_borne = m_counter - m_epg - m_ebss - m_col   # can be negative (D1)
+    m_ebss, m_ctr, m_col = dmeans(ebss), dmeans(ctr), dmeans(col)
+    net_borne = m_counter - m_epg - m_ebss - m_ctr - m_col   # negative = net gain
 
     spend = np.array([weighted(total_spend[dec == d], w[dec == d]) /
                       weighted(w[dec == d] * 0 + 1, w[dec == d]) for d in range(10)])
@@ -94,16 +92,29 @@ def main() -> None:
                                                        w[dec == d])
          for d in range(10)])
     p_gross, p_real = pct(dE_counter), pct(dE_realised)
-    p_cash = p_gross * CASH_OUTLAY_SCALE
+    # Cash-outlay path: the observed demand response applied to the realised
+    # path, scale read from the decile-table results (no copied constant).
+    _co = json.loads((RESULTS_DIR / "results.json").read_text())["derived"]["energy_cash_outlay"]
+    p_cash = p_real * _co["burden_scale_vs_fixed_basket"]
 
     # --- Household bootstrap (sampling only) -------------------------------
     rng = np.random.default_rng(SEED)
     n = len(w)
+    # Resample SOURCE survey households (Microcosm clones each into several
+    # records), so intervals reflect the survey's sampling, not record count.
+    from microcosm import source_household_ids
+    src = source_household_ids()
+    if len(src) != n:
+        raise RuntimeError("source-household ids do not align with records")
+    _, inverse = np.unique(src, return_inverse=True)
+    members = np.split(np.argsort(inverse, kind="stable"),
+                       np.cumsum(np.bincount(inverse))[:-1])
+    n_src = len(members)
     boot_net, boot_within, boot_d1cushion, boot_rate = [], [], [], []
-    disc = epg + ebss + col
+    disc = epg + ebss + ctr + col
     spend_share = dE_realised / np.maximum(total_spend, 1)
     for _ in range(N_BOOT):
-        idx = rng.integers(0, n, n)
+        idx = np.concatenate([members[j] for j in rng.integers(0, n_src, n_src)])
         wb = w[idx]
         db = deciles_of(equiv_income[idx], wb)
         boot_rate.append(100 * weighted(disc[idx], wb) / weighted(dE_counter[idx], wb))
@@ -157,19 +168,23 @@ def main() -> None:
 
     # 1. Decomposition.
     fig, ax = plt.subplots(figsize=(WIDTH, 5.8))
-    fig.subplots_adjust(left=0.13, right=0.97, top=0.92, bottom=0.36)
+    fig.subplots_adjust(left=0.13, right=0.97, top=0.97, bottom=0.40)
     borne = np.maximum(net_borne, 0)
     over = np.minimum(net_borne, 0)
     ax.bar(x, borne, color=BLUE, label="Borne by the household", zorder=3)
     ax.bar(x, m_epg, bottom=borne, color=BLUE_LIGHT,
-           label="Returned: Energy Price Guarantee", zorder=3)
+           label="Absorbed: Energy Price Guarantee", zorder=3)
     ax.bar(x, m_ebss, bottom=borne + m_epg, color=TEAL,
-           label="Returned: Bills Support Scheme", zorder=3)
-    ax.bar(x, m_col, bottom=borne + m_epg + m_ebss, color=TEAL, hatch="///",
-           edgecolor="white", linewidth=0, label="Returned: cost-of-living payments",
+           label="Returned: Energy Bills Support Scheme", zorder=3)
+    ax.bar(x, m_ctr, bottom=borne + m_epg + m_ebss, color=TEAL, hatch="...",
+           edgecolor="white", linewidth=0,
+           label="Returned: Council Tax energy rebate", zorder=3)
+    ax.bar(x, m_col, bottom=borne + m_epg + m_ebss + m_ctr, color=TEAL, hatch="///",
+           edgecolor="white", linewidth=0, label="Returned: Cost of Living Payments",
            zorder=3)
-    ax.bar(x, over, color=TEAL, hatch="xxx", edgecolor="white", linewidth=0,
-           label="Over-compensation (net gain)", zorder=3)
+    if (over < 0).any():  # only label a net gain when one occurs
+        ax.bar(x, over, color=TEAL, hatch="xxx", edgecolor="white", linewidth=0,
+               label="Over-compensation (net gain)", zorder=3)
     ax.errorbar(x, net_borne, yerr=[net_borne - net_lo, net_hi - net_borne],
                 fmt="none", ecolor=INK, elinewidth=1.0, capsize=2.5, zorder=4,
                 label="95% sampling interval, net position")
@@ -179,11 +194,8 @@ def main() -> None:
     ax.set_xticks(x)
     ax.set_xlabel("Equivalised disposable income decile")
     ax.set_ylabel("£ per household per year")
-    ax.set_title("Who bore the energy shock, and what each instrument returned",
-                 color=INK)
     ax.legend(fontsize=8, ncol=2, loc="upper center",
               bbox_to_anchor=(0.5, -0.14), frameon=False)
-    note(fig, "Whiskers: household-bootstrap 95% sampling intervals on the net position; FY basis.")
     save(fig, "fig_decomp.png")
 
     # 2. Paths.
@@ -194,7 +206,7 @@ def main() -> None:
     ax.plot(x, p_real, color=BLUE, ls="-", marker="o",
             label="Realised path (EPG in force)")
     ax.plot(x, p_cash, color=GREY, ls=":", marker="s", mfc="white",
-            label="Cash outlay (counterfactual × observed demand response)")
+            label="Cash outlay (realised × observed demand response)")
     ax.set_xticks(x)
     ax.set_xlabel("Equivalised disposable income decile")
     ax.set_ylabel("% of household expenditure")

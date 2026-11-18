@@ -1,7 +1,7 @@
 """Heatmap for the two-axis grid: discretionary cushioning rate by
 rebase factor (fine sweep, 0.55-1.05 in 0.05 steps) x discretionary
-stack.  The table keeps the three canonical rebase columns; this figure
-uses the 44-cell fine sweep.  House style via make_figures/figstyle."""
+stack.  The table prints four rebases (one below the paper's); this figure
+uses the 66-cell fine sweep.  House style via make_figures/figstyle."""
 import json
 import matplotlib
 matplotlib.use("Agg")
@@ -13,10 +13,11 @@ from second_stage_energy import RESULTS_DIR
 data = json.load(open(RESULTS_DIR / "grid_energy.json"))
 cells = data["cells_fine"]
 paper_rb = data["meta"]["paper_rebase"]
-stacks = ["epg", "epg_ebss", "col_mt", "col_pen", "col_dis"]
-stack_lab = ["EPG only", "+ Bills Support (\u00a3400)",
+stacks = ["epg", "epg_ebss", "ctr", "col_mt", "col_pen", "col_dis"]
+stack_lab = ["Energy Price Guarantee only", "+ Bills Support (\u00a3400)",
+             "+ Council Tax rebate (\u00a3150)\n= energy-specific stack",
              "+ CoL means-tested (\u00a3650)", "+ CoL pensioner (\u00a3300)",
-             "+ CoL disability (\u00a3150)\n= full modelled stack"]
+             "+ CoL disability (\u00a3150)\n= full stack"]
 rebases = sorted({c["rebase"] for c in cells})
 
 M = np.zeros((len(stacks), len(rebases)))
@@ -25,7 +26,7 @@ for c in cells:
         M[stacks.index(c["stack"]), rebases.index(c["rebase"])] = c["rate_pct"]
 
 apply_style()
-fig, ax = plt.subplots(figsize=(WIDTH, 4.6))
+fig, ax = plt.subplots(figsize=(WIDTH, 5.2))
 ax.grid(False)
 im = ax.imshow(M, cmap=plt.matplotlib.colors.LinearSegmentedColormap.from_list(
     "pe", ["white", BLUE]), vmin=0, vmax=100, aspect="auto")
@@ -34,9 +35,12 @@ for i in range(len(stacks)):
         col = "white" if M[i, j] > 55 else INK
         ax.text(j, i, f"{M[i, j]:.0f}", ha="center", va="center",
                 fontsize=8, color=col)
-# Mark the paper's computed rebase with a dashed rule between columns.
-jp = np.interp(paper_rb, rebases, range(len(rebases)))
-ax.axvline(jp, color=INK, lw=1.0, ls=(0, (4, 2)))
+# Outline the column nearest the paper's computed rebase (a rule through the
+# column would sit on top of its numbers).
+jp = int(np.argmin([abs(r - paper_rb) for r in rebases]))
+from matplotlib.patches import Rectangle
+ax.add_patch(Rectangle((jp - 0.5, -0.5), 1, len(stacks), fill=False,
+                       edgecolor=INK, lw=1.4, ls=(0, (4, 2)), zorder=4))
 ax.annotate(f"paper ({paper_rb:.3f})", xy=(jp, -0.5), xytext=(jp, -0.62),
             ha="center", va="bottom", fontsize=8, color=INK,
             annotation_clip=False)

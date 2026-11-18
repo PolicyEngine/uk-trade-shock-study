@@ -205,6 +205,22 @@ class TradeShockScenario:
     duration_equivalent: float = 1.0
     #: Divisions set to zero exposure for leave-one-sector-out diagnostics.
     excluded_divisions: tuple[int, ...] = ()
+    #: Pay the New Style (contribution-based) JSA APPROXIMATION to displaced
+    #: workers (see ``new_style_jsa_amounts``). Off by default so that every
+    #: stored non-E3 result is unchanged; the E3 displacement presets in
+    #: analysis/run_scenarios.py switch it on explicitly.
+    new_style_jsa: bool = False
+    #: Weeks of New Style JSA paid within the simulated year (statutory
+    #: maximum 182 days = 26 weeks, Jobseekers Act 1995 s. 5(1)).
+    new_style_jsa_weeks: float = 26.0
+    #: UNIFORM BENCHMARK. When set, EVERY person takes this shock instead of
+    #: their division's tariff shock, so every employee (not only those in
+    #: the exposed divisions) loses this share of earnings (wage cut) or
+    #: faces this job-loss probability (displacement). Used to ask what the
+    #: tariff's sectoral pattern adds to an economy-wide loss of the same
+    #: size (analysis/e3_uniform_and_income_shares.py). ``elasticity`` and
+    #: ``excluded_divisions`` are then ignored.
+    uniform_shock: float | None = None
 
     @property
     def wage_bill_incidence(self) -> float:
@@ -229,6 +245,10 @@ class TradeShockScenario:
             )
         if not 0.0 < self.duration_equivalent <= 1.0:
             raise ValueError("duration_equivalent must lie in (0, 1]")
+        if not 0.0 <= self.new_style_jsa_weeks <= 26.0:
+            raise ValueError("new_style_jsa_weeks must lie in [0, 26]")
+        if self.uniform_shock is not None and not 0.0 < self.uniform_shock < 1.0:
+            raise ValueError("uniform_shock must lie strictly between 0 and 1")
 
 
 #: Scenario presets: {full_tariff, epd} x {displacement, wage_cut, inactivity}.
@@ -319,6 +339,10 @@ TRANSITION_PRESETS = {
 
 
 def _person_shock(persons: pd.DataFrame, scenario: TradeShockScenario) -> np.ndarray:
+    if scenario.uniform_shock is not None:
+        return np.full(
+            len(persons), scenario.uniform_shock * scenario.duration_equivalent, dtype=float
+        )
     shock = person_earnings_shock(
         persons["sic_division"],
         scenario.tariff_scenario,
@@ -914,12 +938,234 @@ def apply_shocks(
     # Carried to build_shocked_simulation, which needs the take-up rate, the
     # re-draw scope and the draw seed to re-draw would_claim_uc for affected
     # benefit units.
+    return _attach_scenario_attrs(shocked, scenario, seed)
+
+
+def _attach_scenario_attrs(
+    shocked: pd.DataFrame, scenario: TradeShockScenario, seed: int
+) -> pd.DataFrame:
     shocked.attrs["uc_takeup"] = float(scenario.uc_takeup)
     shocked.attrs["uc_takeup_scope"] = _validate_uc_takeup_scope(
         scenario.uc_takeup_scope
     )
     shocked.attrs["seed"] = int(seed)
+    shocked.attrs["new_style_jsa"] = bool(scenario.new_style_jsa)
+    shocked.attrs["new_style_jsa_weeks"] = float(scenario.new_style_jsa_weeks)
     return shocked
+
+
+def apply_fixed_displacement(
+    persons: pd.DataFrame,
+    scenario: TradeShockScenario,
+    displaced: np.ndarray,
+    seed: int = 0,
+) -> pd.DataFrame:
+    """Shocked person table for a GIVEN displacement mask (no draw).
+
+    Used by the exact-expectation design (tariff_pipeline/expectation.py),
+    which chooses the displaced set deterministically, pass by pass. The
+    table has exactly the shape ``apply_shocks`` produces for the pure
+    displacement margin, so ``build_shocked_simulation`` treats it the same.
+    """
+    if scenario.margin != "displacement":
+        raise ValueError("apply_fixed_displacement requires the displacement margin")
+    displaced = np.asarray(displaced, dtype=bool)
+    if displaced.shape != (len(persons),):
+        raise ValueError("displacement mask must have one entry per person")
+    earnings = persons["employment_income"].to_numpy(dtype=float)
+    if (displaced & ~(earnings > 0)).any():
+        raise ValueError("only employees with positive earnings can be displaced")
+    shocked = persons.copy()
+    shocked["displaced"] = displaced
+    shocked["inactive"] = np.zeros(len(persons), dtype=bool)
+    shocked["lcwra"] = np.zeros(len(persons), dtype=bool)
+    shocked["employment_income"] = np.where(displaced, 0.0, earnings)
+    return _attach_scenario_attrs(_blank_reallocation(shocked), scenario, seed)
+
+
+def apply_partial_year_spell(
+    persons: pd.DataFrame,
+    scenario: TradeShockScenario,
+    affected: np.ndarray,
+    spell_fraction: float,
+    baseline_hours: np.ndarray,
+    seed: int = 0,
+) -> pd.DataFrame:
+    """Shocked person table for a PART-YEAR job-loss spell, annual averaging.
+
+    Duration sensitivity for the exact-expectation design. The annual model
+    has no months, so a worker out of work for ``spell_fraction`` of the year
+    is represented by their ANNUAL totals: earnings and hours are scaled by
+    ``1 - spell_fraction`` and the worker keeps their baseline employment
+    status (they are in work for most or half of the year; a full-year
+    UNEMPLOYED status against positive earnings is the incoherent hybrid this
+    function deliberately avoids). Earnings-linked deductions are scaled by
+    ``build_shocked_simulation`` through the earnings factor. New Style JSA
+    is paid for ``min(scenario.new_style_jsa_weeks, 52 x spell_fraction)``
+    weeks -- a six-month spell contains the whole 26-week entitlement.
+
+    WHAT THIS GETS RIGHT AND WRONG. Income tax is assessed on annual income,
+    so it is right. Universal Credit and National Insurance are assessed
+    monthly / per pay period; averaging the year's earnings before applying
+    their thresholds and taper UNDERSTATES Universal Credit for the months
+    out of work (and understates National Insurance paid in the months in
+    work). The annual-averaging rate is therefore a lower bound on the
+    benefit response; ``analysis/sensitivity_duration_takeup.py`` pairs it
+    with a monthly-state mix that errs the other way.
+    """
+    if scenario.margin != "displacement":
+        raise ValueError("apply_partial_year_spell requires the displacement margin")
+    if not 0.0 < spell_fraction < 1.0:
+        raise ValueError("spell_fraction must lie strictly between 0 and 1")
+    affected = np.asarray(affected, dtype=bool)
+    if affected.shape != (len(persons),):
+        raise ValueError("spell mask must have one entry per person")
+    earnings = persons["employment_income"].to_numpy(dtype=float)
+    if (affected & ~(earnings > 0)).any():
+        raise ValueError("only employees with positive earnings can lose their job")
+    keep = np.where(affected, 1.0 - spell_fraction, 1.0)
+    shocked = persons.copy()
+    shocked["displaced"] = np.zeros(len(persons), dtype=bool)
+    shocked["inactive"] = np.zeros(len(persons), dtype=bool)
+    shocked["lcwra"] = np.zeros(len(persons), dtype=bool)
+    shocked["earnings_changed"] = affected
+    shocked["new_style_jsa_recipient"] = affected
+    shocked["employment_income"] = earnings * keep
+    shocked["hours_worked"] = np.asarray(baseline_hours, dtype=float) * keep
+    shocked = _attach_scenario_attrs(_blank_reallocation(shocked), scenario, seed)
+    shocked.attrs["new_style_jsa_weeks"] = min(
+        float(scenario.new_style_jsa_weeks), 52.0 * spell_fraction
+    )
+    return shocked
+
+
+#: NEW STYLE (CONTRIBUTION-BASED) JSA -- A LABELLED APPROXIMATION.
+#:
+#: policyengine-uk 2.174.1 has no entitlement formula for contributory JSA:
+#: ``jsa_contrib`` is ``adds = ["jsa_contrib_reported"]``, the amount the
+#: survey respondent reported. A worker the shock displaces was in work at
+#: interview, reports none, and so receives none in the shocked simulation.
+#: ``new_style_jsa_amounts`` fills that gap with the statutory award:
+#:
+#: * amount: the weekly personal rate for the worker's age (model parameters
+#:   gov.dwp.JSA.contrib.amount_18_24 / amount_over_25; 2026-27 rates £75.65
+#:   and £95.55) for ``new_style_jsa_weeks`` weeks (26 = the 182-day maximum,
+#:   Jobseekers Act 1995 s. 5(1)); the displacement margin is a full-year
+#:   job loss, so the whole 26 weeks fall inside the simulated year;
+#: * eligibility: displaced and unemployed (not the inactivity margin), aged
+#:   18 or over and under State Pension age, and with baseline employee
+#:   earnings of at least 50 x the weekly Lower Earnings Limit -- a one-year
+#:   proxy for the two-tax-year contribution conditions (Jobseekers Act 1995
+#:   s. 2), which the cross-section cannot check;
+#: * no means test and no partner-income test (it is a personal contributory
+#:   benefit); FULL TAKE-UP is assumed, so this is an upper bound on the
+#:   contributory-benefit cushion;
+#: * NOT modelled: the 7 waiting days, the abatement for occupational
+#:   pension income above £50 a week, and sanctions.
+#:
+#: It is written to ``jsa_contrib_reported`` (never added to an existing
+#: reported amount: the larger of the two is kept), so the model's own rules
+#: then apply: it is taxable social security income, and Universal Credit
+#: deducts it in full as unearned income (UC Regulations 2013 reg. 66(1)(b);
+#: ``jsa_contrib`` is on gov.dwp.universal_credit.means_test
+#: .income_definitions.unearned), as do the legacy means tests.
+NEW_STYLE_JSA_LEL_WEEKS = 50.0
+NEW_STYLE_JSA_MIN_AGE = 18
+NEW_STYLE_JSA_OLDER_RATE_AGE = 25
+
+
+def new_style_jsa_amounts(
+    displaced_unemployed: np.ndarray,
+    age: np.ndarray,
+    baseline_earnings: np.ndarray,
+    state_pension_age: np.ndarray,
+    weekly_rate_18_24: float,
+    weekly_rate_25_plus: float,
+    weekly_lower_earnings_limit: float,
+    weeks: float = 26.0,
+    max_weeks: float = 26.0,
+) -> np.ndarray:
+    """Annual New Style JSA (£) per person under the approximation above.
+
+    ``max_weeks`` is the statutory 26 except in ONE use: the duration
+    sensitivity's "out of work" state, an annualised state in which the
+    benefit is in payment every week (``weeks = max_weeks = 52``) and whose
+    outcomes are then multiplied by the share of the year spent out of work.
+    It never represents a 52-week entitlement.
+    """
+    displaced_unemployed = np.asarray(displaced_unemployed, dtype=bool)
+    age = np.asarray(age, dtype=float)
+    baseline_earnings = np.asarray(baseline_earnings, dtype=float)
+    state_pension_age = np.asarray(state_pension_age, dtype=bool)
+    if not 0.0 <= weeks <= max_weeks or max_weeks > 52.0:
+        raise ValueError(
+            f"New Style JSA is payable for at most {max_weeks:.0f} weeks"
+        )
+    eligible = (
+        displaced_unemployed
+        & (age >= NEW_STYLE_JSA_MIN_AGE)
+        & ~state_pension_age
+        & (baseline_earnings >= NEW_STYLE_JSA_LEL_WEEKS * weekly_lower_earnings_limit)
+    )
+    weekly = np.where(
+        age >= NEW_STYLE_JSA_OLDER_RATE_AGE, weekly_rate_25_plus, weekly_rate_18_24
+    )
+    return np.where(eligible, weekly * weeks, 0.0)
+
+
+def apply_new_style_jsa(sim, baseline_sim, shocked_table, period) -> np.ndarray:
+    """Write the New Style JSA approximation into ``sim``; return the awards.
+
+    No-op (returns zeros) unless the shocked table carries
+    ``attrs["new_style_jsa"]``. Hard-errors if the input is not applied.
+    """
+    n = len(shocked_table)
+    if not shocked_table.attrs.get("new_style_jsa", False):
+        return np.zeros(n, dtype=float)
+    displaced = shocked_table["displaced"].to_numpy(dtype=bool)
+    inactive = shocked_table["inactive"].to_numpy(dtype=bool)
+    parameters = sim.tax_benefit_system.parameters(f"{period}-01-01")
+    contrib = parameters.gov.dwp.JSA.contrib
+    lel = float(
+        parameters.gov.hmrc.national_insurance.class_1.thresholds.lower_earnings_limit
+    )
+
+    def _person(variable, dtype=float):
+        return np.asarray(
+            baseline_sim.calculate(variable, period=period, map_to="person").values,
+            dtype=dtype,
+        )
+
+    # Recipients: displaced-and-unemployed workers, or -- for the part-year
+    # spell table, whose workers keep their employment status -- the workers
+    # the table names explicitly.
+    if "new_style_jsa_recipient" in shocked_table:
+        recipients = shocked_table["new_style_jsa_recipient"].to_numpy(dtype=bool)
+    else:
+        recipients = displaced & ~inactive
+    award = new_style_jsa_amounts(
+        recipients,
+        _person("age"),
+        _person("employment_income"),
+        _person("is_SP_age", bool),
+        float(contrib.amount_18_24),
+        float(contrib.amount_over_25),
+        lel,
+        float(shocked_table.attrs.get("new_style_jsa_weeks", 26.0)),
+        float(shocked_table.attrs.get("new_style_jsa_max_weeks", 26.0)),
+    )
+    reported = np.maximum(_person("jsa_contrib_reported"), award)
+    sim.set_input("jsa_contrib_reported", period, reported)
+    applied = np.asarray(
+        sim.calculate("jsa_contrib", period=period, map_to="person").values,
+        dtype=float,
+    )
+    if not np.allclose(applied, reported, rtol=0.0, atol=0.01):
+        raise RuntimeError(
+            "New Style JSA not applied: jsa_contrib does not equal the "
+            "amounts written to jsa_contrib_reported in the shocked simulation."
+        )
+    return award
 
 
 #: Person-level inputs zeroed for displaced workers so they do not remain
@@ -1155,10 +1401,23 @@ def measure_all_claim_uc_award(sim, period, stored_flag) -> np.ndarray:
         sim.calculate("universal_credit", period=period, map_to="benunit").values,
         dtype=float,
     )
-    if (withheld > 1e-8).any():
+    # policyengine-uk >= 2.15x pays UC to families moved off legacy benefits
+    # (claims_uc_at_legacy_closure) whatever would_claim_uc says, so those
+    # units legitimately keep an award with voluntary claiming switched off.
+    if "claims_uc_at_legacy_closure" in getattr(getattr(sim, "tax_benefit_system", None), "variables", {}):
+        migrated = np.asarray(
+            sim.calculate(
+                "claims_uc_at_legacy_closure", period=period, map_to="benunit"
+            ).values,
+            dtype=bool,
+        )
+    else:
+        migrated = np.zeros(n_benunits, dtype=bool)
+    stale = (withheld > 1e-8) & ~migrated
+    if stale.any():
         raise RuntimeError(
             "UC entitlement measurement pass is not responding to would_claim_uc: "
-            f"{int((withheld > 1e-8).sum())} benefit units still receive a "
+            f"{int(stale.sum())} benefit units still receive a "
             "positive award with claiming switched off for everyone, so the "
             "measured all-claim award is a stale cached value — the simulation "
             "cache was not flushed (_invalidate_all_caches no-op?)."
@@ -1381,6 +1640,15 @@ def _verify_uc_award_cache_flushed(sim, period, flag, potential_award) -> None:
         dtype=float,
     )
     stale = (~np.asarray(flag, dtype=bool)) & (np.asarray(potential_award) > 1e-8)
+    # Families moved off legacy benefits claim UC whatever their voluntary
+    # take-up flag says (policyengine-uk claims_uc_at_legacy_closure).
+    if "claims_uc_at_legacy_closure" in getattr(getattr(sim, "tax_benefit_system", None), "variables", {}):
+        stale &= ~np.asarray(
+            sim.calculate(
+                "claims_uc_at_legacy_closure", period=period, map_to="benunit"
+            ).values,
+            dtype=bool,
+        )
     if stale.any() and (award[stale] > 1e-8).any():
         raise RuntimeError(
             "post-shock UC take-up re-draw not applied: universal_credit still "
@@ -1550,6 +1818,10 @@ def build_shocked_simulation(dataset, baseline_sim, shocked_table, period):
                 "reallocated persons' employment_status changed: they switch "
                 "sector, they do not lose their job."
             )
+    # New Style JSA approximation for displaced workers (opt-in; see
+    # new_style_jsa_amounts). Set BEFORE the take-up re-draw because it is
+    # unearned income for UC and so changes the post-shock potential award.
+    apply_new_style_jsa(sim, baseline_sim, shocked_table, period)
     # Post-shock UC take-up. The baseline would_claim_uc flag is a STORED draw
     # conditioned on PRE-SHOCK circumstances (and calibrated as a
     # population-wide share, not take-up among the entitled), so it is not

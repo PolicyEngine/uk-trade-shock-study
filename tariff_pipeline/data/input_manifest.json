@@ -111,287 +111,136 @@
   "build_products_note": "results/referee_fixes.json is rewritten by `analysis/referee_fixes.py --only ...` and stamped in place by `analysis/write_referee_macros.py`; results/submission_summary.json is written by `analysis/write_submission_results.py --diagnostics`. Both run inside `make paper-values`, so both are build products of the paper, not inputs to it.",
   "quoted_results": [
     {
-      "path": "results/bootstrap_uncertainty.json",
-      "sha256": "039a24ad7bcac840e6398b1818e61244f893a6cf2ae9db269681525475add3d6",
-      "quoted_by": "analysis/write_submission_results.py",
-      "produced_by": "make submission-results"
+      "path": "results/deflated_inputs.json",
+      "produced_by": "see Makefile",
+      "quoted_by": "paper (generated macros)",
+      "sha256": "5aedfeff6ef38438b2cb6df08b5ad672a6272eb2128ac6c84e1509269945f3fc"
     },
     {
-      "path": "results/epd_displacement.json",
-      "sha256": "2ceb0ee282678dfc56c5ee5622a0b1ff3c9cc29873284be882eb682e100ebfd3",
-      "quoted_by": "analysis/write_paper_results.py",
-      "produced_by": "make results"
+      "path": "results/e3_ashe.json",
+      "produced_by": "see Makefile",
+      "quoted_by": "paper (generated macros)",
+      "sha256": "181d70288eeb0a63eb94ca3acaeef9bd9c71b2327cec5a2389a593267afe559d"
     },
     {
-      "path": "results/epd_inactivity.json",
-      "sha256": "a5a4eb215122b1fab52b896f781c20087531f70975eb71319bcac0474c30d88f",
-      "quoted_by": "analysis/write_paper_results.py",
-      "produced_by": "make results"
+      "path": "results/e3_constants.json",
+      "sha256": "583f5a2e8ca1060db805cef5a24405751af69f2f6bc2279ef3f93fd473b78312",
+      "quoted_by": "paper (generated macros)",
+      "produced_by": "analysis/emit_e3_constants.py"
     },
     {
-      "path": "results/epd_rentsharing.json",
-      "sha256": "0ed5367e8500cea1accf0f83d103138da4ecbd87aa3c0a1646f17948e887ef0a",
-      "quoted_by": "analysis/write_paper_results.py",
-      "produced_by": "make results"
+      "path": "results/e3_income_shares.json",
+      "produced_by": "see Makefile",
+      "quoted_by": "paper (generated macros)",
+      "sha256": "38a13cebc1ecb1ca6f1f25a4a898f5cf29d8f8e325bf1895b418ea8e1cc36479"
     },
     {
-      "path": "results/epd_transition_central.json",
-      "sha256": "37c5e7193a65d6ce47dffde13ac036e7b7db7f968834606678066807c2fdfb2d",
-      "quoted_by": "analysis/write_paper_results.py",
-      "produced_by": "make results"
+      "path": "results/e3_industry.json",
+      "produced_by": "see Makefile",
+      "quoted_by": "paper (generated macros)",
+      "sha256": "761e429ddef433994c011b69e4c197486122b1295f704f0b49f65210e5eb272a"
     },
     {
-      "path": "results/epd_wage_cut.json",
-      "sha256": "bc5b59b45c21058ec92a97d4ad0fcb7ff89b1ffa121e31925090755775f2acea",
-      "quoted_by": "analysis/write_paper_results.py",
-      "produced_by": "make results"
+      "path": "results/e3_sensitivity.json",
+      "produced_by": "see Makefile",
+      "quoted_by": "paper (generated macros)",
+      "sha256": "7aa0e8e574f79b535a5cbb875a8f0606a836219f290edb9bc965e042bc868702"
     },
     {
-      "path": "results/factorial_decomposition.json",
-      "sha256": "e7272c8e88910b89130d6bd40a1fa0f8c10e3ef129a0e395ab2ea2feecacc70f",
-      "quoted_by": "analysis/write_factorial_results.py",
-      "produced_by": "make submission-results"
+      "path": "results/e3_uniform.json",
+      "produced_by": "see Makefile",
+      "quoted_by": "paper (generated macros)",
+      "sha256": "2909ad8fbad2c79cd4100c576d9f3c6599d7831ea587d4a426899d61f618fc82"
+    },
+    {
+      "path": "results/energy_referee_checks.json",
+      "produced_by": "see Makefile",
+      "quoted_by": "paper (generated macros)",
+      "sha256": "9db1d3a26a51f52edeb51bfa18fd0c918a324356488e4d8455a00ea5c99c4560"
     },
     {
       "path": "results/full_tariff_displacement.json",
-      "sha256": "3756c6f734b1b06328684cad0edee60fa67a0c74b6973264e04e7c419f8f4cd4",
+      "sha256": "6931a8621ee14810292f0974bc14c33a3b0f120f7bc0a881af13def6aed368cf",
       "quoted_by": "analysis/write_paper_results.py",
       "produced_by": "make results"
     },
     {
-      "path": "results/full_tariff_inactivity.json",
-      "sha256": "dd3766e1446550c91463f83f2ae21177b4c23f6f8453791797c66d44cb4e6af2",
-      "quoted_by": "analysis/write_paper_results.py",
-      "produced_by": "make results"
+      "path": "results/full_tariff_displacement_bernoulli.json",
+      "produced_by": "see Makefile",
+      "quoted_by": "paper (generated macros)",
+      "sha256": "d925558fb29a2875657465fb8f261b401c00e406e949a368c2ecfcddf717befb"
+    },
+    {
+      "path": "results/full_tariff_displacement_no_jsa.json",
+      "produced_by": "see Makefile",
+      "quoted_by": "paper (generated macros)",
+      "sha256": "5643f9f4f0f755cd8a88daeb1ae2ec384b2212d55bd590b8f2217d4e736efe5d"
     },
     {
       "path": "results/full_tariff_obr_low_displacement.json",
-      "sha256": "9d84dc00d02f9cc59dbcea561d48b6d5b4b34c6c8f73d15a28ae3fdb7084d7ec",
+      "sha256": "6a4c75113f5d934ee83c2cdfb06767654c450e66f300c6d1c07acb4e1ae035bd",
       "quoted_by": "analysis/write_paper_results.py",
       "produced_by": "make results"
+    },
+    {
+      "path": "results/full_tariff_obr_low_displacement_no_jsa.json",
+      "produced_by": "see Makefile",
+      "quoted_by": "paper (generated macros)",
+      "sha256": "3d6e0fa18143bff2772fbe241731ea66f8f24be211e0c082268d523337c7cf89"
     },
     {
       "path": "results/full_tariff_obr_low_wage_cut.json",
-      "sha256": "59d808c154a15a0e94b5498ca5b5c3104e88e1691b2ebc7af1ae97bfcfcfcef7",
-      "quoted_by": "analysis/write_paper_results.py",
-      "produced_by": "make results"
-    },
-    {
-      "path": "results/full_tariff_reallocation.json",
-      "sha256": "17571bdc7e312d6dd6ae13db782ee78aae133f50e004da9da3c204d33bf8cf18",
-      "quoted_by": "analysis/write_paper_results.py",
-      "produced_by": "make results (analysis/run_reallocation.py)"
-    },
-    {
-      "path": "results/full_tariff_reallocation_lag3.json",
-      "sha256": "8a5c457be41cdf4688a0b9c081c65c49d854e67a019e0c53636ecb256072fc13",
-      "quoted_by": "analysis/write_paper_results.py",
-      "produced_by": "make results (analysis/run_reallocation.py)"
-    },
-    {
-      "path": "results/full_tariff_reallocation_lowpenalty.json",
-      "sha256": "f5bf60588ea8d4a687e8ce5a392fd5d087e2293998533b31ed48ba038b7b0425",
-      "quoted_by": "analysis/write_paper_results.py",
-      "produced_by": "make results (analysis/run_reallocation.py)"
-    },
-    {
-      "path": "results/full_tariff_rentsharing.json",
-      "sha256": "a2697aded675fb0a5a95aea30c5067b77c2ba268276ab1ee4db61c61d5c22bd6",
-      "quoted_by": "analysis/write_paper_results.py",
-      "produced_by": "make results"
-    },
-    {
-      "path": "results/full_tariff_transition_central.json",
-      "sha256": "85d88701b7776fac1384bbbd23e8f63f75527c7f048f3b8d7ea5b29242ae8e09",
+      "sha256": "6409b7b650f9db905312a7bcd9ae8429437f67f18571291ea9f33489da2b1354",
       "quoted_by": "analysis/write_paper_results.py",
       "produced_by": "make results"
     },
     {
       "path": "results/full_tariff_wage_cut.json",
-      "sha256": "baf9bbf79393635967abec2796c563b591e4a8b7d2205221c998417cd89b37f1",
+      "sha256": "776248abd1bf7b7ab9d1bcf36c882d8a5027695f162245cead3af87094104fef",
       "quoted_by": "analysis/write_paper_results.py",
       "produced_by": "make results"
     },
     {
-      "path": "results/hmrc_destination_event_study.json",
-      "sha256": "6e5b8341714c71f644dec9ec728629545597f8735be8f25ac36a6e90de60dcad",
-      "quoted_by": "analysis/write_trade_benchmark_results.py",
-      "produced_by": "make trade-event-study"
+      "path": "results/grid_energy.json",
+      "sha256": "82a9cf71929587682971e1595e4167548a133b03aa552bc26cddf7846c57f2cb",
+      "quoted_by": "paper (generated macros)",
+      "produced_by": "uk_trade_shock_study/grid_energy.py"
     },
     {
-      "path": "results/hmrc_destination_event_study_monthly.csv",
-      "sha256": "43022dc597eafb69246bb56b2b9402a9cfeda1639b3ad474ce90b34b03847d80",
-      "quoted_by": "analysis/write_trade_benchmark_results.py",
-      "produced_by": "make trade-event-study"
+      "path": "results/lcfs_validation.json",
+      "produced_by": "see Makefile",
+      "quoted_by": "paper (generated macros)",
+      "sha256": "8af786ba844925fe654803793a031f698d7ab001f0f3aeeaacff86311bfb297e"
     },
     {
-      "path": "results/leave_one_record_out.json",
-      "sha256": "8713a5cc7059984aca679689e67635d7cea904d6ecbd507d1ce803afa478a5a3",
-      "quoted_by": "analysis/write_factorial_results.py",
-      "produced_by": "make submission-results"
+      "path": "results/results.json",
+      "sha256": "0ed01792e43aad497c0471a0dbb2ca3fc196acd108d2fe3edc1e35d24e96c38a",
+      "quoted_by": "paper (generated macros)",
+      "produced_by": "uk_trade_shock_study/incidence.py"
     },
     {
-      "path": "results/leave_one_sector_out.json",
-      "sha256": "01d68b53af772de80b3ed46965e6c6e292bd95336e24f1dfc16120fae3d84ea2",
-      "quoted_by": "analysis/write_submission_results.py",
-      "produced_by": "make submission-results"
+      "path": "results/seasonal_energy.json",
+      "produced_by": "see Makefile",
+      "quoted_by": "paper (generated macros)",
+      "sha256": "5252607ddc91bff615929e3438d2ac31c9c166e675f5fc019b946bacb00a4392"
     },
     {
-      "path": "results/lfs_qrf_benchmark.diagnostics.json",
-      "sha256": "c51745d194fc8cf51c1b84239cc586f7bfb89d525d369f1a6c1903b780eb848e",
-      "quoted_by": "analysis/write_lfs_benchmark_results.py",
-      "produced_by": "make lfs-benchmarks"
+      "path": "results/second_stage_energy.json",
+      "sha256": "bdd427ad56b8004ddf3187d4cd8072f8e72b64d0ba067d256d462d16489be743",
+      "quoted_by": "paper (generated macros)",
+      "produced_by": "uk_trade_shock_study/second_stage_energy.py"
     },
     {
-      "path": "results/lfs_qrf_benchmark_summary.json",
-      "sha256": "6ec0fdcdc91d2ad37b8b1eef0938339ccb6991423d4b7e8447cc7144aa731b3a",
-      "quoted_by": "analysis/write_lfs_benchmark_results.py",
-      "produced_by": "make lfs-benchmarks"
+      "path": "results/second_stage_energy_nosyn.json",
+      "produced_by": "see Makefile",
+      "quoted_by": "paper (generated macros)",
+      "sha256": "432bbf72531ea441df9ecb2c1b6b6b4ee0bedae9c2a7ded9390a5152c2e556bb"
     },
     {
-      "path": "results/lfs_selection_sensitivity.json",
-      "sha256": "d9e9e1331b452aa969de0b6cac9059695dd63a881ce413628f9ae55b7a9ea856",
-      "quoted_by": "analysis/write_lfs_selection_results.py",
-      "produced_by": "make results"
-    },
-    {
-      "path": "results/measured_displacement.json",
-      "sha256": "ad4d1508a98fc165083caf228574fa821f16503964596b176466f4909a558c8b",
-      "quoted_by": "analysis/write_paper_results.py",
-      "produced_by": "make results"
-    },
-    {
-      "path": "results/measured_wage_cut.json",
-      "sha256": "52a0fe883c2c11087d2fecdd916120f42faebe29e5e63742fd0451953b64fadf",
-      "quoted_by": "analysis/write_paper_results.py",
-      "produced_by": "make results"
-    },
-    {
-      "path": "results/scenario_testing.json",
-      "sha256": "24f00c869588f4b32607a2c58e1804cadf5add843069199d6d98a6221cace213",
-      "quoted_by": "analysis/write_paper_results.py",
-      "produced_by": "make results (analysis/scenario_testing.py)"
-    },
-    {
-      "path": "results/submission/submission_obr_12m_concentrated_wage_cut.json",
-      "sha256": "e47ada4b4d3725381c1c41461d68c9816927e8ef360f37955788975e6426e594",
-      "quoted_by": "analysis/write_submission_results.py, analysis/factorial_decomposition.py",
-      "produced_by": "make submission-results"
-    },
-    {
-      "path": "results/submission/submission_obr_12m_displacement.json",
-      "sha256": "205da814c7ab6614adb53547d98386aead01fe20bff5094de5d080491e14153e",
-      "quoted_by": "analysis/write_submission_results.py",
-      "produced_by": "make submission-results"
-    },
-    {
-      "path": "results/submission/submission_obr_12m_displacement_bernoulli.json",
-      "sha256": "7df63b2dde768d65d139ff99547e81495678a127a0c9d1c476fb92efe1d2f7a0",
-      "quoted_by": "analysis/write_submission_results.py",
-      "produced_by": "make submission-results"
-    },
-    {
-      "path": "results/submission/submission_obr_12m_wage_cut.json",
-      "sha256": "50462c77f5ffdeb63d16d50ea883dacebcf1a6650e1c36b42b15f24f3de6a80f",
-      "quoted_by": "analysis/write_submission_results.py",
-      "produced_by": "make submission-results"
-    },
-    {
-      "path": "results/submission/submission_obr_3m_displacement.json",
-      "sha256": "6abee34d1c74610e79f5dd75e245b536a7cd7d44aa6ba8357d5e05015f20a5c1",
-      "quoted_by": "analysis/write_submission_results.py",
-      "produced_by": "make submission-results"
-    },
-    {
-      "path": "results/submission/submission_obr_3m_wage_cut.json",
-      "sha256": "fb5621f2cacf548c78f9f93af411496432cae48dd9caddc563d9f4bcd4a72389",
-      "quoted_by": "analysis/write_submission_results.py",
-      "produced_by": "make submission-results"
-    },
-    {
-      "path": "results/submission/submission_obr_6m_displacement.json",
-      "sha256": "cffc7ebb7c14bfa8b41b8abf3f89e6203d8ac968eb0d8cc753624ed64fed59ce",
-      "quoted_by": "analysis/write_submission_results.py",
-      "produced_by": "make submission-results"
-    },
-    {
-      "path": "results/submission/submission_obr_6m_wage_cut.json",
-      "sha256": "d618c7181546e0206066cb8feb778dae04ec3065eb56db26838a63c5e90be4ef",
-      "quoted_by": "analysis/write_submission_results.py",
-      "produced_by": "make submission-results"
-    },
-    {
-      "path": "results/submission/submission_unit_12m_concentrated_wage_cut.json",
-      "sha256": "823ba2e115e916879c2525496c60eeb59a41314c20add108677d320cf0d2e25a",
-      "quoted_by": "analysis/write_submission_results.py, analysis/factorial_decomposition.py",
-      "produced_by": "make submission-results"
-    },
-    {
-      "path": "results/submission/submission_unit_12m_displacement.json",
-      "sha256": "30c610e7eb0a45250778e565a7fc73121641d5315e42a87bc61fc06f316e649f",
-      "quoted_by": "analysis/write_submission_results.py",
-      "produced_by": "make submission-results"
-    },
-    {
-      "path": "results/submission/submission_unit_12m_displacement_bernoulli.json",
-      "sha256": "ebc0c339a7d8aada944a49c95079fd01db10cd8560cd5d1fae60ee9497cd26e1",
-      "quoted_by": "analysis/write_submission_results.py",
-      "produced_by": "make submission-results"
-    },
-    {
-      "path": "results/submission/submission_unit_12m_wage_cut.json",
-      "sha256": "770c4a674c7f9710d69f764fa52072029af82d6b9d27fc701a32c5872b47224a",
-      "quoted_by": "analysis/write_submission_results.py",
-      "produced_by": "make submission-results"
-    },
-    {
-      "path": "results/submission/submission_unit_3m_displacement.json",
-      "sha256": "77be6f7d1a1938d3d3a6ba401c2d93784add7fb997429647276a20ed769a45a6",
-      "quoted_by": "analysis/write_submission_results.py",
-      "produced_by": "make submission-results"
-    },
-    {
-      "path": "results/submission/submission_unit_3m_wage_cut.json",
-      "sha256": "2225c0ce5eacd8617c88e665ef2252b9263132b6d3f48e9aeedf86a5e7dd03b2",
-      "quoted_by": "analysis/write_submission_results.py",
-      "produced_by": "make submission-results"
-    },
-    {
-      "path": "results/submission/submission_unit_6m_displacement.json",
-      "sha256": "d320478489cbfd9b6e3b20efdd453e767ef45de5e9e7323a34098b216f431692",
-      "quoted_by": "analysis/write_submission_results.py",
-      "produced_by": "make submission-results"
-    },
-    {
-      "path": "results/submission/submission_unit_6m_wage_cut.json",
-      "sha256": "9401108ba26d2c22e4244a15428d5c8ce992e66a3378acf9f9bf8639714127d9",
-      "quoted_by": "analysis/write_submission_results.py",
-      "produced_by": "make submission-results"
-    },
-    {
-      "path": "results/supply_chain_displacement.json",
-      "sha256": "b41cb22de61800c44f13fc12955658f211a3f3560ea66cf6ab243e9a220d37eb",
-      "quoted_by": "analysis/write_paper_results.py",
-      "produced_by": "make results (analysis/supply_chain_scenario.py)"
-    },
-    {
-      "path": "results/supply_chain_wage_cut.json",
-      "sha256": "0412685860ab26b81abe1145e5a7ca8a0f87d5076987d1e9e667d83b860b64c7",
-      "quoted_by": "analysis/write_paper_results.py",
-      "produced_by": "make results (analysis/supply_chain_scenario.py)"
-    },
-    {
-      "path": "results/takeup_diagnosis.json",
-      "sha256": "c4913c4d63f5d1d42d4a3e30817469b651979f3afaec6ce208862e15184138c9",
-      "quoted_by": "analysis/write_referee_macros.py",
-      "produced_by": "analysis/takeup_sensitivity.py",
-      "note": "Legacy-vintage all-entitled take-up grid; write_referee_macros.py READS it as the fallback source for \\TakeupEntitledStale/Full/Spread and never writes it."
-    },
-    {
-      "path": "results/validation_sectors.json",
-      "sha256": "151a777b562e803f1105ed03d1cf9e9a10e88a4f9abaf68eac8e4ef95e669263",
-      "quoted_by": "analysis/write_validation_macros.py",
-      "produced_by": "make inputs"
+      "path": "results/uprating_lag_reform.json",
+      "produced_by": "see Makefile",
+      "quoted_by": "paper (generated macros)",
+      "sha256": "e76ab2ec0e943d07e8017eb02a0ff2a74a68f603afc623ac7b76821a624c25e1"
     }
   ]
 }

@@ -1,0 +1,337 @@
+{
+  "scenario": "full_tariff_displacement",
+  "period": 2026,
+  "design": "exact_expectation",
+  "central": {
+    "uc_takeup": 0.8,
+    "new_style_jsa_weeks": 26.0,
+    "spell": "12m",
+    "cushioning_rate": 0.3697856810149551,
+    "reproduces_stored_central_within": 0.0
+  },
+  "uc_takeup": {
+    "0.6": {
+      "gross_earnings_loss": 1007063026.1903168,
+      "gross_vs_target": 0.9999571063484726,
+      "net_disposable_loss": 642301486.6041626,
+      "cushioning_rate": 0.36220328827485004,
+      "tax_benefit_cushioning_rate": 0.3333628003197125,
+      "cushioning_rate_sampling_se": 0.005774654939671801,
+      "share_of_gross_loss": {
+        "income_tax": 0.21178969291528224,
+        "national_insurance": 0.0433495083393794,
+        "universal_credit": 0.0261331926836568,
+        "jsa_contrib": 0.04871867746120198,
+        "pension_contributions": 0.028840487955137575
+      },
+      "share_of_gross_loss_all_lines": {
+        "income_tax": 0.21178969291528224,
+        "national_insurance": 0.0433495083393794,
+        "universal_credit": 0.0261331926836568,
+        "other_means_tested": 0.0008978886134855745,
+        "jsa_contrib": 0.04871867746120198,
+        "esa_contrib": 0.0,
+        "child_benefit": 0.0007372485805649571,
+        "pension_contributions": 0.028840487955137575,
+        "student_loan_repayments": 0.0,
+        "statutory_pay": -0.0005988300174313131,
+        "other": -1.0061253342893729e-05,
+        "negative_income_floor": 0.0023454774754559605
+      }
+    },
+    "0.8": {
+      "gross_earnings_loss": 1007063026.1903168,
+      "gross_vs_target": 0.9999571063484726,
+      "net_disposable_loss": 634665539.2255489,
+      "cushioning_rate": 0.3697856810149551,
+      "tax_benefit_cushioning_rate": 0.3409451930598176,
+      "cushioning_rate_sampling_se": 0.006290992326458387,
+      "share_of_gross_loss": {
+        "income_tax": 0.21178969291528224,
+        "national_insurance": 0.0433495083393794,
+        "universal_credit": 0.03371350297391287,
+        "jsa_contrib": 0.04871867746120198,
+        "pension_contributions": 0.028840487955137575
+      },
+      "share_of_gross_loss_all_lines": {
+        "income_tax": 0.21178969291528224,
+        "national_insurance": 0.0433495083393794,
+        "universal_credit": 0.03371350297391287,
+        "other_means_tested": 0.0008939468917400733,
+        "jsa_contrib": 0.04871867746120198,
+        "esa_contrib": 0.0,
+        "child_benefit": 0.0007372485805649571,
+        "pension_contributions": 0.028840487955137575,
+        "student_loan_repayments": 0.0,
+        "statutory_pay": -0.0005988300174313131,
+        "other": 0.00015075782389093243,
+        "negative_income_floor": 0.0021906826584098486
+      }
+    },
+    "1.0": {
+      "gross_earnings_loss": 1007063026.1903168,
+      "gross_vs_target": 0.9999571063484726,
+      "net_disposable_loss": 627029591.8469349,
+      "cushioning_rate": 0.37736807375506054,
+      "tax_benefit_cushioning_rate": 0.348527585799923,
+      "cushioning_rate_sampling_se": 0.006887518212469839,
+      "share_of_gross_loss": {
+        "income_tax": 0.21178969291528224,
+        "national_insurance": 0.0433495083393794,
+        "universal_credit": 0.04129381326416895,
+        "jsa_contrib": 0.04871867746120198,
+        "pension_contributions": 0.028840487955137575
+      },
+      "share_of_gross_loss_all_lines": {
+        "income_tax": 0.21178969291528224,
+        "national_insurance": 0.0433495083393794,
+        "universal_credit": 0.04129381326416895,
+        "other_means_tested": 0.000890005169994572,
+        "jsa_contrib": 0.04871867746120198,
+        "esa_contrib": 0.0,
+        "child_benefit": 0.0007372485805649571,
+        "pension_contributions": 0.028840487955137575,
+        "student_loan_repayments": 0.0,
+        "statutory_pay": -0.0005988300174313131,
+        "other": 0.0003115769011247584,
+        "negative_income_floor": 0.0020358878413639734
+      }
+    }
+  },
+  "new_style_jsa_weeks": {
+    "0": {
+      "source": "results/full_tariff_displacement_no_jsa.json",
+      "cushioning_rate": 0.3401323386764241,
+      "tax_benefit_cushioning_rate": 0.31129185072128657,
+      "cushioning_rate_sampling_se": 0.007448129586668872,
+      "share_of_gross_loss": {
+        "income_tax": 0.21238472723893426,
+        "national_insurance": 0.0433495083393794,
+        "universal_credit": 0.050480545878656066,
+        "jsa_contrib": 0.0,
+        "pension_contributions": 0.028840487955137575
+      }
+    },
+    "13": {
+      "gross_earnings_loss": 1007063026.1903168,
+      "gross_vs_target": 0.9999571063484726,
+      "net_disposable_loss": 650069945.3015288,
+      "cushioning_rate": 0.3544893135827655,
+      "tax_benefit_cushioning_rate": 0.3256488256276279,
+      "cushioning_rate_sampling_se": 0.006866069097161564,
+      "share_of_gross_loss": {
+        "income_tax": 0.2121048929385616,
+        "national_insurance": 0.0433495083393794,
+        "universal_credit": 0.04193719933807601,
+        "jsa_contrib": 0.02435933873060099,
+        "pension_contributions": 0.028840487955137575
+      },
+      "share_of_gross_loss_all_lines": {
+        "income_tax": 0.2121048929385616,
+        "national_insurance": 0.0433495083393794,
+        "universal_credit": 0.04193719933807601,
+        "other_means_tested": 0.0008940081569133075,
+        "jsa_contrib": 0.02435933873060099,
+        "esa_contrib": 0.0,
+        "child_benefit": 0.0007372485805649571,
+        "pension_contributions": 0.028840487955137575,
+        "student_loan_repayments": 0.0,
+        "statutory_pay": -0.0005988300174313131,
+        "other": 0.00024461856657534854,
+        "negative_income_floor": 0.0026208344605398474
+      }
+    },
+    "26": {
+      "gross_earnings_loss": 1007063026.1903168,
+      "gross_vs_target": 0.9999571063484726,
+      "net_disposable_loss": 634665539.2255489,
+      "cushioning_rate": 0.3697856810149551,
+      "tax_benefit_cushioning_rate": 0.3409451930598176,
+      "cushioning_rate_sampling_se": 0.006290992326458387,
+      "share_of_gross_loss": {
+        "income_tax": 0.21178969291528224,
+        "national_insurance": 0.0433495083393794,
+        "universal_credit": 0.03371350297391287,
+        "jsa_contrib": 0.04871867746120198,
+        "pension_contributions": 0.028840487955137575
+      },
+      "share_of_gross_loss_all_lines": {
+        "income_tax": 0.21178969291528224,
+        "national_insurance": 0.0433495083393794,
+        "universal_credit": 0.03371350297391287,
+        "other_means_tested": 0.0008939468917400733,
+        "jsa_contrib": 0.04871867746120198,
+        "esa_contrib": 0.0,
+        "child_benefit": 0.0007372485805649571,
+        "pension_contributions": 0.028840487955137575,
+        "student_loan_repayments": 0.0,
+        "statutory_pay": -0.0005988300174313131,
+        "other": 0.00015075782389093243,
+        "negative_income_floor": 0.0021906826584098486
+      }
+    }
+  },
+  "duration": {
+    "12m": {
+      "full_year_job_loss": {
+        "gross_earnings_loss": 1007063026.1903168,
+        "gross_vs_target": 0.9999571063484726,
+        "net_disposable_loss": 634665539.2255489,
+        "cushioning_rate": 0.3697856810149551,
+        "tax_benefit_cushioning_rate": 0.3409451930598176,
+        "cushioning_rate_sampling_se": 0.006290992326458387,
+        "share_of_gross_loss": {
+          "income_tax": 0.21178969291528224,
+          "national_insurance": 0.0433495083393794,
+          "universal_credit": 0.03371350297391287,
+          "jsa_contrib": 0.04871867746120198,
+          "pension_contributions": 0.028840487955137575
+        },
+        "share_of_gross_loss_all_lines": {
+          "income_tax": 0.21178969291528224,
+          "national_insurance": 0.0433495083393794,
+          "universal_credit": 0.03371350297391287,
+          "other_means_tested": 0.0008939468917400733,
+          "jsa_contrib": 0.04871867746120198,
+          "esa_contrib": 0.0,
+          "child_benefit": 0.0007372485805649571,
+          "pension_contributions": 0.028840487955137575,
+          "student_loan_repayments": 0.0,
+          "statutory_pay": -0.0005988300174313131,
+          "other": 0.00015075782389093243,
+          "negative_income_floor": 0.0021906826584098486
+        }
+      }
+    },
+    "6m": {
+      "spell_share_of_year": 0.5,
+      "new_style_jsa_weeks": 26.0,
+      "annual_averaging": {
+        "gross_earnings_loss": 503531513.0951584,
+        "gross_vs_target": 0.9999571063484726,
+        "net_disposable_loss": 272871631.9431427,
+        "cushioning_rate": 0.45808430088947605,
+        "tax_benefit_cushioning_rate": 0.4292438129343385,
+        "cushioning_rate_sampling_se": 0.00407948762448821,
+        "share_of_gross_loss": {
+          "income_tax": 0.2710710100328687,
+          "national_insurance": 0.0529838497129441,
+          "universal_credit": 0.005922627301473738,
+          "jsa_contrib": 0.09743735492240396,
+          "pension_contributions": 0.028840487955137575
+        },
+        "share_of_gross_loss_all_lines": {
+          "income_tax": 0.2710710100328687,
+          "national_insurance": 0.0529838497129441,
+          "universal_credit": 0.005922627301473738,
+          "other_means_tested": 0.0008103533202110306,
+          "jsa_contrib": 0.09743735492240396,
+          "esa_contrib": 0.0,
+          "child_benefit": 0.0012318090520475886,
+          "pension_contributions": 0.028840487955137575,
+          "student_loan_repayments": 0.0,
+          "statutory_pay": -0.0005988300174313131,
+          "other": 0.0002886127698666886,
+          "negative_income_floor": 9.702003865340338e-05
+        }
+      },
+      "monthly_state_mix": {
+        "gross_earnings_loss": 503531513.0951584,
+        "gross_vs_target": 0.9999571063484726,
+        "net_disposable_loss": 270747755.9007294,
+        "cushioning_rate": 0.4623022614086857,
+        "tax_benefit_cushioning_rate": 0.43346177345354814,
+        "cushioning_rate_sampling_se": 0.006182848754578966,
+        "share_of_gross_loss": {
+          "income_tax": 0.2710710100328687,
+          "national_insurance": 0.0433495083393794,
+          "universal_credit": 0.01892890888048597,
+          "jsa_contrib": 0.09743735492240396,
+          "pension_contributions": 0.028840487955137575
+        },
+        "share_of_gross_loss_all_lines": {
+          "income_tax": 0.2710710100328687,
+          "national_insurance": 0.0433495083393794,
+          "universal_credit": 0.01892890888048597,
+          "other_means_tested": 0.0008939121201802297,
+          "jsa_contrib": 0.09743735492240396,
+          "esa_contrib": 0.0,
+          "child_benefit": 0.0007372485805649571,
+          "pension_contributions": 0.028840487955137575,
+          "student_loan_repayments": 0.0,
+          "statutory_pay": -0.0005988300174313131,
+          "other": -0.00010412869026430888,
+          "negative_income_floor": 0.001746786632981539
+        }
+      }
+    },
+    "3m": {
+      "spell_share_of_year": 0.25,
+      "new_style_jsa_weeks": 13.0,
+      "annual_averaging": {
+        "gross_earnings_loss": 251765755.4367216,
+        "gross_vs_target": 0.9999571019363954,
+        "net_disposable_loss": 133271686.43742679,
+        "cushioning_rate": 0.4706520503304784,
+        "tax_benefit_cushioning_rate": 0.44181156212136785,
+        "cushioning_rate_sampling_se": 0.004484933989042637,
+        "share_of_gross_loss": {
+          "income_tax": 0.2907666241180279,
+          "national_insurance": 0.048186362263140166,
+          "universal_credit": 0.0048086807785119095,
+          "jsa_contrib": 0.09743735535232355,
+          "pension_contributions": 0.028840488209110567
+        },
+        "share_of_gross_loss_all_lines": {
+          "income_tax": 0.2907666241180279,
+          "national_insurance": 0.048186362263140166,
+          "universal_credit": 0.0048086807785119095,
+          "other_means_tested": 0.0005468498123560422,
+          "jsa_contrib": 0.09743735535232355,
+          "esa_contrib": 0.0,
+          "child_benefit": 0.00038215280299646546,
+          "pension_contributions": 0.028840488209110567,
+          "student_loan_repayments": 0.0,
+          "statutory_pay": -0.0005988300195109926,
+          "other": 0.00019348061439756413,
+          "negative_income_floor": 8.886739727998583e-05
+        }
+      },
+      "monthly_state_mix": {
+        "gross_earnings_loss": 251765756.5475792,
+        "gross_vs_target": 0.9999571063484726,
+        "net_disposable_loss": 130415197.09254576,
+        "cushioning_rate": 0.4819978742109051,
+        "tax_benefit_cushioning_rate": 0.45315738625576757,
+        "cushioning_rate_sampling_se": 0.007402532194904967,
+        "share_of_gross_loss": {
+          "income_tax": 0.2907666228350881,
+          "national_insurance": 0.0433495083393794,
+          "universal_credit": 0.01892890888048597,
+          "jsa_contrib": 0.09743735492240396,
+          "pension_contributions": 0.028840487955137575
+        },
+        "share_of_gross_loss_all_lines": {
+          "income_tax": 0.2907666228350881,
+          "national_insurance": 0.0433495083393794,
+          "universal_credit": 0.01892890888048597,
+          "other_means_tested": 0.0008939121201802297,
+          "jsa_contrib": 0.09743735492240396,
+          "esa_contrib": 0.0,
+          "child_benefit": 0.0007372485805649571,
+          "pension_contributions": 0.028840487955137575,
+          "student_loan_repayments": 0.0,
+          "statutory_pay": -0.0005988300174313131,
+          "other": -0.00010412869026430888,
+          "negative_income_floor": 0.0017467866329816575
+        }
+      }
+    }
+  },
+  "notes": {
+    "uc_takeup": "Claiming probability of benefit units NEWLY entitled to UC; exact linear re-weighting of the central all-claim and none-claim passes.",
+    "duration_annual_averaging": "Annual earnings, hours and earnings-linked deductions scaled by 1 - f, status unchanged, JSA for min(26, 52f) weeks, annual model. Understates UC (assessed monthly): lower bound on the benefit response.",
+    "duration_monthly_state_mix": "f x the change in a full-year out-of-work simulation with JSA in payment every week, for every line except income tax, which is taken from the annual-averaging pass. Assumes UC runs exactly for the spell: upper bound on the benefit response.",
+    "gross": "A spell of share f removes f x the full-year gross earnings loss; rates are per pound of that smaller loss."
+  }
+}

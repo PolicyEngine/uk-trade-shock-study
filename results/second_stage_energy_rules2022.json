@@ -1,0 +1,430 @@
+{
+ "meta": {
+  "dataset": "microcosm_uk_2024_25",
+  "provenance": {
+   "bundle_id": "uk-6.20.0",
+   "policyengine_version": "6.20.0",
+   "model_version": "2.174.1",
+   "default_dataset": "microcosm_uk_2024_25",
+   "certified_data_build_id": "microcosm-uk-2024-25-national-20261107T020434Z-eeb6093e",
+   "certified_data_artifact_sha256": "0a9b77db1c0dee2693cb2d47bad68da34cb662916eee4829942bcd45de581f25"
+  },
+  "policyengine_uk_version": "2.174.1",
+  "policyengine_version": "6.20.0",
+  "sim_year": 2022,
+  "records": 78181,
+  "weighted_persons_m": 69.0,
+  "weighted_households_m": 28.99,
+  "ons_uk_households_m": 28.4,
+  "weight_excess_pct": 2.1,
+  "energy_rebase_factor": 0.7523,
+  "spend_rebase_factor": 0.7959,
+  "energy_mean_before_rebase": 1631.6,
+  "energy_mean_after_rebase": 1227.5,
+  "raw_energy_share_of_spending_pct": 4.72
+ },
+ "parameters": {
+  "cap_apr_2021": 1138.0,
+  "cap_oct_2021": 1277.0,
+  "cap_apr_2022": 1971.0,
+  "cap_oct_2022": 3549.0,
+  "epg_level": 2500.0,
+  "wholesale_oct_2021": 550.0,
+  "wholesale_oct_2022": 2468.0,
+  "ebss_per_household": 400.0,
+  "col_means_tested": 650.0,
+  "col_pensioner": 300.0,
+  "col_disability": 150.0,
+  "uprating_applied_apr_2022": 0.031,
+  "cpi_sep_2022_yoy": 0.101,
+  "ebss_outturn_gbp_bn": 11.69,
+  "sim_year": 2022,
+  "ons_uk_households_m": 28.4,
+  "cap_jan_2023": 4279.0,
+  "ons_total_spend_yr": 27503.0
+ },
+ "shock": {
+  "basis": "financial-year mean caps throughout, quarters weighted by their share of annual energy use, on the caps Ofgem set (January-March 2023 at GBP 4,279 in the counterfactual)",
+  "convention": "consumption_actual",
+  "fy_weights": {
+   "apr_sep": 0.3564,
+   "oct_dec": 0.297,
+   "jan_mar": 0.3465
+  },
+  "month_share_jan_to_dec": [
+   0.1155,
+   0.1155,
+   0.1155,
+   0.0594,
+   0.0594,
+   0.0594,
+   0.0594,
+   0.0594,
+   0.0594,
+   0.099,
+   0.099,
+   0.099
+  ],
+  "base_fy_mean_cap": 1227.455445515575,
+  "counterfactual_fy_mean_cap": 3239.5148511532025,
+  "realised_fy_mean_cap": 2311.4455444441664,
+  "counterfactual_rise": 1.6392,
+  "realised_rise": 0.8831,
+  "counterfactual_aggregate_gbp_bn": 58.33,
+  "realised_aggregate_gbp_bn": 31.42
+ },
+ "automatic_response": {
+  "measured_change_gbp_bn": 0.0,
+  "measured_rate_pct": 0.0,
+  "by_instrument": {
+   "universal_credit": {
+    "baseline_gbp_bn": 63.353,
+    "shocked_gbp_bn": 63.353,
+    "change_gbp_bn": 0.0
+   },
+   "pension_credit": {
+    "baseline_gbp_bn": 5.224,
+    "shocked_gbp_bn": 5.224,
+    "change_gbp_bn": 0.0
+   },
+   "tax_credits": {
+    "baseline_gbp_bn": 0.327,
+    "shocked_gbp_bn": 0.327,
+    "change_gbp_bn": 0.0
+   },
+   "income_support": {
+    "baseline_gbp_bn": 0.099,
+    "shocked_gbp_bn": 0.099,
+    "change_gbp_bn": 0.0
+   },
+   "housing_benefit": {
+    "baseline_gbp_bn": 8.208,
+    "shocked_gbp_bn": 8.208,
+    "change_gbp_bn": 0.0
+   },
+   "jsa_income": {
+    "baseline_gbp_bn": 0.029,
+    "shocked_gbp_bn": 0.029,
+    "change_gbp_bn": 0.0
+   },
+   "esa_income": {
+    "baseline_gbp_bn": 3.869,
+    "shocked_gbp_bn": 3.869,
+    "change_gbp_bn": 0.0
+   },
+   "state_pension": {
+    "baseline_gbp_bn": 114.537,
+    "shocked_gbp_bn": 114.537,
+    "change_gbp_bn": 0.0
+   },
+   "child_benefit": {
+    "baseline_gbp_bn": 11.399,
+    "shocked_gbp_bn": 11.399,
+    "change_gbp_bn": 0.0
+   },
+   "pip": {
+    "baseline_gbp_bn": 26.201,
+    "shocked_gbp_bn": 26.201,
+    "change_gbp_bn": 0.0
+   },
+   "dla": {
+    "baseline_gbp_bn": 7.322,
+    "shocked_gbp_bn": 7.322,
+    "change_gbp_bn": 0.0
+   },
+   "attendance_allowance": {
+    "baseline_gbp_bn": 7.625,
+    "shocked_gbp_bn": 7.625,
+    "change_gbp_bn": 0.0
+   },
+   "carers_allowance": {
+    "baseline_gbp_bn": 3.93,
+    "shocked_gbp_bn": 3.93,
+    "change_gbp_bn": 0.0
+   },
+   "winter_fuel_allowance": {
+    "baseline_gbp_bn": 2.149,
+    "shocked_gbp_bn": 2.149,
+    "change_gbp_bn": 0.0
+   }
+  },
+  "native_instruments": {
+   "epg_subsidy": {
+    "baseline_gbp_bn": 4.042,
+    "shocked_gbp_bn": 5.726,
+    "change_gbp_bn": 1.684
+   },
+   "cost_of_living_support_payment": {
+    "baseline_gbp_bn": 9.166,
+    "shocked_gbp_bn": 9.166,
+    "change_gbp_bn": 0.0
+   },
+   "energy_bills_rebate": {
+    "baseline_gbp_bn": 8.969,
+    "shocked_gbp_bn": 8.969,
+    "change_gbp_bn": 0.0
+   },
+   "household_benefits": {
+    "baseline_gbp_bn": 615.088,
+    "shocked_gbp_bn": 616.772,
+    "change_gbp_bn": 1.684
+   },
+   "household_net_income": {
+    "baseline_gbp_bn": 1734.694,
+    "shocked_gbp_bn": 1736.378,
+    "change_gbp_bn": 1.684
+   }
+  },
+  "note": "calculator re-run with shocked energy inputs. The fourteen cash benefits condition on nominal income, which the price shock does not move, so none responds. The model's own Energy Price Guarantee variable (epg_subsidy) reads energy consumption and does respond; its change is reported under native_instruments and classified as discretionary in the paper's taxonomy."
+ },
+ "uprating_shortfall": {
+  "benefit_income_base_gbp_bn": 252.1,
+  "uprating_gap_pp": 7.0,
+  "shortfall_gbp_bn": 17.65,
+  "shortfall_pct_of_benefit_income": 7.0,
+  "note": "real erosion of benefit income by ALL inflation over the year; not attributable to the energy episode alone, and deliberately not expressed as a share of the energy shock"
+ },
+ "discretionary": {
+  "epg_gbp_bn": 26.9,
+  "epg_rate_pct": 46.1,
+  "ebss_gbp_bn": 11.6,
+  "ctr_gbp_bn": 3.36,
+  "ctr_households_m": 22.39,
+  "energy_specific_gbp_bn": 41.86,
+  "energy_specific_rate_pct": 71.8,
+  "col_payments_gbp_bn": 9.17,
+  "total_gbp_bn": 51.02,
+  "rate_pct_of_counterfactual": 87.5,
+  "without_ctr": {
+   "total_gbp_bn": 47.66,
+   "rate_pct_of_counterfactual": 81.7,
+   "energy_specific_gbp_bn": 38.5,
+   "energy_specific_rate_pct": 66.0
+  }
+ },
+ "checks": {
+  "equiv_income_mean": 43486.0,
+  "net_income_mean": 59842.0,
+  "means_tested_households_m": 7.67,
+  "col_components_gbp_bn": [
+   5.27,
+   2.75,
+   1.15
+  ]
+ },
+ "by_decile": [
+  {
+   "decile": 1,
+   "realised_gbp_per_year": 972.0,
+   "counterfactual_gbp_per_year": 1804.1,
+   "discretionary_gbp_per_year": 1807.8,
+   "cushioning_rate_pct": 100.2,
+   "energy_specific_rate_pct": 75.2,
+   "cushioning_rate_pct_without_ctr": 93.3,
+   "energy_specific_rate_pct_without_ctr": 68.3,
+   "burden_pct_of_spending": 5.68,
+   "raw_energy_share_of_spending_pct": 6.81
+  },
+  {
+   "decile": 2,
+   "realised_gbp_per_year": 1024.1,
+   "counterfactual_gbp_per_year": 1900.9,
+   "discretionary_gbp_per_year": 1899.7,
+   "cushioning_rate_pct": 99.9,
+   "energy_specific_rate_pct": 74.0,
+   "cushioning_rate_pct_without_ctr": 93.1,
+   "energy_specific_rate_pct_without_ctr": 67.2,
+   "burden_pct_of_spending": 5.64,
+   "raw_energy_share_of_spending_pct": 6.76
+  },
+  {
+   "decile": 3,
+   "realised_gbp_per_year": 956.1,
+   "counterfactual_gbp_per_year": 1774.6,
+   "discretionary_gbp_per_year": 1832.0,
+   "cushioning_rate_pct": 103.2,
+   "energy_specific_rate_pct": 75.9,
+   "cushioning_rate_pct_without_ctr": 96.0,
+   "energy_specific_rate_pct_without_ctr": 68.7,
+   "burden_pct_of_spending": 5.3,
+   "raw_energy_share_of_spending_pct": 6.35
+  },
+  {
+   "decile": 4,
+   "realised_gbp_per_year": 996.9,
+   "counterfactual_gbp_per_year": 1850.5,
+   "discretionary_gbp_per_year": 1833.0,
+   "cushioning_rate_pct": 99.1,
+   "energy_specific_rate_pct": 74.6,
+   "cushioning_rate_pct_without_ctr": 92.2,
+   "energy_specific_rate_pct_without_ctr": 67.7,
+   "burden_pct_of_spending": 5.04,
+   "raw_energy_share_of_spending_pct": 6.04
+  },
+  {
+   "decile": 5,
+   "realised_gbp_per_year": 1051.7,
+   "counterfactual_gbp_per_year": 1952.1,
+   "discretionary_gbp_per_year": 1810.3,
+   "cushioning_rate_pct": 92.7,
+   "energy_specific_rate_pct": 73.0,
+   "cushioning_rate_pct_without_ctr": 86.4,
+   "energy_specific_rate_pct_without_ctr": 66.6,
+   "burden_pct_of_spending": 4.72,
+   "raw_energy_share_of_spending_pct": 5.66
+  },
+  {
+   "decile": 6,
+   "realised_gbp_per_year": 1067.0,
+   "counterfactual_gbp_per_year": 1980.5,
+   "discretionary_gbp_per_year": 1743.9,
+   "cushioning_rate_pct": 88.1,
+   "energy_specific_rate_pct": 72.6,
+   "cushioning_rate_pct_without_ctr": 81.8,
+   "energy_specific_rate_pct_without_ctr": 66.3,
+   "burden_pct_of_spending": 4.1,
+   "raw_energy_share_of_spending_pct": 4.91
+  },
+  {
+   "decile": 7,
+   "realised_gbp_per_year": 1063.7,
+   "counterfactual_gbp_per_year": 1974.3,
+   "discretionary_gbp_per_year": 1677.3,
+   "cushioning_rate_pct": 85.0,
+   "energy_specific_rate_pct": 72.2,
+   "cushioning_rate_pct_without_ctr": 79.2,
+   "energy_specific_rate_pct_without_ctr": 66.4,
+   "burden_pct_of_spending": 3.88,
+   "raw_energy_share_of_spending_pct": 4.65
+  },
+  {
+   "decile": 8,
+   "realised_gbp_per_year": 1113.9,
+   "counterfactual_gbp_per_year": 2067.5,
+   "discretionary_gbp_per_year": 1612.2,
+   "cushioning_rate_pct": 78.0,
+   "energy_specific_rate_pct": 70.9,
+   "cushioning_rate_pct_without_ctr": 72.6,
+   "energy_specific_rate_pct_without_ctr": 65.5,
+   "burden_pct_of_spending": 3.39,
+   "raw_energy_share_of_spending_pct": 4.06
+  },
+  {
+   "decile": 9,
+   "realised_gbp_per_year": 1207.3,
+   "counterfactual_gbp_per_year": 2240.9,
+   "discretionary_gbp_per_year": 1630.9,
+   "cushioning_rate_pct": 72.8,
+   "energy_specific_rate_pct": 68.5,
+   "cushioning_rate_pct_without_ctr": 68.3,
+   "energy_specific_rate_pct_without_ctr": 64.0,
+   "burden_pct_of_spending": 3.16,
+   "raw_energy_share_of_spending_pct": 3.79
+  },
+  {
+   "decile": 10,
+   "realised_gbp_per_year": 1386.4,
+   "counterfactual_gbp_per_year": 2573.4,
+   "discretionary_gbp_per_year": 1753.8,
+   "cushioning_rate_pct": 68.2,
+   "energy_specific_rate_pct": 64.6,
+   "cushioning_rate_pct_without_ctr": 65.3,
+   "energy_specific_rate_pct_without_ctr": 61.7,
+   "burden_pct_of_spending": 2.51,
+   "raw_energy_share_of_spending_pct": 3.01
+  }
+ ],
+ "within_decile_dispersion": [
+  {
+   "decile": 1,
+   "p10_burden_pct_spending": 2.08,
+   "p50_burden_pct_spending": 6.27,
+   "p90_burden_pct_spending": 15.76,
+   "p90_p10_ratio": 7.6
+  },
+  {
+   "decile": 2,
+   "p10_burden_pct_spending": 2.26,
+   "p50_burden_pct_spending": 5.97,
+   "p90_burden_pct_spending": 14.67,
+   "p90_p10_ratio": 6.5
+  },
+  {
+   "decile": 3,
+   "p10_burden_pct_spending": 2.15,
+   "p50_burden_pct_spending": 5.58,
+   "p90_burden_pct_spending": 14.34,
+   "p90_p10_ratio": 6.7
+  },
+  {
+   "decile": 4,
+   "p10_burden_pct_spending": 1.87,
+   "p50_burden_pct_spending": 5.45,
+   "p90_burden_pct_spending": 12.63,
+   "p90_p10_ratio": 6.8
+  },
+  {
+   "decile": 5,
+   "p10_burden_pct_spending": 1.86,
+   "p50_burden_pct_spending": 5.13,
+   "p90_burden_pct_spending": 11.82,
+   "p90_p10_ratio": 6.3
+  },
+  {
+   "decile": 6,
+   "p10_burden_pct_spending": 1.57,
+   "p50_burden_pct_spending": 4.08,
+   "p90_burden_pct_spending": 11.11,
+   "p90_p10_ratio": 7.1
+  },
+  {
+   "decile": 7,
+   "p10_burden_pct_spending": 1.5,
+   "p50_burden_pct_spending": 4.05,
+   "p90_burden_pct_spending": 9.74,
+   "p90_p10_ratio": 6.5
+  },
+  {
+   "decile": 8,
+   "p10_burden_pct_spending": 1.22,
+   "p50_burden_pct_spending": 3.43,
+   "p90_burden_pct_spending": 9.04,
+   "p90_p10_ratio": 7.4
+  },
+  {
+   "decile": 9,
+   "p10_burden_pct_spending": 1.21,
+   "p50_burden_pct_spending": 3.44,
+   "p90_burden_pct_spending": 9.46,
+   "p90_p10_ratio": 7.8
+  },
+  {
+   "decile": 10,
+   "p10_burden_pct_spending": 0.81,
+   "p50_burden_pct_spending": 2.76,
+   "p90_burden_pct_spending": 7.88,
+   "p90_p10_ratio": 9.7
+  }
+ ],
+ "variance_decomposition": {
+  "preferred_basis": "share of household expenditure",
+  "expenditure_share": {
+   "between_pct": 7.6,
+   "within_pct": 92.4
+  },
+  "expenditure_share_trimmed_1_99": {
+   "between_pct": 7.6,
+   "within_pct": 92.4
+  },
+  "expenditure_share_log": {
+   "between_pct": 10.3,
+   "within_pct": 89.7
+  },
+  "income_share_untrimmed": {
+   "between_pct": 4.3,
+   "within_pct": 95.7,
+   "caveat": "ratio with income in the denominator; dominated by very low incomes and reported only for comparison"
+  },
+  "caveat": "computed on IMPUTED consumption (QRF from LCFS donors), so part of the within-decile dispersion is donor-model variation; this is a bound, not a measurement of true exposure dispersion"
+ }
+}

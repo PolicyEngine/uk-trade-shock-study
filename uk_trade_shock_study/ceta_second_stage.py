@@ -13,7 +13,7 @@ spending, the same first-order convention as every price episode.
 Spending denominators are rebased to the ONS FYE2022 base, as in the
 other second-stage runs.
 
-Run:  python ceta_second_stage.py --dataset <enhanced_frs.h5>
+Run:  python ceta_second_stage.py   (certified Microcosm UK via policyengine.py)
 Emits results/generated_ceta.tex, copied to the paper.
 """
 
@@ -21,11 +21,11 @@ import argparse
 
 import numpy as np
 
-from second_stage_energy import P, weighted, wmean, wquantile, variance_split
+from second_stage_energy import P, load_sim, weighted, wmean, wquantile, variance_split
 from second_stage_energy import RESULTS_DIR, PAPER_DIR
 
-DUTY_CLOTHING_FOOTWEAR_M = 132.0 + 13.0   # GBP m/yr, DBT IA final goods
-DUTY_FOOD_M = 12.0
+DUTY_CLOTHING_FOOTWEAR_M = 132.3 + 13.2   # GBP m/yr, DBT IA Annex 9 Table 18, final goods
+DUTY_FOOD_M = 11.7
 
 
 def deciles_of(equiv_income, w):
@@ -38,13 +38,12 @@ def deciles_of(equiv_income, w):
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--dataset", required=True)
+    ap.add_argument("--dataset", default=None,
+                    help="ignored; data come from the certified Microcosm UK build")
     args = ap.parse_args()
 
-    from policyengine_uk import Microsimulation
-
     yr = P["sim_year"]
-    sim = Microsimulation(dataset=args.dataset)
+    sim = load_sim()
     w = np.asarray(sim.calculate("household_weight", yr))
     equiv_income = np.asarray(sim.calculate("equiv_hbai_household_net_income", yr))
     clothing = np.asarray(sim.calculate("clothing_and_footwear_consumption", yr,

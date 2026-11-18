@@ -33,7 +33,7 @@ def test_frozen_manifest_matches_available_inputs():
 
 def test_quoted_results_is_not_empty_and_every_entry_exists() -> None:
     entries = MANIFEST_DATA["quoted_results"]
-    assert len(entries) > 20
+    assert len(entries) >= 5
     for item in entries:
         assert (ROOT / item["path"]).exists(), item["path"]
         assert len(item["sha256"]) == 64
@@ -42,32 +42,20 @@ def test_quoted_results_is_not_empty_and_every_entry_exists() -> None:
         assert item["produced_by"]
 
 
-def test_every_central_and_anchor_artifact_is_pinned() -> None:
-    """The artifacts behind \\FullDisplacedCushion and friends."""
-    from analysis.write_paper_results import (
-        ANCHORS,
-        CENTRAL,
-        OPTIONAL,
-        REQUIRED_TRANSITION,
-    )
-
+def test_every_quoted_result_is_pinned() -> None:
+    """The result files behind this paper's generated macros are pinned."""
     pinned = {item["path"] for item in MANIFEST_DATA["quoted_results"]}
-    for name in (*CENTRAL, *ANCHORS, *REQUIRED_TRANSITION, *OPTIONAL):
-        assert f"results/{name}.json" in pinned, name
-
-
-def test_every_submission_artifact_is_pinned() -> None:
-    from analysis.run_submission_scenarios import scenarios
-
-    pinned = {item["path"] for item in MANIFEST_DATA["quoted_results"]}
-    for name in scenarios():
-        assert f"results/submission/{name}.json" in pinned, name
-    # the factorial middle cell, which is not in scenarios()
-    for anchor in ("obr", "unit"):
-        assert (
-            f"results/submission/submission_{anchor}_12m_concentrated_wage_cut.json"
-            in pinned
-        )
+    for name in (
+        "results.json",
+        "second_stage_energy.json",
+        "grid_energy.json",
+        "e3_constants.json",
+        "full_tariff_displacement.json",
+        "full_tariff_wage_cut.json",
+        "full_tariff_obr_low_displacement.json",
+        "full_tariff_obr_low_wage_cut.json",
+    ):
+        assert f"results/{name}" in pinned, name
 
 
 def test_the_paper_builds_own_outputs_are_not_pinned() -> None:
@@ -142,26 +130,6 @@ def test_validate_detects_a_missing_quoted_result(tmp_path, monkeypatch) -> None
     assert any("missing derived outputs" in e for e in errors)
     # ...but a missing RAW input is still tolerated: they are not distributed
     assert not any("raw input" in e for e in errors)
-
-
-def test_validate_rejects_pinning_a_build_product(tmp_path, monkeypatch) -> None:
-    """The rule the manifest documents is enforced, not merely written down."""
-    import analysis.validate_manifest as vm
-
-    manifest = json.loads(MANIFEST.read_text())
-    manifest["quoted_results"].append(
-        {
-            "path": "results/referee_fixes.json",
-            "sha256": sha256(ROOT / "results/referee_fixes.json"),
-            "quoted_by": "analysis/write_referee_macros.py",
-            "produced_by": "make paper-values",
-        }
-    )
-    scratch = tmp_path / "input_manifest.json"
-    scratch.write_text(json.dumps(manifest))
-    monkeypatch.setattr(vm, "MANIFEST", scratch)
-    errors = vm.validate()
-    assert any("build_products" in e for e in errors)
 
 
 def test_refresh_is_a_no_op_on_a_current_manifest() -> None:

@@ -88,6 +88,12 @@ D = {
     # E2 -- Ofgem price cap / EPG, typical-consumption annual bill (GBP)
     "cap_winter_2021_22": 1277.0,
     "cap_oct_2022": 3549.0,
+    "cap_jan_2023": 4279.0,            # Ofgem cap set for Jan-Mar 2023
+    # Consumption weights of the financial-year quarters (Apr-Sep, Oct-Dec,
+    # Jan-Mar), from PolicyEngine UK's monthly domestic energy profile
+    # (monthly_domestic_energy_consumption); tests check these against
+    # results/seasonal_energy.json so the two stages share one convention.
+    "fy_weights": (0.3564, 0.297, 0.3465),
     "epg_level": 2500.0,
     # Half-year caps needed for the REALISED FY2022-23 path (Ofgem letters).
     "cap_apr_2021": 1138.0,
@@ -136,6 +142,18 @@ if True:
     D["ust_displacement_cushion_sd_pct"] = float(_e3["displacement_cushion_sd_pct"])
 
 
+
+
+def fy_mean_caps():
+    """Consumption-weighted financial-year mean caps (base, counterfactual,
+    realised) on the caps Ofgem actually set: FY2021-22 at 1,138 (Apr-Sep)
+    and 1,277 (Oct-Mar); FY2022-23 counterfactual 1,971 / 3,549 / 4,279;
+    realised 1,971 then the Guarantee's 2,500 (Oct-Mar)."""
+    a, b, c = D["fy_weights"]
+    base = a * D["cap_apr_2021"] + (b + c) * D["cap_winter_2021_22"]
+    counter = a * D["cap_apr_2022"] + b * D["cap_oct_2022"] + c * D["cap_jan_2023"]
+    realised = a * D["cap_apr_2022"] + (b + c) * D["epg_level"]
+    return base, counter, realised
 
 def verify_statutory_rates():
     """Check the hard-coded UC values against the pinned source documents."""
@@ -341,9 +359,7 @@ def episode_e2(fs22, inc22):
     # Both paths on ONE basis: financial-year mean caps.  Mixing a
     # point-to-point cap ratio with a financial-year mean ratio changes the
     # denominator of the cushioning rate without saying so.
-    _base_fy = (D["cap_apr_2021"] + D["cap_winter_2021_22"]) / 2.0
-    _counter_fy = (D["cap_apr_2022"] + D["cap_oct_2022"]) / 2.0
-    _realised_fy = (D["cap_apr_2022"] + D["epg_level"]) / 2.0
+    _base_fy, _counter_fy, _realised_fy = fy_mean_caps()
     gross_f = _counter_fy / _base_fy - 1.0
     net_f = _realised_fy / _base_fy - 1.0
     cushion_share = (gross_f - net_f) / gross_f          # FY basis
@@ -639,8 +655,8 @@ def derived_variants(res):
     # path, not to the never-realised counterfactual: applied there it would
     # put "cash paid" above the realised fixed-basket burden.
     gross_rise = en["price_factors"]["gross"]
-    realised_rise = ((D["cap_apr_2022"] + D["epg_level"]) / 2.0) / (
-        (D["cap_apr_2021"] + D["cap_winter_2021_22"]) / 2.0) - 1.0
+    _b, _c, _r = fy_mean_caps()
+    realised_rise = _r / _b - 1.0
     p_ratio = 1.0 + realised_rise
     q = 1.0 - ENERGY_OBSERVED_DEMAND_FALL
     scale = (p_ratio * q - 1.0) / (p_ratio - 1.0)
@@ -662,16 +678,15 @@ def derived_variants(res):
     # REALISED FY2022-23 path: the first half of FY2022-23 was capped at
     # 1,971 and the second at the EPG's 2,500.  The realised comparison is against the preceding financial
     # year's two caps (1,138 and 1,277).
-    realised = (D["cap_apr_2022"] + D["epg_level"]) / 2.0
-    base_fy = (D["cap_apr_2021"] + D["cap_winter_2021_22"]) / 2.0
+    base_fy, _counter, realised = fy_mean_caps()
     r_rise = realised / base_fy - 1.0
     d["energy_realised_path"] = {
         "fy2022_23_mean_cap": round(realised, 2),
         "fy2021_22_mean_cap": round(base_fy, 2),
         "realised_price_rise": round(r_rise, 4),
         "gross_counterfactual_price_rise": en["price_factors"]["gross"],
-        "note": "half-year caps 1,971 (Apr-Sep 22) and 2,500 (EPG, Oct 22-Mar 23) "
-                "against 1,138 and 1,277; what households actually faced",
+        "note": "consumption-weighted caps 1,971 (Apr-Sep 22) and 2,500 (EPG, "
+                "Oct 22-Mar 23) against 1,138 and 1,277; what households faced",
     }
     scale = r_rise / en["price_factors"]["gross"]
     d["energy_realised_path"]["per_decile"] = [

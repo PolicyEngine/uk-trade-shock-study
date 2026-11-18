@@ -72,3 +72,18 @@ def test_six_month_epg_equals_fy_aggregate():
     assert cushion["aggregate_gbp_bn_six_months"] == pytest.approx(
         cushion["aggregate_gbp_bn_per_year"], abs=0.05
     )
+
+
+def test_decile_table_and_household_stage_share_one_energy_convention():
+    """incidence.py's quarter weights must match the household stage's."""
+    import json
+    from uk_trade_shock_study.incidence import D, fy_mean_caps
+
+    seas = json.loads((REPO / "results" / "seasonal_energy.json").read_text())
+    w = seas["fy_weights_consumption"]
+    assert D["fy_weights"] == (w["apr_sep"], w["oct_dec"], w["jan_mar"])
+    base, counter, realised = fy_mean_caps()
+    cw = seas["consumption_actual"]
+    assert abs(base - cw["base_fy_mean_cap"]) < 0.5
+    assert abs(counter - cw["counterfactual_fy_mean_cap"]) < 0.5
+    assert abs(realised - cw["realised_fy_mean_cap"]) < 0.5

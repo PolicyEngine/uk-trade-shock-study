@@ -20,6 +20,8 @@ e3:
 	PYTHONPATH=. $(PYTHON) analysis/run_scenarios.py --e3
 	PYTHONPATH=. $(PYTHON) analysis/ashe_validation.py
 	PYTHONPATH=. $(PYTHON) analysis/sensitivity_duration_takeup.py
+	PYTHONPATH=. $(PYTHON) analysis/e3_uniform_and_income_shares.py
+	PYTHONPATH=. $(PYTHON) analysis/e3_industry_table.py
 	PYTHONPATH=. $(PYTHON) analysis/emit_e3_constants.py
 	PYTHONPATH=. $(PYTHON) analysis/emit_e3_macros.py
 	PYTHONPATH=. $(PYTHON) analysis/emit_data_macros.py
@@ -32,6 +34,7 @@ first-pass:
 # Household stage: energy, food and India episodes on Microcosm UK.
 second-stage:
 	cd $(PKG) && ../$(PYTHON) second_stage_energy.py
+	cd $(PKG) && ../$(PYTHON) second_stage_energy.py --exclude-synthetic --out ../results/second_stage_energy_nosyn.json
 	cd $(PKG) && ../$(PYTHON) make_within_decile.py
 	cd $(PKG) && ../$(PYTHON) vintage_and_tca.py
 	cd $(PKG) && ../$(PYTHON) mpc_welfare.py
@@ -53,7 +56,9 @@ deflated:
 # household files (UK Data Service) at local paths outside the repository:
 #   make lcfs-validation LCFS_2024=/path/to/dvhh_uk_anon_v3_2024.tab \
 #                        LCFS_DIR=/path/to/folder/with/earlier/dvhh/dta
-# Writes aggregates only; leaves the committed outputs alone when unset.
+# Writes aggregates only.  With no path set, the committed LCFS aggregates
+# are kept and realigned to the household stage's current burden basis, and
+# the Microcosm column, macros and table_lcfs.tex are refreshed.
 LCFS_2024 ?=
 LCFS_DIR ?=
 lcfs-validation:

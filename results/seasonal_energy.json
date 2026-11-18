@@ -19,6 +19,7 @@
   "oct_dec": 0.297,
   "jan_mar": 0.3465
  },
+ "central_convention": "consumption_actual",
  "equal_held": {
   "base_fy_mean_cap": 1207.5,
   "counterfactual_fy_mean_cap": 2760.0,

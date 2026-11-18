@@ -32,6 +32,8 @@ import numpy as np
 
 from second_stage_energy import P, load_sim, col_components, ctr_rebate, weighted, wmean
 from second_stage_energy import RESULTS_DIR, PAPER_DIR
+from second_stage_energy import (CONVENTIONS, EQUAL_WEIGHTS, convention_caps,
+                                 energy_convention)
 from energy_referee_checks import referee_checks
 
 # None = paper's computed rebase.  The pinned grid_energy.json keeps these
@@ -83,10 +85,15 @@ def main() -> None:
     col = sum(col_components(sim))
     ctr = ctr_rebate(sim)
 
-    base_cap_fy = (P["cap_apr_2021"] + P["cap_oct_2021"]) / 2.0
-    paper_rebase = base_cap_fy / wmean(energy_raw, w)
-    counter_rise = (P["cap_apr_2022"] + P["cap_oct_2022"]) / 2.0 / base_cap_fy - 1.0
-    realised_rise = (P["cap_apr_2022"] + P["epg_level"]) / 2.0 / base_cap_fy - 1.0
+    # Central convention: consumption-weighted FY mean caps on the caps
+    # Ofgem set (second_stage_energy.energy_convention).  The grid varies
+    # the rebase FACTOR around the paper's; the price rises are the central
+    # convention's throughout.
+    conv = energy_convention(sim, w, energy_raw, yr)
+    base_cap_fy = conv["base_cap_fy"]
+    paper_rebase = conv["rebase"]
+    counter_rise = conv["counter_rise"]
+    realised_rise = conv["realised_rise"]
 
     cells = []
     for rb in REBASES:
@@ -144,6 +151,9 @@ def main() -> None:
     out.mkdir(exist_ok=True)
     res = {"meta": {"dataset": "microcosm_uk_2024_25",
                     "paper_rebase": round(paper_rebase, 4),
+                    "convention": conv["name"],
+                    "counter_rise": round(counter_rise, 4),
+                    "realised_rise": round(realised_rise, 4),
                     "records": int(len(w))},
            "cells": cells, "cells_fine": cells_fine}
     (out / "grid_energy.json").write_text(json.dumps(res, indent=1))
@@ -153,13 +163,14 @@ def main() -> None:
         return next(c for c in cells
                     if c["rebase_label"] == rb_label and c["stack"] == stack)
 
-    # Announced-path counterfactual (Ofgem's November 2022 announcement of
-    # the Jan-Mar 2023 cap): FY mean (2 x Apr-2022 + Oct-2022 + Jan-2023)/4.
-    ann_fy = (2 * P["cap_apr_2022"] + P["cap_oct_2022"] + P["cap_jan_2023"]) / 4.0
-    ann_rise = ann_fy / base_cap_fy - 1.0
-    energy_p = energy_raw * paper_rebase
+    # Announced-path variant on EQUAL weights (the earlier referee variant,
+    # = seasonal "equal_actual"): FY mean (2 x Apr-2022 + Oct-2022 +
+    # Jan-2023)/4, base and rebase target on equal weights too.
+    eq_base, ann_fy, eq_realised = convention_caps(EQUAL_WEIGHTS, True)
+    ann_rise = ann_fy / eq_base - 1.0
+    energy_p = energy_raw * (eq_base / wmean(energy_raw, w))
     dE_ann = energy_p * ann_rise
-    epg_ann = energy_p * (ann_rise - realised_rise)
+    epg_ann = energy_p * (ann_fy - eq_realised) / eq_base
     G_ann = weighted(dE_ann, w)
     disc_full_ann = epg_ann + ebss + ctr + col
     ann = {
@@ -183,36 +194,21 @@ def main() -> None:
     ann["CalFullRatePct"] = f"{100*weighted(disc_cal,w)/G_paper:.1f}"
     ann["CalFullBn"] = f"{weighted(disc_cal,w)/1e9:,.1f}"
 
-    # --- Actual-cap path and seasonal weighting (referee round) -------------
+    # --- The four price-path conventions ------------------------------------
     # Month weights: PolicyEngine UK's own seasonal profile, read off the
-    # model at run time (monthly_domestic_energy_consumption, which the
-    # model's Energy Price Guarantee variable epg_subsidy uses; the model
-    # sources it to Resolution Foundation, "A chilling crisis", 2022, p.11).
-    # Nothing is hard-coded here: the share of each calendar month is the
-    # weighted monthly variable over the weighted annual variable.
-    annual = weighted(energy_raw, w)
-    month_share = [
-        weighted(np.asarray(sim.calculate(
-            "monthly_domestic_energy_consumption", f"{yr}-{m:02d}")), w) / annual
-        for m in range(1, 13)]
-    cw = {"apr_sep": sum(month_share[3:9]), "oct_dec": sum(month_share[9:12]),
-          "jan_mar": sum(month_share[0:3])}
-    eq = {"apr_sep": 0.5, "oct_dec": 0.25, "jan_mar": 0.25}
-
-    def fy_mean(wt, apr_sep, oct_dec, jan_mar):
-        tot = wt["apr_sep"] + wt["oct_dec"] + wt["jan_mar"]
-        return (wt["apr_sep"] * apr_sep + wt["oct_dec"] * oct_dec
-                + wt["jan_mar"] * jan_mar) / tot
+    # model at run time (second_stage_energy.month_shares).  The central
+    # convention is "consumption_actual"; "equal_held" is the earlier
+    # headline, kept as a labelled variant.
+    month_share = conv["month_share_jan_to_dec"]
+    cw = conv["fy_weights"]
+    eq = EQUAL_WEIGHTS
 
     def seasonal_variant(wt, actual_cap, rebase_target=None):
         """Cushioning on one month-weighting and one counterfactual path.
         The same weights price the base, counterfactual and realised years;
         the energy rebase target is the base-year mean on those weights
         (a household's FY2021-22 bill is its consumption-weighted cap)."""
-        base = fy_mean(wt, P["cap_apr_2021"], P["cap_oct_2021"], P["cap_oct_2021"])
-        counter = fy_mean(wt, P["cap_apr_2022"], P["cap_oct_2022"],
-                          P["cap_jan_2023"] if actual_cap else P["cap_oct_2022"])
-        realised = fy_mean(wt, P["cap_apr_2022"], P["epg_level"], P["epg_level"])
+        base, counter, realised = convention_caps(wt, actual_cap)
         energy = energy_raw * ((rebase_target or base) / wmean(energy_raw, w))
         dE = energy * (counter / base - 1.0)
         epg = energy * (counter - realised) / base
@@ -237,16 +233,17 @@ def main() -> None:
                     100 * weighted(disc[m], w[m]) / weighted(dE[m], w[m]), 1)
         return out
 
-    equal_base = fy_mean(eq, P["cap_apr_2021"], P["cap_oct_2021"], P["cap_oct_2021"])
+    equal_base = convention_caps(eq, False)[0]
     seasonal = {
         "month_share_source": "PolicyEngine UK monthly_domestic_energy_consumption "
                               "(Resolution Foundation, A chilling crisis, 2022, p.11)",
         "month_share_jan_to_dec": [round(x, 4) for x in month_share],
         "fy_weights_consumption": {k: round(v, 4) for k, v in cw.items()},
-        "equal_held": seasonal_variant(eq, False),       # current headline
+        "central_convention": conv["name"],
+        "equal_held": seasonal_variant(eq, False),       # earlier headline
         "equal_actual": seasonal_variant(eq, True),      # = announced path
         "consumption_held": seasonal_variant(cw, False),
-        "consumption_actual": seasonal_variant(cw, True),
+        "consumption_actual": seasonal_variant(cw, True),   # CENTRAL
         # Sensitivity: consumption-weighted prices, but the energy rebase
         # target left at the equal-weight FY2021-22 mean.
         "consumption_actual_rebase_held": seasonal_variant(cw, True, equal_base),
@@ -278,6 +275,25 @@ def main() -> None:
             f"Seas{tag}EbssDOne": f"{v['energy_cushion_pct_d1']:.1f}",
             f"Seas{tag}EbssDTen": f"{v['energy_cushion_pct_d10']:.1f}",
         })
+    # Range across the four conventions (the central one is among them).
+    four = [seasonal[k] for k in CONVENTIONS]
+    for tag, key in (("EpgRate", "epg_rate_pct"),
+                     ("EnergySpecificRate", "energy_rate_pct"),
+                     ("FullRate", "full_rate_pct"),
+                     ("FullDOne", "full_cushion_pct_d1"),
+                     ("FullDTen", "full_cushion_pct_d10"),
+                     ("EnergySpecificDOne", "energy_cushion_pct_d1")):
+        vals = [v[key] for v in four]
+        seas_macros[f"{tag}MinPct"] = f"{min(vals):.1f}"
+        seas_macros[f"{tag}MaxPct"] = f"{max(vals):.1f}"
+    seas_macros["CounterAggMinBn"] = f"{min(v['counter_agg_gbp_bn'] for v in four):,.1f}"
+    seas_macros["CounterAggMaxBn"] = f"{max(v['counter_agg_gbp_bn'] for v in four):,.1f}"
+    seas_macros["EpgMinBn"] = f"{min(v['epg_gbp_bn'] for v in four):,.1f}"
+    seas_macros["EpgMaxBn"] = f"{max(v['epg_gbp_bn'] for v in four):,.1f}"
+    # The central grid cell must be the consumption_actual variant.
+    _c = seasonal["consumption_actual"]
+    assert abs(_c["full_rate_pct"] - cell("paper", "full")["rate_pct"]) < 0.051
+    assert abs(_c["energy_rate_pct"] - cell("paper", "energy")["rate_pct"]) < 0.051
     seas_macros["SeasCwActualRebaseHeldFullRatePct"] = (
         f"{seasonal['consumption_actual_rebase_held']['full_rate_pct']:.1f}")
     seas_macros["SeasCwActualRebaseHeldEpgBn"] = (

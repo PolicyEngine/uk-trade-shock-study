@@ -3,163 +3,81 @@
 \subsection{The estimand}
 
 For every episode the object is the same conditional quantity: the
-statutory household response to an imported trade shock. Let the shock specify (i) a vector of consumer-price changes by consumption
-category, and/or (ii) a labour-income loss or gain with a sectoral
-location and an adjustment margin. The household stage maps that shock onto households and computes the change in disposable income, its
-distribution, and the Exchequer's share, under a stated rule year close to
-the episode date (Section~\ref{sec:secondstage-method}).
+response of the statutory tax--benefit system to a specified shock.
+A shock is (i) a vector of consumer-price changes by consumption
+category, or (ii) a labour-income loss with a sectoral location and an
+adjustment margin. The household stage maps it onto households and
+computes the change in disposable income, its distribution and the
+Exchequer's share, under the rules of a stated year
+(Section~\ref{sec:secondstage-method}).
 
 The headline metric is the \emph{cushioning rate}. For an earnings
 shock it is the income-stabilisation coefficient of \citet{dolls2012},
 \begin{equation*}
-c \;=\; 1 - \frac{\Delta Y^{\text{disp}}}{\Delta Y^{\text{mkt}}},
+c^{Y} \;=\; 1 - \frac{\Delta Y^{\text{disp}}}{\Delta Y^{\text{mkt}}},
 \end{equation*}
-one minus the disposable-income change per pound of market-income
-shock.
-
-For a price shock, disposable income does not move (the
-structural-zero result of
-Section~\ref{sec:results-secondstage}), so the paper defines the price-shock analogue as
+one minus the change in disposable income per pound of market-income
+loss. For a price shock disposable income does not move, so the
+analogue is
 \begin{equation*}
-c \;=\; \frac{T}{\Delta E}, \qquad
+c^{P} \;=\; \frac{T}{\Delta E}, \qquad
 \Delta E \;=\; \sum_{k} p_{k} q_{k}\,\hat{p}_{k},
 \end{equation*}
-where $\Delta E$ is the expenditure-weighted cost of the price vector
-$\hat{p}$ at fixed consumption and $T$ is the sum of the statutory
-transfers the episode triggered (automatic plus discretionary).
-
-The
-two coefficients are analogues, not the same parameter: the first is
-the share of a market-income loss absorbed by lower taxes and higher
-benefits; the second is the ratio of legislated support to the
+where $\Delta E$ is the cost of the price changes $\hat{p}$ at fixed
+consumption and $T$ is the support the episode triggered, automatic
+plus discretionary. The two are analogues, not the same parameter:
+$c^{Y}$ is the share of a market-income loss absorbed by lower taxes
+and higher benefits; $c^{P}$ is the ratio of legislated support to the
 fixed-basket cost of the price change, and it can exceed one because
-lump-sum payments are not tied to the loss. Ratios,
-unlike levels, are comparable across episodes whose gross sizes span more than two orders of magnitude.
+lump-sum payments are not tied to the loss.
 
-Nothing in the design estimates the shocks. Three are imported from
-published estimates or projections and labelled with their source and
-attribution caveats (Section~\ref{sec:episodes}); the tariff earnings
-loss is an assumed scenario built from the tariff schedule
-(Appendix~\ref{app:e3}). The estimand is therefore conditional: the
-statutory tax--benefit and distributional response to a specified
-shock, not a causal estimate of what the shock did. The paper's
-contribution begins where the shock is specified, at the household
-and the Exchequer.
+\subsection{Two channels and a policy-year comparison}
 
-\subsection{Two channels}
+The expenditure channel prices a category-level price vector against
+household expenditure shares, first on published
+expenditure-by-decile tables and then on imputed household
+consumption. The earnings channel, the labour-income channel of
+\citet{porto2006}, imposes sectoral labour-income changes on
+employees by industry and runs them through the tax--benefit system,
+as wage cuts or as displacement; the imposed-transition step follows
+\citet{brewertasseva2021} and \citet{navicke2014}. The channels are
+reported separately and not summed.
 
-Trade shocks reach households through prices and through earnings, and
-the post-Covid episodes split cleanly on that line. The expenditure channel prices a category-level price vector against household
-expenditure shares, first on published expenditure-by-decile tables and then at the household level on imputed consumption (Section~\ref{sec:results-secondstage}). The earnings channel, the labour-income channel of \citet{porto2006}, imposes sectoral labour-income changes on employees by industry and runs
-them through the statutory system, with the adjustment margin (wage cuts
-versus displacement) as an assumed scenario dimension; the imposed-transition step follows
-\citet{brewertasseva2021} and \citet{navicke2014}, and
-Appendix~\ref{app:e3} gives the construction.
+Benefit uprating follows lagged inflation, so a fast price shock
+outruns indexation for a year, and discretionary interventions rewrite
+the schedule mid-shock. For the energy episode the paper therefore
+separates three quantities: the cushioning delivered by the rules as
+they stood; the benefit income the same rules would have paid had the
+April 2022 uprating matched that year's inflation; and the
+discretionary instruments on top.
 
-The
-channels are reported separately and never summed without an explicit
-interaction note: a price shock erodes real income that the benefit
-system partially indexes, while an earnings shock triggers means-tested
-entitlement; the two responses run through different statutory
-mechanisms, and their comparison is the point.
+\subsection{Scope and interpretation}\label{sec:framework-ident}\label{sec:framework-decile}
 
-\subsection{The rulebook axis}
+Three points govern how the results should be read. First, nothing
+here estimates a shock. Whether the Trade and Cooperation Agreement
+caused the food-price rise is identified, or not, by the
+quasi-experimental design of \citet{bakker2023}; the UK--India figures
+are the government's model output; the tariff earnings loss is
+assumed; and the energy shock is observed in regulated cap levels,
+with the share that is trade a matter of Ofgem's cost accounting
+(Appendix~\ref{app:wholesale}). Given a shock, what the system pays a
+household is a calculation on statutory rules, though it inherits
+measurement error from imputed consumption and simulated entitlement.
+The results are conditional incidence: given a shock of stated size,
+how its cost fell across households after taxes, benefits and
+legislated support.
 
-The same shock cushions differently depending on when it lands, because
-the rulebook moves: benefit uprating follows lagged inflation, so a
-fast price shock outruns indexation for a year; thresholds frozen in
-cash terms tighten in real terms through an inflation episode; and
-discretionary interventions (the largest being the Energy Price
-Guarantee) rewrite the effective schedule mid-shock. The design
-therefore separates three quantities, computed here for the energy episode: the cushioning
-delivered by the rules \emph{as they stood}, the cushioning the same
-rules would have delivered under contemporaneous full indexation (the
-uprating-lag cost), and the discretionary layer on top.
+Second, the estimates are first-round and static. There is no
+behavioural response, no wage or employment feedback from the price
+shocks and no substitution in consumption, so the expenditure-channel
+numbers are first-order approximations that overstate the welfare loss
+where households substitute. Each shock is carried at its central
+value. Only the consumption-basket channel of the price shocks is
+measured; \citet{ferreira2026} find the net-nominal-position and
+labour-income channels of inflation larger.
 
-Price-shock incidence has been run through tax--benefit models before
-(Section~\ref{sec:literature}), and indexation counterfactuals are
-standard in that literature; what this paper adds is to hold a
-\emph{trade} shock fixed and vary the rulebook vintage that receives
-it, and to separate the statutory timing lag from the discretionary
-layer within a single episode. The rulebook moved between each of the four episodes.
-
-\subsection{What requires identification}\label{sec:framework-ident}
-
-Because the paper reports household effects of named policy episodes,
-it is worth stating precisely which of its numbers require an
-identifying assumption and which do not. The design deliberately
-separates the two.
-
-\runin{The household stage requires no identification.} Given a price
-vector and a household's observed characteristics, what the tax--benefit
-system pays that household is a computation on statutory rules, not an
-estimate of a causal parameter.
-
-That the means-tested system returns
-nothing when nominal incomes do not move, that the Energy Price
-Guarantee returns the difference between two capped prices, that a flat
-payment is worth more relative to a small bill, these are properties of
-the rulebook, verifiable line by line, with no counterfactual inference
-involved. The same is true of the variance decomposition: it describes
-the dispersion of a computed quantity across observed households. The household stage is a calculation, not an estimate, though it inherits measurement error from imputed consumption and simulated entitlement.
-
-\runin{Identification rests entirely on the imported shocks.} Whether the Trade and Cooperation Agreement \emph{caused}
-the food-price rise is identified, or not, by \citet{bakker2023},
-whose cross-product design and its limits the paper inherits wholesale.
-Whether the 2025 tariffs will cause the earnings loss the tariff scenario imposes is not identified by anyone; it is assumed. The
-government's projections for the UK--India agreement are model output, not
-estimates. The design's purpose is to quarantine this problem: each
-imported shock is labelled with its epistemic status
-(Section~\ref{sec:episodes}), and no result in this paper is stronger
-than the shock it conditions on.
-
-\runin{One attribution is accounting, not inference.} The claim that
-part of the 2022 energy shock is an imported terms-of-trade shock rests on Ofgem's
-published decomposition of the price cap into wholesale and non-wholesale
-components, a statement about the composition of a regulated price, not
-a causal estimate of what world gas markets did to British households.
-
-What follows is that the paper's results should be read as
-\emph{conditional statutory incidence}: given that a shock of a stated
-size and shape occurred, this is how the rulebook distributed it. They
-do not identify the causal effect of Brexit, the tariffs or the
-agreements on household welfare. The question the paper answers is: given a shock of stated size, how did its cost fall across households after taxes, benefits and legislated support?
-
-\subsection{What a decile lens can and cannot see}\label{sec:framework-decile}
-
-Two recent results bound what any distribution-by-decile exercise,
-including this paper's decile-table analysis, is entitled to claim. \citet{borusyakjaravel2024} show that for trade shocks the
-overwhelming share of the variance of household welfare changes lies
-\emph{within} income deciles rather than between them, because
-exposure, mostly on the earnings side, is something income
-predicts weakly; \citet{levell2025} reach the same conclusion for
-energy on UK transaction data.
-
-The implication is not that decile
-gradients are wrong (they are real, and they are what
-Section~\ref{sec:results} measures) but that they are a small part of
-the dispersion in who was hurt. Decile means answer ``was this shock
-regressive?''; they do not answer ``who was hurt?'', and the two
-questions have different answers. This motivates the household stage of
-Section~\ref{sec:results-secondstage}, where imputed exposure and simulated entitlement are
-joined at the household level, and it is why the decile-table results
-are reported as gradients rather than as welfare statements.
-
-A second bound concerns channels. Decomposing inflation's household
-impact, \citet{ferreira2026} find the net-nominal-position and
-labour-income channels an order of magnitude larger than the
-consumption-basket channel. The basket channel is the entire content
-of the price-side exercise here: savers and borrowers, mortgagors and
-depositors, are not in this paper's ledger, and the earnings channel
-enters only for the tariff episode. The estimates therefore cover one channel of these episodes' distributional effects.
-
-\subsection{What the design is not}
-
-The estimates are first-round statutory incidence, not general
-equilibrium: no behavioural response, no wage or employment feedback
-from the price shocks, no substitution in consumption (the expenditure-channel numbers are first-order approximations that overstate the welfare loss when households substitute). The imported shocks carry their own literatures' uncertainty, which the design does not propagate: each shock is carried at its
-central value and labelled with its status. The comparison across
-episodes is a comparison of conditional scenarios that share a household stage, not a causal decomposition of realised household outcomes over
-2021--2026, which would require separating the trade shocks from
-everything else that happened, a task this design deliberately
-declines.
+Third, decile means describe whether a shock was regressive, not who
+was hurt. \citet{borusyakjaravel2024} and \citet{levell2025} show
+that most of the dispersion in exposure lies within income deciles,
+which Section~\ref{sec:results-withindec} confirms for energy on
+household records.

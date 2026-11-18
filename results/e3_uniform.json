@@ -1,0 +1,205 @@
+{
+  "period": 2026,
+  "gross_earnings_loss": 1007106224.6537682,
+  "employee_earnings": 1259353684305.62,
+  "uniform_shock": 0.0007997008602147096,
+  "employees": 28994251.070035655,
+  "employee_records": 72504,
+  "rows": {
+    "tariff_wage_cut": {
+      "scenario": "full_tariff_wage_cut",
+      "design": "exact_takeup_expectation",
+      "uc_takeup": 0.8,
+      "exposed_records": 5295,
+      "exposed_households": 5025,
+      "gross_earnings_loss": 1007106261.408845,
+      "target_gross_earnings_loss": 1007106224.6537682,
+      "net_disposable_loss": 585779186.0775732,
+      "cushioning_rate": 0.41835414144072114,
+      "tax_benefit_cushioning_rate": 0.389514755236493,
+      "cushioning_rate_sampling_se": 0.007986669929718037,
+      "share_of_gross_loss": {
+        "income_tax": 0.33802059959003705,
+        "national_insurance": 0.043719390995069676,
+        "universal_credit": 0.008258440140183806,
+        "jsa_contrib": 0.0,
+        "pension_contributions": 0.028839386204228153
+      },
+      "share_of_gross_loss_all_lines": {
+        "income_tax": 0.33802059959003705,
+        "national_insurance": 0.043719390995069676,
+        "universal_credit": 0.008258440140183806,
+        "other_means_tested": 0.0,
+        "jsa_contrib": 0.0,
+        "esa_contrib": 0.0,
+        "child_benefit": 0.0,
+        "pension_contributions": 0.028839386204228153,
+        "student_loan_repayments": 0.0,
+        "statutory_pay": -0.000598804670553196,
+        "other": 7.702790315943187e-06,
+        "negative_income_floor": 0.00010744848766015888
+      },
+      "exchequer_cost": 541357851.0113771,
+      "poverty_rate_change_bhc": 3.302379834265815e-08,
+      "extra": {
+        "redrawn_benefit_units": 5,
+        "households_with_two_redrawn_units": 0,
+        "displaced_weighted_mean": 0.0,
+        "n_simulation_passes": 2,
+        "effective_loss_records": 250.42122684493873
+      }
+    },
+    "uniform_wage_cut": {
+      "scenario": "uniform_wage_cut",
+      "design": "exact_takeup_expectation",
+      "uc_takeup": 0.8,
+      "exposed_records": 72504,
+      "exposed_households": 46029,
+      "gross_earnings_loss": 1007106324.9921867,
+      "target_gross_earnings_loss": 1007106224.6537682,
+      "net_disposable_loss": 593704981.6691166,
+      "cushioning_rate": 0.4104843084232217,
+      "tax_benefit_cushioning_rate": 0.3831741252307738,
+      "cushioning_rate_sampling_se": 0.0019130001877825933,
+      "share_of_gross_loss": {
+        "income_tax": 0.32457318841617167,
+        "national_insurance": 0.047546692053987476,
+        "universal_credit": 0.013196675676279614,
+        "jsa_contrib": 0.0,
+        "pension_contributions": 0.027310183192447872
+      },
+      "share_of_gross_loss_all_lines": {
+        "income_tax": 0.32457318841617167,
+        "national_insurance": 0.047546692053987476,
+        "universal_credit": 0.013196675676279614,
+        "other_means_tested": 4.761794872831505e-05,
+        "jsa_contrib": 0.0,
+        "esa_contrib": 0.0,
+        "child_benefit": 0.0,
+        "pension_contributions": 0.027310183192447872,
+        "student_loan_repayments": 0.0,
+        "statutory_pay": -0.0026422375643456153,
+        "other": 0.000220444756401622,
+        "negative_income_floor": 0.00023221766609418372
+      },
+      "exchequer_cost": 534421122.709066,
+      "poverty_rate_change_bhc": 1.6498962124151726e-08,
+      "extra": {
+        "redrawn_benefit_units": 4,
+        "households_with_two_redrawn_units": 0,
+        "displaced_weighted_mean": 0.0,
+        "n_simulation_passes": 2,
+        "effective_loss_records": 5037.228569709662
+      }
+    },
+    "tariff_displacement": {
+      "scenario": "full_tariff_displacement",
+      "design": "exact_expectation",
+      "uc_takeup": 0.8,
+      "exposed_records": 5295,
+      "exposed_households": 5025,
+      "gross_earnings_loss": 1007063026.1903168,
+      "target_gross_earnings_loss": 1007106224.6537682,
+      "net_disposable_loss": 634665539.2255489,
+      "cushioning_rate": 0.3697856810149551,
+      "tax_benefit_cushioning_rate": 0.3409451930598176,
+      "cushioning_rate_sampling_se": 0.006290992326458387,
+      "share_of_gross_loss": {
+        "income_tax": 0.21178969291528224,
+        "national_insurance": 0.0433495083393794,
+        "universal_credit": 0.03371350297391287,
+        "jsa_contrib": 0.04871867746120198,
+        "pension_contributions": 0.028840487955137575
+      },
+      "share_of_gross_loss_all_lines": {
+        "income_tax": 0.21178969291528224,
+        "national_insurance": 0.0433495083393794,
+        "universal_credit": 0.03371350297391287,
+        "other_means_tested": 0.0008939468917400733,
+        "jsa_contrib": 0.04871867746120198,
+        "esa_contrib": 0.0,
+        "child_benefit": 0.0007372485805649571,
+        "pension_contributions": 0.028840487955137575,
+        "student_loan_repayments": 0.0,
+        "statutory_pay": -0.0005988300174313131,
+        "other": 0.00015075782389093243,
+        "negative_income_floor": 0.0021906826584098486
+      },
+      "exchequer_cost": 465817990.3528253,
+      "poverty_rate_change_bhc": 0.00039588214813085737,
+      "extra": {
+        "omitted_gross_share": 4.289365152743141e-05,
+        "displaced_weighted_mean": 21117.37484601231,
+        "n_simulation_passes": 10,
+        "effective_loss_records": 250.42122684493873
+      }
+    },
+    "uniform_displacement": {
+      "scenario": "uniform_displacement",
+      "design": "exact_expectation",
+      "uc_takeup": 0.8,
+      "exposed_records": 72504,
+      "exposed_households": 46029,
+      "gross_earnings_loss": 1006876787.2210573,
+      "target_gross_earnings_loss": 1007106224.6537682,
+      "net_disposable_loss": 641357948.0021305,
+      "cushioning_rate": 0.3630224113396687,
+      "tax_benefit_cushioning_rate": 0.3357117823521844,
+      "cushioning_rate_sampling_se": 0.0016323737433913423,
+      "share_of_gross_loss": {
+        "income_tax": 0.2071842381756351,
+        "national_insurance": 0.04244645992534775,
+        "universal_credit": 0.030269543925892435,
+        "jsa_contrib": 0.053246185031709255,
+        "pension_contributions": 0.02731062898748432
+      },
+      "share_of_gross_loss_all_lines": {
+        "income_tax": 0.2071842381756351,
+        "national_insurance": 0.04244645992534775,
+        "universal_credit": 0.030269543925892435,
+        "other_means_tested": 0.00028477358638566175,
+        "jsa_contrib": 0.053246185031709255,
+        "esa_contrib": 0.0,
+        "child_benefit": 0.0006494571871784918,
+        "pension_contributions": 0.02731062898748432,
+        "student_loan_repayments": 0.0,
+        "statutory_pay": -0.002642575390480812,
+        "other": 0.0001239925285166369,
+        "negative_income_floor": 0.004149707330335742
+      },
+      "exchequer_cost": 456419603.20540565,
+      "poverty_rate_change_bhc": 0.00029633495635186905,
+      "extra": {
+        "omitted_gross_share": 0.00022781850324649078,
+        "displaced_weighted_mean": 23186.727521988778,
+        "n_simulation_passes": 14,
+        "effective_loss_records": 5037.228569709662
+      }
+    }
+  },
+  "tariff_minus_uniform": {
+    "wage_cut": {
+      "cushioning_rate": 0.007869833017499439,
+      "tax_benefit_cushioning_rate": 0.006340630005719161,
+      "share_of_gross_loss": {
+        "income_tax": 0.013447411173865387,
+        "national_insurance": -0.0038273010589177994,
+        "universal_credit": -0.0049382355360958075,
+        "jsa_contrib": 0.0,
+        "pension_contributions": 0.0015292030117802814
+      }
+    },
+    "displacement": {
+      "cushioning_rate": 0.0067632696752863986,
+      "tax_benefit_cushioning_rate": 0.005233410707633168,
+      "share_of_gross_loss": {
+        "income_tax": 0.00460545473964713,
+        "national_insurance": 0.0009030484140316528,
+        "universal_credit": 0.0034439590480204382,
+        "jsa_contrib": -0.004527507570507273,
+        "pension_contributions": 0.0015298589676532547
+      }
+    }
+  },
+  "note": "Same gross earnings loss as the tariff scenario, spread over every employee: an equal proportional cut (wage cut) or an equal job-loss probability (displacement). Same New Style JSA and UC take-up conventions as the tariff runs."
+}

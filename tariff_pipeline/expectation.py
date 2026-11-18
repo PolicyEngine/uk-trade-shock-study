@@ -343,6 +343,57 @@ def _incidence_by_decile_and_region(
     return decile_change, region_change
 
 
+def household_deciles(equivalised_income: np.ndarray, household_weight: np.ndarray) -> np.ndarray:
+    """HOUSEHOLD-weighted deciles (1-10) of equivalised income.
+
+    The construction of the price episodes
+    (uk_trade_shock_study/second_stage_energy.py): households sorted by
+    equivalised HBAI net income, cut at tenths of cumulative household
+    weight. Different from the person-weighted deciles of
+    ``decile_income_change``.
+    """
+    order = np.argsort(equivalised_income, kind="stable")
+    cum = np.cumsum(np.asarray(household_weight, dtype=float)[order])
+    decile = np.zeros(len(order), dtype=int)
+    decile[order] = np.minimum((cum / cum[-1] * 10).astype(int), 9) + 1
+    return decile
+
+
+def loss_shares_by_decile(
+    expected: dict[str, np.ndarray],
+    household_weight: np.ndarray,
+    decile: np.ndarray,
+    net_income: np.ndarray,
+    consumption: np.ndarray | None = None,
+) -> dict:
+    """Gross earnings loss and post-cushion net income loss per decile, as
+    shares of the decile's aggregate baseline HBAI net income (and of its
+    aggregate consumption when given). Ratios of weighted sums."""
+    w = np.asarray(household_weight, dtype=float)
+    gross_h = -w * expected["employment_income"]
+    net_h = -w * expected["hbai_household_net_income"]
+    out = {}
+    for d in [*range(1, 11), "all"]:
+        m = np.ones(len(w), dtype=bool) if d == "all" else decile == d
+        gross, net = float(gross_h[m].sum()), float(net_h[m].sum())
+        income = float((w * net_income)[m].sum())
+        row = {
+            "gross_loss": gross,
+            "net_loss": net,
+            "share_of_total_gross_loss": gross / float(gross_h.sum()),
+            "cushioning_rate": 1.0 - net / gross if gross else None,
+            "gross_loss_share_of_income": gross / income if income else None,
+            "net_loss_share_of_income": net / income if income else None,
+            "net_loss_per_household": net / float(w[m].sum()) if m.any() else None,
+        }
+        if consumption is not None:
+            spend = float((w * consumption)[m].sum())
+            row["gross_loss_share_of_consumption"] = gross / spend if spend else None
+            row["net_loss_share_of_consumption"] = net / spend if spend else None
+        out[str(d)] = row
+    return out
+
+
 def _clustered_ratio_se(numerator_h: np.ndarray, gross_h: np.ndarray) -> float:
     """Household-clustered linearisation SE of sum(numerator) / sum(gross)."""
     active = gross_h > 0
@@ -544,8 +595,12 @@ def wage_cut_expectation_result(
     baseline_equiv: np.ndarray,
     baseline_region: np.ndarray,
     log=print,
-) -> dict:
+    return_household_changes: bool = False,
+):
     """Wage-cut margin with the claiming re-draw mixed exactly.
+
+    Returns the result dict, or ``(result, expected household changes)``
+    when ``return_household_changes`` is set.
 
     Two simulations of the SAME deterministic wage cut, with the newly
     entitled benefit units forced to all claim (1.0) and to none claim (0.0);
@@ -642,7 +697,7 @@ def wage_cut_expectation_result(
     )
     record_loss = (shock * earnings * weight)[exposed]
     person_w_total = float(weight.sum())
-    return {
+    result = {
         "scenario": scenario.name,
         "tariff_scenario": scenario.tariff_scenario,
         "margin": scenario.margin,
@@ -695,6 +750,7 @@ def wage_cut_expectation_result(
         "decile_income_change": decile_change,
         "region_income_change": region_change,
     }
+    return (result, expected) if return_household_changes else result
 
 
 __all__ = [
@@ -703,6 +759,8 @@ __all__ = [
     "expectation_result",
     "expected_household_changes",
     "exposure_ranks",
+    "household_deciles",
+    "loss_shares_by_decile",
     "run_passes",
     "subset_probabilities",
     "validate_against_draw",

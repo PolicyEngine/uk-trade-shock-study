@@ -42,14 +42,31 @@ def test_new_macros_do_not_collide_with_existing_files():
 
 def test_seasonal_variants_reproduce_existing_paths():
     grid = _macros("generated_grid.tex")
-    # Equal weights with the October cap held is the headline grid cell.
-    assert grid["SsSeasEqHeldFullRatePct"] == grid["SsGridPaperFullRatePct"]
-    assert grid["SsSeasEqHeldEbssRatePct"] == grid["SsGridPaperEbssRatePct"]
-    assert grid["SsSeasEqHeldEpgRatePct"] == grid["SsGridPaperEpgRatePct"]
+    # The central convention is consumption weights on the caps Ofgem set.
+    assert grid["SsSeasCwActualFullRatePct"] == grid["SsGridPaperFullRatePct"]
+    assert grid["SsSeasCwActualEbssRatePct"] == grid["SsGridPaperEbssRatePct"]
+    assert grid["SsSeasCwActualEpgRatePct"] == grid["SsGridPaperEpgRatePct"]
     # Equal weights on the caps Ofgem set is the announced-path variant.
     assert grid["SsSeasEqActualCounterCap"] == grid["SsAnnCounterFyCap"]
     assert grid["SsSeasEqActualFullRatePct"] == grid["SsAnnFullRatePct"]
     assert grid["SsSeasEqActualEbssRatePct"] == grid["SsAnnEbssRatePct"]
+    # Equal weights with the October cap held (the earlier headline) stays a
+    # labelled variant on its own caps.
+    assert grid["SsSeasEqHeldBaseCap"] == "1,208"
+    assert grid["SsSeasEqHeldCounterCap"] == "2,760"
+    assert grid["SsSeasEqHeldRealisedCap"] == "2,236"
+    # The ranges span the four variants and contain the central value.
+    for tag, central in (("FullRate", "SsGridPaperFullRatePct"),
+                         ("EnergySpecificRate", "SsGridPaperEbssRatePct"),
+                         ("EpgRate", "SsGridPaperEpgRatePct")):
+        four = [float(grid[f"SsSeas{v}{k}"]) for v in
+                ("EqHeld", "EqActual", "CwHeld", "CwActual")
+                for k in ({"FullRate": "FullRatePct",
+                           "EnergySpecificRate": "EbssRatePct",
+                           "EpgRate": "EpgRatePct"}[tag],)]
+        assert float(grid[f"Ss{tag}MinPct"]) == min(four)
+        assert float(grid[f"Ss{tag}MaxPct"]) == max(four)
+        assert min(four) <= float(grid[central]) <= max(four)
 
 
 def test_seasonal_fy_means_follow_from_the_caps_and_month_shares():

@@ -237,3 +237,111 @@ def test_new_macro_families_are_emitted_with_letter_only_names():
         assert f"\\newcommand{{\\{name}}}{{{value}}}" in generated
     # the appendix sentence that uses it must never read "averages 0 draws"
     assert "\\newcommand{\\EThreeWageDraws}{the all-claim and none-claim}" in generated
+
+
+# --------------------------------------------------------------------------
+# uniform benchmark, decile income shares, industry table
+# --------------------------------------------------------------------------
+
+
+def test_uniform_shock_overrides_the_sector_pattern():
+    from tariff_pipeline.shocks import TradeShockScenario, _person_shock, apply_shocks
+
+    scenario = TradeShockScenario("u", "full_tariff", "wage_cut", uniform_shock=0.01)
+    persons = _persons()
+    assert _person_shock(persons, scenario).tolist() == [0.01] * 4
+    table = apply_shocks(persons, scenario)
+    # every employee, including the one outside the exposed divisions (SIC 47)
+    assert table["employment_income"].tolist() == pytest.approx([29_700.0, 0.0, 17_820.0, 39_600.0])
+    for bad in (0.0, 1.0, -0.1):
+        with pytest.raises(ValueError, match="uniform_shock"):
+            TradeShockScenario("u", "full_tariff", "wage_cut", uniform_shock=bad)
+    assert PRESETS["full_tariff_wage_cut"].uniform_shock is None
+
+
+def test_household_deciles_are_household_weighted():
+    from tariff_pipeline.expectation import household_deciles
+
+    income = np.arange(20, dtype=float)[::-1].copy()
+    decile = household_deciles(income, np.ones(20))
+    assert decile.min() == 1 and decile.max() == 10
+    # the price episodes' convention: a household exactly on a boundary of
+    # cumulative weight goes to the decile above
+    assert np.bincount(decile)[1:].tolist() == [1, 2, 2, 2, 2, 2, 2, 2, 2, 3]
+    assert (np.diff(decile[np.argsort(income)]) >= 0).all()
+    assert decile[np.argmin(income)] == 1 and decile[np.argmax(income)] == 10
+    # a heavy household at the bottom fills the lowest deciles on its own
+    heavy = household_deciles(np.array([1.0, 2.0, 3.0]), np.array([8.0, 1.0, 1.0]))
+    assert heavy.tolist() == [9, 10, 10]
+
+
+def test_loss_shares_by_decile_are_ratios_of_weighted_sums():
+    from tariff_pipeline.expectation import loss_shares_by_decile
+
+    expected = {
+        "employment_income": np.array([-100.0, -300.0]),
+        "hbai_household_net_income": np.array([-60.0, -150.0]),
+    }
+    w = np.array([2.0, 1.0])
+    out = loss_shares_by_decile(
+        expected, w, np.array([1, 10]), np.array([1_000.0, 6_000.0]), np.array([900.0, 3_000.0])
+    )
+    assert out["1"]["gross_loss_share_of_income"] == pytest.approx(200 / 2_000)
+    assert out["1"]["net_loss_share_of_income"] == pytest.approx(120 / 2_000)
+    assert out["10"]["net_loss_share_of_consumption"] == pytest.approx(150 / 3_000)
+    assert out["10"]["cushioning_rate"] == pytest.approx(0.5)
+    assert out["all"]["net_loss_share_of_income"] == pytest.approx(270 / 8_000)
+    assert out["1"]["share_of_total_gross_loss"] + out["10"]["share_of_total_gross_loss"] == pytest.approx(1)
+    assert out["5"]["gross_loss"] == 0 and out["5"]["cushioning_rate"] is None
+
+
+def test_uniform_benchmark_file_imposes_the_tariff_loss():
+    unif = _result("e3_uniform")
+    disp = _result("full_tariff_displacement")
+    wage = _result("full_tariff_wage_cut")
+    rows = unif["rows"]
+    assert rows["tariff_displacement"]["cushioning_rate"] == pytest.approx(disp["cushioning_rate"], abs=1e-6)
+    assert rows["tariff_wage_cut"]["cushioning_rate"] == pytest.approx(wage["cushioning_rate"], abs=1e-6)
+    for key in ("uniform_wage_cut", "uniform_displacement"):
+        assert rows[key]["target_gross_earnings_loss"] == pytest.approx(
+            disp["target_gross_earnings_loss"], rel=1e-9
+        )
+        assert rows[key]["gross_earnings_loss"] == pytest.approx(
+            disp["target_gross_earnings_loss"], rel=1e-3
+        )
+        assert rows[key]["exposed_records"] == unif["employee_records"]
+    assert unif["uniform_shock"] == pytest.approx(
+        unif["gross_earnings_loss"] / unif["employee_earnings"]
+    )
+
+
+def test_income_share_file_adds_up():
+    income = _result("e3_income_shares")
+    disp = _result("full_tariff_displacement")
+    for key, table in income["shares"].items():
+        deciles = [table[str(d)] for d in range(1, 11)]
+        assert sum(r["gross_loss"] for r in deciles) == pytest.approx(table["all"]["gross_loss"])
+        assert sum(r["net_loss"] for r in deciles) == pytest.approx(table["all"]["net_loss"])
+        assert sum(r["share_of_total_gross_loss"] for r in deciles) == pytest.approx(1.0)
+    assert income["shares"]["tariff_displacement"]["all"]["net_loss"] == pytest.approx(
+        disp["net_disposable_loss"], rel=1e-9
+    )
+    households = [income["decile_baseline"][str(d)]["households"] for d in range(1, 11)]
+    assert max(households) / min(households) < 1.02  # household-weighted tenths
+
+
+def test_industry_table_rows_sum_to_the_scenario():
+    from analysis import e3_industry_table
+
+    rows = e3_industry_table.build_rows(_result("e3_ashe"))
+    assert len(rows) == 23 and set(r["division"] for r in rows) == set(range(10, 33))
+    assert sum(r["loss_share"] for r in rows) == pytest.approx(1.0)
+    assert [r["gross_loss"] for r in rows] == sorted((r["gross_loss"] for r in rows), reverse=True)
+    for r in rows:
+        assert r["shock"] == pytest.approx(r["tariff_rate"] * r["us_export_share"])
+    total = e3_industry_table.pool(rows, "all")
+    assert total["gross_loss"] == pytest.approx(
+        _result("full_tariff_displacement")["target_gross_earnings_loss"], rel=1e-9
+    )
+    tex = (ROOT / "results" / "table_e3_industry.tex").read_text()
+    assert tex.count("\\\\") == 2 + e3_industry_table.TOP_ROWS + 2

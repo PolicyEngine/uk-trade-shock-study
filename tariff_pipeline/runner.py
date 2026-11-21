@@ -26,6 +26,167 @@ from tariff_pipeline.shocks import (
 
 AGE_BANDS = ((16, 24), (25, 34), (35, 44), (45, 54), (55, 64), (65, 200))
 
+#: TAX/BENEFIT SPLIT OF THE CUSHION (referee request).
+#:
+#: The cushion is gross employee-earnings loss minus the loss of HBAI
+#: household net income. HBAI net income is, in the model,
+#: max(0, sum(ADDS) - sum(SUBTRACTS)) over the two lists in
+#: policyengine_uk...hbai_household_net_income, and employment_income is one
+#: of the ADDS. So, writing D(x) for the weighted change (shocked - baseline)
+#: in x,
+#:
+#:   cushion = D(net) - D(employment_income)
+#:           = sum_{a in ADDS, a != employment_income} D(a)
+#:             - sum_{s in SUBTRACTS} D(s)
+#:             + D(net - net_before_reset_to_zero)
+#:
+#: exactly. Every ADD and SUBTRACT is computed individually and assigned to
+#: one named group below; anything not named falls into ``other`` and the
+#: zero-floor term is its own line, so the groups sum to the cushion by
+#: construction. ``cushion_components`` asserts that they do.
+#: A positive entry cushions the loss (lower tax, higher benefit).
+CUSHION_GROUPS = {
+    "income_tax": ("income_tax",),
+    "national_insurance": ("national_insurance",),
+    "universal_credit": ("universal_credit",),
+    "other_means_tested": (
+        "housing_benefit",
+        "pension_credit",
+        "working_tax_credit",
+        "child_tax_credit",
+        "esa_income",
+        "jsa_income",
+        "income_support",
+        "council_tax_benefit",
+    ),
+    "jsa_contrib": ("jsa_contrib",),
+    "esa_contrib": ("esa_contrib",),
+    "child_benefit": ("child_benefit",),
+    "pension_contributions": (
+        "employee_pension_contributions",
+        "personal_pension_contributions",
+    ),
+    "student_loan_repayments": ("student_loan_repayments",),
+    # Statutory sick/maternity/paternity pay is zeroed for displaced workers
+    # (TRANSITION_ZEROED_VARIABLES), so this line is a NEGATIVE cushion.
+    "statutory_pay": (
+        "statutory_sick_pay",
+        "statutory_maternity_pay",
+        "statutory_paternity_pay",
+    ),
+}
+#: Residual lines: every other HBAI component, and the HBAI zero floor.
+CUSHION_OTHER = "other"
+CUSHION_FLOOR = "negative_income_floor"
+CUSHION_GROUP_NAMES = (*CUSHION_GROUPS, CUSHION_OTHER, CUSHION_FLOOR)
+
+
+def _hbai_lists() -> tuple[list[str], list[str]]:
+    from policyengine_uk.variables.household.income.hbai_household_net_income import (
+        HBAI_HOUSEHOLD_NET_INCOME_ADDS,
+        HBAI_HOUSEHOLD_NET_INCOME_SUBTRACTS,
+    )
+
+    return list(HBAI_HOUSEHOLD_NET_INCOME_ADDS), list(HBAI_HOUSEHOLD_NET_INCOME_SUBTRACTS)
+
+
+def household_components(sim, period: int) -> dict[str, np.ndarray]:
+    """Household-level £ arrays of every HBAI component, plus the totals.
+
+    Keys: each variable in the model's HBAI ADDS and SUBTRACTS lists,
+    ``hbai_household_net_income`` and
+    ``hbai_household_net_income_before_reset_to_zero``.
+    """
+    adds, subtracts = _hbai_lists()
+    names = [
+        *adds,
+        *subtracts,
+        "hbai_household_net_income",
+        "hbai_household_net_income_before_reset_to_zero",
+    ]
+    return {
+        name: np.asarray(
+            sim.calculate(name, period=period, map_to="household").values, dtype=float
+        )
+        for name in names
+    }
+
+
+def cushion_components(
+    delta: dict[str, np.ndarray | float], rel_tol: float = 1e-6, abs_tol: float = 1.0
+) -> dict[str, float]:
+    """Group HBAI component CHANGES (shocked - baseline) into the cushion split.
+
+    ``delta`` maps every key of ``household_components`` to a change -- a
+    weighted total, or an array that is summed. Returns £ per group in
+    CUSHION_GROUP_NAMES plus ``cushion`` (= gross loss - net loss) and
+    ``gross_loss``. Raises if the model's own identity
+    net_before_reset = sum(ADDS) - sum(SUBTRACTS) does not hold for the
+    changes, or if the groups do not sum to the cushion.
+    """
+    adds, subtracts = _hbai_lists()
+    total = {key: float(np.sum(value)) for key, value in delta.items()}
+    sign = {name: 1.0 for name in adds}
+    sign.update({name: -1.0 for name in subtracts})
+    scale = max(abs(total["employment_income"]), 1.0)
+    identity_gap = total["hbai_household_net_income_before_reset_to_zero"] - sum(
+        sign[name] * total[name] for name in sign
+    )
+    if abs(identity_gap) > abs_tol + rel_tol * scale:
+        raise AssertionError(
+            "HBAI components do not sum to net income before the zero floor: "
+            f"gap £{identity_gap:,.2f} on a gross change of £{scale:,.0f}"
+        )
+    out: dict[str, float] = {}
+    assigned = {"employment_income"}
+    for group, members in CUSHION_GROUPS.items():
+        missing = [name for name in members if name not in sign]
+        if missing:
+            raise KeyError(f"cushion group {group!r}: not HBAI components: {missing}")
+        out[group] = sum(sign[name] * total[name] for name in members)
+        assigned.update(members)
+    out[CUSHION_OTHER] = sum(
+        sign[name] * total[name] for name in sign if name not in assigned
+    )
+    out[CUSHION_FLOOR] = (
+        total["hbai_household_net_income"]
+        - total["hbai_household_net_income_before_reset_to_zero"]
+    )
+    cushion = total["hbai_household_net_income"] - total["employment_income"]
+    gap = sum(out.values()) - cushion
+    # ``other`` absorbs unnamed components but NOT a broken identity: the
+    # groups are built from the component totals, the cushion from the two
+    # headline totals, so this fails if the model's net income stops being
+    # the sum of its listed components.
+    if abs(gap) > abs_tol + rel_tol * scale:
+        raise AssertionError(
+            f"cushion split does not sum to gross - net: gap £{gap:,.2f} "
+            f"on a gross change of £{scale:,.0f}"
+        )
+    out["cushion"] = cushion
+    out["gross_loss"] = -total["employment_income"]
+    return out
+
+
+def component_shares(components: dict[str, float]) -> dict[str, dict[str, float]]:
+    """Each group's share of the gross loss and of the total cushion.
+
+    Ratios of summed £ (pooled), not means of per-draw ratios.
+    ``share_of_gross_loss`` sums to the cushioning rate;
+    ``share_of_cushion`` sums to one.
+    """
+    gross, cushion = components["gross_loss"], components["cushion"]
+    return {
+        "share_of_gross_loss": {
+            g: (components[g] / gross if gross else float("nan"))
+            for g in CUSHION_GROUP_NAMES
+        },
+        "share_of_cushion": {
+            g: (components[g] / cushion if cushion else float("nan"))
+            for g in CUSHION_GROUP_NAMES
+        },
+    }
+
 PERSON_VARIABLES = ("person_id", "age", "employment_income")
 
 
@@ -53,6 +214,9 @@ class ScenarioResult:
     decile_income_change: dict = field(default_factory=dict)
     region_income_change: dict = field(default_factory=dict)
     age_band_displacement_share: dict = field(default_factory=dict)
+    #: £ change in each tax/benefit line behind the cushion (CUSHION_GROUP_NAMES
+    #: plus ``cushion`` and ``gross_loss``); the groups sum to ``cushion``.
+    cushion_components: dict = field(default_factory=dict)
 
 
 @dataclass(frozen=True)
@@ -81,6 +245,14 @@ class MonteCarloResult:
     #: how an appendix reconciliation ends up on a different run from the
     #: table it reconciles.
     selection_method: str = ""
+    #: 1 - mean(net loss) / mean(gross loss): the ratio of means, which
+    #: weights draws by their realised gross loss (the mean of per-draw
+    #: ratios above does not).
+    cushioning_rate_pooled: float = float("nan")
+    #: Mean £ per tax/benefit line across draws, and its shares of the mean
+    #: gross loss / mean cushion (see ``component_shares``).
+    cushion_components_mean: dict = field(default_factory=dict)
+    cushion_component_shares: dict = field(default_factory=dict)
     draws: list = field(default_factory=list)
 
 
@@ -207,6 +379,10 @@ def _metrics(sim, period: int, poverty_lines: tuple[float, float] | None = None)
             (sim.calculate("hbai_household_net_income", period=period, map_to="household").values * hh_w).sum()
         ),
     }
+    out["component_totals"] = {
+        name: float((values * hh_w).sum())
+        for name, values in household_components(sim, period).items()
+    }
     # absolute BHC poverty (fixed 2010-11 line, HBAI); tolerate model
     # versions that expose only the relative measures
     try:
@@ -227,11 +403,18 @@ def _baseline_and_persons(dataset_path, adult_tab_path, period):
     """adult_tab_path=None (default path) reads SIC from the h5's
     sic_industry_division variable; passing a path uses the legacy
     adult.tab join as a fallback for h5 builds without the column."""
-    from policyengine_uk import Microsimulation
-    from policyengine_uk.data import UKSingleYearDataset
+    if dataset_path is None:
+        # Default: the certified Microcosm UK build pinned by policyengine.py.
+        from uk_trade_shock_study.microcosm import microsimulation
 
-    dataset = UKSingleYearDataset(file_path=str(dataset_path))
-    baseline = Microsimulation(dataset=dataset)
+        dataset = None
+        baseline = microsimulation()
+    else:  # an explicit local h5 (tests, legacy replication)
+        from policyengine_uk import Microsimulation
+        from policyengine_uk.data import UKSingleYearDataset
+
+        dataset = UKSingleYearDataset(file_path=str(dataset_path))
+        baseline = Microsimulation(dataset=dataset)
     persons = _person_table(baseline, period)
     if adult_tab_path is None:
         persons["sic_division"] = simulation_sic_division(baseline, period)
@@ -282,6 +465,20 @@ def _one_draw(
     shocked_earnings = shocked_table["employment_income"].to_numpy(dtype=float)
     gross_loss = float(((base_earnings - shocked_earnings) * weight).sum())
     net_loss = base["hni_total"] - shock["hni_total"]
+    components = cushion_components(
+        {
+            name: shock["component_totals"][name] - base["component_totals"][name]
+            for name in base["component_totals"]
+        }
+    )
+    # The split's gross loss is the household-aggregated employment_income
+    # change read back from the SIMULATION; it must equal the loss imposed on
+    # the person table.
+    if not np.isclose(components["gross_loss"], gross_loss, rtol=1e-6, atol=1.0):
+        raise AssertionError(
+            "simulated employment_income change differs from the imposed "
+            f"gross loss: £{components['gross_loss']:,.0f} vs £{gross_loss:,.0f}"
+        )
     equiv = (
         baseline_equiv
         if baseline_equiv is not None
@@ -357,11 +554,12 @@ def _one_draw(
         decile_income_change=decile_change,
         region_income_change=region_change,
         age_band_displacement_share=band_share,
+        cushion_components=components,
     )
 
 
 def run_scenario(
-    dataset_path: str | Path,
+    dataset_path: str | Path | None,
     scenario: TradeShockScenario | str,
     period: int = 2026,
     seed: int = 0,
@@ -374,7 +572,7 @@ def run_scenario(
 
 
 def run_monte_carlo(
-    dataset_path: str | Path,
+    dataset_path: str | Path | None,
     scenario: TradeShockScenario | str,
     period: int = 2026,
     n_draws: int = 20,
@@ -435,6 +633,12 @@ def run_monte_carlo_prepared(
     cushioning_mean, cushioning_sd, valid_cushioning = _finite_mean_sd(
         [d.cushioning_rate for d in draws]
     )
+    gross_mean = float(np.mean([d.gross_earnings_loss for d in draws]))
+    net_mean = float(np.mean([d.net_disposable_loss for d in draws]))
+    components_mean = {
+        key: float(np.mean([d.cushion_components[key] for d in draws]))
+        for key in draws[0].cushion_components
+    }
     return MonteCarloResult(
         scenario=scenario.name,
         n_draws=n_draws,
@@ -459,6 +663,11 @@ def run_monte_carlo_prepared(
         ),
         cushioning_valid_draws=valid_cushioning,
         selection_method=scenario.selection_method,
+        cushioning_rate_pooled=(
+            1.0 - net_mean / gross_mean if gross_mean else float("nan")
+        ),
+        cushion_components_mean=components_mean,
+        cushion_component_shares=component_shares(components_mean),
         draws=[asdict(d) for d in draws],
     )
 

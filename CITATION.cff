@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite the paper."
+title: "Who pays for trade shocks? Distributional incidence and fiscal cushioning in the UK"
+authors:
+  - family-names: Ahmadi
+    given-names: Vahid
+    affiliation: PolicyEngine
+repository-code: "https://github.com/PolicyEngine/uk-trade-shock-study"
+license: AGPL-3.0
+date-released: 2026-11-21

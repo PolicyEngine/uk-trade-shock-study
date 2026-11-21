@@ -13,12 +13,18 @@ Design notes, in response to referee comments on the first version:
   Price Guarantee variable (epg_subsidy) does read energy consumption
   and does respond; the re-run records that response separately
   (NATIVE_INSTRUMENTS) and the paper classifies it as discretionary.
-* Both price paths are on ONE basis: financial-year mean caps.  The
-  counterfactual FY2022-23 mean is (1,971 + 3,549)/2 with no Energy
-  Price Guarantee; the realised FY mean is (1,971 + 2,500)/2; the
-  baseline FY2021-22 mean is (1,138 + 1,277)/2.  Mixing a point-to-point
-  cap ratio with a financial-year mean ratio -- as the first version did
-  -- made the cushioning rate incomparable across paths.
+* Both price paths are on ONE basis: financial-year mean caps, each
+  quarter weighted by its share of annual energy use (PolicyEngine UK's
+  own monthly profile), on the caps Ofgem actually set.  The
+  counterfactual FY2022-23 path is 1,971 (April-September), 3,549
+  (October-December) and 4,279 (January-March 2023) with no Energy Price
+  Guarantee; the realised path is 1,971 then 2,500; the baseline FY2021-22
+  path is 1,138 then 1,277, on the same weights (see ``energy_convention``).
+  The earlier headline -- equal half-year weights with the October 2022
+  cap held through the winter -- is kept as the labelled variant
+  "equal_held" (grid_energy.py reports all four combinations).  Mixing a
+  point-to-point cap ratio with a financial-year mean ratio -- as the
+  first version did -- made the cushioning rate incomparable across paths.
 * Deciles are equivalised (HBAI before-housing-costs concept).
 * The uprating shortfall is reported against the base it belongs to
   (benefit income), not against a single commodity's shock.
@@ -26,7 +32,7 @@ Design notes, in response to referee comments on the first version:
   with income in the denominator is dominated by very low incomes.
 * Missing variables raise; the PolicyEngine version is recorded.
 
-Run:  python second_stage_energy.py --dataset <path to enhanced_frs.h5>
+Run:  python second_stage_energy.py   (certified Microcosm UK via policyengine.py)
 """
 
 import argparse
@@ -109,6 +115,144 @@ NATIVE_INSTRUMENTS = ["epg_subsidy", "cost_of_living_support_payment",
 # reproduce the previous hand-rolled results exactly.
 from microdf import MicroSeries
 
+from microcosm import BASE_YEAR, copy_inputs, microsimulation, provenance
+
+
+#: Rulebook year of the 2022-23 Cost of Living Payments (GBP 650 means-tested
+#: per qualifying benefit unit, GBP 300 pensioner per Winter Fuel household,
+#: GBP 150 per disabled person), taken from the model rather than rebuilt.
+COL_YEAR = 2022
+
+
+def col_components(sim):
+    """2022-23 Cost of Living Payments per household: (means-tested,
+    pensioner, disability), from PolicyEngine UK's own eligibility rules."""
+    def h(name):
+        return np.asarray(sim.calculate(name, COL_YEAR, map_to="household"))
+    total = h("cost_of_living_support_payment")
+    mt = h("cost_of_living_means_tested_payment")
+    dis = h("cost_of_living_disability_payment")
+    return mt, total - mt - dis, dis
+
+
+def ctr_rebate(sim):
+    """The GBP 150 Council Tax Rebate per household (April 2022; part of the
+    Energy Bills Rebate package, so classed energy-specific), from
+    PolicyEngine UK's own rule at period 2022: council tax bands A-D in
+    England, Scotland and Wales, none in Northern Ireland.  The component
+    variable alone is read -- NOT energy_bills_rebate, which at calendar
+    2022 also carries the October-December part of the GBP 400 scheme that
+    the stack already counts in full as a flat GBP 400."""
+    return np.asarray(sim.calculate("ebr_council_tax_rebate", COL_YEAR,
+                                    map_to="household"))
+
+
+#: Price-path conventions.  ``weights``: "consumption" = each quarter of the
+#: financial year weighted by its share of annual energy use, read off the
+#: model's monthly profile; "equal" = half-years weighted equally.
+#: ``actual_cap``: True = the January-March 2023 cap Ofgem set (GBP 4,279) in
+#: the counterfactual; False = the October 2022 cap held through the winter.
+CONVENTIONS = {
+    "consumption_actual": {"weights": "consumption", "actual_cap": True},
+    "consumption_held": {"weights": "consumption", "actual_cap": False},
+    "equal_actual": {"weights": "equal", "actual_cap": True},
+    "equal_held": {"weights": "equal", "actual_cap": False},
+}
+#: The central (headline) convention -- author decision, November 2026.
+CENTRAL_CONVENTION = "consumption_actual"
+EQUAL_WEIGHTS = {"apr_sep": 0.5, "oct_dec": 0.25, "jan_mar": 0.25}
+
+
+def month_shares(sim, w, energy_raw, yr=None):
+    """Share of annual household energy use in each calendar month (January
+    to December), read off PolicyEngine UK at run time
+    (monthly_domestic_energy_consumption, the profile its Energy Price
+    Guarantee variable uses; the model sources it to Resolution Foundation,
+    "A chilling crisis", 2022, p.11).  Nothing is hard-coded."""
+    yr = P["sim_year"] if yr is None else yr
+    annual = weighted(energy_raw, w)
+    return [weighted(np.asarray(sim.calculate(
+        "monthly_domestic_energy_consumption", f"{yr}-{m:02d}")), w) / annual
+        for m in range(1, 13)]
+
+
+def fy_weights(share):
+    """Quarter weights of the April-March financial year from month shares."""
+    return {"apr_sep": sum(share[3:9]), "oct_dec": sum(share[9:12]),
+            "jan_mar": sum(share[0:3])}
+
+
+def fy_mean(wt, apr_sep, oct_dec, jan_mar):
+    tot = wt["apr_sep"] + wt["oct_dec"] + wt["jan_mar"]
+    return (wt["apr_sep"] * apr_sep + wt["oct_dec"] * oct_dec
+            + wt["jan_mar"] * jan_mar) / tot
+
+
+def convention_caps(wt, actual_cap):
+    """(base, counterfactual, realised) FY mean caps on quarter weights."""
+    base = fy_mean(wt, P["cap_apr_2021"], P["cap_oct_2021"], P["cap_oct_2021"])
+    counter = fy_mean(wt, P["cap_apr_2022"], P["cap_oct_2022"],
+                      P["cap_jan_2023"] if actual_cap else P["cap_oct_2022"])
+    realised = fy_mean(wt, P["cap_apr_2022"], P["epg_level"], P["epg_level"])
+    return base, counter, realised
+
+
+def energy_convention(sim, w, energy_raw, yr=None, name=None):
+    """The price paths and energy rebase every energy script uses.
+
+    The same quarter weights price the base, counterfactual and realised
+    years; the rebase target is the base-year mean cap on those weights (a
+    household's FY2021-22 bill is its consumption-weighted cap).  Returns
+    the FY mean caps, the rebase factor and the two proportional rises.
+    """
+    name = name or CENTRAL_CONVENTION
+    conv = CONVENTIONS[name]
+    share = month_shares(sim, w, energy_raw, yr)
+    wt = fy_weights(share) if conv["weights"] == "consumption" else EQUAL_WEIGHTS
+    base, counter, realised = convention_caps(wt, conv["actual_cap"])
+    return {
+        "name": name,
+        "weights": conv["weights"], "actual_cap": conv["actual_cap"],
+        "month_share_jan_to_dec": share,
+        "fy_weights": dict(wt),
+        "base_cap_fy": base, "counter_fy": counter, "realised_fy": realised,
+        "rebase": base / wmean(energy_raw, w),
+        "counter_rise": counter / base - 1.0,
+        "realised_rise": realised / base - 1.0,
+    }
+
+
+def synthetic_mask() -> np.ndarray:
+    """True for household records the Microcosm build created synthetically
+    to carry top incomes from the Survey of Personal Incomes (h5 column
+    household_is_spi_synthetic)."""
+    import pandas as pd
+    from microcosm import dataset_path
+    frame = pd.read_hdf(dataset_path(), "household")
+    return frame["household_is_spi_synthetic"].to_numpy().astype(bool)
+
+
+#: Referee robustness switch (set by ``--deflate``): scale the copied inputs
+#: from 2024-25 levels to each back-dated rulebook year with PolicyEngine
+#: UK's own projection indices, inverted (microcosm.copy_inputs).  Off in
+#: the central run.
+DEFLATE = False
+
+
+def load_sim(years=None, reform=None, deflate=None):
+    """A managed Microcosm UK simulation with inputs present in ``years``.
+
+    Microcosm UK carries survey inputs only for its base year; any other
+    period a script calculates in (the episode's rulebook year, or the
+    vintage run's previous year) gets every input column copied in first.
+    """
+    sim = microsimulation(reform)
+    target = sorted(set(years or [P["sim_year"], COL_YEAR]) - {BASE_YEAR})
+    if target:
+        copy_inputs(sim, target,
+                    deflate=DEFLATE if deflate is None else deflate)
+    return sim
+
 
 def weighted(x, w):
     """Weighted total of x."""
@@ -144,14 +288,27 @@ def variance_split(burden, w, dec):
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--dataset", required=True)
+    ap.add_argument("--dataset", default=None,
+                    help="ignored; data come from the certified Microcosm UK build")
     ap.add_argument("--out", default=str(RESULTS_DIR / "second_stage_energy.json"))
+    ap.add_argument("--deflate", action="store_true",
+                    help="robustness: deflate copied inputs to the rulebook "
+                         "years with the model's own projection indices")
+    ap.add_argument("--exclude-synthetic", action="store_true",
+                    help="robustness: drop the SPI-synthetic household "
+                         "records (zero weight) and scale the remaining "
+                         "weights so the household total is unchanged")
+    ap.add_argument("--sim-year", type=int, default=None,
+                    help="robustness: rulebook year for the whole stage "
+                         "(default 2023, i.e. 2023-24 rules)")
     args = ap.parse_args()
 
-    from policyengine_uk import Microsimulation
-
+    global DEFLATE
+    DEFLATE = args.deflate
+    if args.sim_year is not None:
+        P["sim_year"] = args.sim_year
     yr = P["sim_year"]
-    sim = Microsimulation(dataset=args.dataset)
+    sim = load_sim()
 
     def hh(name, s=None):
         """Household-level total of a variable.  Raises if unavailable."""
@@ -162,6 +319,18 @@ def main() -> None:
 
     w = np.asarray(sim.calculate("household_weight", yr))
     persons_m = float(sim.calculate("people", yr).sum()) / 1e6  # microdf-native
+    synthetic = None
+    if args.exclude_synthetic:
+        # Zero weight is exclusion for every weighted statistic below; the
+        # uniform rescaling keeps the household total (so GBP bn aggregates
+        # stay comparable) and leaves every rate and share unchanged.
+        synthetic = synthetic_mask()
+        if len(synthetic) != len(w):
+            raise RuntimeError("synthetic flag does not align with records")
+        w_all = w
+        w = np.where(synthetic, 0.0, w_all)
+        syn_scale = float(w_all.sum() / w.sum())
+        w = w * syn_scale
     energy_raw = np.asarray(sim.calculate("domestic_energy_consumption", yr))
     elec_raw = np.asarray(sim.calculate("electricity_consumption", yr))
     gas_raw = np.asarray(sim.calculate("gas_consumption", yr))
@@ -170,25 +339,31 @@ def main() -> None:
     total_spend_raw = np.asarray(sim.calculate("consumption", yr))
     spend_rebase = P["ons_total_spend_yr"] / wmean(total_spend_raw, w)
     total_spend = total_spend_raw * spend_rebase   # FYE2022 price/level base
-    benefit_income = sum(hh(v) for v in UPRATED_CASH)
+    # Uprating-shortfall base: benefit income under the 2022-23 rules the
+    # lagged uprating applied to, excluding the (non-uprated) winter fuel
+    # payment.
+    benefit_income = sum(
+        np.asarray(sim.calculate(v, COL_YEAR, map_to="household"))
+        for v in UPRATED_CASH if v != "winter_fuel_allowance")
 
     # --- Rebase energy to pre-crisis price levels (ASSUMPTION, disclosed) ---
-    base_cap_fy = (P["cap_apr_2021"] + P["cap_oct_2021"]) / 2.0
-    rebase = base_cap_fy / wmean(energy_raw, w)
+    # --- Both paths on ONE basis: consumption-weighted FY mean caps on the
+    # caps Ofgem set (the central convention; see energy_convention) --------
+    conv = energy_convention(sim, w, energy_raw, yr)
+    base_cap_fy = conv["base_cap_fy"]
+    rebase = conv["rebase"]
     energy = energy_raw * rebase
-
-    # --- Both paths on ONE basis: financial-year mean caps ------------------
-    counter_fy = (P["cap_apr_2022"] + P["cap_oct_2022"]) / 2.0   # no EPG
-    realised_fy = (P["cap_apr_2022"] + P["epg_level"]) / 2.0     # EPG in force
-    counter_rise = counter_fy / base_cap_fy - 1.0
-    realised_rise = realised_fy / base_cap_fy - 1.0
+    counter_fy = conv["counter_fy"]       # no EPG
+    realised_fy = conv["realised_fy"]     # EPG in force
+    counter_rise = conv["counter_rise"]
+    realised_rise = conv["realised_rise"]
 
     dE_counter = energy * counter_rise
     dE_realised = energy * realised_rise
     epg_cushion = dE_counter - dE_realised
 
     # --- MEASURED automatic response ---------------------------------------
-    shocked = Microsimulation(dataset=args.dataset)
+    shocked = load_sim()
     for var, raw in (("electricity_consumption", elec_raw),
                      ("gas_consumption", gas_raw),
                      ("domestic_energy_consumption", energy_raw)):
@@ -209,9 +384,7 @@ def main() -> None:
     # --- The model's own instruments respond to the shocked input ----------
     native = {}
     for v in NATIVE_INSTRUMENTS:
-        if v not in sim.tax_benefit_system.variables:
-            continue
-        base_v = weighted(hh(v), w)
+        base_v = weighted(hh(v), w)  # hh() raises if the variable is absent
         shock_v = weighted(hh(v, shocked), w)
         native[v] = {
             "baseline_gbp_bn": round(base_v / 1e9, 3),
@@ -222,11 +395,12 @@ def main() -> None:
     # --- Discretionary instruments -----------------------------------------
     ebss = np.full_like(energy, P["ebss_per_household"])
     means_tested_amt = sum(hh(v) for v in MEANS_TESTED)
-    col = ((means_tested_amt > 0) * P["col_means_tested"]
-           + (hh("state_pension") > 0) * P["col_pensioner"]
-           + ((hh("pip") + hh("dla") + hh("attendance_allowance")) > 0)
-           * P["col_disability"])
-    discretionary = epg_cushion + ebss + col
+    col = sum(col_components(sim))
+    ctr = ctr_rebate(sim)
+    energy_specific = epg_cushion + ebss + ctr     # legislated against energy
+    discretionary = energy_specific + col
+    discretionary_no_ctr = epg_cushion + ebss + col
+    energy_specific_no_ctr = epg_cushion + ebss
 
     gap = P["cpi_sep_2022_yoy"] - P["uprating_applied_apr_2022"]
     shortfall = benefit_income * gap
@@ -234,8 +408,10 @@ def main() -> None:
     G = weighted(dE_counter, w)
     res = {
         "meta": {
-            "dataset": Path(args.dataset).name,
+            "dataset": provenance(sim)["default_dataset"],
+            "provenance": provenance(sim),
             "policyengine_uk_version": _pkg_version("policyengine-uk"),
+            "policyengine_version": _pkg_version("policyengine"),
             "sim_year": yr,
             "records": int(len(w)),
             "weighted_persons_m": round(persons_m, 1),
@@ -250,7 +426,14 @@ def main() -> None:
         },
         "parameters": P,
         "shock": {
-            "basis": "financial-year mean caps throughout",
+            "basis": "financial-year mean caps throughout, quarters "
+                     "weighted by their share of annual energy use, on the "
+                     "caps Ofgem set (January-March 2023 at GBP 4,279 in "
+                     "the counterfactual)",
+            "convention": conv["name"],
+            "fy_weights": {k: round(v, 4) for k, v in conv["fy_weights"].items()},
+            "month_share_jan_to_dec": [round(x, 4) for x in
+                                       conv["month_share_jan_to_dec"]],
             "base_fy_mean_cap": base_cap_fy,
             "counterfactual_fy_mean_cap": counter_fy,
             "realised_fy_mean_cap": realised_fy,
@@ -283,12 +466,59 @@ def main() -> None:
         },
         "discretionary": {
             "epg_gbp_bn": round(weighted(epg_cushion, w) / 1e9, 2),
+            "epg_rate_pct": round(100 * weighted(epg_cushion, w) / G, 1),
             "ebss_gbp_bn": round(weighted(ebss, w) / 1e9, 2),
+            "ctr_gbp_bn": round(weighted(ctr, w) / 1e9, 2),
+            "ctr_households_m": round(
+                weighted((ctr > 0).astype(float), w) / 1e6, 2),
+            "energy_specific_gbp_bn": round(weighted(energy_specific, w) / 1e9, 2),
+            "energy_specific_rate_pct": round(
+                100 * weighted(energy_specific, w) / G, 1),
             "col_payments_gbp_bn": round(weighted(col, w) / 1e9, 2),
             "total_gbp_bn": round(weighted(discretionary, w) / 1e9, 2),
             "rate_pct_of_counterfactual": round(100 * weighted(discretionary, w) / G, 1),
+            # What the Council Tax Rebate adds: the same stack without it.
+            "without_ctr": {
+                "total_gbp_bn": round(weighted(discretionary_no_ctr, w) / 1e9, 2),
+                "rate_pct_of_counterfactual": round(
+                    100 * weighted(discretionary_no_ctr, w) / G, 1),
+                "energy_specific_gbp_bn": round(
+                    weighted(energy_specific_no_ctr, w) / 1e9, 2),
+                "energy_specific_rate_pct": round(
+                    100 * weighted(energy_specific_no_ctr, w) / G, 1),
+            },
         },
     }
+
+    # Robustness variants only (the central JSON is unchanged): what was
+    # deflated, and the income-conditioned quantities the deflation moves.
+    if synthetic is not None:
+        res["meta"]["synthetic_excluded"] = {
+            "column": "household_is_spi_synthetic",
+            "records_excluded": int(synthetic.sum()),
+            "records_kept": int((~synthetic).sum()),
+            "weight_share_excluded_pct": round(
+                100 * float(w_all[synthetic].sum() / w_all.sum()), 3),
+            "weight_scale": round(syn_scale, 6),
+            "method": "synthetic records given zero weight; remaining "
+                      "weights scaled uniformly so the weighted household "
+                      "total is unchanged.  Rates, shares and quantiles do "
+                      "not depend on the uniform scale; GBP bn aggregates "
+                      "without it are the reported ones divided by "
+                      "weight_scale",
+        }
+    if DEFLATE:
+        res["meta"]["inputs_deflated"] = True
+        res["meta"]["deflation"] = getattr(sim, "_deflation", None)
+    if DEFLATE or args.sim_year is not None or synthetic is not None:
+        res["checks"] = {
+            "equiv_income_mean": round(wmean(equiv_income, w), 0),
+            "net_income_mean": round(wmean(net_income, w), 0),
+            "means_tested_households_m": round(
+                weighted((means_tested_amt > 0).astype(float), w) / 1e6, 2),
+            "col_components_gbp_bn": [round(weighted(c, w) / 1e9, 2)
+                                      for c in col_components(sim)],
+        }
 
     # --- Equivalised deciles -----------------------------------------------
     order = np.argsort(equiv_income)
@@ -307,11 +537,23 @@ def main() -> None:
             "discretionary_gbp_per_year": round(wmean(discretionary[m], wd), 1),
             "cushioning_rate_pct": round(
                 100 * weighted(discretionary[m], wd) / weighted(dE_counter[m], wd), 1),
+            "energy_specific_rate_pct": round(
+                100 * weighted(energy_specific[m], wd) / weighted(dE_counter[m], wd), 1),
+            "cushioning_rate_pct_without_ctr": round(
+                100 * weighted(discretionary_no_ctr[m], wd)
+                / weighted(dE_counter[m], wd), 1),
+            "energy_specific_rate_pct_without_ctr": round(
+                100 * weighted(energy_specific_no_ctr[m], wd)
+                / weighted(dE_counter[m], wd), 1),
             "burden_pct_of_spending": round(
                 100 * weighted(dE_realised[m], wd) / weighted(total_spend[m], wd), 2),
+            # Unrebased: the dataset's own energy over its own spending.
+            "raw_energy_share_of_spending_pct": round(
+                100 * weighted(energy_raw[m], wd)
+                / weighted(total_spend_raw[m], wd), 2),
         })
         bs = dE_realised[m] / np.maximum(total_spend[m], 1)
-        ok = np.isfinite(bs)
+        ok = np.isfinite(bs) & (wd > 0)
         p10, p50, p90 = (wquantile(bs[ok], wd[ok], q) for q in (0.10, 0.50, 0.90))
         within.append({
             "decile": d + 1,
@@ -320,6 +562,8 @@ def main() -> None:
             "p90_burden_pct_spending": round(100 * p90, 2),
             "p90_p10_ratio": round(p90 / p10, 1) if p10 > 0 else None,
         })
+    res["meta"]["raw_energy_share_of_spending_pct"] = round(
+        100 * weighted(energy_raw, w) / weighted(total_spend_raw, w), 2)
     res["by_decile"] = rows
     res["within_decile_dispersion"] = within
 
@@ -416,8 +660,25 @@ def emit_macros(res, path=None):
     add("UpratingShortfallBn", f"{u['shortfall_gbp_bn']:,.1f}")
     add("UpratingShortfallPctOfBenefitIncome", f"{u['shortfall_pct_of_benefit_income']:.1f}")
     add("EpgBn", f"{d['epg_gbp_bn']:,.1f}")
+    add("EpgRatePct", f"{d['epg_rate_pct']:.1f}")
+    fw = s["fy_weights"]
+    add("FyWeightAprSepPct", f"{100*fw['apr_sep']:.1f}")
+    add("FyWeightOctDecPct", f"{100*fw['oct_dec']:.1f}")
+    add("FyWeightJanMarPct", f"{100*fw['jan_mar']:.1f}")
     add("EbssBn", f"{d['ebss_gbp_bn']:,.1f}")
     add("ColBn", f"{d['col_payments_gbp_bn']:,.1f}")
+    # Council Tax Rebate (in the central stack, energy-specific) and the
+    # same headline numbers without it.
+    nc = d["without_ctr"]
+    add("CtrBn", f"{d['ctr_gbp_bn']:,.1f}")
+    add("CtrHouseholdsM", f"{d['ctr_households_m']:.1f}")
+    add("EnergySpecificBn", f"{d['energy_specific_gbp_bn']:,.1f}")
+    add("EnergySpecificRatePct", f"{d['energy_specific_rate_pct']:.1f}")
+    add("NoCtrDiscretionaryBn", f"{nc['total_gbp_bn']:,.1f}")
+    add("NoCtrDiscretionaryRatePct", f"{nc['rate_pct_of_counterfactual']:.1f}")
+    add("NoCtrEnergySpecificBn", f"{nc['energy_specific_gbp_bn']:,.1f}")
+    add("NoCtrEnergySpecificRatePct", f"{nc['energy_specific_rate_pct']:.1f}")
+    add("CtrRateAddPp", f"{d['rate_pct_of_counterfactual'] - nc['rate_pct_of_counterfactual']:.1f}")
     add("DiscretionaryBn", f"{d['total_gbp_bn']:,.1f}")
     add("DiscretionaryRatePct", f"{d['rate_pct_of_counterfactual']:.1f}")
     add("BetweenPct", f"{v['expenditure_share_trimmed_1_99']['between_pct']:.1f}")
@@ -437,6 +698,12 @@ def emit_macros(res, path=None):
     words = ("One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten")
     for row, wd in zip(res["by_decile"], words):
         add(f"CushionPctDec{wd}", f"{row['cushioning_rate_pct']:.0f}")
+        add(f"CushionPctOneDpDec{wd}", f"{row['cushioning_rate_pct']:.1f}")
+        add(f"EnergySpecificPctDec{wd}", f"{row['energy_specific_rate_pct']:.0f}")
+        add(f"NoCtrCushionPctDec{wd}",
+            f"{row['cushioning_rate_pct_without_ctr']:.0f}")
+        add(f"NoCtrEnergySpecificPctDec{wd}",
+            f"{row['energy_specific_rate_pct_without_ctr']:.0f}")
         add(f"BurdenPctSpendDec{wd}", f"{row['burden_pct_of_spending']:.2f}")
     for row, wd in zip(res["within_decile_dispersion"], words):
         add(f"PTenDec{wd}", f"{row['p10_burden_pct_spending']:.2f}")
@@ -446,8 +713,51 @@ def emit_macros(res, path=None):
     print("wrote", path)
 
 
+def emit_nosyn_macros(path=None):
+    """Macros for the no-synthetic-records robustness run, prefixed SsNoSyn
+    (appended to generated_secondstage.tex)."""
+    f = RESULTS_DIR / "second_stage_energy_nosyn.json"
+    if not f.exists():
+        return
+    r = json.loads(f.read_text())
+    c = json.loads((RESULTS_DIR / "second_stage_energy.json").read_text())
+    d, x = r["discretionary"], r["meta"]["synthetic_excluded"]
+    v = r["variance_decomposition"]
+    m = []
+
+    def add(k, val):
+        m.append(f"\\newcommand{{\\SsNoSyn{k}}}{{{val}}}")
+
+    add("RecordsExcluded", f"{x['records_excluded']:,}")
+    add("RecordsKept", f"{x['records_kept']:,}")
+    add("WeightSharePct", f"{x['weight_share_excluded_pct']:.1f}")
+    add("DiscretionaryRatePct", f"{d['rate_pct_of_counterfactual']:.1f}")
+    add("EnergySpecificRatePct", f"{d['energy_specific_rate_pct']:.1f}")
+    add("EpgRatePct", f"{d['epg_rate_pct']:.1f}")
+    add("DiscretionaryBn", f"{d['total_gbp_bn']:,.1f}")
+    add("DiscretionaryBnUnscaled",
+        f"{d['total_gbp_bn'] / x['weight_scale']:,.1f}")
+    add("CounterAggBn", f"{r['shock']['counterfactual_aggregate_gbp_bn']:,.1f}")
+    add("RebaseFactor", f"{r['meta']['energy_rebase_factor']:.3f}")
+    add("WithinPct", f"{v['expenditure_share_trimmed_1_99']['within_pct']:.1f}")
+    add("WithinPctUntrimmed", f"{v['expenditure_share']['within_pct']:.1f}")
+    add("FullRateDiffPp", f"{d['rate_pct_of_counterfactual'] - c['discretionary']['rate_pct_of_counterfactual']:+.1f}".replace("-", "$-$"))
+    diffs = [a["cushioning_rate_pct"] - b["cushioning_rate_pct"]
+             for a, b in zip(r["by_decile"], c["by_decile"])]
+    add("MaxDecileDiffPp", f"{max(abs(q) for q in diffs):.1f}")
+    words = ("One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten")
+    for row, wd in zip(r["by_decile"], words):
+        add(f"CushionPctDec{wd}", f"{row['cushioning_rate_pct']:.0f}")
+        add(f"EnergySpecificPctDec{wd}", f"{row['energy_specific_rate_pct']:.0f}")
+    add("DecilesAboveHundred",
+        str(sum(row["cushioning_rate_pct"] > 100 for row in r["by_decile"])))
+    path = Path(path or RESULTS_DIR / "generated_secondstage.tex")
+    path.write_text(path.read_text() + "\n".join(m) + "\n")
+
+
 if __name__ == "__main__":
     emit_macros(json.loads((RESULTS_DIR / "second_stage_energy.json").read_text()))
+    emit_nosyn_macros()
     import shutil
     shutil.copy(RESULTS_DIR / "generated_secondstage.tex",
                 PAPER_DIR / "generated_secondstage.tex")

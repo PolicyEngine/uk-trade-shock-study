@@ -1,5 +1,10 @@
 """Calibrate the reallocation margin's services wage penalty from the FRS.
 
+Legacy: documents how DEFAULT_REALLOCATION_PENALTY in tariff_pipeline/shocks.py
+was calibrated on the earlier policyengine-uk-data FRS 2024-25 build. It is not
+part of `make reproduce`, and the headline scenarios do not use the
+reallocation margin.
+
 Source: FRS 2024-25 (packaged frs_2024_25.h5), employees with positive
 employment income, at the study period (2026). SOURCE = the exposed
 goods-producing divisions in the US-export-intensity table (SIC 10-32);

@@ -5,7 +5,7 @@ The shock enters through PRIMITIVES. A US tariff rate per SIC 2007 division
 with the division's US-export intensity (US goods exports as a share of
 division turnover — HMRC trade-by-SIC divided by ONS ABS turnover; the
 packaged CSV is a frozen real-data build documented in
-``data/input_manifest.json``) and an export-demand calibration to produce a
+``tariff_pipeline/data/input_manifest.json``) and an export-demand calibration to produce a
 per-division earnings-shock size:
 
     earnings_shock_j = elasticity * tariff_j * us_export_share_j
@@ -174,7 +174,7 @@ def sector_earnings_shocks(
 def simulation_sic_division(sim, period: int) -> np.ndarray:
     """Person-level SIC 2007 division straight from the simulation/h5.
 
-    The packaged frs_2024_25.h5 carries ``sic_industry_division`` (a
+    The survey data carry ``sic_industry_division`` (a
     registered policyengine-uk variable; 2-digit SIC 2007 division, 0 =
     unknown/not applicable). This is the PRIMARY SIC source; the adult.tab
     join below (load_frs_adult_sic/attach_sic_division) is retained only as a

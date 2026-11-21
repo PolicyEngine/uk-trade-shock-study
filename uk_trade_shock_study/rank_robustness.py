@@ -6,7 +6,7 @@ approximate: household equivalised income is scaled by the ratio of
 net income excluding the three instruments to net income, a declared
 approximation.
 
-Run:  python rank_robustness.py --dataset <enhanced_frs.h5>
+Run:  python rank_robustness.py   (certified Microcosm UK via policyengine.py)
 Emits results/generated_rank.tex, copied to the paper.
 """
 
@@ -14,7 +14,7 @@ import argparse
 
 import numpy as np
 
-from second_stage_energy import P, weighted, wmean
+from second_stage_energy import P, load_sim, col_components, ctr_rebate, energy_convention, weighted, wmean
 from second_stage_energy import RESULTS_DIR, PAPER_DIR
 
 
@@ -28,13 +28,12 @@ def deciles_of(y, w):
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--dataset", required=True)
+    ap.add_argument("--dataset", default=None,
+                    help="ignored; data come from the certified Microcosm UK build")
     args = ap.parse_args()
 
-    from policyengine_uk import Microsimulation
-
     yr = P["sim_year"]
-    sim = Microsimulation(dataset=args.dataset)
+    sim = load_sim()
 
     def hh(name):
         return np.asarray(sim.calculate(name, yr, map_to="household"))
@@ -48,22 +47,20 @@ def main() -> None:
     equiv_net = equiv * scale
 
     energy_raw = np.asarray(sim.calculate("domestic_energy_consumption", yr))
-    base_cap_fy = (P["cap_apr_2021"] + P["cap_oct_2021"]) / 2.0
-    rebase = base_cap_fy / wmean(energy_raw, w)
+    # Central price-path convention (second_stage_energy.energy_convention).
+    conv = energy_convention(sim, w, energy_raw, yr)
+    rebase = conv["rebase"]
     energy = energy_raw * rebase
-    counter_rise = (P["cap_apr_2022"] + P["cap_oct_2022"]) / 2.0 / base_cap_fy - 1.0
-    realised_rise = (P["cap_apr_2022"] + P["epg_level"]) / 2.0 / base_cap_fy - 1.0
+    counter_rise = conv["counter_rise"]
+    realised_rise = conv["realised_rise"]
     dE = energy * counter_rise
     epg = energy * (counter_rise - realised_rise)
     ebss = np.full_like(energy, P["ebss_per_household"])
     mt = sum(hh(v) for v in ["universal_credit", "pension_credit", "tax_credits",
                              "income_support", "housing_benefit", "jsa_income",
                              "esa_income"])
-    col = ((mt > 0) * P["col_means_tested"]
-           + (hh("state_pension") > 0) * P["col_pensioner"]
-           + ((hh("pip") + hh("dla") + hh("attendance_allowance")) > 0)
-           * P["col_disability"])
-    disc = epg + ebss + col
+    col = sum(col_components(sim))
+    disc = epg + ebss + ctr_rebate(sim) + col
 
     out = {}
     for tag, ranking in (("Base", equiv), ("Net", equiv_net)):

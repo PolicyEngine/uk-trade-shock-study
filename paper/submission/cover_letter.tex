@@ -1,0 +1,59 @@
+% Cover letter. Fill in the journal name and editor before submitting.
+% Numbers come from the paper's generated macros, so they stay in sync.
+\documentclass[11pt]{letter}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[british]{babel}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\newcommand{\Journal}{\textcolor{red}{[Journal name]}}
+\input{../generated_secondstage}
+\input{../generated_grid}
+\input{../generated_lagreform}
+\input{../generated_e3}
+\signature{Vahid Ahmadi\\Research Associate, PolicyEngine\\\href{mailto:vahid@policyengine.org}{vahid@policyengine.org}}
+\address{}
+\date{November 2026}
+\begin{document}
+\begin{letter}{The Editors\\\Journal}
+\opening{Dear Editors,}
+
+I am submitting the manuscript ``Who pays for trade shocks?
+Distributional incidence and fiscal cushioning in the UK'' for
+consideration in \Journal.
+
+The paper compares, on one household microdata set and one
+tax--benefit model, who bore four UK trade-related shocks of 2021--26
+(the post-Brexit rise in food prices, the 2022 energy price surge, the
+2025 US tariffs and the UK--India agreement) and how much of each the
+state cushioned. Three findings stand out:
+
+\begin{itemize}
+\item Energy-specific support returned \SsEnergySpecificRateMinPct--\SsEnergySpecificRateMaxPct\ per cent of the
+counterfactual energy cost, and \SsFullRateMinPct--\SsFullRateMaxPct\ per cent with the Cost of
+Living Payments; no instrument was legislated against the food-price
+rise.
+\item The one automatic price-side channel, benefit indexation, arrived
+a year late: matching the April 2022 uprating to that year's inflation
+would have raised benefit income by \pounds\SsLagReformBn\ billion, more than the
+Cost of Living Payments in every income decile.
+\item In a US-tariff earnings scenario, taxes and benefits offset
+\EThreeDispTaxBenRatePct--\EThreeWageTaxBenRatePct\ per cent of lost earnings, a property of the UK system
+rather than of the tariff, and the loss falls on the middle and top of
+the distribution rather than the bottom.
+\end{itemize}
+
+The contribution is to place price and earnings shocks from trade on
+one incidence and cushioning metric, linking the trade-incidence
+literature to work on automatic stabilisers and benefit indexation.
+The replication code and the public inputs it redistributes are
+openly available, with checksums for all other inputs; the household microdata are available under UK Data Service
+licence.
+
+The manuscript is not under consideration elsewhere and has not been
+published. Thank you for considering it.
+
+\closing{Yours sincerely,}
+\end{letter}
+\end{document}

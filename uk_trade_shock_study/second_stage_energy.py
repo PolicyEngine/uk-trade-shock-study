@@ -730,7 +730,7 @@ def emit_nosyn_macros(path=None):
 
     add("RecordsExcluded", f"{x['records_excluded']:,}")
     add("RecordsKept", f"{x['records_kept']:,}")
-    add("WeightSharePct", f"{x['weight_share_excluded_pct']:.2f}")
+    add("WeightSharePct", f"{x['weight_share_excluded_pct']:.1f}")
     add("DiscretionaryRatePct", f"{d['rate_pct_of_counterfactual']:.1f}")
     add("EnergySpecificRatePct", f"{d['energy_specific_rate_pct']:.1f}")
     add("EpgRatePct", f"{d['epg_rate_pct']:.1f}")

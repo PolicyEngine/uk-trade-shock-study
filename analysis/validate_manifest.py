@@ -16,24 +16,17 @@ Three sections, three contracts:
     from. Must always exist and match.
 
 Why ``quoted_results`` exists. Every number the paper prints is produced by a
-writer in ``analysis/write_*.py`` from a JSON or CSV artifact in ``results/``.
-Those artifacts are the ONLY reproducible object a reader gets: the FRS
+emitter script (see the Makefile) from a JSON or CSV artifact in ``results/``.
+Those artifacts are the ONLY reproducible object a reader gets: the Microcosm UK
 microdata behind them is licensed and cannot be redistributed, so nobody
 outside the project can regenerate them. Before this section the manifest
 pinned two packaged CSVs and nothing the manuscript quotes, which meant the
 manifest could pass while every headline number had silently moved.
 
-What is deliberately NOT pinned, and why: artifacts that the paper build
-itself rewrites. ``make paper-values`` re-runs
-``analysis/referee_fixes.py --only jsa`` (which rewrites
-``results/referee_fixes.json``), ``analysis/write_referee_macros.py`` (which
-stamps provenance back into the same file) and
-``analysis/write_submission_results.py`` (which writes
-``results/submission_summary.json``). Pinning a file that the very next build
-step rewrites would make ``make check`` fail against itself, and the hash
-would record the previous build rather than the frozen evidence. Those two
-are listed in ``build_products`` for the record, and the test suite asserts
-that no pinned path is also a build product.
+What is deliberately NOT pinned: any file a build step rewrites in place.
+The paper build only reads ``results/``, so ``build_products`` is empty; a
+future in-place writer must be listed there rather than pinned, or
+validation would fail against itself.
 
 Hash-pinning is the right mechanism here rather than "git already tracks
 them": git records that a file CHANGED, this records which vintage the

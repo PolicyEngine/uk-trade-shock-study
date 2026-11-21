@@ -11,7 +11,7 @@ PKG := uk_trade_shock_study
 .PHONY: bootstrap e3 first-pass second-stage deflated lcfs-validation grid figures paper test reproduce
 
 bootstrap:
-	uv sync
+	uv sync --extra dev
 
 # Episode 3 (US tariffs): earnings-channel runs, then the constants the
 # first pass reads.
@@ -26,7 +26,7 @@ e3:
 	PYTHONPATH=. $(PYTHON) analysis/emit_e3_macros.py
 	PYTHONPATH=. $(PYTHON) analysis/emit_data_macros.py
 
-# First pass: public-data incidence for all five episodes (no licensed data).
+# First pass: public-data incidence for all four episodes (no licensed data).
 first-pass:
 	cd $(PKG) && ../$(PYTHON) incidence.py
 	cd $(PKG) && ../$(PYTHON) make_figures.py

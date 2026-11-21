@@ -41,14 +41,19 @@ NOTES.md                replication notes, conventions, dataset hashes
 ## Reproduce
 
 ```bash
-make bootstrap                       # uv sync
+make bootstrap                       # uv sync --extra dev
 make test                            # pipeline and macro checks
 export HUGGING_FACE_TOKEN=...        # access to the certified Microcosm UK build
+make reproduce                       # every result, figure and the paper
+# or step by step:
 make e3                              # tariff scenario
 make first-pass                      # decile-table analysis (public data)
 make second-stage                    # household stage on Microcosm UK
+make deflated                        # deflated-input and 2022-rules checks
+make lcfs-validation                 # LCFS cross-check (licensed LCFS files)
 make grid
 make paper
+python analysis/validate_manifest.py # every quoted result matches its pinned hash
 ```
 
 ## Data

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Public-data household-incidence pipeline for the UK multi-shock trade study.
 
-Runs five post-Covid UK trade-shock episodes through a common household lens:
+Runs four post-Covid UK trade-shock episodes through a common household lens:
   E1  TCA / Brexit NTBs, food prices 2021-23   (declared first stage: Bakker
       et al., CEP Brexit Analysis 18: +8% food, central; 6% sensitivity)
   E2  Energy price shock 2022-23               (Ofgem cap 1,277 -> 3,549 gross;

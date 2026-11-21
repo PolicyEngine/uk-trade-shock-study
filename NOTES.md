@@ -1,6 +1,8 @@
 # Notes and assumptions — multi-shock household-incidence pipeline
 
-Date run: 19 August 2026. One end-to-end script (`uk_trade_shock_study/incidence.py`); all inputs
+These notes cover the first pass, the public-data decile-table stage run by
+`make first-pass` (`uk_trade_shock_study/incidence.py`); the household stage on
+Microcosm UK is documented in the README. In the first pass all inputs are
 public, every raw file pinned by SHA256 (verified at each run), every reported
 number generated into `results/results.json` and `results/generated_multishock.tex`
 (`\newcommand` macros prefixed `Ms`, no digits in macro names). Declared first
@@ -35,7 +37,7 @@ every run.
   2,871k per decile (28,710k). Aggregates use each vintage's own counts.
 - LCF spending under-records at the top of the distribution, so aggregate
   grossings are conservative relative to national accounts (same caveat as
-  the sibling retaliation prototype).
+  earlier retaliation prototype).
 
 ## 3. Income denominators (ASSUMPTION block)
 
@@ -195,7 +197,7 @@ pipeline root).
 - E1: replace the linear phase-in with the published monthly Brexit-NTB
   price path; deflate the spend base to Dec-2019 prices.
 - E2: prepayment/standard-credit tariff differences, EBSS £400 rebate and
-  other support (only EPG modelled), demand response.
+  demand response (the household stage models the Guarantee, Bills Support Scheme, Council Tax rebate and Cost of Living Payments).
 - E4: DBT's own consumer-surplus incidence, VAT interactions, household
   textiles in COICOP 5.2.
 - Module 2: full benefit-unit modelling (housing element, LHA freeze,

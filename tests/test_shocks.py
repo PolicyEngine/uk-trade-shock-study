@@ -449,12 +449,12 @@ def test_epd_displaces_fewer_than_full_tariff():
 
 def test_build_shocked_simulation_requires_policyengine():
     """Smoke-guard: the FRS pipeline is exercised only when policyengine-uk
-    and the (licensed, gitignored) FRS h5 are available."""
+    and the (licensed, gitignored) Microcosm UK h5 is available."""
     pytest.importorskip("policyengine_uk")
     from pathlib import Path
 
-    if not Path("data/frs_2024_25.h5").exists():
-        pytest.skip("FRS dataset not downloaded (run analysis/download_data.py)")
+    if not Path("uk_trade_shock_study/data/microcosm_uk_2024_25.h5").exists():
+        pytest.skip("Microcosm UK not materialised (needs HUGGING_FACE_TOKEN)")
 
 
 def test_lcwra_addon_one_element_per_benunit():

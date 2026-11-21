@@ -36,20 +36,6 @@
       "exclusions": "Suppressed division-years are skipped; latest available non-suppressed year is used per division"
     },
     {
-      "id": "frs_2024_25",
-      "source": "PolicyEngine UK single-year dataset built from Family Resources Survey 2024-25",
-      "url": "https://huggingface.co/policyengine/policyengine-uk-data",
-      "retrieved_at": "2026-06-19",
-      "vintage": "FRS 2024-25",
-      "local_path": "data/frs_2024_25.h5",
-      "sha256": "623802aad0f7eef76df8a0ce1b19933b5648ac97486d5b01d371e7c7d374ba40",
-      "distributed": false,
-      "exclusions": "Licensed microdata are not redistributed",
-      "upstream_revision": "5535b2f805d66790aa9432d6dedad73b673646d3",
-      "upstream_release": "policyengine-uk-data 1.56.6",
-      "note": "The Hugging Face repo has since replaced this file (1.56.12 onward), so a bare download of frs_2024_25.h5 no longer reproduces these results. Pass revision=upstream_revision to hf_hub_download, or verify sha256 before running. The earlier retrieved_at of 2026-07-22 was the download date, not the vintage of the bytes; the sha256 identifies release 1.56.6 of 2026-06-19."
-    },
-    {
       "id": "ons_input_output_2022",
       "source": "ONS input-output analytical tables",
       "url": "https://www.ons.gov.uk/economy/nationalaccounts/supplyandusetables",
@@ -61,37 +47,15 @@
       "exclusions": "Used only for the separately labelled accounting sensitivity"
     },
     {
-      "id": "hmrc_product_destination_panel",
-      "source": "HMRC uktradeinfo OTS API",
-      "url": "https://api.uktradeinfo.com",
-      "retrieved_at": "2026-07-29",
-      "vintage": "January 2018 to May 2026; United States, Canada, Japan and Australia",
-      "local_path": "data/public/hmrc_exports_product_destination_201801_202606.csv.gz",
-      "sha256": "380e092ef70dc564fd3766ab8e8f63bae79b95047f9bbcaf1cb46663b2ffa9ee",
+      "id": "microcosm_uk_2024_25",
+      "source": "Microcosm UK 2024-25 (certified build), derived from FRS, LCFS, WAS and SPI microdata; resolved by policyengine.py 6.20.0 managed_microsimulation()",
+      "url": "https://huggingface.co/policyengine/populace-uk-private",
+      "vintage": "FRS 2024-25 base year",
+      "build_id": "microcosm-uk-2024-25-national-20261107T020434Z-eeb6093e",
+      "local_path": "uk_trade_shock_study/data/microcosm_uk_2024_25.h5",
+      "sha256": "0a9b77db1c0dee2693cb2d47bad68da34cb662916eee4829942bcd45de581f25",
       "distributed": false,
-      "exclusions": "HMRC two-digit aggregate rows are excluded from the HS4 event-study panel; detailed seven-digit numeric IDs are retained after restoring the leading zero"
-    },
-    {
-      "id": "nomis_bres_manufacturing_2024",
-      "source": "Nomis BRES API",
-      "url": "https://www.nomisweb.co.uk/api/v01/dataset/NM_189_1.data.csv",
-      "retrieved_at": "2026-07-29",
-      "vintage": "2015-2024 Great Britain manufacturing employee totals by SIC division",
-      "local_path": "data/public/bres_manufacturing_employment_2015_2024.csv",
-      "sha256": "c49811ebf51904f1f04a017e664857c12e127041be3902f30dfa7b835ee1c4da",
-      "distributed": false,
-      "exclusions": "Disclosure-rounded public aggregates; 2024 employees are used for LFS composition calibration"
-    },
-    {
-      "id": "lfs_five_quarter_9490",
-      "source": "Office for National Statistics via UK Data Service",
-      "url": "https://doi.org/10.5255/UKDA-SN-9490-1",
-      "retrieved_at": "2026-07-29",
-      "vintage": "July 2024 to September 2025, Study Number 9490",
-      "local_path": "data/licensed/lgwt24_5q_js24_js25_eul.tab",
-      "sha256": "961b9622df950e1fa0661f89a3062c5a444cfab34f86c13e8fd4e4dac00ca9ac",
-      "distributed": false,
-      "exclusions": "End User Licence microdata are not redistributed; analysis keeps wave-1 employees and treats negative UKDS sentinels as missing"
+      "exclusions": "Licensed microdata are not redistributed; access on request to PolicyEngine subject to UK Data Service licences"
     }
   ],
   "derived_outputs": [
@@ -104,11 +68,8 @@
       "sha256": "fec39f0e1dfdb9185e8dd67b5c0830eafaeb6473cb3c72e0460622a5ee987468"
     }
   ],
-  "build_products": [
-    "results/referee_fixes.json",
-    "results/submission_summary.json"
-  ],
-  "build_products_note": "results/referee_fixes.json is rewritten by `analysis/referee_fixes.py --only ...` and stamped in place by `analysis/write_referee_macros.py`; results/submission_summary.json is written by `analysis/write_submission_results.py --diagnostics`. Both run inside `make paper-values`, so both are build products of the paper, not inputs to it.",
+  "build_products": [],
+  "build_products_note": "None: every results/ artifact the paper quotes is produced by a Makefile target and pinned under quoted_results; the paper build (make paper) only reads them.",
   "quoted_results": [
     {
       "path": "results/deflated_inputs.json",
@@ -161,44 +122,44 @@
     {
       "path": "results/full_tariff_displacement.json",
       "sha256": "6931a8621ee14810292f0974bc14c33a3b0f120f7bc0a881af13def6aed368cf",
-      "quoted_by": "analysis/write_paper_results.py",
-      "produced_by": "make results"
+      "quoted_by": "analysis/emit_e3_macros.py",
+      "produced_by": "make e3"
     },
     {
       "path": "results/full_tariff_displacement_bernoulli.json",
-      "produced_by": "see Makefile",
-      "quoted_by": "paper (generated macros)",
+      "produced_by": "make e3",
+      "quoted_by": "analysis/emit_e3_macros.py",
       "sha256": "d925558fb29a2875657465fb8f261b401c00e406e949a368c2ecfcddf717befb"
     },
     {
       "path": "results/full_tariff_displacement_no_jsa.json",
-      "produced_by": "see Makefile",
-      "quoted_by": "paper (generated macros)",
+      "produced_by": "make e3",
+      "quoted_by": "analysis/emit_e3_macros.py",
       "sha256": "5643f9f4f0f755cd8a88daeb1ae2ec384b2212d55bd590b8f2217d4e736efe5d"
     },
     {
       "path": "results/full_tariff_obr_low_displacement.json",
       "sha256": "6a4c75113f5d934ee83c2cdfb06767654c450e66f300c6d1c07acb4e1ae035bd",
-      "quoted_by": "analysis/write_paper_results.py",
-      "produced_by": "make results"
+      "quoted_by": "analysis/emit_e3_macros.py",
+      "produced_by": "make e3"
     },
     {
       "path": "results/full_tariff_obr_low_displacement_no_jsa.json",
-      "produced_by": "see Makefile",
-      "quoted_by": "paper (generated macros)",
+      "produced_by": "make e3",
+      "quoted_by": "analysis/emit_e3_macros.py",
       "sha256": "3d6e0fa18143bff2772fbe241731ea66f8f24be211e0c082268d523337c7cf89"
     },
     {
       "path": "results/full_tariff_obr_low_wage_cut.json",
       "sha256": "6409b7b650f9db905312a7bcd9ae8429437f67f18571291ea9f33489da2b1354",
-      "quoted_by": "analysis/write_paper_results.py",
-      "produced_by": "make results"
+      "quoted_by": "analysis/emit_e3_macros.py",
+      "produced_by": "make e3"
     },
     {
       "path": "results/full_tariff_wage_cut.json",
       "sha256": "776248abd1bf7b7ab9d1bcf36c882d8a5027695f162245cead3af87094104fef",
-      "quoted_by": "analysis/write_paper_results.py",
-      "produced_by": "make results"
+      "quoted_by": "analysis/emit_e3_macros.py",
+      "produced_by": "make e3"
     },
     {
       "path": "results/grid_energy.json",
@@ -231,16 +192,40 @@
       "produced_by": "uk_trade_shock_study/second_stage_energy.py"
     },
     {
+      "path": "results/second_stage_energy_deflated.json",
+      "produced_by": "make deflated",
+      "quoted_by": "paper (generated macros)",
+      "sha256": "21ff9eb1b227143d296e2f47c425ae4ea11a2fbc08e84e74cc65e1b76ac382e8"
+    },
+    {
       "path": "results/second_stage_energy_nosyn.json",
       "produced_by": "see Makefile",
       "quoted_by": "paper (generated macros)",
       "sha256": "432bbf72531ea441df9ecb2c1b6b6b4ee0bedae9c2a7ded9390a5152c2e556bb"
     },
     {
+      "path": "results/second_stage_energy_rules2022.json",
+      "produced_by": "make deflated",
+      "quoted_by": "paper (generated macros)",
+      "sha256": "224cca55c0778e47af2df8f017b68b250fead445d51cd9bf10b3901b126ab8f9"
+    },
+    {
+      "path": "results/second_stage_energy_rules2022_deflated.json",
+      "produced_by": "make deflated",
+      "quoted_by": "paper (generated macros)",
+      "sha256": "c264ea5b3db87f3215244d492fd8894f03a2d2d8a3f511829c402e7b982c23a2"
+    },
+    {
       "path": "results/uprating_lag_reform.json",
       "produced_by": "see Makefile",
       "quoted_by": "paper (generated macros)",
       "sha256": "e76ab2ec0e943d07e8017eb02a0ff2a74a68f603afc623ac7b76821a624c25e1"
+    },
+    {
+      "path": "results/uprating_lag_reform_deflated.json",
+      "produced_by": "make deflated",
+      "quoted_by": "paper (generated macros)",
+      "sha256": "fcb16ed86631adb7ac1f4a3024cea880c0c63b395345086af6a1e5d39ad2daf1"
     }
   ]
 }

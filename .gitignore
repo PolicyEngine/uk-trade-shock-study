@@ -13,8 +13,7 @@ results/bootstrap_contributions.npz
 
 # Per-record inclusion diagnostic: carries person-level FRS survey weights
 # and earnings for individually ranked records, so it is a licensed-microdata
-# derivative and must never be committed. Regenerate with
-# `make assignment-inclusion`.
+# derivative and must never be committed (legacy output; no longer built).
 /results/assignment_inclusion_diagnostic.json
 
 # Compiled manuscript: `paper/main.pdf` is deliberately tracked as a
@@ -30,9 +29,8 @@ paper/*.fdb_latexmk
 # LFS/FRS benchmark microdata: both carry person-level FRS records
 # (person_id, age, gender, employment_income, survey weight) and are licensed
 # under the UKDS end-user licence, so they must never be committed. The
-# manuscript reads results/lfs_qrf_benchmark_summary.json, an aggregate
-# derived from them. Rebuild both with
-# `make lfs-benchmarks LFS_TAB=/path/to/panel.tab`.
+# legacy outputs of an earlier design, no longer built; kept here so they
+# can never be re-committed.
 /results/lfs_imputed_frs_transition_parameters.csv.gz
 /results/lfs_qrf_benchmark.csv.gz
 

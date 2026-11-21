@@ -202,9 +202,9 @@ def fig_incidence_profile(d: Data):
     fig.subplots_adjust(left=0.125, right=0.755, top=0.925, bottom=0.315)
 
     series = [
-        ("Energy 2022-23, realised path (cost)", d.en_real_pct, BLUE, "-", "o", BLUE),
-        ("Energy 2022-23, gross counterfactual (cost)", d.en_gross_pct, BLUE, "--", "o", "white"),
-        ("TCA food NTBs, window average (cost)", d.tca_win_pct, GREEN, "-", "s", GREEN),
+        ("Energy 2022–23, realised path (cost)", d.en_real_pct, BLUE, "-", "o", BLUE),
+        ("Energy 2022–23, gross counterfactual (cost)", d.en_gross_pct, BLUE, "--", "o", "white"),
+        ("TCA food non-tariff barriers, window average (cost)", d.tca_win_pct, GREEN, "-", "s", GREEN),
         ("UK–India agreement, 100% pass-through (gain)", d.ceta_pct, TEAL, ":", "^", "white"),
     ]
     for label, y, color, ls, marker, mfc in series:
@@ -277,7 +277,7 @@ def fig_energy_epg(d: Data):
     # annotation or connector (academic convention: the chart shows, the
     # caption tells).
 
-    decile_ax(ax, "Annual cost of the 2022-23 energy shock\n(\u00a3 per household per year)")
+    decile_ax(ax, "Annual cost of the 2022–23 energy shock\n(\u00a3 per household per year)")
     ax.set_ylim(0, 2300)
     ax.set_xlim(0.4, 10.6)
     ax.legend(ncol=2, loc="upper center", bbox_to_anchor=(0.5, -0.165),
@@ -338,7 +338,7 @@ def fig_uprating_lag(d: Data):
 
     ax.set_xticks(x)
     ax.set_xticklabels([m.split("-")[1].capitalize() for m in d.months])
-    ax.set_xlabel("Month, financial year 2022-23")
+    ax.set_xlabel("Month, financial year 2022–23")
     ax.set_ylabel("Universal Credit standard allowance,\nsingle adult 25+ (\u00a3 per month)")
     ax.set_ylim(320, 395)
     ax.set_xlim(-0.4, len(x) - 0.6)
@@ -370,9 +370,9 @@ def fig_episode_map(d: Data):
     e3_bn = ep["E3_us_tariffs"]["earnings_side_declared"]["gross_shock_gbp_m_per_year"] / 1e3
     ss = json.loads((RESULTS.parent / "second_stage_energy.json").read_text())["shock"]
     eps = [
-        ("E1", "E1  TCA food NTBs", -1.02, -0.72, e1_bn, "cost", False,
+        ("E1", "E1  TCA food non-tariff barriers", -1.02, -0.72, e1_bn, "cost", False,
          "+8 pp on food prices"),
-        ("E2", "E2  Energy 2022-23", -0.98, -1.60, e2_bn, "cost", True,
+        ("E2", "E2  Energy 2022–23", -0.98, -1.60, e2_bn, "cost", True,
          f"FY-mean cap \u00a3{ss['base_fy_mean_cap']:,.0f} \u2192 "
          f"\u00a3{ss['counterfactual_fy_mean_cap']:,.0f}"),
         ("E3", "E3  US tariffs 2025", 0.42, -1.10, e3_bn, "cost", False,
@@ -476,7 +476,7 @@ def write_tables(d: Data):
     A("\\label{tab:decile-full}")
     A("\\begin{tabular}{@{}l rr rr rr r@{}}")
     A("\\toprule")
-    A(" & \\multicolumn{2}{c}{TCA food NTBs} & \\multicolumn{2}{c}{Energy, gross}")
+    A(" & \\multicolumn{2}{c}{TCA food barriers} & \\multicolumn{2}{c}{Energy, gross}")
     A(" & \\multicolumn{2}{c}{Energy, net of the Guarantee} & UK--India gain \\\\")
     A("\\cmidrule(lr){2-3}\\cmidrule(lr){4-5}\\cmidrule(lr){6-7}\\cmidrule(l){8-8}")
     A("Decile & \\pounds/yr & \\% spend & \\pounds/yr & \\% spend"
@@ -518,17 +518,17 @@ def write_tables(d: Data):
     # --- tab:first-stages ------------------------------------------------
     # Cite keys are placeholders: map them onto the manuscript's .bib.
     rows = [
-        ("E1 TCA food NTBs", "Dec 2019--\\newline Mar 2023$^{w}$", "Policy",
+        ("E1 TCA food non-tariff barriers", "Dec 2019--\\newline Mar 2023$^{w}$", "Policy",
          "Consumer prices (food)", "\\citet{bakker2023}",
          "$+8$ pp on food prices", "Estimate\\newline (ex post)"),
         ("E2 Energy 2022--23", "Apr 2022--\\newline Mar 2023", "Market",
          "Consumer prices (energy)", "\\citet{ofgem2021, ofgem2022, ofgemcap2023}; \\citet{obrenergy2023}",
          "FY-mean cap \\pounds\\SsBaseFyCap\\ $\\to$ \\pounds\\SsCounterFyCap\\ (\\pounds\\SsRealisedFyCap\\ with the Guarantee)",
          "Observed\\newline (statutory)"),
-        ("E3 US tariffs 2025", "2025", "Policy\\newline (foreign)",
+        ("E3 US tariffs 2025", "2025--26", "Policy\\newline (foreign)",
          "Earnings only; no UK retaliation", "Constructed here (Appendix~\\ref{app:e3})",
          "\\pounds\\MsUSTariffGrossShockMillions m/yr earnings loss (unit elasticity)", "Scenario\\newline (assumed)"),
-        ("E4 UK--India agreement", "2026+", "Policy",
+        ("E4 UK--India agreement", "2026--", "Policy",
          "Consumer prices (clothing, footwear, food)", "\\citet{dbtindia2026}",
          "\\pounds180m/yr duty cut on final goods", "Projection\\newline (ex ante)"),
     ]
@@ -537,7 +537,7 @@ def write_tables(d: Data):
     A("\\footnotesize")
     A("\\setlength{\\tabcolsep}{3pt}")
     A("\\renewcommand{\\arraystretch}{1.15}")
-    A("\\caption{The four shocks: source and status.}")
+    A("\\caption{The four shocks: source and status}")
     A("\\label{tab:first-stages}")
     A("\\begin{tabular}{@{}p{1.75cm} p{1.70cm} p{1.45cm} p{2.30cm} p{2.10cm}"
       " p{2.75cm} p{1.85cm}@{}}")

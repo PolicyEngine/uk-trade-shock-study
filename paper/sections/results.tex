@@ -63,11 +63,11 @@ either base), by energy-specific instruments
 (\SsEnergySpecificRatePct) and by the full stack
 (\SsDiscretionaryRatePct), the last two on household records
 (Section~\ref{sec:results-secondstage}).
+$^{z}$~the UK did not retaliate, so there is no consumer-price shock.
 $^{m}$~share of the gross earnings loss offset by taxes and benefits,
 displacement to wage cut (Section~\ref{sec:results-tariff}); the
 cushioning rate $c^{Y}$, which also counts pension contributions that
 cease, is \EThreeDispRatePct--\EThreeWageRatePct\ per cent.
-$^{z}$~the UK did not retaliate, so there is no consumer-price shock.
 $^{g}$~gain, not cost; the decile shares allocate the
 \pounds\MsCetaAllocatedMillions\ million with published spending
 detail.
@@ -169,7 +169,7 @@ counterfactual shock and the Guarantee's share of it, to as little as
 
 Because the Guarantee capped a price, its cushioning rate is constant
 across deciles by construction, and decile means understate the
-dispersion it faced; \citet{levell2025} show that a price subsidy can
+dispersion in exposure; \citet{levell2025} show that a price subsidy can
 form part of an optimal package when income predicts exposure poorly.
 Whether the overall discretionary response was progressive cannot be
 judged from the Guarantee alone: the Energy Bills Support Scheme's
@@ -202,7 +202,7 @@ open-source static microsimulation model that encodes UK income tax,
 National Insurance and the main benefits as dated statutory
 parameters, in the tradition surveyed by \citet{figari2015}. It is run
 through policyengine.py 6.20.0 (PolicyEngine UK
-\SsPolicyEngineVersion) on the certified release of the Microcosm UK
+\SsPolicyEngineVersion) on the versioned release of the Microcosm UK
 2024--25 dataset \citep{microcosmuk}, a versioned build identified by
 checksum. Its \SsHouseholdsRecords\ household records derive from the
 Family Resources Survey \citep{frs}, with consumption imputed from the
@@ -261,7 +261,7 @@ rules. The first three are \emph{energy-specific}; the \emph{full
 stack} adds the Cost of Living Payments. The Warm Home Discount is not
 modelled.
 
-\runin{Deciles, shares and levels.} Deciles are of equivalised HBAI
+\runin{Deciles, shares and levels.} Deciles are of equivalised Households Below Average Income (HBAI)
 before-housing-costs income, and burdens are shares of household
 expenditure, with numerator and denominator rebased to 2021--22.
 Household weights total \SsWeightedHouseholdsM\ million against an ONS
@@ -422,9 +422,9 @@ energy cost (\SsGridPaperFullMaxDecilePct\ per cent), and only as a
 point estimate; on the equal-half-year paths the bottom decile also
 exceeds 100 (Table~\ref{tab:paths}), and without the synthetic
 records \SsNoSynDecilesAboveHundred\ deciles do. A household bootstrap (\SsBootReps\ resamples clustered on
-the source survey household, as urged by \citealp{goedeme2013}) puts
-\SsRateLo--\SsRateHi\ per cent around the aggregate rate and
-\SsCushionDecOneLo--\SsCushionDecOneHi\ around the bottom decile's,
+the source survey household, as urged by \citealp{goedeme2013}) gives
+95 per cent intervals of \SsRateLo--\SsRateHi\ per cent for the aggregate rate and
+\SsCushionDecOneLo--\SsCushionDecOneHi\ for the bottom decile's,
 and the net amount borne (negative where the household gained) has 95 per cent
 intervals of $\SsNetLoDecOne$ to $\SsNetHiDecOne$, $\SsNetLoDecTwo$ to
 $\SsNetHiDecTwo$, $\SsNetLoDecThree$ to $\SsNetHiDecThree$ and
@@ -443,10 +443,10 @@ Bills Support Scheme, \pounds\SsEbssBn\ billion, is within one per
 cent of its \pounds\SsEbssOutturnBn\ billion outturn, and scaling to
 the outturn gives a full-stack rate of \SsCalFullRatePct\ per cent.
 The modelled Cost of Living Payments are \SsColOutturnTotalExcessPct\
-per cent above the official total, with the means-tested payment
-\SsColOutturnMtExcessPct\ per cent, the pensioner payment
-\SsColOutturnPenExcessPct\ per cent and the disability payment
-\SsColOutturnDisExcessPct\ per cent from their official figures;
+per cent above the official total; the means-tested, pensioner and
+disability payments differ from their official figures by
+\SsColOutturnMtExcessPct, \SsColOutturnPenExcessPct\ and
+\SsColOutturnDisExcessPct\ per cent;
 scaling each to its figure gives \SsColOutturnCalFullRatePct\ per
 cent. And the modelled rebate for England,
 \pounds\SsCtrEnglandBn\ billion, compares with
@@ -554,7 +554,7 @@ cent of spending at the tenth percentile to \SsPNinetyDecOne\ at the
 ninetieth, a wider range than the gap between the bottom and top
 decile means.
 
-Two limits bound what this establishes. Exposure is imputed from LCFS donors, so part of this could be
+Two limits bound what this establishes. First, exposure is imputed from LCFS donors, so part of this could be
 donor-model variation. On the LCFS itself the within-decile share is
 \SsLcfsWithinPct\ per cent in 2024--25 and \SsLcfsTwentyTwoWithinPct\
 per cent in 2022--23, and the rebased decile burdens are close to
@@ -602,7 +602,7 @@ Because the food shock built up over three upratings, annual
 indexation did pick part of it up, with the lag described above. And
 nothing was legislated against the food-price rise (general support
 such as the Household Support Fund is outside the model). The Cost of Living Payments cushioned food-price inflation as
-much as energy, so they cannot be counted for energy and ignored for
+well as energy, so they cannot be counted for energy and ignored for
 food; the comparison has to be between episode-specific instruments.
 On that basis the state cushioned \SsEnergySpecificRatePct\ per cent
 of the counterfactual energy shock and none of the food shock, which
@@ -659,7 +659,8 @@ exact expectation over those independent job losses, computed from all
 is the tariff rate times the US share, the proportional fall in the
 division's employee wage bill. Employees, mean pay and loss are from
 the household records at 2026--27 values. The \EThreeIndRowsShown\
-largest divisions by loss are shown.
+largest divisions by loss are shown; Share is the division's share of
+the total loss.
 \end{minipage}
 \end{table}
 
@@ -680,7 +681,7 @@ the same in both (\EThreeWageNiOfGrossPct\ and
 (\EThreeDispUcOfGrossPct\ against \EThreeWageUcOfGrossPct) and the
 flat-rate New Style Jobseeker's Allowance
 (\EThreeDispJsaContribOfGrossPct) narrow the gap; the EU systems in
-\citet{dolls2012} cushion unemployment more largely through
+\citet{dolls2012} cushion unemployment mainly through
 earnings-related insurance, which the New Style allowance is not
 (Appendix Table~\ref{tab:e3-split}).
 
@@ -697,7 +698,7 @@ three months, because income tax is then relieved at marginal rates.
 The income-tax relief depends on how well paid the exposed workers
 are. Their mean pay, weighted by expected displacement, is
 \pounds\EThreeAsheModelMeanK\ thousand,
-\EThreeAsheModelOverAsheMeanPct\ per cent of the ASHE mean for the
+\EThreeAsheModelOverAsheMeanPct\ per cent of the Annual Survey of Hours and Earnings (ASHE) mean for the
 same divisions \citep{ashe}, and \EThreeHigherRateSharePct\ per cent
 of them are above the higher-rate threshold against about
 \EThreeAsheHigherRateSharePct\ per cent implied by ASHE, so the
@@ -737,9 +738,8 @@ through \pounds\EThreeDispDecGbpFive\ in the fifth to
 \EThreeDispDecGbpFour, \EThreeDispDecGbpSix, \EThreeDispDecGbpSeven,
 \EThreeDispDecGbpEight\ and \EThreeDispDecGbpNine\ in the others).
 Against the uniform benchmark the tariff pattern is lighter in the
-bottom and top deciles; the excess in the fourth decile rests on few
-records. Decile cells
-rest on few effective records, so differences between adjacent deciles
+bottom and top deciles. Decile cells, the fourth especially, rest on
+few effective records, so differences between adjacent deciles
 are imprecise and the pattern should be read by broad group: almost
 nothing at the bottom, most in the middle and at the top. Measured
 like the price shocks, as a share of spending, the net loss is

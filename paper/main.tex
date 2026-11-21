@@ -18,15 +18,22 @@
 \usepackage[colorlinks=true, citecolor=paperblue, linkcolor=paperblue, urlcolor=paperblue]{hyperref}
 \hypersetup{
   pdftitle={Who pays for trade shocks? Distributional incidence and fiscal cushioning in the UK},
-  pdfauthor={Vahid Ahmadi},
   pdfsubject={Comparative household incidence of UK trade shocks 2021-2026 through the tax-benefit system},
   pdfkeywords={trade shocks, energy price shock, benefit indexation, tax-benefit microsimulation, automatic stabilisers, incidence}
 }
 \usepackage{natbib}
+\ifdefined\anonymous\else\hypersetup{pdfauthor={Vahid Ahmadi}}\fi
 \bibliographystyle{apalike}
 
+% Anonymised build for double-blind review: compile main_anon.tex, which
+% defines \anonymous before inputting this file.
+\ifdefined\anonymous
+\title{\Large\bfseries Who pays for trade shocks?\\[0.15cm] Distributional incidence and fiscal cushioning in the UK\\[0.7cm]}
+\author{}
+\else
 \title{\Large\bfseries Who pays for trade shocks?\\[0.15cm] Distributional incidence and fiscal cushioning in the UK\thanks{\textbf{Acknowledgements:} I thank Max Ghenis and colleagues at PolicyEngine for valuable comments and helpful discussions.}\\[0.7cm]}
 \author{Vahid Ahmadi\thanks{Research Associate at PolicyEngine. Email: \href{mailto:vahid@policyengine.org}{vahid@policyengine.org}.}}
+\fi
 \date{\small November 2026}
 
 \input{generated_multishock}
@@ -50,7 +57,7 @@
 
 \begin{abstract}
 \noindent I study who bore four UK trade-related shocks of 2021--26 and
-how much the state cushioned: the post-Brexit rise in food
+how far the state cushioned them: the post-Brexit rise in food
 prices, the 2022 energy price surge, the 2025 US tariffs and the
 UK--India agreement. Taking shock sizes from published estimates and
 projections, and an assumed tariff scenario, I trace their conditional
@@ -72,7 +79,7 @@ indexation followed a year late.
 \noindent\textbf{Keywords:} trade shocks; energy price shock; benefit indexation; tax--benefit microsimulation; automatic stabilisers; incidence
 
 \smallskip
-\noindent\textbf{JEL codes:} F13, F14, H22, H53, I38, D31
+\noindent\textbf{JEL codes:} D31, F13, F14, H22, H53, I38
 
 \newpage
 \input{sections/intro}
@@ -85,9 +92,9 @@ indexation followed a year late.
 
 \section*{Data and code availability}
 The replication code and all public inputs, pinned by checksum, are at
-\url{https://github.com/PolicyEngine/uk-trade-shock-study}. The
+\ifdefined\anonymous [repository link withheld for review]\else\url{https://github.com/PolicyEngine/uk-trade-shock-study}\fi. The
 household results use policyengine.py 6.20.0 (PolicyEngine UK
-\SsPolicyEngineVersion) and the certified Microcosm UK 2024--25
+\SsPolicyEngineVersion) and the versioned Microcosm UK 2024--25
 dataset, which is derived from Family Resources Survey, Living Costs
 and Food Survey, Wealth and Assets Survey and Survey of Personal
 Incomes microdata. Those microdata are available to researchers under

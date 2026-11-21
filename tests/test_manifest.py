@@ -59,18 +59,14 @@ def test_every_quoted_result_is_pinned() -> None:
 
 
 def test_the_paper_builds_own_outputs_are_not_pinned() -> None:
-    """A file the next build step rewrites must not be hash-pinned.
+    """A file a build step rewrites must not be hash-pinned.
 
-    `make paper-values` runs `referee_fixes.py --only jsa` and
-    `write_referee_macros.py` (both write results/referee_fixes.json) and
-    `write_submission_results.py` (which writes results/submission_summary.json).
-    Pinning either would make `make check` fail against itself.
+    The paper build only reads results/, so build_products is empty; if a
+    future step writes a results/ file in place, list it there instead of
+    pinning it.
     """
     build_products = set(MANIFEST_DATA["build_products"])
-    assert build_products == {
-        "results/referee_fixes.json",
-        "results/submission_summary.json",
-    }
+    assert build_products == set()
     for section in ("derived_outputs", "quoted_results"):
         pinned = {item["path"] for item in MANIFEST_DATA[section]}
         assert not (pinned & build_products)

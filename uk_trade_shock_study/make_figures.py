@@ -373,7 +373,7 @@ def fig_episode_map(d: Data):
         ("E1", "E1  TCA food non-tariff barriers", -1.02, -0.72, e1_bn, "cost", False,
          "+8 pp on food prices"),
         ("E2", "E2  Energy 2022–23", -0.98, -1.60, e2_bn, "cost", True,
-         f"Financial-year mean cap \u00a3{ss['base_fy_mean_cap']:,.0f} \u2192 "
+         f"Mean cap \u00a3{ss['base_fy_mean_cap']:,.0f} \u2192 "
          f"\u00a3{ss['counterfactual_fy_mean_cap']:,.0f}"),
         ("E3", "E3  US tariffs 2025", 0.42, -1.10, e3_bn, "cost", False,
          "earnings only; no UK retaliation"),

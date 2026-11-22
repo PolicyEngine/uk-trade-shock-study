@@ -9,6 +9,8 @@
 \usepackage{xcolor}
 \definecolor{paperblue}{rgb}{0,0,0.7}
 % Run-in paragraph headings: bold blue, upright.
+% Spell out small counts that come from generated macros (0--10).
+\newcommand{\numword}[1]{\ifcase#1 zero\or one\or two\or three\or four\or five\or six\or seven\or eight\or nine\or ten\else #1\fi}
 \newcommand{\runin}[1]{\textbf{\textcolor{paperblue}{#1}}}
 \makeatletter
 \renewcommand{\paragraph}{\@startsection{paragraph}{4}{\z@}{1.5ex \@plus 0.5ex \@minus 0.2ex}{-1em}{\normalfont\normalsize\bfseries\color{paperblue}}}

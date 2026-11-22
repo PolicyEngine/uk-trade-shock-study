@@ -204,7 +204,7 @@ def main() -> None:
     ax.plot(x, p_gross, color=BLUE, ls="--", marker="o", mfc="white",
             label="Gross counterfactual (no policy)")
     ax.plot(x, p_real, color=BLUE, ls="-", marker="o",
-            label="Realised path (EPG in force)")
+            label="Realised path (Guarantee in force)")
     ax.plot(x, p_cash, color=GREY, ls=":", marker="s", mfc="white",
             label="Cash outlay (realised × observed demand response)")
     ax.set_xticks(x)

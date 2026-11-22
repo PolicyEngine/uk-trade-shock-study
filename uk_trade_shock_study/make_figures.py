@@ -278,7 +278,7 @@ def fig_energy_epg(d: Data):
     # caption tells).
 
     decile_ax(ax, "Annual cost of the 2022–23 energy shock\n(\u00a3 per household per year)")
-    ax.set_ylim(0, 2300)
+    ax.set_ylim(0, 2750)
     ax.set_xlim(0.4, 10.6)
     ax.legend(ncol=2, loc="upper center", bbox_to_anchor=(0.5, -0.165),
               fontsize=7.6, columnspacing=1.2)
@@ -373,7 +373,7 @@ def fig_episode_map(d: Data):
         ("E1", "E1  TCA food non-tariff barriers", -1.02, -0.72, e1_bn, "cost", False,
          "+8 pp on food prices"),
         ("E2", "E2  Energy 2022–23", -0.98, -1.60, e2_bn, "cost", True,
-         f"FY-mean cap \u00a3{ss['base_fy_mean_cap']:,.0f} \u2192 "
+         f"Financial-year mean cap \u00a3{ss['base_fy_mean_cap']:,.0f} \u2192 "
          f"\u00a3{ss['counterfactual_fy_mean_cap']:,.0f}"),
         ("E3", "E3  US tariffs 2025", 0.42, -1.10, e3_bn, "cost", False,
          "earnings only; no UK retaliation"),
@@ -476,8 +476,8 @@ def write_tables(d: Data):
     A("\\label{tab:decile-full}")
     A("\\begin{tabular}{@{}l rr rr rr r@{}}")
     A("\\toprule")
-    A(" & \\multicolumn{2}{c}{TCA food barriers} & \\multicolumn{2}{c}{Energy, gross}")
-    A(" & \\multicolumn{2}{c}{Energy, net of the Guarantee} & UK--India gain \\\\")
+    A(" & \\multicolumn{2}{c}{TCA food barriers} & \\multicolumn{2}{c}{Energy, counterfactual}")
+    A(" & \\multicolumn{2}{c}{Energy, realised} & UK--India gain \\\\")
     A("\\cmidrule(lr){2-3}\\cmidrule(lr){4-5}\\cmidrule(lr){6-7}\\cmidrule(l){8-8}")
     A("Decile & \\pounds/yr & \\% spend & \\pounds/yr & \\% spend"
       " & \\pounds/yr & \\% spend & \\pounds/yr \\\\")
@@ -504,7 +504,7 @@ def write_tables(d: Data):
     A("\\begin{minipage}{\\linewidth}\\footnotesize")
     A("\\emph{Notes.} \\pounds\\ per household per year; \\% spend is the burden or")
     A("gain as a percentage of that decile's total expenditure. The Energy Price Guarantee absorbs")
-    A("%.1f\\%% of the counterfactual energy shock at every decile by construction."
+    A("%.1f per cent of the counterfactual energy shock at every decile by construction."
       % (100 * d.cushion_share))
     A("TCA food is on the window-average path; the UK--India gain is at full pass-through.")
     A("Ratios are computed on unrounded values, so they may differ from the")
@@ -523,8 +523,8 @@ def write_tables(d: Data):
          "$+8$ pp on food prices", "Estimate\\newline (ex post)"),
         ("E2 Energy 2022--23", "Apr 2022--\\newline Mar 2023", "Market",
          "Consumer prices (energy)", "\\citet{ofgem2021, ofgem2022, ofgemcap2023}; \\citet{obrenergy2023}",
-         "FY-mean cap \\pounds\\SsBaseFyCap\\ $\\to$ \\pounds\\SsCounterFyCap\\ (\\pounds\\SsRealisedFyCap\\ with the Guarantee)",
-         "Observed\\newline (statutory)"),
+         "Financial-year mean cap \\pounds\\SsBaseFyCap\\ $\\to$ \\pounds\\SsCounterFyCap\\ (\\pounds\\SsRealisedFyCap\\ with the Guarantee)",
+         "Observed\\newline (regulated)"),
         ("E3 US tariffs 2025", "2025--26", "Policy\\newline (foreign)",
          "Earnings only; no UK retaliation", "Constructed here (Appendix~\\ref{app:e3})",
          "\\pounds\\MsUSTariffGrossShockMillions m/yr earnings loss (unit elasticity)", "Scenario\\newline (assumed)"),

@@ -32,7 +32,8 @@ and \pounds 150 per disabled person), \pounds\SsColBn\ billion in
 total; eligibility in the simulated year is not receipt in the 2022
 qualifying windows. DWP management information \citep{dwpcol} puts the
 three payments at \pounds\SsColOutturnTotalBn\ billion, so the model
-is \SsColOutturnTotalExcessPct\ per cent high:
+is \SsColOutturnTotalExcessPct\ per cent high (percentages on
+unrounded values):
 \SsColOutturnMtExcessPct\ per cent on the means-tested payment
 (\pounds\SsColModelMtBn\ against \pounds\SsColOutturnMtBn\ billion),
 \SsColOutturnPenExcessPct\ on the pensioner payment
@@ -53,7 +54,7 @@ unaffected. Deciles are of equivalised income on the Households Below
 Average Income (HBAI) before-housing-costs concept. Burdens are shares
 of household expenditure, because a ratio to income is dominated by
 very low incomes. The numerator is rebased to 2021--22 cap levels and
-the denominator to the ONS FYE2022 mean total spending (factor
+the denominator to the ONS FYE~2022 mean total spending (factor
 \SsSpendRebase), so household-stage shares are comparable in level
 with the published-table shares. Both factors are common scalars, so
 the variance decomposition and quantile ratios are invariant to them.
@@ -77,13 +78,13 @@ cent (\SsNoSynFullRateDiffPp\ points), an energy-specific rate of
 \SsNoSynEnergySpecificRatePct\ per cent and a within-decile variance
 share of \SsNoSynWithinPct\ per cent; no decile rate moves by more
 than \SsNoSynMaxDecileDiffPp\ points, and
-\SsNoSynDecilesAboveHundred\ deciles have point estimates above 100
+\numword{\SsNoSynDecilesAboveHundred} deciles have point estimates above 100
 per cent.
 
 \subsection{Imputed energy spending against the LCFS}
 
 Table~\ref{tab:lcfs} compares the imputed energy spending on Microcosm
-UK with the LCFS itself \citep{lcfs}. Microcosm's energy share of
+UK with the LCFS itself \citep{lcfs}. Microcosm UK's energy share of
 spending is below the LCFS share in every decile. The realised burden,
 which rebases each source's mean bill to the 2021--22 cap, is close:
 the rebase removes the difference in level and leaves the gradient.
@@ -126,12 +127,11 @@ moves the bottom decile's full-stack rate from \SsRankBaseDOne\ to
 
 \subsection{Reconciliations}\label{app:recon}
 
-\runin{Energy budget shares.} A 2026 release by \citet{rf2022}
-reports energy budget shares of roughly 11 per cent in the second
+\runin{Energy budget shares.} \citet{rf2022} reports energy budget shares of roughly 11 per cent in the second
 decile against 6 per cent in the ninth; the shares computed here are
 \MsEnergyBudgetSharePctDecTwo\ and \MsEnergyBudgetSharePctDecNine\ per
 cent. The gap is definitional: this paper measures electricity and gas
-only, as a share of total spending, on the FYE2022 workbook, whereas
+only, as a share of total spending, on the FYE~2022 workbook, whereas
 the comparator includes other fuels, is expressed against income and
 is not a 2022--23 figure.
 
@@ -143,7 +143,7 @@ price path the published tables put the counterfactual shock at
 household records. Two offsets separate them: the household weights,
 \SsWeightExcessPct\ per cent above the ONS count, and the rebase,
 which sets the mean bill to the 2021--22 cap mean rather than to the
-ONS FYE2022 mean spend. Ratios are unaffected.
+ONS FYE~2022 mean spend. Ratios are unaffected.
 
 \subsection{Per-decile detail}\label{app:decile}
 
@@ -198,7 +198,7 @@ the counterfactual shock at the paper's rebase and
 \SsGridUnityFullRatePct\ per cent with none. In every cell that
 includes a flat-cash instrument the rate peaks in the third decile and
 is lower at the top than at the bottom, but levels move: on
-the full stack \SsGridLowDecilesAboveHundred\ deciles are returned
+the full stack \numword{\SsGridLowDecilesAboveHundred} deciles are returned
 more than their cost at a factor of \SsGridLowRebase\ (aggregate rate
 \SsGridLowFullRatePct\ per cent) and none at one (the highest is
 \SsGridUnityFullMaxDecilePct). At the paper's rebase, on the headline
@@ -206,7 +206,7 @@ path and the full sample, only decile \SsDecilesAboveHundredList\
 does (\SsGridPaperFullMaxDecilePct\ per cent), and only as a point
 estimate; on the equal-half-year paths the bottom decile also exceeds
 100 (Table~\ref{tab:paths}), and without the synthetic records
-\SsNoSynDecilesAboveHundred\ deciles do. The
+\numword{\SsNoSynDecilesAboveHundred} deciles do. The
 highest decile rate reaches 100 per cent at a factor of
 \SsGridMaxDecileRebaseAtHundred, or
 \SsGridNoCtrMaxDecileRebaseAtHundred\ without the Council Tax energy
@@ -265,7 +265,7 @@ stack.
 
 \begin{figure}[tbp]\centering
 \includegraphics[width=\textwidth]{figures/fig_paths.png}
-\caption{Energy burden as a share of spending by decile under three paths: no policy, Energy Price Guarantee in force (realised), and cash outlay, the realised path scaled by the observed demand response.}
+\caption{Energy burden as a share of spending by decile under three paths: no policy, Energy Price Guarantee (EPG) in force (realised), and cash outlay, the realised path scaled by the observed demand response.}
 \label{fig:paths}
 \end{figure}
 
@@ -273,8 +273,7 @@ stack.
 \section{Indexation: Universal Credit arithmetic for a single adult}\label{sec:results-rulebook}
 
 Universal Credit's standard allowance rose 3.1 per cent in April 2022,
-indexed to the previous September's inflation, while inflation was in
-double digits. Against month-by-month indexation to contemporaneous
+indexed to the previous September's inflation, while inflation rose into double digits. Against month-by-month indexation to contemporaneous
 CPI, an upper-bound counterfactual under which no actual benefit
 system operates, a single adult's standard allowance fell
 \pounds\MsUcLagCostGbp\ short over 2022--23
@@ -289,8 +288,7 @@ Neither the lag nor its cost is a discovery of this paper
 \citep{cribb2023, obrwelfare2022}. The 2022--23 shortfall was a timing
 loss later reversed in the level of awards, though not repaid;
 below-inflation uprating in other years reflected freezes and caps
-\citep{judgemurphy2023}. It followed the removal of the
-\pounds\MsUcUpliftRemovalGbp-a-year Covid uplift in October 2021,
+\citep{judgemurphy2023}. The 2022--23 shortfall followed the removal of the \pounds\MsUcUpliftRemovalGbp-a-year Covid uplift in October 2021,
 months before the energy shock.
 
 \begin{figure}[tbp]\centering
@@ -333,7 +331,7 @@ sampling error, clustered on households. Benefit units newly entitled
 to Universal Credit claim with an assumed probability of 0.8, mixed
 exactly in the expectation; others keep their baseline flags, and
 baseline poverty lines are frozen. The wage-cut rate mixes the same
-two take-up passes exactly; only \EThreeWageRedrawnUnits\ benefit
+two take-up passes exactly; only \numword{\EThreeWageRedrawnUnits} benefit
 units are re-drawn. Displaced workers receive an approximation of
 contribution-based New Style Jobseeker's Allowance:
 \EThreeDispJsaWeeks\ weeks at the model's rates for those aged 18 to
@@ -374,7 +372,7 @@ exactly to the rate. The pension row is employee contributions
 ceasing, which HBAI income deducts. The uniform benchmark applies the
 same \pounds\EThreeUnifGrossM\ million loss to all
 \EThreeUnifEmployeesM\ million employees, \EThreeUnifShockPct\ per
-cent of earnings each.
+cent of earnings each. JSA is Jobseeker's Allowance.
 \end{minipage}
 \end{table}
 
@@ -413,8 +411,7 @@ cent; 13 weeks of the New Style allowance gives
 Part-year spells are cushioned more: two approximations give
 \EThreeSensSixMonthAnnualRatePct\ and \EThreeSensSixMonthMixRatePct\
 per cent for six months and \EThreeSensThreeMonthAnnualRatePct\ and
-\EThreeSensThreeMonthMixRatePct\ for three, because income tax is then
-relieved at marginal rates and the fixed weeks of allowance cover more
+\EThreeSensThreeMonthMixRatePct\ for three, because income tax then falls at marginal rates and the fixed weeks of allowance cover more
 of the loss. At the OBR's elasticity of 0.4 the gross loss is
 \pounds\EThreeObrLowWageGrossM\ million and the wage-cut rate
 \EThreeObrLowWageRatePct\ per cent; the displacement rate is unchanged

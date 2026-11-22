@@ -58,8 +58,8 @@ $^{t}$~no instrument was legislated against this episode
 (Section~\ref{sec:results-tca-ss}).
 $^{i}$~share of the counterfactual shock (\pounds\SsCounterAggBn\,bn
 on household records, \pounds\MsEnergyGrossAggBn\,bn on the published
-tables) cushioned by the Guarantee alone (\SsEpgRatePct\ per cent on
-either base), by energy-specific instruments
+tables) absorbed by the Guarantee alone (\SsEpgRatePct\ per cent on
+either base), and returned by energy-specific instruments
 (\SsEnergySpecificRatePct) and by the full stack
 (\SsDiscretionaryRatePct), the last two on household records
 (Section~\ref{sec:results-secondstage}).
@@ -202,15 +202,15 @@ open-source static microsimulation model that encodes UK income tax,
 National Insurance and the main benefits as dated statutory
 parameters, in the tradition surveyed by \citet{figari2015}. It is run
 through policyengine.py 6.20.0 (PolicyEngine UK
-\SsPolicyEngineVersion) on the versioned release of the Microcosm UK
-2024--25 dataset \citep{microcosmuk}, a versioned build identified by
+\SsPolicyEngineVersion) on the Microcosm UK 2024--25 dataset
+\citep{microcosmuk}, a versioned build identified by
 checksum. Its \SsHouseholdsRecords\ household records derive from the
 Family Resources Survey \citep{frs}, with consumption imputed from the
 Living Costs and Food Survey \citep[LCFS;][]{lcfs}, wealth from the
 Wealth and Assets Survey and high incomes from HMRC's Survey of
 Personal Incomes (sources documented in \citealt{microcosmuk}), and with calibrated weights. The records descend from
 \DataSourceHouseholds\ survey households, the unit the bootstrap
-resamples; \DataSyntheticWeightPct\ per cent of household weight sits
+resamples; \SsNoSynWeightSharePct\ per cent of household weight sits
 on \DataSyntheticRecords\ synthetic records built from the Survey of
 Personal Incomes.
 
@@ -269,7 +269,7 @@ count of \SsOnsHouseholdsM\ million, so aggregates sit about
 \SsWeightExcessPct\ per cent high; ratios are unaffected.
 
 \runin{Accuracy.} The mismatches set out above, 2024--25 incomes and
-weights for a 2022--23 episode, an FYE2022 spending base, household
+weights for a 2022--23 episode, an FYE~2022 spending base, household
 weights above the ONS count and the gap between the household-stage
 and published-table aggregates, mean that levels in this section are
 indicative, with an error band that is not computed. Figures are
@@ -354,7 +354,7 @@ year (Appendix~\ref{sec:results-rulebook}).
 \small
 \input{table_lagdecile}
 \begin{minipage}{.8\textwidth}\footnotesize
-\emph{Notes.} Lag cost is the rise in benefit income had the April
+\emph{Notes.} The shortfall is the rise in benefit income had the April
 2022 uprating been 10.1 rather than 3.1 per cent, on 2022--23 rules.
 The second column divides it by the decile's counterfactual energy
 shock for scale only. CoL is the modelled Cost of Living Payments.
@@ -365,7 +365,7 @@ Differences are computed on unrounded values.
 Table~\ref{tab:lagdecile} sets the shortfall by decile beside the Cost
 of Living Payments. The shortfall averages \pounds\SsLagDecAllGbp\ a
 household and the payments \pounds\SsLagDecAllColGbp, and the
-shortfall exceeded the payments in all \SsLagDecNetNegativeCount\
+shortfall exceeded the payments in all \numword{\SsLagDecNetNegativeCount}
 deciles, narrowly in the bottom one
 (payments less shortfall: \SsLagDecOneNetGbp\ pounds in the bottom
 decile, \SsLagDecFourNetGbp\ in the fourth and \SsLagDecAllNetGbp\ on
@@ -386,8 +386,8 @@ legislated that year did not make up the difference in any decile.
 
 Against a counterfactual shock of \pounds\SsCounterAggBn\ billion, the
 Guarantee absorbed \pounds\SsEpgBn\ billion (\SsEpgRatePct\ per cent),
-the Energy Bills Support Scheme \pounds\SsEbssBn\ billion and the
-Council Tax energy rebate \pounds\SsCtrBn\ billion. These
+and the Energy Bills Support Scheme returned \pounds\SsEbssBn\ billion
+and the Council Tax energy rebate \pounds\SsCtrBn\ billion. These
 energy-specific instruments returned \SsEnergySpecificRatePct\ per
 cent of the shock, \SsGridPaperEbssDOne\ per cent in the bottom decile
 and \SsGridPaperEbssDTen\ in the top; the gradient comes from the two
@@ -421,7 +421,7 @@ On the headline path and the full sample, only decile
 energy cost (\SsGridPaperFullMaxDecilePct\ per cent), and only as a
 point estimate; on the equal-half-year paths the bottom decile also
 exceeds 100 (Table~\ref{tab:paths}), and without the synthetic
-records \SsNoSynDecilesAboveHundred\ deciles do. A household bootstrap (\SsBootReps\ resamples clustered on
+records \numword{\SsNoSynDecilesAboveHundred} deciles do. A household bootstrap (\SsBootReps\ resamples clustered on
 the source survey household, as urged by \citealp{goedeme2013}) gives
 95 per cent intervals of \SsRateLo--\SsRateHi\ per cent for the aggregate rate and
 \SsCushionDecOneLo--\SsCushionDecOneHi\ for the bottom decile's,
@@ -478,7 +478,7 @@ bottom: with no rebase the full stack returns \SsGridUnityFullDOne\ per cent of 
 bottom decile's loss against \SsGridUnityFullDTen\ per cent of the
 top decile's, and \SsGridUnityFullRatePct\ per cent overall. The
 number of deciles returned more than their cost is
-\SsGridLowDecilesAboveHundred\ at a factor of \SsGridLowRebase, one at
+\numword{\SsGridLowDecilesAboveHundred} at a factor of \SsGridLowRebase, one at
 the paper's and none at one. The paper's factor is computed, not
 chosen, but it rests on the assumption that the dataset's mean bill
 maps onto the mean cap; at that factor the Guarantee's
@@ -558,9 +558,9 @@ Two limits bound what this establishes. First, exposure is imputed from LCFS don
 donor-model variation. On the LCFS itself the within-decile share is
 \SsLcfsWithinPct\ per cent in 2024--25 and \SsLcfsTwentyTwoWithinPct\
 per cent in 2022--23, and the rebased decile burdens are close to
-Microcosm's (Appendix Table~\ref{tab:lcfs}). The LCFS is the donor
-survey, so this checks the gradient, not the level, which the rebase
-removes: Microcosm's energy share is below the LCFS's in every decile. The
+Microcosm UK's (Appendix Table~\ref{tab:lcfs}). This checks the gradient, not the level, which the rebase removes:
+Microcosm UK's energy share is below the LCFS's in every decile.
+Because the LCFS is the donor survey, the check is not independent. The
 LCFS's diary timing inflates within-decile spread too; \citet{levell2025} use transaction data for this reason.
 Excluding the synthetic records leaves the share at
 \SsNoSynWithinPct\ per cent. Second, the quantity is the variance of
@@ -579,12 +579,11 @@ but are not the same quantity.
 
 The food shock (the window-average path of
 Section~\ref{sec:results}) is priced against each household's imputed
-food consumption on the same records, rebased to the ONS FYE2022
+food consumption on the same records, rebased to the ONS FYE~2022
 food-spending base (factor \SsTcaSsFoodRebase), the same convention as
 the energy rebase. The aggregate, \pounds\SsTcaSsAggBn\ billion a
 year, therefore matches the published-table figure
-(\pounds\MsTcaWindowAvgAggBn\ billion) up to the \SsWeightExcessPct\
-per cent excess in household weights; what is new is the
+(\pounds\MsTcaWindowAvgAggBn\ billion) up to the \SsWeightExcessPct\ per cent excess in household weights and the rounding of the window share to 0.30; what is new is the
 distribution. The burden is \SsTcaSsPctSpendDecOne\ per cent of
 bottom-decile spending against \SsTcaSsPctSpendDecTen\ at the top
 (\MsTcaWindowAvgPctSpendDecOne\ and \MsTcaWindowAvgPctSpendDecTen\ on
@@ -601,8 +600,8 @@ consumption, so the within-year response is zero by construction.
 Because the food shock built up over three upratings, annual
 indexation did pick part of it up, with the lag described above. And
 nothing was legislated against the food-price rise (general support
-such as the Household Support Fund is outside the model). The Cost of Living Payments cushioned food-price inflation as
-well as energy, so they cannot be counted for energy and ignored for
+such as the Household Support Fund is outside the model). The Cost of Living Payments were paid against food-price inflation
+as well as energy, so they cannot be counted for energy and ignored for
 food; the comparison has to be between episode-specific instruments.
 On that basis the state cushioned \SsEnergySpecificRatePct\ per cent
 of the counterfactual energy shock and none of the food shock, which
@@ -671,11 +670,10 @@ which HBAI income deducts, the cushioning rates are
 \EThreeWageRatePct\ and \EThreeDispRatePct\ per cent (sampling
 standard error \EThreeDispSamplingSe\ points on the latter).
 Displacement is cushioned less than a wage cut, the reverse of the
-EU-average ordering in \citet{dolls2012}. The gap is income tax: it
-relieves \EThreeWageTaxOfGrossPct\ per cent of the loss under the wage
+EU-average ordering in \citet{dolls2012}. The gap is income tax: it offsets \EThreeWageTaxOfGrossPct\ per cent of the loss under the wage
 cut, at the worker's marginal rate, against \EThreeDispTaxOfGrossPct\
 per cent under displacement, at the lower average rate, because the
-personal allowance is forgone too. National Insurance relieves about
+personal allowance is forgone too. National Insurance offsets about
 the same in both (\EThreeWageNiOfGrossPct\ and
 \EThreeDispNiOfGrossPct\ per cent), and Universal Credit
 (\EThreeDispUcOfGrossPct\ against \EThreeWageUcOfGrossPct) and the
@@ -694,7 +692,7 @@ weeks of it; \EThreeSensTakeupLowRatePct\ and
 of \EThreeSensTakeupLow\ and \EThreeSensTakeupHigh\ in place of 0.8;
 and higher, about \EThreeSensSixMonthAnnualRatePct\ and
 \EThreeSensThreeMonthAnnualRatePct\ per cent, for spells of six and
-three months, because income tax is then relieved at marginal rates.
+three months, because income tax then falls at marginal rates.
 The income-tax relief depends on how well paid the exposed workers
 are. Their mean pay, weighted by expected displacement, is
 \pounds\EThreeAsheModelMeanK\ thousand,
@@ -733,7 +731,8 @@ eighth to tenth); net of the cushion it is
 \EThreeDispNetSharePctDecTen\ in the top. In pounds per person a year
 the net income loss rises from \pounds\EThreeDispDecGbpOne\ in the bottom decile
 through \pounds\EThreeDispDecGbpFive\ in the fifth to
-\pounds\EThreeDispDecGbpTen\ in the top (person-weighted deciles;
+\pounds\EThreeDispDecGbpTen\ in the top (person-weighted deciles, so not the cells of
+Table~\ref{tab:e3-decile};
 \pounds\EThreeDispDecGbpTwo, \EThreeDispDecGbpThree,
 \EThreeDispDecGbpFour, \EThreeDispDecGbpSix, \EThreeDispDecGbpSeven,
 \EThreeDispDecGbpEight\ and \EThreeDispDecGbpNine\ in the others).
